@@ -1,0 +1,68 @@
+@charset "utf-8";
+/* CSS Document */
+
+.copyright {
+	color:#DFDEDE; 
+	padding: 20px;
+}
+.navbar-header > a {
+	color:#FFFFFF;
+}
+
+
+.navbar-nav > li > a {
+	color:#FFFFFF;
+}
+
+.navbar-right > li > a {
+	color:#FFFFFF;
+}
+
+.footer1{
+	bottom:0;
+	left:0;
+	right:0;
+    height: 80px;
+    position: relative;
+    background-color: #000;
+   
+}
+
+.footer-bot {
+	float:right; 
+	padding:20px;
+}
+.footer-bot > a {
+	color:#FFFFFF;
+}
+
+.nav-tabs > li > a {
+  margin-right: 2px;
+  line-height: 1.42857143;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+  color:#000000;
+}
+
+.ListTitle {
+	background-color:#19AB13; 
+	color:#fff;
+}
+
+.ListTitle2 {
+	background-color:#A65758;
+	color:#fff;
+}
+
+.font-weight > legend {
+	color:#fff
+}
+
+.label-tag {
+	background-color:#BFE9B2;
+}
+.pressed {
+	border-width: 5px;
+	border-color: black;
+	border-style: solid;
+}

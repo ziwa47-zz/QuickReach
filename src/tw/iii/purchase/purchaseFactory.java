@@ -1,0 +1,427 @@
+package tw.iii.purchase;
+
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.util.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.LinkedList;
+
+import javax.servlet.http.HttpServletRequest;
+
+import tw.iii.qr.DataBaseConn;
+
+public class purchaseFactory {
+
+	private PrintWriter out;
+	private Connection conn;
+
+	public purchaseFactory() {
+
+	}
+
+	public boolean isNullorEmpty(String s) {
+
+		if (s == null || s.length() == 0)
+			return true;
+
+		return false;
+	}
+	
+	//company<select>
+	public LinkedList<LinkedList<String>> companySelectOption()
+			throws ClassNotFoundException, SQLException, Exception {
+
+		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
+		LinkedList<String> companyName = new LinkedList<>();
+
+		Connection conn = new DataBaseConn().getConn();
+		String strsql = "SELECT C_name FROM quickreach.company";
+		PreparedStatement ps = null;
+		ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+
+		while (rs.next()) {
+			companyName = new LinkedList<>();
+			companyName.add(rs.getString(1));
+
+			Alllist.add(companyName);
+		}
+		rs.close();
+		ps.close();
+		conn.close();
+
+		return Alllist;
+	}
+	
+	
+
+	
+
+	// wareHouse <select>
+	public LinkedList<LinkedList<String>> warehouseSelectOption()
+			throws ClassNotFoundException, SQLException, Exception {
+
+		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
+		LinkedList<String> wareHouseName = new LinkedList<>();
+
+		Connection conn = new DataBaseConn().getConn();
+		String strsql = "SELECT warehouse, warehouseName FROM quickreach.warehouse";
+		PreparedStatement ps = null;
+		ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+
+		while (rs.next()) {
+			wareHouseName = new LinkedList<>();
+			wareHouseName.add(rs.getString(1));
+			wareHouseName.add(rs.getString(2));
+
+			Alllist.add(wareHouseName);
+		}
+		rs.close();
+		ps.close();
+		conn.close();
+
+		return Alllist;
+	}
+
+	public boolean istodaypurchase() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+		Connection conn = new DataBaseConn().getConn();
+		String strsql = " select * from quickreach.purchaselog_master where date = curdate()+0  ";
+		PreparedStatement ps = null;
+		ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+		if (rs.wasNull()) {
+			return false;
+		}
+		return true;
+	}
+
+	// end
+
+	// �脣���� yyyyMMdd statusId US/KH 瘚偌���
+	public String processStorageRecord(String status) throws IllegalAccessException, ClassNotFoundException, Exception {
+
+		String time = getDay();
+
+		DecimalFormat df = new DecimalFormat("000");
+		int no = 1;
+		String strsql = " select purchaseid,date from quickreach.purchaselog_master where (date < now()) and  date >= curdate() and warehouse='KHH' order by date desc limit 0,1 ";
+		Connection conn = new DataBaseConn().getConn();
+		PreparedStatement ps = null;
+		ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+		String srno = "";
+
+		String check = null;
+		while (rs.next()) {
+			check = rs.getString(1);
+		}
+//		System.out.println(2 + check);
+//		System.out.println("no:"+no);
+		// System.out.println((check.substring(12,check.length()-1)));
+		if (check != null) {
+			//System.out.println(Integer.valueOf(check.substring(13, check.length())));
+			if (no <= Integer.valueOf(check.substring(13, check.length()))) {
+				int i = Integer.valueOf(check.substring(13, check.length()));
+				no = i+1;
+				//Integer.valueOf((Integer.valueOf(check.substring(13, check.length()))) + 1);
+//				System.out.println("x"+no);
+			}
+			srno = time + status + "KHH" + df.format(no);
+
+		} else {
+			String srnoDate = getDay();
+			srno = srnoDate + "01KHH001";
+		}
+		System.out.println(1 + srno);
+		return srno;
+	}
+
+	public String getDay() {
+		Date date = new Date();
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+
+		String time = dateFormat.format(date);
+		System.out.println(dateFormat.format(date));
+		return time;
+	}
+
+	public LinkedList<LinkedList<String>> searchPurchase(Connection conn, String date, String pname, String sku,
+			String companyName, String owner, String wareHouse, String warehousePosition, String qty, String price) {
+		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
+		LinkedList<String> list = new LinkedList<>();
+		ResultSet rs = null;
+		java.sql.Statement stmt = null;
+		// DataBaseConn jdbc = new DataBaseConn();
+
+		String sqlstr1 = searchCondition(date, pname, sku, companyName, owner, wareHouse, warehousePosition, qty,
+				price);
+
+		System.out.println(sqlstr1);
+		try {
+			PreparedStatement ps = conn.prepareStatement(sqlstr1);
+			// stmt = conn.createStatement();
+
+			rs = ps.executeQuery(sqlstr1);
+
+			while (rs.next()) {
+				list = new LinkedList<>();
+
+				list.add(rs.getString(1));
+				list.add(rs.getString(2));
+				list.add(rs.getString(3));
+				list.add(rs.getString(4));
+				list.add(rs.getString(5));
+				list.add(rs.getString(6));
+				list.add(rs.getString(7));
+				list.add(rs.getString(8));
+				list.add(rs.getString(9));
+				list.add(rs.getString(10));
+				list.add(rs.getString(11));
+				list.add(rs.getString(12));
+
+				// System.out.println(list+"\n");
+				Alllist.add(list);
+
+			}
+
+			rs.close();
+
+			// stmt.close();
+			conn.close();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+		if (Alllist.isEmpty()) {
+			System.out.println("gogogo");
+		} else {
+
+			System.out.println(Alllist);
+		}
+		return Alllist;
+
+	}
+
+	public LinkedList<LinkedList<String>> SearchOutRecord(Connection conn, String date, String outRecord, String pname,
+			String sku, String companyName, String owner, String wareHouse, String warehousePosition, String qty,
+			String price) {
+		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
+		LinkedList<String> list = new LinkedList<>();
+		ResultSet rs = null;
+		java.sql.Statement stmt = null;
+		// DataBaseConn jdbc = new DataBaseConn();
+
+		String sqlOutRecord = sqlSearchOutRecord(date, outRecord, pname, sku, companyName, owner, wareHouse,
+				warehousePosition, qty, price);
+		System.out.println(sqlOutRecord);
+
+		try {
+			PreparedStatement ps = conn.prepareStatement(sqlOutRecord);
+			// stmt = conn.createStatement();
+
+			rs = ps.executeQuery(sqlOutRecord);
+
+			while (rs.next()) {
+				list = new LinkedList<>();
+
+				list.add(rs.getString(1));
+				list.add(rs.getString(2));
+				list.add(rs.getString(3));
+				list.add(rs.getString(4));
+				list.add(rs.getString(5));
+				list.add(rs.getString(6));
+				list.add(rs.getString(7));
+				list.add(rs.getString(8));
+				list.add(rs.getString(9));
+				list.add(rs.getString(10));
+				list.add(rs.getString(11));
+				list.add(rs.getString(12));
+				list.add(rs.getString(13));
+
+				// System.out.println(list+"\n");
+				Alllist.add(list);
+
+			}
+
+			rs.close();
+
+			// stmt.close();
+			conn.close();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+		if (Alllist.isEmpty()) {
+			System.out.println("gogogo");
+		} else {
+
+			System.out.println(Alllist);
+		}
+		return Alllist;
+
+	}
+
+	public String sqlSearchOutRecord(String date, String outRecordId, String pname, String sku, String companyName,
+			String owner, String wareHouse, String warehousePosition, String qty, String price) {
+		String sqlOutRecord = "select a.SKU,a.P_name,a.purchaseId,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment from quickreach.purchaselog_detail as a inner join quickreach.purchaselog_master as b where a.purchaseId =b.purchaseId and a.stockStatus = 2";
+
+		if (!isNullorEmpty(date)) {
+			sqlOutRecord += " and b.date  <= '" + date + "'";
+			System.out.println(date);
+		}
+
+		if (!isNullorEmpty(outRecordId)) {
+			sqlOutRecord += " and a.purchaseId like '%" + outRecordId + "%'";
+			System.out.println(outRecordId);
+		}
+
+		if (!isNullorEmpty(pname)) {
+			sqlOutRecord += " and a.P_name like '%" + pname + "%'";
+			System.out.println(pname);
+		}
+		if (!isNullorEmpty(sku)) {
+			sqlOutRecord += " and a.SKU like '%" + sku + "%'";
+			System.out.println(sku);
+		}
+
+		if (!isNullorEmpty(companyName)) {
+			sqlOutRecord += " and b.companyName like '%" + companyName + "%'";
+			System.out.println(companyName);
+		}
+		if (!isNullorEmpty(wareHouse)) {
+			sqlOutRecord += " and a.warehouse like '%" + wareHouse + "%'";
+			System.out.println(wareHouse);
+		}
+		if (!isNullorEmpty(owner)) {
+			sqlOutRecord += " and b.staffId like '%" + owner + "%'";
+			System.out.println(owner);
+		}
+		if (!isNullorEmpty(warehousePosition)) {
+			sqlOutRecord += " and a.warehousePosition like '%" + warehousePosition + "%'";
+			System.out.println(warehousePosition);
+		}
+		if (!isNullorEmpty(qty)) {
+			sqlOutRecord += " and a.qty like '%" + qty + "%'";
+			System.out.println(qty);
+		}
+
+		if (!isNullorEmpty(price)) {
+			sqlOutRecord += " and a.price like '%" + price + "%'";
+			System.out.println(price);
+		}
+		
+
+		return sqlOutRecord;
+	}
+
+	public String searchCondition(String date, String pname, String sku, String companyName, String owner,
+			String wareHouse, String warehousePosition, String qty, String price) {
+		String sqlstr1 = "select a.SKU,a.P_name,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment from quickreach.purchaselog_detail as a inner join quickreach.purchaselog_master as b where a.purchaseId =b.purchaseId and a.stockStatus = 1 ";
+		System.out.println(sku);
+		
+		if (!isNullorEmpty(date)) {
+			sqlstr1 += " and b.date <= '"+date+"'";
+			System.out.println("搜尋日期:"+date);
+		}
+
+		if (!isNullorEmpty(pname)) {
+			sqlstr1 += " and a.P_name like '%" + pname + "%'";
+			System.out.println(pname);
+		}
+		if (!isNullorEmpty(sku)) {
+			sqlstr1 += " and a.SKU like '%" + sku + "%'";
+			System.out.println(sku);
+		}
+
+		if (!isNullorEmpty(companyName)) {
+			sqlstr1 += " and b.companyName like '%" + companyName + "%'";
+			System.out.println(companyName);
+		}
+		if (!isNullorEmpty(wareHouse)) {
+			sqlstr1 += " and a.warehouse like '%" + wareHouse + "%'";
+			System.out.println(wareHouse);
+		}
+		if (!isNullorEmpty(owner)) {
+			sqlstr1 += " and b.staffId like '%" + owner + "%'";
+			System.out.println(owner);
+		}
+		if (!isNullorEmpty(warehousePosition)) {
+			sqlstr1 += " and a.warehousePosition like '%" + warehousePosition + "%'";
+			System.out.println(warehousePosition);
+		}
+		if (!isNullorEmpty(qty)) {
+			sqlstr1 += " and a.qty like '%" + qty + "%'";
+			System.out.println(qty);
+		}
+
+		if (!isNullorEmpty(price)) {
+			sqlstr1 += " and a.price like '%" + price + "%'";
+			System.out.println(price);
+		}
+		return sqlstr1;
+	}
+
+	public LinkedList<LinkedList<String>> checkvalue(HttpServletRequest request) {
+		LinkedList<String> values = new LinkedList<String>();
+
+		int count = Integer.parseInt(request.getParameter("count"));
+		LinkedList<Integer> times = new LinkedList<>();
+		for (String s : request.getParameterValues("times")) {
+			times.add(Integer.parseInt(s));
+		}
+		LinkedList<LinkedList<String>> Allist = new LinkedList<>();
+
+		for (int i = 1; i <= count; i++) {
+			if (times.indexOf(i) == -1)
+				continue;
+			values = new LinkedList<>();
+
+			values.add(request.getParameter(("sku" + i)));
+
+			values.add(request.getParameter(("pName" + i)));
+
+			values.add(request.getParameter(("spec" + i)));
+
+			values.add(request.getParameter(("color" + i)));
+
+			values.add(request.getParameter(("qty" + i)));
+
+			values.add(request.getParameter(("price" + i)));
+
+			// values.add(request.getParameter(("warehouse"+i)));
+
+			values.add(request.getParameter(("warehousePosition" + i)));
+
+			values.add(request.getParameter(("comment" + i)));
+
+			Allist.add(values);
+		}
+		return Allist;
+
+		// insert data
+	}
+
+	public LinkedList<String> purchaseMaster(HttpServletRequest request) {
+		LinkedList<String> pInfo = new LinkedList<String>();
+
+		pInfo.add(request.getParameter("companyId"));
+		pInfo.add(request.getParameter("staffId"));
+		pInfo.add(request.getParameter("warehouse"));
+		pInfo.add(request.getParameter("purchaseMasterComment"));
+
+		return pInfo;
+
+	}
+
+}

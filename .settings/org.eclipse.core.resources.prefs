@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+encoding//WebContent/QROrders/SearchOrder.jsp=UTF-8
+encoding//WebContent/QRProduct/ProductDetail.jsp=UTF-8
+encoding//src/tw/iii/purchase/purchaseFactory.java=UTF-8
+encoding//src/tw/iii/qr/SubmitDayliBalanceSheet.java=UTF-8
+encoding//src/tw/iii/qr/SubmitToProcessing.java=UTF-8
+encoding//src/tw/iii/qr/SubmitToShipped.java=UTF-8
+encoding//src/tw/iii/qr/order/COrderFactory.java=UTF-8
+encoding//src/tw/iii/qr/order/DayliBalanceSheetFactory.java=UTF-8
