@@ -52,7 +52,7 @@
 			<li><a href="../QRMain/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchStockPage.jsp">庫存/商品管理</a></li>
-			<li><a href="SearchStockPage.jsp">查詢庫存</a></li>
+			<li><a href="searchOutRecordPage.jsp">出貨查詢</a></li>
 		</ol>
 	</div>
 

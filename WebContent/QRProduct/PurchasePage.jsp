@@ -286,7 +286,7 @@ function test() {
 			<li><a href="../QRMain/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchStockPage.jsp">庫存/商品管理</a></li>
-			<li><a href="SearchStockPage.jsp">查詢庫存</a></li>
+			<li><a href="PurchasePage.jsp">進貨</a></li>
 		</ol>
 	</div>
 
