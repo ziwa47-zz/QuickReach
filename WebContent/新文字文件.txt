@@ -1,6 +1,10 @@
 test4
 
 
+<<<<<<< HEAD
 
 
 go
+=======
+test 11234
+>>>>>>> refs/remotes/origin/master
