@@ -61,7 +61,7 @@
 			<li><a href="../QRMain/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchStockPage.jsp">庫存/商品管理</a></li>
-			<li><a href="SearchStockPage.jsp">查詢庫存</a></li>
+			<li><a href="searchPurchase.jsp">進貨紀錄</a></li>
 		</ol>
 	</div>
 
@@ -236,7 +236,33 @@
 		style="border-radius: 20px">
 		<form name="searchform" method="post" action="#"
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
-			class="form-inline container"></form>
+			class="form-inline container">
+				<table
+				class="table table-bordered table-hover table-condensed pull-left"
+				style="margin: 0 0 0 -15px">
+				<tr class="ListTitle" style="background-color: #A65758; color: #fff">
+					<th>項目</th>
+					<th>進貨單號</th>
+					<th>SKU</th>
+					<th>品名</th>
+					<th>規格</th>
+					<th>顏色</th>
+					<th>數量</th>
+					<th>成本</th>
+					<th>倉別</th>
+					<th>櫃位</th>
+					<th>日期</th>
+					<th>廠商</th>
+					<th>經手人</th>
+
+
+				</tr>
+				
+				</table>
+			
+			
+			
+			</form>
 	</div>
 </body>
 
