@@ -40,14 +40,15 @@ public class purchaseFactory {
 		LinkedList<String> companyName = new LinkedList<>();
 
 		Connection conn = new DataBaseConn().getConn();
-		String strsql = "SELECT C_name FROM quickreach.company";
+		String strsql = "SELECT * FROM quickreach.company";
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
 
 		while (rs.next()) {
 			companyName = new LinkedList<>();
-			companyName.add(rs.getString(1));
+			companyName.add(rs.getString(2));
+			companyName.add(rs.getString(3));
 
 			Alllist.add(companyName);
 		}
@@ -70,15 +71,15 @@ public class purchaseFactory {
 		LinkedList<String> wareHouseName = new LinkedList<>();
 
 		Connection conn = new DataBaseConn().getConn();
-		String strsql = "SELECT warehouse, warehouseName FROM quickreach.warehouse";
+		String strsql = "SELECT * FROM quickreach.warehouse";
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
 
 		while (rs.next()) {
 			wareHouseName = new LinkedList<>();
-			wareHouseName.add(rs.getString(1));
 			wareHouseName.add(rs.getString(2));
+			wareHouseName.add(rs.getString(3));
 
 			Alllist.add(wareHouseName);
 		}
