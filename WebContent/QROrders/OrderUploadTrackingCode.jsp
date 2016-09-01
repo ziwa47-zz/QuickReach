@@ -41,7 +41,7 @@
   </div>
 <div class="nav">  
   <div class="container" style="background: #D9A56B; border-radius:20px;">
-  	<form name="searchform" method="post" action="../SendTrackingCodeServlet" style="font-size: 100%; vertical-align: baseline; 
+  	<form name="searchform" method="post" action="../StatusDo" style="font-size: 100%; vertical-align: baseline; 
     padding: 15px; " class="container">
       <fieldset class="font-weight" style="padding:0 30px 0 0;"><legend>出貨處理</legend>
     	<input type="hidden">
@@ -61,7 +61,7 @@
               </div>
             </div>
           </div>
-          <button type="submit">送出</button>
+          <button type="submit" name="send" value="sendTrackingCode">送出</button>
       </fieldset>
     </form>
   </div>

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import tw.iii.qr.order.COrderFactory;
 import tw.iii.qr.order.COrderMaster;
 import tw.iii.qr.order.COrders;
+import tw.iii.qr.order.SessionRecord;
 import tw.iii.qr.DataBaseConn;
 
 @WebServlet("/OrdersServlet")
@@ -55,39 +56,32 @@ public class OrdersServlet extends HttpServlet {
 		
 		Connection conn = new DataBaseConn().getConn();
 		COrderFactory OFactory = new COrderFactory();
-		//LinkedList<COrders> SearchResult = OFactory.searchOrders(request, conn);
 		LinkedList<COrders> orderProcessingPageSearch = OFactory.orderProcessingPageSearch(request, conn);
-		session.setAttribute("ResultOrders", orderProcessingPageSearch);
-		
+		SessionRecord sessionRecord = new SessionRecord();
+		session.setAttribute(sessionRecord.getOrdersResult(), orderProcessingPageSearch);
 		conn.close();
-		
-		
-		
 		String submit = request.getParameter("submit");
 		
 				switch(submit){
-				case "toPickupPage":
-					response.sendRedirect("QROrders/OrderPickupPage.jsp");
+				case "orderSearch":
+					//session.setAttribute(sessionRecord.getSearchOrder(), orderProcessingPageSearch);
+					response.sendRedirect("QROrders/SearchOrder.jsp?begin=0&end=10");
 					break;
-					
 				case "processingSearch":
-					response.sendRedirect("QROrders/OrderProcessingPage.jsp");
+					//session.setAttribute(sessionRecord.getOrderProcessing(), orderProcessingPageSearch);
+					response.sendRedirect("QROrders/OrderProcessingPage.jsp?begin=0&end=10");
 					break;
 				case "pickupSearch":
-					response.sendRedirect("QROrders/OrderPickupPage.jsp");
+					session.setAttribute(sessionRecord.getOrderPickUp(), orderProcessingPageSearch);
+					response.sendRedirect("QROrders/OrderPickupPage.jsp?begin=0&end=10");
 					break;
-					
-				case "orderSearch":
-					response.sendRedirect("QROrders/SearchOrder.jsp");
+				case "finishedSearch":
+					session.setAttribute(sessionRecord.getOrderFinished(), orderProcessingPageSearch);
+					response.sendRedirect("QROrders/OrderFinished.jsp?begin=0&end=10");
 					break;
-					
-			
-					
-					
-					
-					default:
-						response.sendRedirect("QROrders/SearchOrder.jsp");
-					
+				default:
+					session.setAttribute("ResultOrders", orderProcessingPageSearch);
+					response.sendRedirect("QROrders/SearchOrder.jsp?begin=0&end=10");
 				}
 				
 				
