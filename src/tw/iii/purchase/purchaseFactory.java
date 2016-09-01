@@ -40,7 +40,7 @@ public class purchaseFactory {
 		LinkedList<String> companyName = new LinkedList<>();
 
 		Connection conn = new DataBaseConn().getConn();
-		String strsql = "SELECT C_name FROM quickreach.company";
+		String strsql = "SELECT C_id,C_name FROM quickreach.company";
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -48,6 +48,7 @@ public class purchaseFactory {
 		while (rs.next()) {
 			companyName = new LinkedList<>();
 			companyName.add(rs.getString(1));
+			companyName.add(rs.getString(2));
 
 			Alllist.add(companyName);
 		}
@@ -327,7 +328,7 @@ public class purchaseFactory {
 
 	public String searchCondition(String date, String pname, String sku, String companyName, String owner,
 			String wareHouse, String warehousePosition, String qty, String price) {
-		String sqlstr1 = "select a.SKU,a.P_name,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment from quickreach.purchaselog_detail as a inner join quickreach.purchaselog_master as b where a.purchaseId =b.purchaseId and a.stockStatus = 1 ";
+		String sqlstr1 = "select a.purchaseId,a.SKU,a.P_name,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment from quickreach.purchaselog_detail as a inner join quickreach.purchaselog_master as b where a.purchaseId =b.purchaseId and a.stockStatus = 1 ";
 		System.out.println(sku);
 		
 		if (!isNullorEmpty(date)) {
@@ -404,6 +405,7 @@ public class purchaseFactory {
 			values.add(request.getParameter(("warehousePosition" + i)));
 
 			values.add(request.getParameter(("comment" + i)));
+			values.add(request.getParameter("warehouse"));
 
 			Allist.add(values);
 		}

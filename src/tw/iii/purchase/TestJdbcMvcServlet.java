@@ -57,7 +57,7 @@ public class TestJdbcMvcServlet extends HttpServlet {
 			
 			String warehouse = request.getParameter("warehouse");
 			
-			String sqlCount = "select count(*) from quickreach.purchaselog_master where warehouse = ?";
+			String sqlCount = "select count(*) from quickreach.purchaselog_master where date >= curdate() and warehouse = ?";
 			
 			
 			preparedState = conn.prepareStatement(sqlCount);
@@ -66,14 +66,18 @@ public class TestJdbcMvcServlet extends HttpServlet {
 
 			int count = 0;
 			ResultSet rs = preparedState.executeQuery();
-			if(rs.next()){
+			if(rs.next()&& Integer.valueOf(rs.getInt(1)) == 0){
+				count = 1;
+				System.out.println("true:"+count);
+			}else{				
 				count = Integer.valueOf(rs.getInt(1)+1); 
+				System.out.println("false:"+count);
 			}
 
 			DecimalFormat df = new DecimalFormat("000");
 			
 			
-			System.out.println("針對倉庫之count(*):"+count);
+			System.out.println("針對倉庫之count(*):"+df.format(count));
 			
 			
 			String oldPurchaseIdFront11 = request.getParameter("purchaseId").substring(0,10);
@@ -117,7 +121,7 @@ public class TestJdbcMvcServlet extends HttpServlet {
 					preparedState.setString(j+2, Alllist.get(i).get(j));					
 					System.out.print(Alllist.get(i).get(j)+",");
 				}
-				preparedState.setString(Alllist.size(),pMaster.get(2) );
+				//preparedState.setString(Alllist.get(i).size(),pMaster.get(2) );
 				  preparedState.executeUpdate();
 				  
 				  

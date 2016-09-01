@@ -79,7 +79,7 @@
 			<li><a href="../QRMain/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchStockPage.jsp">庫存/商品管理</a></li>
-			<li><a href="SearchStockPage.jsp">查詢庫存</a></li>
+			<li><a href="searchPurchase.jsp">進貨紀錄</a></li>
 		</ol>
 	</div>
 
@@ -259,6 +259,7 @@
 				style="margin: 0 0 0 -15px">
 				<tr class="ListTitle" style="background-color: #A65758; color: #fff">
 					<th>項目</th>
+					<th>進貨單號</th>
 					<th>SKU</th>
 					<th>品名</th>
 					<th>規格</th>
@@ -287,7 +288,7 @@
 							<td rowspan="2" style="vertical-align: middle"><c:out
 									value="${nu.count}"></c:out></td>
 
-							<c:forEach var="j" begin="0" end="10" step="1">
+							<c:forEach var="j" begin="0" end="11" step="1">
 								<td><c:out value="${i.get(j)}"></c:out></td>
 
 							</c:forEach>
@@ -304,7 +305,7 @@
 							<td rowspan="2" style="vertical-align: middle"><c:out
 									value="${nu.count}"></c:out></td>
 
-							<c:forEach var="j" begin="0" end="10" step="1">
+							<c:forEach var="j" begin="0" end="11" step="1">
 								<td><c:out value="${i.get(j)}"></c:out></td>
 
 							</c:forEach>
