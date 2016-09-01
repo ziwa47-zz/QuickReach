@@ -153,15 +153,16 @@ public class purchaseFactory {
 		return time;
 	}
 
-	public LinkedList<LinkedList<String>> searchPurchase(Connection conn, String date, String pname, String sku,
+	public LinkedList<LinkedList<String>> searchPurchase(Connection conn,String purchaseRecord, String outRecord, String date, String pname, String sku,
 			String companyName, String owner, String wareHouse, String warehousePosition, String qty, String price) {
 		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
 		LinkedList<String> list = new LinkedList<>();
 		ResultSet rs = null;
 		java.sql.Statement stmt = null;
 		// DataBaseConn jdbc = new DataBaseConn();
+		System.out.println("I need stockRecord status:" + purchaseRecord + "," + outRecord);
 
-		String sqlstr1 = searchCondition(date, pname, sku, companyName, owner, wareHouse, warehousePosition, qty,
+		String sqlstr1 = searchCondition(purchaseRecord, outRecord,date, pname, sku, companyName, owner, wareHouse, warehousePosition, qty,
 				price);
 
 		System.out.println(sqlstr1);
@@ -174,6 +175,14 @@ public class purchaseFactory {
 			while (rs.next()) {
 				list = new LinkedList<>();
 
+				/*
+				if(rs.getString(1).equals(rs.previous())){
+					list.add("");
+					System.out.println("same!!!");
+				}else {
+					
+					
+				}*/
 				list.add(rs.getString(1));
 				list.add(rs.getString(2));
 				list.add(rs.getString(3));
@@ -211,7 +220,6 @@ public class purchaseFactory {
 		return Alllist;
 
 	}
-
 	public LinkedList<LinkedList<String>> SearchOutRecord(Connection conn, String date, String outRecord, String pname,
 			String sku, String companyName, String owner, String wareHouse, String warehousePosition, String qty,
 			String price) {
@@ -326,10 +334,29 @@ public class purchaseFactory {
 		return sqlOutRecord;
 	}
 
-	public String searchCondition(String date, String pname, String sku, String companyName, String owner,
+	public String searchCondition(String purchaseRecord, String outRecord,String date, String pname, String sku, String companyName, String owner,
 			String wareHouse, String warehousePosition, String qty, String price) {
-		String sqlstr1 = "select a.purchaseId,a.SKU,a.P_name,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment from quickreach.purchaselog_detail as a inner join quickreach.purchaselog_master as b where a.purchaseId =b.purchaseId and a.stockStatus = 1 ";
+		String sqlstr1 = "select a.purchaseId,a.SKU,a.P_name,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment from quickreach.purchaselog_detail as a inner join quickreach.purchaselog_master as b where a.purchaseId =b.purchaseId  ";
 		System.out.println(sku);
+		
+
+		if (!isNullorEmpty(purchaseRecord) && !isNullorEmpty(outRecord)) {
+			sqlstr1 += "and (a.stockStatus = 1 or a.stockStatus = 2)";
+			System.out.println("both:"+purchaseRecord + outRecord);
+		} else {
+
+			if (!isNullorEmpty(purchaseRecord)) {
+				sqlstr1 += "and a.stockStatus = 1";
+				System.out.println("進貨:"+purchaseRecord);
+			}
+
+			if (!isNullorEmpty(outRecord)) {
+				sqlstr1 += "and a.stockStatus = 2";
+				System.out.println("出貨:"+outRecord);
+			}
+
+		}
+		
 		
 		if (!isNullorEmpty(date)) {
 			sqlstr1 += " and b.date <= '"+date+"'";
