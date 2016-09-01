@@ -274,7 +274,7 @@ function test() {
 					<li><a href="SearchStockPage.jsp" style="color: #000000">查詢庫存</a></li>
 					<li class="" style="background-color: #1CAF9A"><a
 						href="PurchasePage.jsp" style="color: #FFFFFF">進貨</a></li>
-					<li><a href="searchPurchase.jsp" style="color: #000000">進貨紀錄</a></li>
+					<li><a href="searchPurchase.jsp" style="color: #000000">進/出貨紀錄</a></li>
 					<li><a href="searchOutRecordPage.jsp" style="color: #000000">出貨紀錄</a></li>
 				</ul>
 			</div>
