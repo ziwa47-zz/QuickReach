@@ -28,6 +28,9 @@
 		LinkedList<LinkedList<String>> companyList = searchDetail.companySelectOption();
 		request.setAttribute("warehouseList", warehouseList);
 		request.setAttribute("companyList", companyList);
+		
+		 String purchaseRecord = request.getParameter("purchaseRecord");
+		  String outRecord = request.getParameter("outRecord");
 
 		String date = request.getParameter("date");
 
@@ -43,7 +46,7 @@
 		String price = request.getParameter("price");
 
 		Connection conn = new DataBaseConn().getConn();
-		LinkedList<LinkedList<String>> allList = searchDetail.searchPurchase(conn, date, pname, sku, companyName,
+		LinkedList<LinkedList<String>> allList = searchDetail.searchPurchase(conn, purchaseRecord,outRecord , date, pname, sku, companyName,
 				owner, wareHouse, warehousePosition, qty, price);
 
 		request.setAttribute("logList", allList);
@@ -67,7 +70,7 @@
 					<li><a href="SearchStockPage.jsp" style="color: #000">查詢庫存</a></li>
 					<li><a href="PurchasePage.jsp" style="color: #000">進貨</a></li>
 					<li class="" style="background-color: #1CAF9A"><a
-						href="searchPurchase.jsp" style="color: #fff">進貨紀錄</a></li>
+						href="searchPurchase.jsp" style="color: #fff">進/出貨紀錄</a></li>
 					<li><a href="searchOutRecordPage.jsp" style="color: #000000">出貨紀錄</a></li>
 				</ul>
 			</div>
@@ -79,7 +82,7 @@
 			<li><a href="../QRMain/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchStockPage.jsp">庫存/商品管理</a></li>
-			<li><a href="SearchStockPage.jsp">查詢庫存</a></li>
+			<li><a href="searchPurchase.jsp">進/出貨紀錄</a></li>
 		</ol>
 	</div>
 
@@ -91,8 +94,23 @@
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
 			class="form-inline container">
 			<fieldset>
-				<legend>進貨紀錄查詢</legend>
+				<legend>進/出貨紀錄查詢</legend>
 				<input type="hidden">
+				
+				<div class="row">
+					<div class="col-md-12 form-group ">
+						<div class="row">
+							<div class="col-md-10 form-group ">
+								<label for="usr">訂單狀態：</label> <label class="checkbox-inline"><input
+									type="checkbox" name="purchaseRecord" value="purchase">進貨紀錄</label>
+								<label class="checkbox-inline"><input type="checkbox"
+									name="outRecord" value="outRecord">出貨記錄</label>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
 
 				<div class="row">
 					<div class="col-md-4 form-group ">
@@ -152,7 +170,7 @@
 
 									<c:forEach var="i" begin="0" step="1" items="${companyList}">
 
-										<option value="${i.get(0)}">${i.get(0)}</option>
+										<option value="${i.get(1)}">${i.get(1)}</option>
 
 									</c:forEach>
 
@@ -259,6 +277,7 @@
 				style="margin: 0 0 0 -15px">
 				<tr class="ListTitle" style="background-color: #A65758; color: #fff">
 					<th>項目</th>
+					<th>單號</th>
 					<th>SKU</th>
 					<th>品名</th>
 					<th>規格</th>
@@ -278,16 +297,13 @@
 				<c:forEach var="i" begin="0" step="1" items="${logList}"
 					varStatus="nu">
 
-
-
-
 					<c:if test="${nu.count%2==0}">
 
 						<tr style="background-color: #9DDCD1">
 							<td rowspan="2" style="vertical-align: middle"><c:out
 									value="${nu.count}"></c:out></td>
-
-							<c:forEach var="j" begin="0" end="10" step="1">
+									
+							<c:forEach var="j" begin="0" end="11" step="1">
 								<td><c:out value="${i.get(j)}"></c:out></td>
 
 							</c:forEach>
@@ -304,7 +320,7 @@
 							<td rowspan="2" style="vertical-align: middle"><c:out
 									value="${nu.count}"></c:out></td>
 
-							<c:forEach var="j" begin="0" end="10" step="1">
+							<c:forEach var="j" begin="0" end="11" step="1">
 								<td><c:out value="${i.get(j)}"></c:out></td>
 
 							</c:forEach>
