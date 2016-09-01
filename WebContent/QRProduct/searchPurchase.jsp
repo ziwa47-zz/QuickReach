@@ -16,7 +16,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>進貨紀錄</title>
+<title>進/出貨紀錄</title>
 
 
 
@@ -49,7 +49,7 @@
 					<li><a href="SearchStockPage.jsp" style="color: #000">查詢庫存</a></li>
 					<li><a href="PurchasePage.jsp" style="color: #000">進貨</a></li>
 					<li class="" style="background-color: #1CAF9A"><a
-						href="searchPurchase.jsp" style="color: #fff">進貨紀錄</a></li>
+						href="searchPurchase.jsp" style="color: #fff">進/出紀錄</a></li>
 					<li><a href="searchOutRecordPage.jsp" style="color: #000000">出貨紀錄</a></li>
 				</ul>
 			</div>
@@ -61,7 +61,7 @@
 			<li><a href="../QRMain/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchStockPage.jsp">庫存/商品管理</a></li>
-			<li><a href="SearchStockPage.jsp">查詢庫存</a></li>
+			<li><a href="searchPurchase.jsp">進/出紀錄</a></li>
 		</ol>
 	</div>
 
@@ -75,8 +75,21 @@
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
 			class="form-inline container">
 			<fieldset>
-				<legend>進貨紀錄查詢</legend>
+				<legend>進/出貨紀錄查詢</legend>
 				<input type="hidden">
+				
+				<div class="row">
+					<div class="col-md-12 form-group ">
+						<div class="row">
+							<div class="col-md-10 form-group ">
+								<label for="usr">訂單狀態：</label> <label class="checkbox-inline"><input
+									type="checkbox" name="purchaseRecord" value="purchase">進貨紀錄</label>
+								<label class="checkbox-inline"><input type="checkbox"
+									name="outRecord" value="outRecord">出貨記錄</label>
+							</div>
+						</div>
+					</div>
+				</div>
 
 				<div class="row">
 					<div class="col-md-4 form-group ">
@@ -236,7 +249,33 @@
 		style="border-radius: 20px">
 		<form name="searchform" method="post" action="#"
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
-			class="form-inline container"></form>
+			class="form-inline container">
+				<table
+				class="table table-bordered table-hover table-condensed pull-left"
+				style="margin: 0 0 0 -15px">
+				<tr class="ListTitle" style="background-color: #A65758; color: #fff">
+					<th>項目</th>
+					<th>單號</th>
+					<th>SKU</th>
+					<th>品名</th>
+					<th>規格</th>
+					<th>顏色</th>
+					<th>數量</th>
+					<th>成本</th>
+					<th>倉別</th>
+					<th>櫃位</th>
+					<th>日期</th>
+					<th>廠商</th>
+					<th>經手人</th>
+
+
+				</tr>
+				
+				</table>
+			
+			
+			
+			</form>
 	</div>
 </body>
 
