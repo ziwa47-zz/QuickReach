@@ -18,7 +18,7 @@
     <meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>新增商品</title>
+    <title>新增複合商品</title>
     <!-- Bootstrap -->
 	<link href="css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui.css">
@@ -45,14 +45,16 @@
 	    listForm.submit()	    	
 	}
     
-    function getSelectt2(){
-	   
-    	listForm.action = "ProductAddPage.jsp"
-    	listForm.submit()	    	
-    	document.getElementById('subBrand').value='select';
+    function getSelectPname(){
     	document.getElementById('productSKU').value='select';
+    	listForm.action = "ProductAddPage.jsp"
+    	listForm.submit()	    	    	    	
+	}
+    
+    function getSelectPSKU(){
     	document.getElementById('P_name').value='select';
-    	
+    	listForm.action = "ProductAddPage.jsp"
+    	listForm.submit()	    	    	    	
 	}
     
     </script>
@@ -73,7 +75,7 @@
    	  <div class="nav" style="background-color:#1CAF9A;" >
         	<ul class="nav nav-tabs">
               <li ><a href="SearchProductPage.jsp" style="color:#000">查詢商品</a></li>
-              <li class="" style="background-color:#1CAF9A"><a href="ProductAddPage.jsp" style="color:#fff">新增商品</a></li>
+              <li class="" style="background-color:#1CAF9A"><a href="ProductAddPage.jsp" style="color:#fff">新增複合商品</a></li>
               <li><a href="ProductEditPage.jsp" style="color:#000000">修改商品</a></li>
             </ul>
         </div>
@@ -85,7 +87,7 @@
     <ol class="breadcrumb" >
           <li><a href="../QRMain/HomePage.jsp" >首頁</a></li>
           <li class="active" style="display:"><a href="SearchProductPage.jsp">庫存/商品管理</a></li>
-          <li><a href="ProductAddPage.jsp">新增商品</a></li>
+          <li><a href="ProductAddPage.jsp">新增複合商品</a></li>
       </ol>
         </div>
   
@@ -194,29 +196,49 @@ request.setAttribute("listSKU",listSKU);
               	</select>
               </td>              
               <td nowrap>
-	              <select name="productSKU" id="productSKU" onChange="getSelect()">
+	              <select name="productSKU" id="productSKU" onChange="getSelectPSKU()">
 	              	<option value="select">==請選擇==</option>
 						<c:forEach var="i" varStatus="check" items="${list}" begin="0" step="1" >
-	            			<c:if test="${param.productSKU == i.getSKU()}">
-	            				<option selected="selected" value="${i.getSKU()}">${i.getSKU()}</option>
+	            			<c:if test="${param.productSKU ne 'select'}">
+		            			<c:if test="${param.productSKU == i.getSKU()}">
+		            				<option selected="selected" value="${i.getSKU()}">${i.getSKU()}</option>
+		            			</c:if>
+		            			<c:if test="${param.productSKU != i.getSKU()}">
+		            				<option value="${i.getSKU()}">${i.getSKU()}</option>
+		            			</c:if>
 	            			</c:if>
-	            			<c:if test="${param.productSKU != i.getSKU()}">
-	            				<option value="${i.getSKU()}">${i.getSKU()}</option>
+	            			<c:if test="${param.productSKU eq 'select'}">
+		            			<c:if test="${param.P_name == i.getP_name()}">
+			            			<option selected="selected" value="${i.getSKU()}">${i.getSKU()}</option>
+			            		</c:if>
+			            		<c:if test="${param.P_name != i.getP_name()}">
+			            			<option value="${i.getSKU()}">${i.getSKU()}</option>
+			            		</c:if>	
 	            			</c:if>
 	            		</c:forEach>						
 	              </select>
               </td>
               <td>
-              	<select name="P_name" id="P_name" onChange="getSelect()">
+              	<select name="P_name" id="P_name" onChange="getSelectPname()">
 	            	<option value="select">==請選擇==</option>
-	            	<c:forEach var="i" varStatus="check" items="${list}" begin="0" step="1" >
-	            		<c:if test="${param.P_name == i.getP_name()}">
-	            			<option selected="selected" value="${i.getP_name()}">${i.getP_name()}</option>
-	            		</c:if>
-	            		<c:if test="${param.P_name != i.getP_name()}">
-	            			<option value="${i.getP_name()}">${i.getP_name()}</option>
-	            		</c:if>	            		
-	            	</c:forEach>
+		            	<c:forEach var="i" varStatus="check" items="${list}" begin="0" step="1" >
+		            		<c:if test="${param.P_name ne 'select'}">
+		            			<c:if test="${param.P_name == i.getP_name()}">
+		            				<option selected="selected" value="${i.getP_name()}">${i.getP_name()}</option>
+		            			</c:if>
+		            			<c:if test="${param.productSKU != i.getSKU()}">
+		            				<option value="${i.getP_name()}">${i.getP_name()}</option>
+		            			</c:if>
+	            			</c:if>
+	            			<c:if test="${param.P_name eq 'select'}">
+		            			<c:if test="${param.productSKU == i.getSKU()}">
+			            			<option selected="selected" value="${i.getP_name()}">${i.getP_name()}</option>
+			            		</c:if>
+			            		<c:if test="${param.productSKU != i.getSKU()}">
+			            			<option value="${i.getP_name()}">${i.getP_name()}</option>
+			            		</c:if>	
+			            	</c:if>      		
+		            	</c:forEach>
 	            </select>
               </td>
               <td><input type="number" name="qty"></td>
@@ -230,19 +252,18 @@ request.setAttribute("listSKU",listSKU);
       </fieldset>
    
   </div>
-  	
 
 <% 
 String add = request.getParameter("smt");
 //add = new String(add.getBytes("ISO8859_1"),"UTF-8");
 
-String a = request.getParameter("brand");
-String b = request.getParameter("subBrand");
+//String a = request.getParameter("brand");
+//String b = request.getParameter("subBrand");
 String c = request.getParameter("productSKU");
 String d = request.getParameter("P_name");
 String e = request.getParameter("qty");
 
-blf.setBundles(a, b, c, d, e);
+blf.setBundles( c, d, e);
 
 
 
@@ -279,10 +300,10 @@ request.setAttribute("list2",list2);
 
 		<c:forEach var="i" varStatus="check" items="${list2}" begin="0" step="1">
 			<tr>
+				<td>${i[0]}</td>
+				<td>${i[1]}</td>
 				<td>${i[2]}</td>
-				<td>${i[3]}</td>
-				<td>${i[4]}</td>
-				<td><button type="submit" name="delete" value="${i[2]}" onclick="getSelect()">刪除</button></td>
+				<td><button type="submit" name="delete" value="${i[0]}" onclick="getSelect()">刪除</button></td>
 			</tr>
 		</c:forEach>    
 	</table>	
@@ -299,6 +320,7 @@ if (x!=null && x.equals("insert")){
 blf.bundlesToProduct(bdsku,bdname,ps);
 blf.bundlesToDetail(bdsku);
 session.invalidate();
+response.sendRedirect("../QRProduct/ProductAddPage.jsp");
 }
 
 
