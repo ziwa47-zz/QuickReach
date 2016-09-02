@@ -1,5 +1,4 @@
-package tw.iii.purchase;
-
+﻿package tw.iii.purchase;
 
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -155,7 +154,7 @@ public class purchaseFactory {
 	}
 
 	public LinkedList<LinkedList<String>> searchPurchase(Connection conn,String purchaseRecord, String outRecord, String date, String pname, String sku,
-			String companyName, String owner, String wareHouse, String warehousePosition, String qty, String price) {
+			String companyName, String owner, String wareHouse, String warehousePositionOne, String warehousePositionTwo, String qty, String price) {
 		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
 		LinkedList<String> list = new LinkedList<>();
 		ResultSet rs = null;
@@ -163,7 +162,7 @@ public class purchaseFactory {
 		// DataBaseConn jdbc = new DataBaseConn();
 		System.out.println("I need stockRecord status:" + purchaseRecord + "," + outRecord);
 
-		String sqlstr1 = searchCondition(purchaseRecord, outRecord,date, pname, sku, companyName, owner, wareHouse, warehousePosition, qty,
+		String sqlstr1 = searchCondition(purchaseRecord, outRecord,date, pname, sku, companyName, owner, wareHouse, warehousePositionOne,warehousePositionTwo, qty,
 				price);
 
 		System.out.println(sqlstr1);
@@ -175,29 +174,39 @@ public class purchaseFactory {
 
 			while (rs.next()) {
 				list = new LinkedList<>();
-
-//				
-//				if(rs.getString(13).equals("1")){
-//					System.out.println("進貨!!!!!!!!!!!!!");
-//				}
-				list.add(rs.getString(1));
+				
+				System.out.println("check:"+rs.getString(15).toString());
+				
+				if(rs.getString(15).equals("1")){
+					list.add("進貨");
+    			
+				} else {
+					list.add("出貨");
+					
+				}
+				
+			
+				
+				list.add(rs.getString(1));		
 				list.add(rs.getString(2));
 				list.add(rs.getString(3));
 				list.add(rs.getString(4));
 				list.add(rs.getString(5));
+				
 				list.add(rs.getString(6));
 				list.add(rs.getString(7));
 				list.add(rs.getString(8));
-				list.add(rs.getString(9));
-				list.add(rs.getString(10));
+				list.add(rs.getString(9)+"-"+rs.getString(10));
 				list.add(rs.getString(11));
+				
 				list.add(rs.getString(12));
 				list.add(rs.getString(13));
 				list.add(rs.getString(14));
-			
 
-				// System.out.println(list+"\n");
+				// System.out.println("stockStatus:"+rs.getString(14).toString());
 				Alllist.add(list);
+				
+				
 
 			}
 
@@ -241,6 +250,7 @@ public class purchaseFactory {
 
 			while (rs.next()) {
 				list = new LinkedList<>();
+				
 
 				list.add(rs.getString(1));
 				list.add(rs.getString(2));
@@ -335,8 +345,11 @@ public class purchaseFactory {
 	}
 
 	public String searchCondition(String purchaseRecord, String outRecord,String date, String pname, String sku, String companyName, String owner,
-			String wareHouse, String warehousePosition, String qty, String price) {
-		String sqlstr1 = "select a.purchaseId,a.SKU,a.P_name,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment,a.stockStatus from quickreach.purchaselog_detail as a inner join quickreach.purchaselog_master as b where a.purchaseId =b.purchaseId  ";
+			String wareHouse, String warehousePositionOne, String warehousePositionTwo, String qty, String price) {
+		String sqlstr1 = "select a.purchaseId,a.SKU,c.P_name,c.spec,c.color,"
+				+ " a.qty,a.price,a.warehouse,a.warehousePosition1,a.warehousePosition2,"
+				+ " b.date,b.companyName,b.staffId,a.comment,a.stockStatus"
+				+ " from quickreach.purchaselog_detail as a inner join quickreach.purchaselog_master as b inner join quickreach.product as c where a.purchaseId =b.purchaseId and a.SKU = c.SKU  ";
 		System.out.println(sku);
 		
 
@@ -384,10 +397,17 @@ public class purchaseFactory {
 			sqlstr1 += " and b.staffId like '%" + owner + "%'";
 			System.out.println(owner);
 		}
-		if (!isNullorEmpty(warehousePosition)) {
-			sqlstr1 += " and a.warehousePosition like '%" + warehousePosition + "%'";
-			System.out.println(warehousePosition);
+		if (!isNullorEmpty(warehousePositionOne)) {
+			sqlstr1 += " and a.warehousePosition1 like '%" + warehousePositionOne + "%'";
+			System.out.println(warehousePositionOne);
 		}
+		
+		if (!isNullorEmpty(warehousePositionTwo)) {
+			sqlstr1 += " and a.warehousePosition2 like '%" + warehousePositionTwo + "%'";
+			System.out.println(warehousePositionTwo);
+		}
+		
+		
 		if (!isNullorEmpty(qty)) {
 			sqlstr1 += " and a.qty like '%" + qty + "%'";
 			System.out.println(qty);
@@ -419,17 +439,18 @@ public class purchaseFactory {
 
 			values.add(request.getParameter(("pName" + i)));
 
-			values.add(request.getParameter(("spec" + i)));
+			//values.add(request.getParameter(("spec" + i)));
 
-			values.add(request.getParameter(("color" + i)));
+			//values.add(request.getParameter(("color" + i)));
 
 			values.add(request.getParameter(("qty" + i)));
 
-			values.add(request.getParameter(("price" + i)));
+		//	values.add(request.getParameter(("price" + i)));
 
 			// values.add(request.getParameter(("warehouse"+i)));
 
-			values.add(request.getParameter(("warehousePosition" + i)));
+			values.add(request.getParameter(("warehousePositionOne" + i)));
+			values.add(request.getParameter(("warehousePositionTwo" + i)));
 
 			values.add(request.getParameter(("comment" + i)));
 			values.add(request.getParameter("warehouse"));
@@ -452,7 +473,6 @@ public class purchaseFactory {
 		return pInfo;
 
 	}
-
 	public LinkedList<Cpurchase_detail> details (String sku,Connection conn){
 		 LinkedList<Cpurchase_detail> list = new LinkedList<>();
 		Cpurchase_detail d = new Cpurchase_detail();
