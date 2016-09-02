@@ -170,7 +170,7 @@
 
 									<c:forEach var="i" begin="0" step="1" items="${companyList}">
 
-										<option value="${i.get(1)}">${i.get(1)}</option>
+										<option value="${i.get(0)}">${i.get(0)}</option>
 
 									</c:forEach>
 
@@ -303,7 +303,7 @@
 							<td rowspan="2" style="vertical-align: middle"><c:out
 									value="${nu.count}"></c:out></td>
 									
-							<c:forEach var="j" begin="0" end="11" step="1">
+							<c:forEach var="j" begin="0" end="12" step="1">
 								<td><c:out value="${i.get(j)}"></c:out></td>
 
 							</c:forEach>
@@ -311,7 +311,7 @@
 
 
 						<tr style="background-color: #9DDCD1">
-							<td colspan="12"><c:out value="${i.get(11)}"></c:out></td>
+							<td colspan="12"><c:out value="${i.get(12)}"></c:out></td>
 						</tr>
 					</c:if>
 					<c:if test="${nu.count%2 !=0}">
@@ -319,6 +319,7 @@
 						<tr style="background-color: #D4F4D8">
 							<td rowspan="2" style="vertical-align: middle"><c:out
 									value="${nu.count}"></c:out></td>
+									
 
 							<c:forEach var="j" begin="0" end="11" step="1">
 								<td><c:out value="${i.get(j)}"></c:out></td>
@@ -328,7 +329,7 @@
 
 
 						<tr style="background-color: #D4F4D8">
-							<td colspan="12"><c:out value="${i.get(11)}"></c:out></td>
+							<td colspan="12"><c:out value="${i.get(12)}"></c:out></td>
 						</tr>
 					</c:if>
 				</c:forEach>
