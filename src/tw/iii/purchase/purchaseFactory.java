@@ -1,5 +1,6 @@
 package tw.iii.purchase;
 
+
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.Date;
@@ -453,4 +454,44 @@ public class purchaseFactory {
 
 	}
 
+	public LinkedList<Cpurchase_detail> details (String sku,Connection conn){
+		 LinkedList<Cpurchase_detail> list = new LinkedList<>();
+		Cpurchase_detail d = new Cpurchase_detail();
+		String strsql = "select m.purchaseId,m.stockStatus,qty,date,m.warehouse from purchaselog_master as m inner join purchaselog_detail  where 1 = 1 "
+				+" and sku = ?";
+//		if(check1=="on" ){
+//			strsql += " and stockStatus = 1";
+//		}
+//		if(check2=="on"){
+//			strsql += " and stockStatus = 2";
+//		}
+		PreparedStatement ps;
+		try {
+			ps = conn.prepareStatement(strsql);
+			ps.setString(1, sku);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				d =  new Cpurchase_detail();
+				d.setPurchaseId(rs.getString(1));
+				if(rs.getString(2).equals("1")){
+					d.setStockStatus("進貨");
+				}else if (rs.getString(2).equals("2")){
+					d.setStockStatus("出貨");
+				}
+				d.setQty(rs.getInt(3));
+				d.setDate(rs.getDate(4));
+				d.setWarehouse(rs.getString(5));
+				list.add(d);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return list;
+		
+	}
+	
 }

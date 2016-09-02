@@ -51,7 +51,7 @@ public class autoInsertData {
 		
 		LinkedList<COrderDetail> sku = new LinkedList<COrderDetail>();
 			while(rs.next()){
-				COrderDetail part = new COrderDetail()
+				COrderDetail part = new COrderDetail();
 			}
 			
 		return sku;
