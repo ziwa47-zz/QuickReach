@@ -176,14 +176,10 @@ public class purchaseFactory {
 			while (rs.next()) {
 				list = new LinkedList<>();
 
-				/*
-				if(rs.getString(1).equals(rs.previous())){
-					list.add("");
-					System.out.println("same!!!");
-				}else {
-					
-					
-				}*/
+//				
+//				if(rs.getString(13).equals("1")){
+//					System.out.println("進貨!!!!!!!!!!!!!");
+//				}
 				list.add(rs.getString(1));
 				list.add(rs.getString(2));
 				list.add(rs.getString(3));
@@ -196,6 +192,9 @@ public class purchaseFactory {
 				list.add(rs.getString(10));
 				list.add(rs.getString(11));
 				list.add(rs.getString(12));
+				list.add(rs.getString(13));
+				list.add(rs.getString(14));
+			
 
 				// System.out.println(list+"\n");
 				Alllist.add(list);
@@ -337,7 +336,7 @@ public class purchaseFactory {
 
 	public String searchCondition(String purchaseRecord, String outRecord,String date, String pname, String sku, String companyName, String owner,
 			String wareHouse, String warehousePosition, String qty, String price) {
-		String sqlstr1 = "select a.purchaseId,a.SKU,a.P_name,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment from quickreach.purchaselog_detail as a inner join quickreach.purchaselog_master as b where a.purchaseId =b.purchaseId  ";
+		String sqlstr1 = "select a.purchaseId,a.SKU,a.P_name,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment,a.stockStatus from quickreach.purchaselog_detail as a inner join quickreach.purchaselog_master as b where a.purchaseId =b.purchaseId  ";
 		System.out.println(sku);
 		
 
