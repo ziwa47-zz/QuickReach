@@ -2,10 +2,11 @@
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="tw.iii.qr.DataBaseConn"%>
-<%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.*,tw.iii.qr.stock.*" %>
+<%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.*,tw.iii.qr.stock.*,tw.iii.purchase.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <jsp:useBean id="stockDetail" class="tw.iii.qr.stock.CStockFactory" scope="page" />
-<jsp:useBean id="productDetail" class="tw.iii.qr.stock.CProductFactory" scope="page" />
+<jsp:useBean id = "productDetail" class="tw.iii.qr.stock.CProductFactory" scope="page" />
+<jsp:useBean id ="purchaseRecord" class= "tw.iii.purchase.purchaseFactory" scope="page"/>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -51,20 +52,25 @@
   style="font-size: 100%; vertical-align: baseline; padding: 15px;">
     <fieldset id="myfields" class="container-fluid" style="padding:0 30px 0 0;" disabled ><legend>庫存明細</legend>
       <%
-String sku ;
+String sku1 ;
 request.setCharacterEncoding("UTF-8");
 if(request.getParameter("sku") != null || request.getParameter("sku") != ""){
-Connection conn = new DataBaseConn().getConn();
-sku = request.getParameter("sku");
+Connection conn1 = new DataBaseConn().getConn();
+sku1 = request.getParameter("sku");
 
-CProduct product = productDetail.searchDetail(sku, conn);
+CProduct product = productDetail.searchDetail(sku1, conn1);
 session.removeAttribute("product");
 session.setAttribute("product", product);
 
-LinkedList<CStock> stock = stockDetail.searchDetailStock(sku, conn);
-session.removeAttribute("resultDetail");
-session.setAttribute("resultDetail", stock);
-conn.close();
+LinkedList<CStock> stock = stockDetail.searchDetailStock(sku1, conn1);
+session.removeAttribute("stock");
+session.setAttribute("stock", stock); 
+
+
+LinkedList<Cpurchase_detail> order = purchaseRecord.details(sku1, conn1);
+session.removeAttribute("order");
+session.setAttribute("order", order); 
+conn1.close();
 }
 
 %>
@@ -115,7 +121,10 @@ conn.close();
           <th>備註</th>
         </tr>
       </thead>
-      <c:forEach var="i" items="${resultDetail}" begin="0" step="1" >
+      <c:forEach var="i" items="${stock}" begin="0" step="1" >
+      <c:set var="total" value="${total +i.getQty()}" />
+      <c:set var="sold" value="${sold +i.getQtysold()}" />
+   
       <tbody>
         <tr>
           <td>${i.getWareHouse()}</td>
@@ -128,9 +137,51 @@ conn.close();
         </tr>
       </tbody>
      </c:forEach>
+     <tr class="ListTitle2">
+      <th></th>
+          <th></th>
+          <th>${total}</th>
+          <th>${sold}</th>
+          <th>${total - sold}</th>
+          <th></th>
+          <th></th>
+     </tr>
        </table>
       </form>
    </div>	
+<div class="container table-responsive bg-warning" style=" border-radius:20px">
+	<form name="searchform" method="post" action="#" style="font-size: 100%; vertical-align: baseline; 
+  padding: 15px; " class="form-inline container">
 
+      <table class="table table-bordered table-hover table-condensed pull-left" 
+      style="margin:0 0 0 -15px" >
+      <thead>
+ 	    <tr class="ListTitle2">
+          <th>單號</th>
+          <th>類別</th>
+          <th>數量</th>
+          <th>日期</th>
+          <th>倉別</th>
+         
+        </tr>
+      </thead>
+      <c:forEach var="d" items="${order}" begin="0" step="1" >
+   
+   
+      <tbody>
+        <tr>
+          <td>${d.getPurchaseId()}</td>
+          <td>${d.getStockStatus()}</td>
+          <td>${d.getQty()}</td>
+          <td>${d.getDate()}</td>
+          <td>${d.getWarehouse()}</td>
+       
+        </tr>
+      </tbody>
+     </c:forEach>
+   
+       </table>
+      </form>
+   </div>	
 </body>
 </html>
