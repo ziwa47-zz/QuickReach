@@ -58,7 +58,7 @@
     <form name="searchform" method="post" action="../OrdersServlet" class="form-inline container"
     style="font-size: 100%; vertical-align: baseline; padding: 15px;">
       <fieldset class="font-weight" style="padding:0 30px 0 0;">
-        <legend>已完成</legend>
+        <legend>查詢訂單</legend>
         <input type="hidden">
         <div class="row">
           <div class="col-md-4 form-group ">
@@ -221,6 +221,7 @@
             <label class="checkbox-inline"><input type="checkbox" name="waitProcess" value="waitProcess">待處理</label>
             <label class="checkbox-inline"><input type="checkbox" name="processing"  value="processing">處理中</label>
             <label class="checkbox-inline"><input type="checkbox" name="pickup"  value="pickup">揀貨中</label>
+            <label class="checkbox-inline"><input type="checkbox" name="shipped" value="shipped">已出貨</label>
             <label class="checkbox-inline"><input type="checkbox" name="finished" value="finished">已完成</label>
             <label class="checkbox-inline"><input type="checkbox" name="refund" value="refund">退款</label>
             <label class="checkbox-inline"><input type="checkbox" name="oothers" value="oothers">其他</label>
@@ -378,7 +379,7 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr style="background-color:#FFFFFF">
-                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}<br/>
+                    <td colspan="9"><c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                       </c:forEach></td>
                     <td colspan="3"></td>
                   </tr>
@@ -503,7 +504,8 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr style="background-color:#FFFFFF">
-                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}<br/>
+                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                    <b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}<br/>
                       </c:forEach></td>
                     <td colspan="3"></td>
                   </tr>

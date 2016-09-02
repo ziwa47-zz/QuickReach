@@ -44,11 +44,11 @@ conn.close();
    	  <div class="nav" style="background-color:#A45A21;">
         <ul class="nav nav-tabs">
           <li><a href="SearchOrder.jsp" style="color:#fff">訂單查詢</a></li>
-          <li><a href="OrderProcessingPage.jsp" style="color:#000000">處理中</a></li>
-          <li><a href="OrderPickupPage.jsp" style="color:#000000">揀貨中</a></li>
-          <li><a href="OrderUploadTrackingCode.jsp" style="color:#000000">上傳追蹤碼</a></li>
-          <li><a href="OrderFinished.jsp" style="color:#000000">已完成訂單</a></li>
-          <li><a href="OrderAbnormal.jsp" style="color:#000000">異常訂單</a></li>
+          <li><a href="OrderProcessingPage.jsp">處理中</a></li>
+          <li><a href="OrderPickupPage.jsp">揀貨中</a></li>
+          <li><a href="OrderUploadTrackingCode.jsp">上傳追蹤碼</a></li>
+          <li><a href="OrderFinished.jsp">已完成訂單</a></li>
+          <li><a href="OrderAbnormal.jsp">異常訂單</a></li>
         </ul>
       </div>
     </div>

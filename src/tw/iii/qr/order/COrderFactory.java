@@ -17,6 +17,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.mysql.fabric.Response;
+
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.order.COrderDetail;
 import tw.iii.qr.order.COrders;
@@ -30,6 +32,8 @@ public class COrderFactory extends COrders {
 
 	public boolean isNullorEmpty(String s) {
 
+		
+		
 		if (s == null || s.length() == 0)
 			return true;
 
@@ -54,7 +58,7 @@ public class COrderFactory extends COrders {
 	}
 	public LinkedList<COrders> orderProcessingPageSearch(HttpServletRequest request, Connection conn)
 			throws SQLException {
-
+		
 		String strSql = "SELECT distinct m.order_id, platform, m.guestAccount, orderDate, shippingDate,"
 				+ " logistics, orderstatus, totalPrice, staffName, m.comment, m.eBayAccount, m.payDate "
 				+ " FROM quickreach.orders_master as m inner join quickreach.orders_detail as d using (order_id)"
@@ -116,13 +120,14 @@ public class COrderFactory extends COrders {
 		String waitProcess = request.getParameter("waitProcess");
 		String processing = request.getParameter("processing");
 		String pickup = request.getParameter("pickup");
+		String shipped = request.getParameter("shipped");
 		String finished = request.getParameter("finished");
 		String refund = request.getParameter("refund");
 		String others = request.getParameter("oothers");
 		String deducted = request.getParameter("deducted");
 
-		if (!checkboxAreUnchecked(waitProcess, processing, pickup, finished, refund, others, deducted, null, null, null,
-				null)) {
+		if (!checkboxAreUnchecked(waitProcess, processing, pickup, shipped, finished, refund, others, deducted, null, null, null
+				)) {
 			strSql += " and ( orderStatus is null ";
 		} else {
 			strSql += " and ( '1' = '1' ";
@@ -136,6 +141,9 @@ public class COrderFactory extends COrders {
 		}
 		if (!isNullorEmpty(pickup)) {
 			strSql += " or orderStatus = '揀貨中' ";
+		}
+		if (!isNullorEmpty(shipped)) {
+			strSql += " or orderStatus = '已出貨' ";
 		}
 		if (!isNullorEmpty(finished)) {
 			strSql += " or orderStatus = '已完成' ";
@@ -282,7 +290,7 @@ public class COrderFactory extends COrders {
 
 			PreparedStatement ps2 = conn.prepareStatement(strSql2);
 			ps2.setString(1, rs.getString(1));
-			System.out.println(strSql2);
+			//System.out.println(strSql2);
 			ResultSet rs2 = ps2.executeQuery();
 			orderDetails = new LinkedList<>();
 			while(rs2.next()){
@@ -397,14 +405,14 @@ public class COrderFactory extends COrders {
 			orderInfo.COrderReciever.setCountry(rs.getString(19));
 			orderInfo.COrderReciever.setPostCode(rs.getString(20));
 
-			orderInfo.COrderDetail.setSKU(rs.getString(21));
-			orderInfo.COrderDetail.setProductName(rs.getString(22));
-			orderInfo.COrderDetail.setInvoiceName(rs.getString(23));
-			orderInfo.COrderDetail.setPrice(rs.getDouble(24));
-			orderInfo.COrderDetail.setInvoicePrice(rs.getDouble(25));
-			orderInfo.COrderDetail.setQty(rs.getInt(26));
-			orderInfo.COrderDetail.setWarehouse(rs.getString(27));
-			orderInfo.COrderDetail.setComment(rs.getString(28));
+			orderInfo.COrderDetailSingle.setSKU(rs.getString(21));
+			orderInfo.COrderDetailSingle.setProductName(rs.getString(22));
+			orderInfo.COrderDetailSingle.setInvoiceName(rs.getString(23));
+			orderInfo.COrderDetailSingle.setPrice(rs.getDouble(24));
+			orderInfo.COrderDetailSingle.setInvoicePrice(rs.getDouble(25));
+			orderInfo.COrderDetailSingle.setQty(rs.getInt(26));
+			orderInfo.COrderDetailSingle.setWarehouse(rs.getString(27));
+			orderInfo.COrderDetailSingle.setComment(rs.getString(28));
 		}
 
 		return orderInfo;
