@@ -11,9 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 public class CStockFactory extends CStock {
 	public CStockFactory() {
 	}
-	public LinkedList<CStock> searchDetailStock(String sku, Connection conn) throws SQLException {
+	public LinkedList<CStock> searchDetailStock(String sku,Connection conn) throws SQLException {
 
-		String strsql = "select warehouse,warehousePosition1,warehousePosition2,qty,3,qty-3,purchaseDate,comment from QuickReach.storage where sku = ? ";
+	String strsql = "select warehouse,warehousePosition1,warehousePosition2,qty,3,qty-3,purchaseDate,comment from QuickReach.storage where sku = ? ";
+	//	String strsql = "select warehouse,warehousePosition,qty,3,qty-3,purchaseDate,comment from QuickReach.storage where sku = ? ";
 		PreparedStatement ps = null;
 
 		ps = conn.prepareStatement(strsql);
@@ -40,7 +41,36 @@ public class CStockFactory extends CStock {
 		return stockmaster;
 
 	}
+	public LinkedList<CStock> searchDetailStock2(String sku,Connection conn) throws SQLException {
 
+		String strsql = "select warehouse,warehousePosition1,warehousePosition2,qty,3,qty-3,purchaseDate,comment from QuickReach.storage where sku = ? ";
+		//	String strsql = "select warehouse,warehousePosition,qty,3,qty-3,purchaseDate,comment from QuickReach.storage where sku = ? ";
+			PreparedStatement ps = null;
+
+			ps = conn.prepareStatement(strsql);
+
+			ps.setString(1, sku);
+
+			ResultSet rs = ps.executeQuery();
+
+			LinkedList<CStock> stockmaster = new LinkedList<>();
+			CStock stockDetail = new CStock();
+
+			while (rs.next()) {
+				stockDetail = new CStock();
+				stockDetail.setWareHouse(rs.getString(1)); // warehouse
+				stockDetail.setPosition1(rs.getString(2)); // warehousePosition
+				stockDetail.setPosition2(rs.getString(3)); // warehousePosition
+				stockDetail.setQty(rs.getInt(4)); // qty
+				stockDetail.setQtysold(rs.getInt(5)); // sould be 待處理庫存
+				stockDetail.setQtyremain(rs.getInt(6)); // qty
+				stockDetail.setLastpurchasedate(rs.getDate(7)); // purchasedate
+				stockDetail.setComment(rs.getString(8)); // comment
+				stockmaster.add(stockDetail);
+			}
+			return stockmaster;
+
+		}
 	public LinkedList<CStock> searchStorage(HttpServletRequest request, Connection conn) throws SQLException {
 		String strsql = " select distinct sku,brand,subbrand,p_name,spec,color from QuickReach.product inner join QuickReach.storage using (sku) where '1' = '1' ";
 		int param = 1;
@@ -70,10 +100,10 @@ public class CStockFactory extends CStock {
 		if (!isNullorEmpty(request.getParameter("date2"))) {
 			strsql += " and createDate  <= ? ";
 		}
-		if (!isNullorEmpty(request.getParameter("location1")) && !isNullorEmpty(request.getParameter("location2"))) {
-			strsql += " and warehouseposition  <= ? ";
-			strsql += " and warehouseposition  >= ? ";
-		}
+//		if (!isNullorEmpty(request.getParameter("location1")) && !isNullorEmpty(request.getParameter("location2"))) {
+//			strsql += " and warehouseposition  <= ? ";
+//			strsql += " and warehouseposition  >= ? ";
+//		}
 		System.out.println(strsql);
 		ps = conn.prepareStatement(strsql);
 		if (!isNullorEmpty(request.getParameter("pname"))) {
@@ -109,12 +139,12 @@ public class CStockFactory extends CStock {
 			ps.setString(param, request.getParameter("date2"));
 			param++;
 		}
-		if (!isNullorEmpty(request.getParameter("location1")) && !isNullorEmpty(request.getParameter("location2"))) {
-			ps.setString(param, request.getParameter("location1"));
-			param++;
-			ps.setString(param, request.getParameter("location2"));
-			param++;
-		}
+//		if (!isNullorEmpty(request.getParameter("location1")) && !isNullorEmpty(request.getParameter("location2"))) {
+//			ps.setString(param, request.getParameter("location1"));
+//			param++;
+//			ps.setString(param, request.getParameter("location2"));
+//			param++;
+//		}
 		ResultSet rs = ps.executeQuery();
 		LinkedList<CStock> storageall = new LinkedList<CStock>();
 		CStock storage = new CStock();
