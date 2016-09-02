@@ -109,7 +109,7 @@ conn.close();
           <th>倉別</th>
           <th>儲位</th>
           <th>庫存數量</th>
-          <th>代處理量</th>
+          <th>待處理量</th>
           <th>餘額</th>
           <th>進貨日期</th>
           <th>備註</th>
@@ -119,7 +119,7 @@ conn.close();
       <tbody>
         <tr>
           <td>${i.getWareHouse()}</td>
-          <td>${i.getPosition()}</td>
+          <td>${i.getPosition1()}-${i.getPosition2()}</td>
           <td>${i.getQty()}</td>
           <td>${i.getQtysold()}</td>
           <td>${i.getQty()-i.getQtysold()}</td>
