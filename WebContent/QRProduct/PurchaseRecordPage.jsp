@@ -41,13 +41,14 @@
 		String owner = request.getParameter("owner");
 		String wareHouse = request.getParameter("wareHouse");
 
-		String warehousePosition = request.getParameter("warehousePosition");
+		String warehousePositionOne = request.getParameter("warehousePositionOne");
+		String warehousePositionTwo = request.getParameter("warehousePositionTwo");
 		String qty = request.getParameter("qty");
 		String price = request.getParameter("price");
 
 		Connection conn = new DataBaseConn().getConn();
 		LinkedList<LinkedList<String>> allList = searchDetail.searchPurchase(conn, purchaseRecord,outRecord , date, pname, sku, companyName,
-				owner, wareHouse, warehousePosition, qty, price);
+				owner, wareHouse, warehousePositionOne,warehousePositionTwo, qty, price);
 
 		request.setAttribute("logList", allList);
 	%>
@@ -170,7 +171,7 @@
 
 									<c:forEach var="i" begin="0" step="1" items="${companyList}">
 
-										<option value="${i.get(0)}">${i.get(0)}</option>
+										<option value="${i.get(1)}">${i.get(1)}</option>
 
 									</c:forEach>
 
@@ -220,18 +221,19 @@
 				</div>
 
 				<div class="row">
-					<div class="col-md-4 form-group ">
+					<div class="col-md-8 form-group ">
 						<div class="row">
-							<div class="col-md-4">
+							<div class="col-md-2">
 								<h5>
 									<label for="focusedInput ">櫃位：</label>
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" name="warehousePosition" type="text">
+								<input class="form-control" id="warehousePositionOne" name="warehousePositionOne" type="text">-<input class="form-control" id="warehousePositionTwo" name="warehousePositionTwo" type="text">
 							</div>
 						</div>
 					</div>
+					
 					<div class="col-md-4 form-group ">
 						<div class="row">
 							<div class="col-md-4">
@@ -244,7 +246,11 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-4 form-group ">
+					
+				</div>
+				
+				<div class="row">
+				<div class="col-md-4 form-group ">
 						<div class="row">
 							<div class="col-md-4">
 								<h5>
@@ -277,14 +283,17 @@
 				style="margin: 0 0 0 -15px">
 				<tr class="ListTitle" style="background-color: #A65758; color: #fff">
 					<th>項目</th>
+					<th>種類</th>
 					<th>單號</th>
 					<th>SKU</th>
 					<th>品名</th>
+					
 					<th>規格</th>
 					<th>顏色</th>
 					<th>數量</th>
 					<th>成本</th>
 					<th>倉別</th>
+					
 					<th>櫃位</th>
 					<th>日期</th>
 					<th>廠商</th>
@@ -311,7 +320,7 @@
 
 
 						<tr style="background-color: #9DDCD1">
-							<td colspan="12"><c:out value="${i.get(12)}"></c:out></td>
+							<td colspan="13"><c:out value="${i.get(13)}"></c:out></td>
 						</tr>
 					</c:if>
 					<c:if test="${nu.count%2 !=0}">
@@ -319,9 +328,8 @@
 						<tr style="background-color: #D4F4D8">
 							<td rowspan="2" style="vertical-align: middle"><c:out
 									value="${nu.count}"></c:out></td>
-									
 
-							<c:forEach var="j" begin="0" end="11" step="1">
+							<c:forEach var="j" begin="0" end="12" step="1">
 								<td><c:out value="${i.get(j)}"></c:out></td>
 
 							</c:forEach>
@@ -329,7 +337,7 @@
 
 
 						<tr style="background-color: #D4F4D8">
-							<td colspan="12"><c:out value="${i.get(12)}"></c:out></td>
+							<td colspan="13"><c:out value="${i.get(13)}"></c:out></td>
 						</tr>
 					</c:if>
 				</c:forEach>

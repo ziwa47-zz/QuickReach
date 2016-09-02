@@ -27,6 +27,8 @@ var skuName;
 var setValueId;
 var realPurchaseId;
 
+var dynamicId = 2;
+
 function alertPurchaseId(){
 	warehouseChange();
 	//alert(realPurchaseId);
@@ -90,6 +92,18 @@ function test() {
      
 
 	$(function() {		
+				
+// 		 var data = ['B03EA50000002BU','B03EA50000002GY','B03EA50000003BL','B22SMR0000008WB','B23XFU0000004ZZ'];  
+// 		 $("#sku1").autocomplete({
+// 			 source:data
+			 
+			 
+// 		 });  
+// 		 $("#sku"+dynamicId).autocomplete({
+// 			 source:data
+			 
+// 		 });  
+		 
 		
 		//日期選擇器  
 		$("input[name=date]").datepicker({
@@ -100,7 +114,7 @@ function test() {
 
 	});
 
-	var dynamicId = 2;
+
 	//dynamic remove
 	function cleanFirstItem() {
 		$("#dynamic1 input").val(""), $("#firstItemClean").val("清空");
@@ -489,12 +503,15 @@ function test() {
                 </div>
             
             <div class="row">
-            	<div class="col-md-4 form-group ">
+            	<div class="col-md-8 form-group ">
                   <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >櫃位：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" id="warehousePosition1" name="warehousePosition1" type="text"></div>
+                    <div class="col-md-2"><h5><label for="focusedInput " >櫃位：</label></h5></div>
+                    <div class="col-md-8"><input class="form-control" id="warehousePositionOne" name="warehousePositionOne" type="text">-<input class="form-control" id="warehousePositionTwo" name="warehousePositionTwo" type="text"></div>
                   </div>
                 </div>
+                
+             
+                
                 
                 <div class="col-md-4 form-group ">
                   <div class="row">
