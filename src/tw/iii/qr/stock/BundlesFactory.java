@@ -15,7 +15,7 @@ public class BundlesFactory {
 	LinkedList<CProduct> lcp;
 	private Statement state;
 	public String[] bundles ;
-	LinkedList<String[]> bundlesList = new LinkedList<String[]>();
+	public LinkedList<String[]> bundlesList = new LinkedList<String[]>();
 	
 	public void setBundles(String SKU,String P_name,String qty) {
 		//bundles=new String[]{brand,subBrand,SKU,P_name,qty};
@@ -240,7 +240,7 @@ public class BundlesFactory {
 								
 	}
 	
-	public LinkedList<String[]> showBundlesDetail(String bdsku) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+	public void showBundlesDetail(String bdsku) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
 		
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
@@ -261,7 +261,20 @@ public class BundlesFactory {
 		rs.close();
 		state.close();
 		dbc.connclose(conn);
-		return bundlesList;
+//		return bundlesList;
+	}
+	
+	public void bundlesDelete(String sku) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+		
+		DataBaseConn dbc = new DataBaseConn();		
+		Connection conn = dbc.getConn() ;
+		state = conn.createStatement();
+		
+		String sqlstr = "";
+		
+		state.executeUpdate(sqlstr);
+		state.close();
+		dbc.connclose(conn);
 	}
 	
 }

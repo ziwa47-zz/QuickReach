@@ -20,40 +20,64 @@ public class bundlesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	BundlesFactory bdf = new BundlesFactory();
-	
+	LinkedList<String[]> getBundlesDetail = bdf.bundlesList ;
+	HttpSession session;
 
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//processBundlesAdd(request,response);
+	//	processBundlesAdd(request,response);
+		request.setCharacterEncoding("UTF-8");
+		String submit = request.getParameter("smt");
+		
+		if (submit.equals("add")){
+			processDetailAdd(request,response);
+		}else{
 		processShowBundlesDetail(request,response);
+		}
+		getBundlesDetail = bdf.bundlesList ;
+		session.setAttribute("getBundlesDetail", getBundlesDetail );
 	}
 
 	private void processShowBundlesDetail(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		request.setCharacterEncoding("UTF-8");
-		HttpSession session = request.getSession();
-		String bdsku = request.getParameter("detailSKU");
-		LinkedList<String[]> getBundlesDetail = new LinkedList<String[]>();
+		session = request.getSession();
+		String sku = request.getParameter("smt");
+		String bdsku = request.getParameter(sku+"sku");
+		String bdName = request.getParameter(sku+"name");
+		String bdComment = request.getParameter(sku+"comment");
+//		System.out.print(bdsku);
+//		System.out.print(bdName);
+//		System.out.print(bdComment);
 		
 		try {
-			getBundlesDetail = bdf.showBundlesDetail(bdsku);
+			
+			bdf.showBundlesDetail(bdsku);
+			//getBundlesDetail = bdf.bundlesList;
+	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		session.setAttribute("bdsku", bdsku );
-		session.setAttribute("getBundlesDetail", getBundlesDetail );
+		session.setAttribute("bdName", bdName );
+		session.setAttribute("bdComment", bdComment );
+		
+		//session.setAttribute("getBundlesDetail", getBundlesDetail );
 		response.sendRedirect("BundlesDetail.jsp");
 	}
 	
 	private void processDetailAdd(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		//新增子商品
 		request.setCharacterEncoding("UTF-8");
-	
+		String submit = request.getParameter("smt");
 		String dSKU = request.getParameter("productSKU");
 		String dPName = request.getParameter("P_name");
 		String dQty = request.getParameter("qty");
 		
 		bdf.setBundles(dSKU,dPName,dQty);
-		
+		bdf.processBundles(submit);
+		session.setAttribute("getBundlesDetail", bdf.bundlesList );
+		response.sendRedirect("BundlesDetail.jsp");
 	}	
 
 	private void processBundlesAdd(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -78,8 +102,8 @@ public class bundlesServlet extends HttpServlet {
 		
 	}
 	
-	private void processBundlesUpdate(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		//更新複合商品
+	private void processBundlesDDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
 		
 		
 	

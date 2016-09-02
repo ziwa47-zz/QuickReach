@@ -32,7 +32,7 @@
     <script src="js/jquery.ui.datepicker-zh-TW.js"></script>
     <script type="text/javascript">
     function getSelect(){
-    	listForm.action = "ProductAddPage.jsp"
+    	listForm.action = "BundlesDetail.jsp"
 	    listForm.submit()
 	    	
     }
@@ -41,19 +41,19 @@
 	    document.getElementById('subBrand').value='select';
     	document.getElementById('productSKU').value='select';
     	document.getElementById('P_name').value='select';
-    	listForm.action = "ProductAddPage.jsp"
+    	listForm.action = "BundlesDetail.jsp"
 	    listForm.submit()	    	
 	}
     
     function getSelectPname(){
     	document.getElementById('productSKU').value='select';
-    	listForm.action = "ProductAddPage.jsp"
+    	listForm.action = "BundlesDetail.jsp"
     	listForm.submit()	    	    	    	
 	}
     
     function getSelectPSKU(){
     	document.getElementById('P_name').value='select';
-    	listForm.action = "ProductAddPage.jsp"
+    	listForm.action = "BundlesDetail.jsp"
     	listForm.submit()	    	    	    	
 	}
     
@@ -92,7 +92,7 @@
         </div>
   
   <div class="container table-responsive bg-warning" style="background: #9DDCD1; border-radius:20px">
-  	<form id="listForm" name="listForm" method="post" action="bundlesAdd.do" style="font-size: 100%; vertical-align: baseline; 
+  	<form id="listForm" name="listForm" method="post" action="bundles.do" style="font-size: 100%; vertical-align: baseline; 
     padding: 15px; " class="form-inline container">
 
 <%
@@ -138,13 +138,13 @@ request.setAttribute("listSKU",listSKU);
 		  <div class="col-md-8 form-group ">
             <div class="row">
               <div class="col-md-2"><h5><label for="focusedInput " >商品名稱：</label></h5></div>
-              <div class="col-md-10"><input class="form-control" name="bdname" type="text" value="${param.bdname }"></div>
+              <div class="col-md-10"><input class="form-control" name="bdname" type="text" value="${bdName}"></div>
             </div>
           </div>
 		  <div class="col-md-8 form-group ">
             <div class="row">
               <div class="col-md-2"><h5><label for="focusedInput " >備註：</label></h5></div>
-              <div class="col-md-8"><textarea rows="2"  class="form-control" name="comment" >${param.comment }</textarea></div>
+              <div class="col-md-8"><textarea rows="2"  class="form-control" name="comment" >${bdComment}</textarea></div>
             </div>
           </div>
 		</div>
@@ -245,7 +245,7 @@ request.setAttribute("listSKU",listSKU);
               
             </tr> 
             <tr>
-            	<td ><button type="submit" name="smt" value="add" onclick="getSelect()">加入</button></td>
+            	<td ><button type="submit" name="smt" value="add" >加入</button></td>
             </tr>           
           </tbody>
         </table>
@@ -267,12 +267,12 @@ request.setAttribute("listSKU",listSKU);
 				<td>${i[0]}</td>
 				<td>${i[1]}</td>
 				<td>${i[2]}</td>
-				<td><button type="submit" name="delete" value="${i[0]}" onclick="getSelect()">刪除</button></td>
+				<td><button type="submit" name="smt" value="${i[0]}" onclick="getSelect()">刪除</button></td>
 			</tr>
 		</c:forEach>    
 	</table>	
 </div>
-	<center><button type="submit" name="last" value="insert" onclick="getSelect()">送出</button></center>
+	<center><button type="submit" name="smt" value="update" >修改</button></center>
 </form>
 
     
