@@ -36,12 +36,15 @@ public class DayliBalanceSheetFactory extends COrders {
 		response.setContentType("text/html;charset=UTF-8");
 		conn = new DataBaseConn().getConn();
 
-		String strSql = "select a.orderDate, a.order_id,b.SKU, b.productName,c.tel1, a.shippingFees,"
-				+ " a.packageFees, a.comment,b.owner, a.totalWeight,a.ebayNO,a.ebayItemNO, b.qty, a.eBayAccount,c.country, a.currency,"
-				+ " a.ebayprice,a.ebayTotal, a.payDate, a.paypalmentId, a.paypalTotal,a.paypalFees,"
-				+ " a.paypalNet, b.price, a.shippingDate, a.ebayFees"
-				+ " FROM quickreach.orders_master as a inner join quickreach.orders_detail as b inner join quickreach.orders_guestinfo as c "
-				+ " where a.order_id=b.order_id and b.order_id=c.order_id and a.orderstatus = '待處理'";
+		String strSql = "select m.orderDate, m.QR_id, r.tel1, m.shippingFees,"
+				+ " m.packageFees, m.comment, m.totalWeight,m.ebayNO,m.ebayItemNO, m.eBayAccount,r.country, m.currency,"
+				+ " m.ebayprice,m.ebayTotal, m.payDate, m.paypalmentId, m.paypalTotal,m.paypalFees,"
+				+ " m.paypalNet, m.shippingDate, m.ebayFees, m.order_id,"
+				+ " d.sku, d.productName, d.qty, d.owner, d.price"
+				+ " FROM quickreach.orders_master as m inner join"
+				+ " quickreach.order_recieverinfo as r using (QR_id) inner join"
+				+ " quickreach.orders_detail as d using (QR_id)"
+				+ " where m.orderstatus = '待處理' order by m.QR_id";
 
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ResultSet rs = ps.executeQuery();
@@ -49,16 +52,15 @@ public class DayliBalanceSheetFactory extends COrders {
 		LinkedList<COrderDetail> orderDetails = new LinkedList<COrderDetail>();
 		COrders order = new COrders();
 		while (rs.next()) {
-			System.out.println("ya");
 			order = new COrders();
 			order.COrderMaster.setOrderDate(rs.getDate(1));
-			order.COrderMaster.setOrder_id(rs.getString(2));
-			String strSql2 = "SELECT SKU, productName, owner, qty"
+			order.COrderMaster.setQR_id(rs.getString(2));
+			String strSql2 = "SELECT SKU, productName, owner, qty, price"
 					+ " FROM quickreach.orders_detail"
-					+ " where order_id = ?";
+					+ " where QR_id = ?";
 
 			PreparedStatement ps2 = conn.prepareStatement(strSql2);
-			ps2.setString(1, rs.getString(1));
+			ps2.setString(1, rs.getString(2));
 			System.out.println(strSql2);
 			ResultSet rs2 = ps2.executeQuery();
 			orderDetails = new LinkedList<>();
@@ -66,32 +68,42 @@ public class DayliBalanceSheetFactory extends COrders {
 				COrderDetail COrderDetail = new COrderDetail();
 				COrderDetail.setSKU(rs2.getString(1));
 				COrderDetail.setProductName(rs2.getString(2));
+				COrderDetail.setOwner(rs2.getString(3));
+				COrderDetail.setQty(rs2.getInt(4));
+				COrderDetail.setPrice(rs.getDouble(5));
 				orderDetails.add(COrderDetail);
 			}
 			order.setCOrderDetail(orderDetails);
-			order.COrderGuestInfo.setTel1(rs.getString(5));
-			order.COrderMaster.setShippingFees(rs.getDouble(6));
-			order.COrderMaster.setPackageFees(rs.getDouble(7));
-			order.COrderMaster.setComment(rs.getString(8));
+			order.COrderGuestInfo.setTel1(rs.getString(3));
+			order.COrderMaster.setShippingFees(rs.getDouble(4));
+			order.COrderMaster.setPackageFees(rs.getDouble(5));
+			order.COrderMaster.setComment(rs.getString(6));
 			//order.COrderDetail.setOwner(rs.getString(9));
-			order.COrderMaster.setTotalWeight(rs.getDouble(10));
-			order.COrderMaster.setEbayNO(rs.getString(11));
-			order.COrderMaster.setEbayItemNO(rs.getString(12));
+			order.COrderMaster.setTotalWeight(rs.getDouble(7));
+			order.COrderMaster.setEbayNO(rs.getString(8));
+			order.COrderMaster.setEbayItemNO(rs.getString(9));
 			//order.COrderDetail.setQty(rs.getInt(13));
 
-			order.COrderMaster.setEbayAccount(rs.getString(14));
-			order.COrderGuestInfo.setCountry(rs.getString(15));
-			order.COrderMaster.setCurrency(rs.getString(16));
-			order.COrderMaster.setEbayPrice(rs.getDouble(17));
-			order.COrderMaster.setEbayTotal(rs.getDouble(18));
-			order.COrderMaster.setPayDate(rs.getDate(19));
-			order.COrderMaster.setPaypalmentId(rs.getString(20));
-			order.COrderMaster.setPaypalTotal(rs.getDouble(21));
-			order.COrderMaster.setPaypalFees(rs.getDouble(22));
-			order.COrderMaster.setPaypalNet(rs.getDouble(23));
+			order.COrderMaster.setEbayAccount(rs.getString(10));
+			order.COrderGuestInfo.setCountry(rs.getString(11));
+			order.COrderMaster.setCurrency(rs.getString(12));
+			order.COrderMaster.setEbayPrice(rs.getDouble(13));
+			order.COrderMaster.setEbayTotal(rs.getDouble(14));
+			order.COrderMaster.setPayDate(rs.getDate(15));
+			order.COrderMaster.setPaypalmentId(rs.getString(16));
+			order.COrderMaster.setPaypalTotal(rs.getDouble(17));
+			order.COrderMaster.setPaypalFees(rs.getDouble(18));
+			order.COrderMaster.setPaypalNet(rs.getDouble(19));
 			//order.COrderDetail.setPrice(rs.getDouble(24));
-			order.COrderMaster.setShippingDate(rs.getDate(25));
-			order.COrderMaster.setEbayFees(rs.getDouble(26));
+			order.COrderMaster.setShippingDate(rs.getDate(20));
+			order.COrderMaster.setEbayFees(rs.getDouble(21));
+			order.COrderMaster.setOrder_id(rs.getString(22));
+			
+			order.COrderDetailSingle.setSKU(rs.getString(23));
+			order.COrderDetailSingle.setProductName(rs.getString(24));
+			order.COrderDetailSingle.setQty(rs.getInt(25));
+			order.COrderDetailSingle.setOwner(rs.getString(26));
+			order.COrderDetailSingle.setPrice(rs.getDouble(27));
 
 			System.out.println(order);
 			orderList.add(order);

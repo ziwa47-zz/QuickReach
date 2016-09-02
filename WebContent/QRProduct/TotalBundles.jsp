@@ -86,10 +86,10 @@ request.setAttribute("list",list);
 			</tr>
 			<c:forEach var="i" varStatus="check" items="${list}" begin="0" step="1">
 	    		<tr>
-	    			<td>${i.getSKU()}</td>
-	    			<td>${i.getP_name() }</td>
-	    			<td>${i.getComment()}</td>
-	    			<td><button value="${i.getSKU()}" type="submit" name="detailSKU" onclick="">查看</button></td>
+	    			<td><input type="hidden" name="${i.getSKU()}${'sku'}" value="${i.getSKU()}">${i.getSKU()}</td>
+	    			<td><input type="hidden" name="${i.getSKU()}${'name'}" value="${i.getP_name()}">${i.getP_name()}</td>
+	    			<td><input type="hidden" name="${i.getSKU()}${'comment'}" value="${i.getComment()}">${i.getComment()}</td>
+	    			<td><button value="${i.getSKU()}" type="submit" name="smt" onclick="">查看</button></td>
 	 			</tr>   	
     		</c:forEach> 
     	</table>
@@ -97,7 +97,7 @@ request.setAttribute("list",list);
     </form>
 </div>
 </body>
-  
+  <label></label>
 <%@ include file="/href/footer.jsp" %>    
  
 </html>
