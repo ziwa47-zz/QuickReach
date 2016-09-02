@@ -13,7 +13,7 @@ public class CStockFactory extends CStock {
 	}
 	public LinkedList<CStock> searchDetailStock(String sku, Connection conn) throws SQLException {
 
-		String strsql = "select warehouse,warehousePosition,qty,3,qty-3,purchaseDate,comment from QuickReach.storage where sku = ? ";
+		String strsql = "select warehouse,warehousePosition1,warehousePosition2,qty,3,qty-3,purchaseDate,comment from QuickReach.storage where sku = ? ";
 		PreparedStatement ps = null;
 
 		ps = conn.prepareStatement(strsql);
@@ -28,12 +28,13 @@ public class CStockFactory extends CStock {
 		while (rs.next()) {
 			stockDetail = new CStock();
 			stockDetail.setWareHouse(rs.getString(1)); // warehouse
-			stockDetail.setPosition(rs.getString(2)); // warehousePosition
-			stockDetail.setQty(rs.getInt(3)); // qty
-			stockDetail.setQtysold(rs.getInt(4)); // sould be 待處理庫存
-			stockDetail.setQtyremain(rs.getInt(5)); // qty
-			stockDetail.setLastpurchasedate(rs.getDate(6)); // purchasedate
-			stockDetail.setComment(rs.getString(7)); // comment
+			stockDetail.setPosition1(rs.getString(2)); // warehousePosition
+			stockDetail.setPosition2(rs.getString(3)); // warehousePosition
+			stockDetail.setQty(rs.getInt(4)); // qty
+			stockDetail.setQtysold(rs.getInt(5)); // sould be 待處理庫存
+			stockDetail.setQtyremain(rs.getInt(6)); // qty
+			stockDetail.setLastpurchasedate(rs.getDate(7)); // purchasedate
+			stockDetail.setComment(rs.getString(8)); // comment
 			stockmaster.add(stockDetail);
 		}
 		return stockmaster;
