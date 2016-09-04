@@ -81,6 +81,7 @@
 					<li class="" style="background-color: #1CAF9A"><a
 						href="ProductAddPage.jsp" style="color: #fff">新增複合商品</a></li>
 					<li><a href="ProductEditPage.jsp" style="color: #000000">修改商品</a></li>
+					<li><a href="TotalBundles.jsp" style="color: #000000">查詢複合商品</a></li>
 				</ul>
 			</div>
 		</div>

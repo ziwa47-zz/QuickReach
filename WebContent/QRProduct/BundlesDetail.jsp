@@ -75,8 +75,9 @@
    	  <div class="nav" style="background-color:#1CAF9A;" >
         	<ul class="nav nav-tabs">
               <li ><a href="SearchProductPage.jsp" style="color:#000">查詢商品</a></li>
-              <li class="" style="background-color:#1CAF9A"><a href="ProductAddPage.jsp" style="color:#fff">新增複合商品</a></li>
-              <li><a href="ProductEditPage.jsp" style="color:#000000">修改商品</a></li>
+              <li ><a href="ProductAddPage.jsp" style="color:#000">新增複合商品</a></li>
+              <li ><a href="ProductEditPage.jsp" style="color:#000000">修改商品</a></li>
+              <li class="" style="background-color:#1CAF9A"><a href="TotalBundles.jsp" style="color:#fff">查詢複合商品</a></li>
             </ul>
         </div>
     </div>
@@ -87,7 +88,8 @@
     <ol class="breadcrumb" >
           <li><a href="../QRMain/HomePage.jsp" >首頁</a></li>
           <li class="active" style="display:"><a href="SearchProductPage.jsp">庫存/商品管理</a></li>
-          <li><a href="ProductAddPage.jsp">新增複合商品</a></li>
+          <li><a href="TotalBundles.jsp">查詢複合商品</a></li>
+          <li><a href="TotalBundles.jsp">修改複合商品</a></li>
       </ol>
         </div>
   
@@ -267,7 +269,7 @@ request.setAttribute("listSKU",listSKU);
 				<td>${i[0]}</td>
 				<td>${i[1]}</td>
 				<td>${i[2]}</td>
-				<td><button type="submit" name="smt" value="${i[0]}" onclick="getSelect()">刪除</button></td>
+				<td><button type="submit" name="smt" value="${i[0]}" >刪除</button></td>
 			</tr>
 		</c:forEach>    
 	</table>	
