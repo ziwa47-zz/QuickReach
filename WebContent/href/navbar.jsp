@@ -24,6 +24,11 @@
 
     <script type="text/javascript">  
     $(function () {
+    	
+    	  $("input[name=date]").datepicker({
+  			dateFormat : 'yymmdd',
+  			showOn : "both",
+    	
         //日期選擇器
         $("input[name=date1]").datepicker();
         $("input[name=date2]").datepicker();

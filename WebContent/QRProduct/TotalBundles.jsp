@@ -30,9 +30,20 @@
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
     <script src="js/jquery.ui.datepicker-zh-TW.js"></script>
+  	<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.js"></script>
     <script type="text/javascript">
+    function reload(){
+    	
+    	location.reload();
+    	searchform.action="bundles.do";
+    	searchform.submit();
+    }
+   
+    
     
     </script>
+    
+    
     
   </head>
   <body>
@@ -68,10 +79,11 @@
         </div>
   
   <div class="container" style="background: #9DDCD1; border-radius:20px">
-  	<form name="searchform" method="post" action="bundles.do" style="font-size: 100%; vertical-align: baseline; 
+  	<form name="searchform" method="post" action="totalBundles.do" style="font-size: 100%; vertical-align: baseline; 
     padding: 15px; " class="form-inline container">
       <fieldset><legend>查詢複合商品</legend>
 <% 
+session.removeAttribute("getBundlesDetail");
 LinkedList<CProduct> list =  new LinkedList<CProduct>();
 list = blf.getTotalBundles();
 request.setAttribute("list",list);    
@@ -86,10 +98,10 @@ request.setAttribute("list",list);
 			</tr>
 			<c:forEach var="i" varStatus="check" items="${list}" begin="0" step="1">
 	    		<tr>
-	    			<td>${i.getSKU()}</td>
-	    			<td>${i.getP_name() }</td>
-	    			<td>${i.getComment()}</td>
-	    			<td><button value="${i.getSKU()}" type="submit" name="detailSKU" onclick="">查看</button></td>
+	    			<td><input type="hidden" name="${i.getSKU()}${'sku'}" value="${i.getSKU()}">${i.getSKU()}</td>
+	    			<td><input type="hidden" name="${i.getSKU()}${'name'}" value="${i.getP_name()}">${i.getP_name()}</td>
+	    			<td><input type="hidden" name="${i.getSKU()}${'comment'}" value="${i.getComment()}">${i.getComment()}</td>
+	    			<td><button value="${i.getSKU()}" type="submit" name="smt">查看</button></td>
 	 			</tr>   	
     		</c:forEach> 
     	</table>
@@ -97,7 +109,7 @@ request.setAttribute("list",list);
     </form>
 </div>
 </body>
-  
+  <label></label>
 <%@ include file="/href/footer.jsp" %>    
  
 </html>

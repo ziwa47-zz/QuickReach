@@ -16,7 +16,38 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" type="text/css"
+	href="../css/smoothness/jquery-ui.css">
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script src="../js/jquery-ui.min.js"></script>
+<script src="../js/jquery.ui.datepicker-zh-TW.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript">
+
+
+$(function() {		
+	
+	
+	jqueryAutoCompleteSKU();
+	
+	//var rowCount = $('#myTable tr').length;
+	//var rowCount = $("#myTable").attr('rows').length;
+	var rowCount = $('#myTable tr:last').index() ;
+	$("#myTable").prepend('<label class="text-success"><h2>共找到    '+ rowCount/2+' 筆資料</h2></label>');
+	
+	
+});
+
+function jqueryAutoCompleteSKU() {
+	
+	$("#sku").autocomplete({source:"../JQueryAutoCompleteSKUData",minLength:1});
+	
+	
+}
+
 	
 </script>
 <title>進貨紀錄</title>
@@ -32,7 +63,8 @@
 		 String purchaseRecord = request.getParameter("purchaseRecord");
 		  String outRecord = request.getParameter("outRecord");
 
-		String date = request.getParameter("date");
+		String date1 = request.getParameter("dateMin");
+		String date2= request.getParameter("dateMax");
 
 		String sku = request.getParameter("sku");
 		String pname = request.getParameter("pName");
@@ -41,15 +73,18 @@
 		String owner = request.getParameter("owner");
 		String wareHouse = request.getParameter("wareHouse");
 
-		String warehousePosition = request.getParameter("warehousePosition");
+		String warehousePositionOne = request.getParameter("warehousePositionOne");
+		String warehousePositionTwo = request.getParameter("warehousePositionTwo");
 		String qty = request.getParameter("qty");
 		String price = request.getParameter("price");
 
 		Connection conn = new DataBaseConn().getConn();
-		LinkedList<LinkedList<String>> allList = searchDetail.searchPurchase(conn, purchaseRecord,outRecord , date, pname, sku, companyName,
-				owner, wareHouse, warehousePosition, qty, price);
+		LinkedList<LinkedList<String>> allList = searchDetail.searchPurchase(conn, purchaseRecord,outRecord ,date1, date2, pname, sku, companyName,
+				owner, wareHouse, warehousePositionOne,warehousePositionTwo, qty, price);
+		
 
 		request.setAttribute("logList", allList);
+		
 	%>
 
 
@@ -97,14 +132,20 @@
 				<legend>進/出貨紀錄查詢</legend>
 				<input type="hidden">
 				
-				<div class="row">
-					<div class="col-md-12 form-group ">
+					<div class="row">
+					<div class="col-md-4 form-group ">
 						<div class="row">
-							<div class="col-md-10 form-group ">
-								<label for="usr">訂單狀態：</label> <label class="checkbox-inline"><input
-									type="checkbox" name="purchaseRecord" value="purchase">進貨紀錄</label>
-								<label class="checkbox-inline"><input type="checkbox"
-									name="outRecord" value="outRecord">出貨記錄</label>
+							
+							<div class="col-md-4">
+							<h5>
+								<label for="focusedInput">種類：</label> 
+							</h5>
+							</div>
+							<div class="col-md-8">
+								<label class="checkbox-inline" style="margin-top: 7 "><input
+									type="checkbox" name="purchaseRecord" value="purchase" >進貨紀錄</label>
+								<label class="checkbox-inline"  style="margin-top: 7"><input type="checkbox"
+									name="outRecord" value="outRecord" >出貨記錄</label>
 							</div>
 						</div>
 					</div>
@@ -121,7 +162,7 @@
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" type="text" name="date">
+								<input class="form-control" type="text" name="dateMin" style="width:89px" readonly> - <input class="form-control" type="text" style="width:89px" name="dateMax" readonly>
 							</div>
 						</div>
 					</div>
@@ -134,7 +175,7 @@
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" name="sku" type="text" value="">
+								<input class="form-control" name="sku" id="sku" type="text" value="">
 							</div>
 						</div>
 					</div>
@@ -219,44 +260,49 @@
 					</div>
 				</div>
 
-				<div class="row">
-					<div class="col-md-4 form-group ">
-						<div class="row">
-							<div class="col-md-4">
-								<h5>
-									<label for="focusedInput ">櫃位：</label>
-								</h5>
-							</div>
-							<div class="col-md-8">
-								<input class="form-control" name="warehousePosition" type="text">
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4 form-group ">
-						<div class="row">
-							<div class="col-md-4">
-								<h5>
-									<label for="focusedInput ">數量：</label>
-								</h5>
-							</div>
-							<div class="col-md-8">
-								<input class="form-control" name="qty" type="text">
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4 form-group ">
-						<div class="row">
-							<div class="col-md-4">
-								<h5>
-									<label for="focusedInput ">價格：</label>
-								</h5>
-							</div>
-							<div class="col-md-8">
-								<input class="form-control" name="price" type="text">
-							</div>
-						</div>
-					</div>
-				</div>
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-md-8 form-group "> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-md-2"> -->
+<!-- 								<h5> -->
+<!-- 									<label for="focusedInput ">櫃位：</label> -->
+<!-- 								</h5> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-8"> -->
+<!-- 								<input class="form-control" id="warehousePositionOne" name="warehousePositionOne" type="text">-<input class="form-control" id="warehousePositionTwo" name="warehousePositionTwo" type="text"> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+					
+<!-- 					<div class="col-md-4 form-group "> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-md-4"> -->
+<!-- 								<h5> -->
+<!-- 									<label for="focusedInput ">數量：</label> -->
+<!-- 								</h5> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-8"> -->
+<!-- 								<input class="form-control" name="qty" type="text"> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+					
+<!-- 				</div> -->
+				
+<!-- 				<div class="row"> -->
+<!-- 				<div class="col-md-4 form-group "> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-md-4"> -->
+<!-- 								<h5> -->
+<!-- 									<label for="focusedInput ">價格：</label> -->
+<!-- 								</h5> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-8"> -->
+<!-- 								<input class="form-control" name="price" type="text"> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
 
 
 				<br />
@@ -267,24 +313,30 @@
 		</form>
 	</div>
 	<hr />
-	<div class="container table-responsive bg-warning"
-		style="border-radius: 20px">
+	
+	<div class="container table-responsive bg-warning table-hover"
+		style="border-radius: 20px" id = "myTable">
 		<form name="searchform" method="post" action="#"
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
 			class="form-inline container">
+			
 			<table
 				class="table table-bordered table-hover table-condensed pull-left"
 				style="margin: 0 0 0 -15px">
+			
 				<tr class="ListTitle" style="background-color: #A65758; color: #fff">
 					<th>項目</th>
+					<th>種類</th>
 					<th>單號</th>
 					<th>SKU</th>
 					<th>品名</th>
+					
 					<th>規格</th>
 					<th>顏色</th>
 					<th>數量</th>
 					<th>成本</th>
 					<th>倉別</th>
+					
 					<th>櫃位</th>
 					<th>日期</th>
 					<th>廠商</th>
@@ -297,38 +349,38 @@
 				<c:forEach var="i" begin="0" step="1" items="${logList}"
 					varStatus="nu">
 
-					<c:if test="${nu.count%2==0}">
+					<c:if test="${i.get(0) eq '進貨'}">
 
-						<tr style="background-color: #9DDCD1">
+						<tr class="success" style="background-color: #9DDCD1">
 							<td rowspan="2" style="vertical-align: middle"><c:out
 									value="${nu.count}"></c:out></td>
 									
-							<c:forEach var="j" begin="0" end="11" step="1">
+							<c:forEach var="j" begin="0" end="12" step="1">
 								<td><c:out value="${i.get(j)}"></c:out></td>
 
 							</c:forEach>
 						</tr>
 
 
-						<tr style="background-color: #9DDCD1">
-							<td colspan="12"><c:out value="${i.get(11)}"></c:out></td>
+						<tr class="success" style="background-color: #9DDCD1">
+							<td colspan="13"><c:out value="${i.get(13)}"></c:out></td>
 						</tr>
 					</c:if>
-					<c:if test="${nu.count%2 !=0}">
+					<c:if test="${i.get(0) eq '出貨'}">
 
-						<tr style="background-color: #D4F4D8">
+						<tr class="warning" style="background-color: #D4F4D8">
 							<td rowspan="2" style="vertical-align: middle"><c:out
 									value="${nu.count}"></c:out></td>
 
-							<c:forEach var="j" begin="0" end="11" step="1">
+							<c:forEach var="j" begin="0" end="12" step="1">
 								<td><c:out value="${i.get(j)}"></c:out></td>
 
 							</c:forEach>
 						</tr>
 
 
-						<tr style="background-color: #D4F4D8">
-							<td colspan="12"><c:out value="${i.get(11)}"></c:out></td>
+						<tr class="warning" style="background-color: #D4F4D8">
+							<td colspan="13"><c:out value="${i.get(13)}"></c:out></td>
 						</tr>
 					</c:if>
 				</c:forEach>
