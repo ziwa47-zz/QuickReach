@@ -100,13 +100,15 @@ public class TestJdbcMvcServlet extends HttpServlet {
 			
 			preparedState.executeUpdate();
 			
-			
+		
 			
 			LinkedList<LinkedList<String>> Alllist = pcf.checkvalue(request);
+			
+			System.out.println("cccccccc:"+Integer.parseInt(Alllist.get(0).get(1).trim()));
 		//purchaseLog_Detail
 			for(int i = 0 ; i <Alllist.size() ; i++){
-				String sqlstr2 = "Insert Into purchaselog_detail(purchaseId,SKU,P_name,specification,color,qty,price,warehousePosition,comment,stockStatus,warehouse)"
-						+"Values(?,?,?,?,?,?,?,?,?,1,?)";
+				String sqlstr2 = "Insert Into purchaselog_detail(purchaseId,SKU,qty,price,warehousePosition1,warehousePosition2,comment,stockStatus,warehouse)"
+						+"Values(?,?,?,?,?,?,?,1,?)";
 				
 								
 				preparedState = conn.prepareStatement(sqlstr2);
@@ -128,7 +130,7 @@ public class TestJdbcMvcServlet extends HttpServlet {
 				
 				String sqlstr3 = "Update quickreach.storage set qty=qty+? where SKU=?";
 				preparedState = conn.prepareStatement(sqlstr3);
-				preparedState.setInt(1, Integer.parseInt(Alllist.get(i).get(4).trim()));
+				preparedState.setInt(1, Integer.parseInt(Alllist.get(i).get(1).trim()));
 				preparedState.setString(2, Alllist.get(i).get(0));			
 			
 				 preparedState.executeUpdate();
