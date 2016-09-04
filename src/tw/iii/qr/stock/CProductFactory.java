@@ -188,6 +188,7 @@ public class CProductFactory extends CProduct {
 		cp.setWeight(Double.valueOf(request.getParameter("weight")));
 		cp.setPackageMatrial(request.getParameter("package"));
 		cp.setVilumetricWeight(Double.valueOf(request.getParameter("vilu")));
+		
 		PreparedStatement ps = null;
 		System.out.print("rq"+request.getParameter("producttype"));
 		ps = conn.prepareStatement(strsql);
