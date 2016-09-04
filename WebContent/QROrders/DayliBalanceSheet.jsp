@@ -6,7 +6,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-	<jsp:useBean id="DBSF" class="tw.iii.qr.order.DayliBalanceSheetFactory2" scope="page" />
 	<jsp:useBean id="newd" class="tw.iii.qr.order.DayliBalanceSheetFactory"	scope="page" />
 <html lang="en">
 <head>

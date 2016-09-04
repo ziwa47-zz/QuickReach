@@ -1,4 +1,4 @@
-package tw.iii.qr;
+package tw.iii.autoInsertData;
 // Welcome1.java
 
 // A first program in Java
@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.Random;
 
+import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.order.COrderDetail;
 
 import java.util.Calendar;
