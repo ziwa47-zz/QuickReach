@@ -132,14 +132,20 @@ function jqueryAutoCompleteSKU() {
 				<legend>進/出貨紀錄查詢</legend>
 				<input type="hidden">
 				
-				<div class="row">
-					<div class="col-md-12 form-group ">
+					<div class="row">
+					<div class="col-md-4 form-group ">
 						<div class="row">
-							<div class="col-md-10 form-group ">
-								<label for="usr">訂單狀態：</label> <label class="checkbox-inline"><input
-									type="checkbox" name="purchaseRecord" value="purchase">進貨紀錄</label>
-								<label class="checkbox-inline"><input type="checkbox"
-									name="outRecord" value="outRecord">出貨記錄</label>
+							
+							<div class="col-md-4">
+							<h5>
+								<label for="focusedInput">種類：</label> 
+							</h5>
+							</div>
+							<div class="col-md-8">
+								<label class="checkbox-inline" style="margin-top: 7 "><input
+									type="checkbox" name="purchaseRecord" value="purchase" >進貨紀錄</label>
+								<label class="checkbox-inline"  style="margin-top: 7"><input type="checkbox"
+									name="outRecord" value="outRecord" >出貨記錄</label>
 							</div>
 						</div>
 					</div>
@@ -156,7 +162,7 @@ function jqueryAutoCompleteSKU() {
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" type="text" name="dateMin" readonly> - <input class="form-control" type="text" name="dateMax" readonly>
+								<input class="form-control" type="text" name="dateMin" style="width:89px" readonly> - <input class="form-control" type="text" style="width:89px" name="dateMax" readonly>
 							</div>
 						</div>
 					</div>
