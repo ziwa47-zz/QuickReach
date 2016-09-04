@@ -16,19 +16,48 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>進/出貨紀錄</title>
+
+<link rel="stylesheet" type="text/css"
+	href="../css/smoothness/jquery-ui.css">
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script src="../js/jquery-ui.min.js"></script>
+<script src="../js/jquery.ui.datepicker-zh-TW.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+ 
+<script type="text/javascript">
 
 
+$(function() {		
+	
+	
+	jqueryAutoCompleteSKU();
+	
+	
+});
 
+function jqueryAutoCompleteSKU() {
+	
+	$("#sku").autocomplete({source:"../JQueryAutoCompleteSKUData",minLength:1});
+	
+	
+}
+
+	
+</script>
+<title>進貨紀錄</title>
 </head>
 <body>
 	<%@ include file="../href/navbar.jsp"%>
-
 	<%
 		LinkedList<LinkedList<String>> warehouseList = searchDetail.warehouseSelectOption();
 		LinkedList<LinkedList<String>> companyList = searchDetail.companySelectOption();
 		request.setAttribute("warehouseList", warehouseList);
 		request.setAttribute("companyList", companyList);
+				
+		
 	%>
 
 
@@ -49,7 +78,7 @@
 					<li><a href="SearchStockPage.jsp" style="color: #000">查詢庫存</a></li>
 					<li><a href="PurchasePage.jsp" style="color: #000">進貨</a></li>
 					<li class="" style="background-color: #1CAF9A"><a
-						href="searchPurchase.jsp" style="color: #fff">進/出紀錄</a></li>
+						href="searchPurchase.jsp" style="color: #fff">進/出貨紀錄</a></li>
 					<li><a href="searchOutRecordPage.jsp" style="color: #000000">出貨紀錄</a></li>
 				</ul>
 			</div>
@@ -61,17 +90,15 @@
 			<li><a href="../QRMain/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchStockPage.jsp">庫存/商品管理</a></li>
-			<li><a href="searchPurchase.jsp">進/出紀錄</a></li>
+			<li><a href="searchPurchase.jsp">進/出貨紀錄</a></li>
 		</ol>
 	</div>
 
 
 
-
-
 	<div class="container"
 		style="background: #9DDCD1; border-radius: 20px;">
-		<form name="searchform" method="post" action="PurchaseRecordPage.jsp"
+		<form name="searchform" method="POST" action="PurchaseRecordPage.jsp"
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
 			class="form-inline container">
 			<fieldset>
@@ -91,6 +118,8 @@
 					</div>
 				</div>
 
+
+
 				<div class="row">
 					<div class="col-md-4 form-group ">
 						<div class="row">
@@ -100,7 +129,7 @@
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" type="text" name="date">
+								<input class="form-control" type="text" name="dateMin"> - <input class="form-control" type="text" name="dateMax">
 							</div>
 						</div>
 					</div>
@@ -113,7 +142,7 @@
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" name="sku" type="text" value="">
+								<input class="form-control" name="sku" id="sku" type="text" value="">
 							</div>
 						</div>
 					</div>
@@ -126,7 +155,7 @@
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" name="pName" type="text" value="">
+								<input class="form-control" name="pname" type="text" value="">
 							</div>
 						</div>
 					</div>
@@ -135,7 +164,6 @@
 				</div>
 
 				<div class="row">
-
 					<div class="col-md-4 form-group ">
 						<div class="row">
 							<div class="col-md-4">
@@ -146,9 +174,11 @@
 							<div class="col-md-8">
 								<select class="form-control" name="companyName" id="companyName">
 									<option value=""></option>
+
+
 									<c:forEach var="i" begin="0" step="1" items="${companyList}">
 
-										<option value="${i.get(0)}">${i.get(0)}</option>
+										<option value="${i.get(1)}">${i.get(1)}</option>
 
 									</c:forEach>
 
@@ -197,44 +227,50 @@
 					</div>
 				</div>
 
-				<div class="row">
-					<div class="col-md-4 form-group ">
-						<div class="row">
-							<div class="col-md-4">
-								<h5>
-									<label for="focusedInput ">櫃位：</label>
-								</h5>
-							</div>
-							<div class="col-md-8">
-								<input class="form-control" name="warehousePosition" type="text">
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4 form-group ">
-						<div class="row">
-							<div class="col-md-4">
-								<h5>
-									<label for="focusedInput ">數量：</label>
-								</h5>
-							</div>
-							<div class="col-md-8">
-								<input class="form-control" name="qty" type="text">
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4 form-group ">
-						<div class="row">
-							<div class="col-md-4">
-								<h5>
-									<label for="focusedInput ">價格：</label>
-								</h5>
-							</div>
-							<div class="col-md-8">
-								<input class="form-control" name="price" type="text">
-							</div>
-						</div>
-					</div>
-				</div>
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-md-8 form-group "> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-md-2"> -->
+<!-- 								<h5> -->
+<!-- 									<label for="focusedInput ">櫃位：</label> -->
+<!-- 								</h5> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-8"> -->
+<!-- 								<input class="form-control" id="warehousePositionOne" name="warehousePositionOne" type="text">-<input class="form-control" id="warehousePositionTwo" name="warehousePositionTwo" type="text"> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+					
+<!-- 					<div class="col-md-4 form-group "> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-md-4"> -->
+<!-- 								<h5> -->
+<!-- 									<label for="focusedInput ">數量：</label> -->
+<!-- 								</h5> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-8"> -->
+<!-- 								<input class="form-control" name="qty" type="text"> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+					
+<!-- 				</div> -->
+				
+<!-- 				<div class="row"> -->
+<!-- 				<div class="col-md-4 form-group "> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-md-4"> -->
+<!-- 								<h5> -->
+<!-- 									<label for="focusedInput ">價格：</label> -->
+<!-- 								</h5> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-8"> -->
+<!-- 								<input class="form-control" name="price" type="text"> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+
 
 				<br />
 				<div class="row text-center">
@@ -244,25 +280,29 @@
 		</form>
 	</div>
 	<hr />
-	<div></div>
+	
 	<div class="container table-responsive bg-warning"
 		style="border-radius: 20px">
 		<form name="searchform" method="post" action="#"
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
 			class="form-inline container">
-				<table
+			<table
 				class="table table-bordered table-hover table-condensed pull-left"
 				style="margin: 0 0 0 -15px">
+				<thead><c:out value="共找到   筆結果"></c:out></thead>
 				<tr class="ListTitle" style="background-color: #A65758; color: #fff">
 					<th>項目</th>
+					<th>種類</th>
 					<th>單號</th>
 					<th>SKU</th>
 					<th>品名</th>
+					
 					<th>規格</th>
 					<th>顏色</th>
 					<th>數量</th>
 					<th>成本</th>
 					<th>倉別</th>
+					
 					<th>櫃位</th>
 					<th>日期</th>
 					<th>廠商</th>
@@ -270,12 +310,51 @@
 
 
 				</tr>
-				
-				</table>
-			
-			
-			
-			</form>
+
+
+				<c:forEach var="i" begin="0" step="1" items="${logList}"
+					varStatus="nu">
+
+					<c:if test="${nu.count%2==0}">
+
+						<tr style="background-color: #9DDCD1">
+							<td rowspan="2" style="vertical-align: middle"><c:out
+									value="${nu.count}"></c:out></td>
+									
+							<c:forEach var="j" begin="0" end="12" step="1">
+								<td><c:out value="${i.get(j)}"></c:out></td>
+
+							</c:forEach>
+						</tr>
+
+
+						<tr style="background-color: #9DDCD1">
+							<td colspan="13"><c:out value="${i.get(13)}"></c:out></td>
+						</tr>
+					</c:if>
+					<c:if test="${nu.count%2 !=0}">
+
+						<tr style="background-color: #D4F4D8">
+							<td rowspan="2" style="vertical-align: middle"><c:out
+									value="${nu.count}"></c:out></td>
+
+							<c:forEach var="j" begin="0" end="12" step="1">
+								<td><c:out value="${i.get(j)}"></c:out></td>
+
+							</c:forEach>
+						</tr>
+
+
+						<tr style="background-color: #D4F4D8">
+							<td colspan="13"><c:out value="${i.get(13)}"></c:out></td>
+						</tr>
+					</c:if>
+				</c:forEach>
+
+			</table>
+
+
+		</form>
 	</div>
 </body>
 
