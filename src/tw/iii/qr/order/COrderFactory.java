@@ -32,8 +32,6 @@ public class COrderFactory extends COrders {
 
 	public boolean isNullorEmpty(String s) {
 
-		
-		
 		if (s == null || s.length() == 0)
 			return true;
 
@@ -56,13 +54,14 @@ public class COrderFactory extends COrders {
 
 		return false;
 	}
+
 	public LinkedList<COrders> orderProcessingPageSearch(HttpServletRequest request, Connection conn)
 			throws SQLException {
-		
+
 		String strSql = "SELECT distinct m.order_id, platform, m.guestAccount, orderDate, shippingDate,"
-				+ " logistics, orderstatus, totalPrice, staffName, m.comment, m.eBayAccount, m.payDate "
-				+ " FROM quickreach.orders_master as m inner join quickreach.orders_detail as d using (order_id)"
-				+ " inner join quickreach.orders_guestinfo as g using (order_id)" + " where '1' = '1' ";
+				+ " logistics, orderstatus, totalPrice, staffName, m.comment, m.eBayAccount, m.payDate," + " QR_id "
+				+ " FROM quickreach.orders_master as m inner join quickreach.orders_detail as d using (QR_id)"
+				+ " inner join quickreach.orders_guestinfo as g using (QR_id)" + " where '1' = '1' ";
 
 		String eBayAccount = request.getParameter("eBayAccount");
 		if (!isNullorEmpty(eBayAccount)) {
@@ -78,7 +77,7 @@ public class COrderFactory extends COrders {
 		}
 		String QR_id = request.getParameter("QR_id");
 		if (!isNullorEmpty(QR_id)) {
-			strSql += " and QR_id like ? ";	
+			strSql += " and QR_id like ? ";
 		}
 		String guestAccount = request.getParameter("guestAccount");
 		if (!isNullorEmpty(guestAccount)) {
@@ -126,8 +125,8 @@ public class COrderFactory extends COrders {
 		String others = request.getParameter("oothers");
 		String deducted = request.getParameter("deducted");
 
-		if (!checkboxAreUnchecked(waitProcess, processing, pickup, shipped, finished, refund, others, deducted, null, null, null
-				)) {
+		if (!checkboxAreUnchecked(waitProcess, processing, pickup, shipped, finished, refund, others, deducted, null,
+				null, null)) {
 			strSql += " and ( orderStatus is null ";
 		} else {
 			strSql += " and ( '1' = '1' ";
@@ -284,27 +283,26 @@ public class COrderFactory extends COrders {
 			order.COrderMaster.setTotalPrice(rs.getDouble(8));
 			order.COrderMaster.setStaffName(rs.getString(9));
 
-			String strSql2 = "SELECT SKU, productName"
-					+ " FROM quickreach.orders_detail"
-					+ " where order_id = ?";
+			String strSql2 = "SELECT SKU, productName" + " FROM quickreach.orders_detail" + " where QR_id = ?";
 
 			PreparedStatement ps2 = conn.prepareStatement(strSql2);
-			ps2.setString(1, rs.getString(1));
-			//System.out.println(strSql2);
+			ps2.setString(1, rs.getString(13));
+			// System.out.println(strSql2);
 			ResultSet rs2 = ps2.executeQuery();
 			orderDetails = new LinkedList<>();
-			while(rs2.next()){
+			while (rs2.next()) {
 				COrderDetail COrderDetail = new COrderDetail();
 				COrderDetail.setSKU(rs2.getString(1));
 				COrderDetail.setProductName(rs2.getString(2));
 				orderDetails.add(COrderDetail);
 			}
-			
+
 			order.setCOrderDetail(orderDetails);
 			order.COrderMaster.setComment(rs.getString(10));
 			order.COrderMaster.setEbayAccount(rs.getString(11));
 			order.COrderMaster.setPayDate(rs.getDate(12));
-			//System.out.println(order);
+			order.COrderMaster.setQR_id(rs.getString(13));
+			// System.out.println(order);
 			orderList.add(order);
 		}
 
@@ -314,9 +312,8 @@ public class COrderFactory extends COrders {
 	public LinkedList<COrders> orders(HttpServletRequest request, Connection conn, String status) throws SQLException {
 
 		String strSql = "SELECT distinct order_id, platform, guestAccount, orderDate, shippingDate,"
-				+ " logistics, orderstatus, totalPrice, staffName, comment, eBayAccount, payDate "
-				+ " FROM quickreach.orders_master "
-				+ " where '1' = '1' and orderstatus = ?";
+				+ " logistics, orderstatus, totalPrice, staffName, comment, eBayAccount, payDate," + " QR_id "
+				+ " FROM quickreach.orders_master " + " where '1' = '1' and orderstatus = ?";
 
 		System.out.println(status);
 		PreparedStatement ps = conn.prepareStatement(strSql);
@@ -339,44 +336,44 @@ public class COrderFactory extends COrders {
 			order.COrderMaster.setTotalPrice(rs.getDouble(8));
 			order.COrderMaster.setStaffName(rs.getString(9));
 
-			String strSql2 = "SELECT SKU, productName"
-					+ " FROM quickreach.orders_detail"
-					+ " where order_id = ?";
+			String strSql2 = "SELECT SKU, productName" + " FROM quickreach.orders_detail" + " where QR_id = ?";
 
 			PreparedStatement ps2 = conn.prepareStatement(strSql2);
-			ps2.setString(1, rs.getString(1));
-			System.out.println(strSql2);
+			ps2.setString(1, rs.getString(13));
+			//System.out.println(strSql2);
 			ResultSet rs2 = ps2.executeQuery();
 			orderDetails = new LinkedList<>();
-			while(rs2.next()){
+			while (rs2.next()) {
 				COrderDetail COrderDetail = new COrderDetail();
 				COrderDetail.setSKU(rs2.getString(1));
 				COrderDetail.setProductName(rs2.getString(2));
 				orderDetails.add(COrderDetail);
 			}
-			
+
 			order.setCOrderDetail(orderDetails);
 			order.COrderMaster.setComment(rs.getString(10));
 			order.COrderMaster.setEbayAccount(rs.getString(11));
 			order.COrderMaster.setPayDate(rs.getDate(12));
-			//System.out.println(order);
+			order.COrderMaster.setQR_id(rs.getString(13));
+			// System.out.println(order);
 			orderList.add(order);
 		}
 		return orderList;
 	}
 
-	public COrders getOrderAllInfo(String orderId, Connection conn) throws SQLException {
+	public COrders getOrderAllInfo(String QR_id, Connection conn) throws SQLException {
 
 		String strsql = "SELECT distinct g.guestFirstName, g.guestLastName, g.guestAccount, g.email, g.tel1, g.tel2"
 				+ ", g.mobile, g.birthday, g.company, g.address, g.country, g.postcode, g.gender"
 				+ ", r.recieverFirstName, r.recieverLastName, r.tel1, r.tel2, r.address, r.country, r.postcode"
 				+ ", d.sku, d.productName, d.invoiceName, d.price, d.invoicePrice, d.qty, d.warehouse, d.comment"
-				+ " from quickreach.orders_master as m inner join quickreach.orders_detail as d using (order_id)"
-				+ " inner join quickreach.orders_guestinfo as g using (order_id) "
-				+ " inner join quickreach.order_recieverinfo as r using (order_id)" + " where order_id = ?";
+				+ ", m.QR_id"
+				+ " from quickreach.orders_master as m inner join quickreach.orders_detail as d using (QR_id)"
+				+ " inner join quickreach.orders_guestinfo as g using (QR_id) "
+				+ " inner join quickreach.order_recieverinfo as r using (QR_id)" + " where QR_id = ?";
 
 		PreparedStatement ps = conn.prepareStatement(strsql);
-		ps.setString(1, orderId);
+		ps.setString(1, QR_id);
 
 		ResultSet rs = ps.executeQuery();
 		System.out.println(strsql);
@@ -419,16 +416,16 @@ public class COrderFactory extends COrders {
 
 	}
 
-	public LinkedList<COrderDetail> getOrderDetails(String orderId, Connection conn) throws SQLException {
+	public LinkedList<COrderDetail> getOrderDetails(String QR_id, Connection conn) throws SQLException {
 
 		String strsql = "SELECT distinct"
-				+ " d.sku, d.productName, d.invoiceName, d.price, d.invoicePrice, d.qty, d.warehouse, d.comment"
-				+ " from quickreach.orders_master as m inner join quickreach.orders_detail as d using (order_id)"
-				+ " inner join quickreach.orders_guestinfo as g using (order_id) "
-				+ " inner join quickreach.order_recieverinfo as r using (order_id)" + " where order_id = ?";
+				+ " d.sku, d.productName, d.invoiceName, d.price, d.invoicePrice, d.qty, d.warehouse, d.comment, d.Item"
+				+ " from quickreach.orders_master as m inner join quickreach.orders_detail as d using (QR_id)"
+				+ " inner join quickreach.orders_guestinfo as g using (QR_id) "
+				+ " inner join quickreach.order_recieverinfo as r using (QR_id)" + " where QR_id = ?";
 
 		PreparedStatement ps = conn.prepareStatement(strsql);
-		ps.setString(1, orderId);
+		ps.setString(1, QR_id);
 
 		ResultSet rs = ps.executeQuery();
 		System.out.println(strsql);
@@ -444,6 +441,7 @@ public class COrderFactory extends COrders {
 			detail.setQty(rs.getInt(6));
 			detail.setWarehouse(rs.getString(7));
 			detail.setComment(rs.getString(8));
+			detail.setItem(Integer.valueOf(rs.getString(9)));
 			detailList.add(detail);
 		}
 		return detailList;
@@ -452,19 +450,20 @@ public class COrderFactory extends COrders {
 
 	public void insertIntoShippingLog(HttpServletRequest request, Connection conn) throws SQLException {
 
-		String strSql = "insert into quickreach.shippinglog (order_id, date, trackingCode, staffName)"
-				+ " values( ?, now(), ?, ?)";
+		String strSql = "insert into quickreach.shippinglog (QR_id, order_id, date, trackingCode, staffName)"
+				+ " values( ?, ?, now(), ?, ?)";
 		PreparedStatement ps = conn.prepareStatement(strSql);
-		ps.setString(1, request.getParameter("orderId"));
-		ps.setString(2, request.getParameter("trackingCode"));
-		ps.setString(3, "system");
+		ps.setString(1, request.getParameter("QR_id"));
+		ps.setString(2, request.getParameter("orderId"));
+		ps.setString(3, request.getParameter("trackingCode"));
+		ps.setString(4, "system");
 
 		ps.executeUpdate();
 	}
 
 	public void InsertOrUpdateOrderDetail(HttpServletRequest request, Connection conn) throws SQLException {
 
-		String strSql = "update UPDATE quickreach.orders_detail"
+		String strSql = "update quickreach.orders_detail"
 				+ " SET SKU=?, productName=?, invoiceName=?, price=?, invoicePrice=?, qty=?, warehouse=?, comment=?, owner=?"
 				+ " WHERE order_id= ? and SKU= ?;";
 
@@ -474,80 +473,102 @@ public class COrderFactory extends COrders {
 	}
 
 	public void updateOrderDetail(HttpServletRequest request, Connection conn) throws SQLException {
-		String strSql = "update UPDATE quickreach.orders_detail"
-				+ " SET invoiceName= ?, price= ?, invoicePrice= ?, qty= ?, comment= ? "
-				+ " WHERE order_id= ? and SKU= ?;";
+
+		String strSql = "update quickreach.orders_detail" + " SET invoiceName= 'killing2222' "
+				+ " WHERE SKU= ? and item= ?;";
+		System.out.println(strSql);
+		COrderDetail od = new COrderDetail();
+		System.out.println(request.getParameter("item"));
+		System.out.println(request.getParameter("SKU"));
+		od.setInvoiceName(request.getParameter("invoiceName"));
+		od.setPrice(Double.valueOf(request.getParameter("price")));
+		od.setInvoicePrice(Double.valueOf(request.getParameter("invoicePrice")));
+		od.setQty(Integer.valueOf(request.getParameter("qty")));
+		od.setComment(request.getParameter("comment"));
+		od.setQR_id(request.getParameter("QR_Id"));
+		od.setItem(Integer.valueOf(request.getParameter("item")));
 
 		PreparedStatement ps = conn.prepareStatement(strSql);
-		ps.setString(1, request.getParameter("invoiceName"));
-		ps.setString(2, request.getParameter("price"));
-		ps.setString(3, request.getParameter("invoicePrice"));
-		ps.setString(4, request.getParameter("qty"));
-		ps.setString(5, request.getParameter("comment"));
-		ps.setString(6, request.getParameter("orderId"));
-		ps.setString(7, request.getParameter("SKU"));
+
+		// ps.setString(1, od.getInvoiceName());
+		// ps.setDouble(1, od.getPrice());
+		// ps.setDouble(2, od.getInvoicePrice());
+		// ps.setInt(3, od.getQty());
+		// ps.setString(4, od.getComment());
+		ps.setString(1, od.getSKU());
+		ps.setInt(2, od.getItem());
 		ps.executeUpdate();
+
 	}
 
 	public void updateToProcessing(HttpServletRequest request, Connection conn) throws SQLException {
-
-		String[] strOrderIds = request.getParameterValues("orderId");
+		
+		String[] strQR_idArray = request.getParameterValues("QR_id");
+		String[] strLogisticsArray = request.getParameterValues("logistics");
 		// convert array to LinkedList
-		LinkedList orderIds = new LinkedList(Arrays.asList(strOrderIds));
+		LinkedList<String> QR_ids = new LinkedList<String>(Arrays.asList(strQR_idArray));
+		LinkedList<String> Logistics = new LinkedList<String>(Arrays.asList(strLogisticsArray));
 		// iterate over each element in LinkedList and show what is in the list.
-		Iterator iterator = orderIds.iterator();
+		Iterator<String> iterator = QR_ids.iterator();	
+		Iterator<String> iterator2 = Logistics.iterator();	
 		while (iterator.hasNext()) {
 			// Print element to console
-			System.out.println((String) iterator.next());
+			System.out.println(iterator.next());
 		}
-		for (int i = 0; i < orderIds.size(); i++) {
-			String strSql = "update quickreach.orders_master" + " set orderStatus = '處理中' " + " where order_id = ? ";
+		while (iterator2.hasNext()) {
+			// Print element to console
+			System.out.println(iterator2.next());
+		}
+		for (int i = 0; i < QR_ids.size(); i++) {
+			String strSql = "update quickreach.orders_master" + " set orderStatus = '處理中', logistics= ? "
+					+ " where QR_id = ? ";
 			PreparedStatement ps = conn.prepareStatement(strSql);
-			ps.setString(1, (String) orderIds.get(i));
+			ps.setString(1, Logistics.get(i));
+			ps.setString(2, QR_ids.get(i));
 			ps.executeUpdate();
 		}
 	}
 
 	public void updateToPickUp(HttpServletRequest request, Connection conn) throws SQLException {
 
-		String[] strOrderIds = request.getParameterValues("orderId");
+		String[] strQR_idArray = request.getParameterValues("QR_id");
 		// convert array to LinkedList
-		LinkedList orderIds = new LinkedList(Arrays.asList(strOrderIds));
+		LinkedList<String> QR_ids = new LinkedList<String>(Arrays.asList(strQR_idArray));
 		// iterate over each element in LinkedList and show what is in the list.
-		Iterator iterator = orderIds.iterator();
+		Iterator<String> iterator = QR_ids.iterator();
 		while (iterator.hasNext()) {
 			// Print element to console
-			System.out.println((String) iterator.next());
+			System.out.println(iterator.next());
 		}
-		for (int i = 0; i < orderIds.size(); i++) {
-			String strSql = "update quickreach.orders_master" + " set orderStatus = '揀貨中' " + " where order_id = ? ";
+		for (int i = 0; i < QR_ids.size(); i++) {
+			String strSql = "update quickreach.orders_master" + " set orderStatus = '揀貨中' " + " where QR_id = ? ";
 			PreparedStatement ps = conn.prepareStatement(strSql);
-			ps.setString(1, (String) orderIds.get(i));
+			ps.setString(1, QR_ids.get(i));
 			ps.executeUpdate();
 		}
 	}
 
 	public void updateToComplete(HttpServletRequest request, Connection conn) throws SQLException {
 
-		String[] strOrderIds = request.getParameterValues("orderId");
+		String[] strQR_ids = request.getParameterValues("QR_id");
 		// convert array to LinkedList
-		LinkedList orderIds = new LinkedList(Arrays.asList(strOrderIds));
+		LinkedList<String> QR_ids = new LinkedList<String>(Arrays.asList(strQR_ids));
 		// iterate over each element in LinkedList and show what is in the list.
-		Iterator iterator = orderIds.iterator();
+		Iterator<String> iterator = QR_ids.iterator();
 		while (iterator.hasNext()) {
 			// Print element to console
-			System.out.println((String) iterator.next());
+			System.out.println(iterator.next());
 		}
-		for (int i = 0; i < orderIds.size(); i++) {
-			String strSql = "update quickreach.orders_master" + " set orderStatus = '已出貨' " + " where order_id = ? ";
+		for (int i = 0; i < QR_ids.size(); i++) {
+			String strSql = "update quickreach.orders_master" + " set orderStatus = '已出貨' " + " where QR_id = ? ";
 			PreparedStatement ps = conn.prepareStatement(strSql);
-			ps.setString(1, (String) orderIds.get(i));
+			ps.setString(1, QR_ids.get(i));
 			ps.executeUpdate();
 		}
 	}
 
 	public boolean checkOrderIdOrderStatus(HttpServletRequest request, Connection conn) throws Exception {
-		String strSql = "select order_id, orderStatus from quickreach.orders_master";
+		String strSql = "select QR_id, orderStatus from quickreach.orders_master";
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		System.out.println(strSql);
 		ResultSet rs = ps.executeQuery();
@@ -556,26 +577,26 @@ public class COrderFactory extends COrders {
 		COrders order = new COrders();
 		while (rs.next()) {
 			order = new COrders();
-			order.COrderMaster.setOrder_id(rs.getString(1));
+			order.COrderMaster.setQR_id(rs.getString(1));
 			order.COrderMaster.setOrderStatus(rs.getString(2));
 			orderList.add(order);
 		}
 
 		for (int i = 0; i < orderList.size(); i++) {
-			if (request.getParameter("orderId").equals(orderList.get(i).getCOrderMaster().getOrder_id().toString())) {
-				System.out.println("orderID:true");
+			if (request.getParameter("QR_id").equals(orderList.get(i).getCOrderMaster().getQR_id().toString())) {
+				System.out.println("QRID:true");
 				if (orderList.get(i).getCOrderMaster().getOrderStatus().toString().equals("已出貨"))
 					return true;
 			}
 		}
-		System.out.println("orderId is invalid or wrong order status.");
+		System.out.println("QRId is invalid or wrong order status.");
 		return false;
 	}
 
 	public void updateToFinished(HttpServletRequest request, Connection conn) throws Exception {
-		String strSql = "update quickreach.orders_master" + " set orderStatus = '已完成' " + " where order_id = ? ";
+		String strSql = "update quickreach.orders_master" + " set orderStatus = '已完成' " + " where QR_id = ? ";
 		PreparedStatement ps = conn.prepareStatement(strSql);
-		ps.setString(1, request.getParameter("orderId"));
+		ps.setString(1, request.getParameter("QR_id"));
 		ps.executeUpdate();
 	}
 
@@ -599,10 +620,10 @@ public class COrderFactory extends COrders {
 		for (int i = 0; i < condition.size(); i++) {
 			String strSql = "select distinct s.SKU, s.qty, d.qty, s.warehouse"
 					+ " from quickreach.storage as s inner join quickreach.orders_detail as d"
-					+ " using (SKU) where order_id = ? and sku = ? and s.warehouse = ?";
+					+ " using (SKU) where QR_id = ? and sku = ? and s.warehouse = ?";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 
-			ps.setString(1, request.getParameter("orderId"));
+			ps.setString(1, request.getParameter("QR_id"));
 			ps.setString(2, condition.get(i).getSKU());
 			ps.setString(3, condition.get(i).getWarehouse());
 			System.out.println(strSql);
@@ -625,9 +646,9 @@ public class COrderFactory extends COrders {
 
 		String strSql = "select SKU, warehouse"
 				+ " from quickreach.orders_master as m inner join quickreach.orders_detail as d"
-				+ " using (order_id) where order_id = ?";
+				+ " using (QR_id) where QR_id = ?";
 		PreparedStatement ps = conn.prepareStatement(strSql);
-		ps.setString(1, request.getParameter("orderId"));
+		ps.setString(1, request.getParameter("QR_id"));
 		ResultSet rs = ps.executeQuery();
 		LinkedList<COrderDetail> result = new LinkedList<COrderDetail>();
 		COrderDetail detail = new COrderDetail();
@@ -639,21 +660,41 @@ public class COrderFactory extends COrders {
 		}
 		return result;
 	}
-	
-	public void checkUrlToRemoveSession(HttpServletRequest request, HttpSession session){
+
+	public void checkUrlToRemoveSession(HttpServletRequest request, HttpSession session) {
 		String referer = request.getHeader("Referer");
-		
-		if(referer == null ){
+
+		if (referer == null) {
 			return;
 		}
-		
-		if(!(referer.substring(0,referer.lastIndexOf("p"))+"p").equals
-		(request.getRequestURL().toString()))
-		{
 
-		System.out.println(referer.substring(0,referer.lastIndexOf("p"))+"p");
-		System.out.println(request.getRequestURL().toString());
-		session.removeAttribute("SearchOrdersResult");
-		} 
+		if (!(referer.substring(0, referer.lastIndexOf("p")) + "p").equals(request.getRequestURL().toString())) {
+
+			System.out.println(referer.substring(0, referer.lastIndexOf("p")) + "p");
+			System.out.println(request.getRequestURL().toString());
+			session.removeAttribute("SearchOrdersResult");
+		}
+	}
+	
+	public LinkedList<String> unSelectedList (HttpServletRequest request) {
+		
+		String[] strQR_idArray = request.getParameterValues("QR_id");
+		String[] strLogisticsArray = request.getParameterValues("logistics");
+		// convert array to LinkedList
+		LinkedList<String> QR_ids = new LinkedList<String>(Arrays.asList(strQR_idArray));
+		LinkedList<String> Logistics = new LinkedList<String>(Arrays.asList(strLogisticsArray));
+		// iterate over each element in LinkedList and show what is in the list.
+		Iterator<String> iterator = QR_ids.iterator();	
+		Iterator<String> iterator2 = Logistics.iterator();
+		
+		LinkedList<String> unSelected = new LinkedList<>();
+		for(int i=0;i<QR_ids.size();i++){
+			if(Logistics.get(i) != "請選擇"){
+				
+			} else {
+				unSelected.add(QR_ids.get(i));
+			}
+		}
+		return unSelected;
 	}
 }
