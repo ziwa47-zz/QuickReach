@@ -179,6 +179,9 @@ function test() {
 
 		$("#formSubmit")  //'+dynamicId+'
 				.before(
+						
+						//	+'			<button type="button" class="close" onclick="onclick="removeDynamicItem('+dynamicId+')"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> '
+						
 
 						'<div class="panel panel-default" id="dynamic'+dynamicId+'" style="background-color: #E7D29F">'
 							+'<div class="panel-heading">'
