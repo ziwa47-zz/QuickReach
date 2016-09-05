@@ -5,13 +5,19 @@ package tw.iii.autoInsertData;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Random;
 
 import tw.iii.qr.DataBaseConn;
+import tw.iii.qr.order.COrderDetail;
+
+import java.util.Calendar;
 
 public class autoInsertData {
 	public static void main(String args[]) throws Exception // the entry point
@@ -21,72 +27,226 @@ public class autoInsertData {
 		if(!isNullorEmpty(conn.toString()))
 			System.out.println("conn ok");
 		
-		int forMin = 10;
-		int forMax = 20;
+		int forMin = 1;
+		int forMax = 50;
 		//parameter : conn, for loop i= ? , i <= ?)
-		for(int i = forMin; i <= forMax; i++) {
 			insertToMaster(conn, forMin, forMax);
 			insertToDetail(conn, forMin, forMax);
 			insertToGuestInfo(conn, forMin, forMax);
 			insertToRecieverInfo(conn, forMin, forMax);
-		}
+		//dateNow();
+//		generateQR_Id();
+//		getSKU("2",conn);
 		conn.close();
+	}
+	
+	public static String generateQR_Id() throws IllegalAccessException, ClassNotFoundException, Exception {
+
+		String strsql = " select item, QR_id from quickreach.orders_master where QR_id like '%ebay%' order by item desc limit 0,1 ";
+		Connection conn = new DataBaseConn().getConn();
+		PreparedStatement ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+
+		String QR_idFromDatabase = null;
+		while (rs.next()) {
+			QR_idFromDatabase = rs.getString(2);
+		}
+		
+		java.util.Date date = Calendar.getInstance().getTime();
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		String formatted = formatter.format(date);
+		System.out.println(formatted);
+
+		DecimalFormat df = new DecimalFormat("000");
+		int serailNumber = 1;
+		
+		//System.out.println(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()));
+		String QR_id = "";
+		if (QR_idFromDatabase != null) {
+			if (serailNumber <= Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()))) {
+				int getSerailNumber = Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()));
+				serailNumber = getSerailNumber + 1;
+				QR_id = formatted + "03" + "ebay" + df.format(serailNumber);
+			}
+			
+		} else {
+			QR_id = formatted + "03" + "ebay" + "001";
+		}
+		System.out.println(QR_id);
+		return QR_id;
+	}
+	
+	public static String generateQR_IdforDetail() throws IllegalAccessException, ClassNotFoundException, Exception {
+
+		String strsql = " select item, QR_id from quickreach.orders_detail where QR_id like '%ebay%' order by item desc limit 0,1 ";
+		Connection conn = new DataBaseConn().getConn();
+		PreparedStatement ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+
+		String QR_idFromDatabase = null;
+		while (rs.next()) {
+			QR_idFromDatabase = rs.getString(2);
+		}
+		
+		java.util.Date date = Calendar.getInstance().getTime();
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		String formatted = formatter.format(date);
+		System.out.println(formatted);
+
+		DecimalFormat df = new DecimalFormat("000");
+		int serailNumber = 1;
+		
+		//System.out.println(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()));
+		String QR_id = "";
+		if (QR_idFromDatabase != null) {
+			if (serailNumber <= Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()))) {
+				int getSerailNumber = Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()));
+				serailNumber = getSerailNumber + 1;
+				QR_id = formatted + "03" + "ebay" + df.format(serailNumber);
+			}
+			
+		} else {
+			QR_id = formatted + "03" + "ebay" + "001";
+		}
+		System.out.println(QR_id);
+		return QR_id;
+	}
+	
+	public static String generateQR_IdforGuest() throws IllegalAccessException, ClassNotFoundException, Exception {
+
+		String strsql = " select item, QR_id from quickreach.orders_guestinfo where QR_id like '%ebay%' order by item desc limit 0,1 ";
+		Connection conn = new DataBaseConn().getConn();
+		PreparedStatement ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+
+		String QR_idFromDatabase = null;
+		while (rs.next()) {
+			QR_idFromDatabase = rs.getString(2);
+		}
+		
+		java.util.Date date = Calendar.getInstance().getTime();
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		String formatted = formatter.format(date);
+		System.out.println(formatted);
+
+		DecimalFormat df = new DecimalFormat("000");
+		int serailNumber = 1;
+		
+		//System.out.println(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()));
+		String QR_id = "";
+		if (QR_idFromDatabase != null) {
+			if (serailNumber <= Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()))) {
+				int getSerailNumber = Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()));
+				serailNumber = getSerailNumber + 1;
+				QR_id = formatted + "03" + "ebay" + df.format(serailNumber);
+			}
+			
+		} else {
+			QR_id = formatted + "03" + "ebay" + "001";
+		}
+		System.out.println(QR_id);
+		return QR_id;
+	}
+	
+	public static String generateQR_IdforReciever() throws IllegalAccessException, ClassNotFoundException, Exception {
+
+		String strsql = " select item, QR_id from quickreach.order_recieverinfo where QR_id like '%ebay%' order by item desc limit 0,1 ";
+		Connection conn = new DataBaseConn().getConn();
+		PreparedStatement ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+
+		String QR_idFromDatabase = null;
+		while (rs.next()) {
+			QR_idFromDatabase = rs.getString(2);
+		}
+		
+		java.util.Date date = Calendar.getInstance().getTime();
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		String formatted = formatter.format(date);
+		System.out.println(formatted);
+
+		DecimalFormat df = new DecimalFormat("000");
+		int serailNumber = 1;
+		
+		//System.out.println(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()));
+		String QR_id = "";
+		if (QR_idFromDatabase != null) {
+			if (serailNumber <= Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()))) {
+				int getSerailNumber = Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()));
+				serailNumber = getSerailNumber + 1;
+				QR_id = formatted + "03" + "ebay" + df.format(serailNumber);
+			}
+			
+		} else {
+			QR_id = formatted + "03" + "ebay" + "001";
+		}
+		System.out.println(QR_id);
+		return QR_id;
 	}
 
 	public static void insertToRecieverInfo(Connection conn,int forMin, int forMax)
-			throws SQLException {
+			throws IllegalAccessException, ClassNotFoundException, Exception {
 		for(int i = forMin; i <= forMax; i++) {
 			String strsql = "INSERT INTO quickreach.order_recieverinfo"
-					+ " (order_id, recieverFirstName, recieverLastName, tel1, tel2, address, country, postCode)"
-					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+					+ " (QR_id, order_id, recieverFirstName, recieverLastName, tel1, tel2, address, country, postCode)"
+					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			PreparedStatement ps = conn.prepareStatement(strsql);
-			ps.setInt(1, i);
-			ps.setString(2, randomDownCaseString(6));
-			ps.setString(3, randomDownCaseString(9));
-			ps.setInt(4, randomNumber(9));
+			ps.setString(1, generateQR_IdforReciever());
+			ps.setInt(2, i);
+			ps.setString(3, randomDownCaseString(6));
+			ps.setString(4, randomDownCaseString(9));
 			ps.setInt(5, randomNumber(9));
-			ps.setString(6, randomDownCaseString(20));
-			ps.setString(7, randomDownCaseString(3));
-			ps.setInt(8, randomNumber(4));
+			ps.setInt(6, randomNumber(9));
+			ps.setString(7, randomDownCaseString(20));
+			ps.setString(8, randomDownCaseString(3));
+			ps.setInt(9, randomNumber(4));
+			
 			ps.executeUpdate();
 			
 		}
 	}
 
-	public static void insertToGuestInfo(Connection conn, int forMin, int forMax)  throws SQLException {
+	public static void insertToGuestInfo(Connection conn, int forMin, int forMax)  throws IllegalAccessException, ClassNotFoundException, Exception {
 		for(int i = forMin; i <= forMax; i++) {
-			String strsql = "INSERT INTO quickreach.orders_guestinfo (order_id, guestFirstName, guestLastName, guestAccount, email)"
-					+ " VALUES (?, ?, ?, ?, ?)";
+			String strsql = "INSERT INTO quickreach.orders_guestinfo (QR_id, order_id, guestFirstName, guestLastName, guestAccount, email)"
+					+ " VALUES (?, ?, ?, ?, ?, ?)";
 			
 			PreparedStatement ps = conn.prepareStatement(strsql);
-			ps.setInt(1, i);
-			ps.setString(2, randomDownCaseString(6));
-			ps.setString(3, randomDownCaseString(9));
-			ps.setString(4, randomDownCaseString(6));
-			ps.setString(5, randomDownCaseString(9)+"@gmail.com");
+			ps.setString(1, generateQR_IdforGuest());
+			ps.setInt(2, i);
+			ps.setString(3, randomDownCaseString(6));
+			ps.setString(4, randomDownCaseString(9));
+			ps.setString(5, randomDownCaseString(6));
+			ps.setString(6, randomDownCaseString(9)+"@gmail.com");
+			
 			ps.executeUpdate();
 			
 		}
 	}
 
-	public static void insertToDetail(Connection conn, int forMin, int forMax) throws SQLException {
+	public static void insertToDetail(Connection conn, int forMin, int forMax) throws IllegalAccessException, ClassNotFoundException, Exception {
 		for(int i = forMin; i <= forMax; i++) {
-			String strsql = "INSERT INTO quickreach.orders_detail (order_id, SKU, productName, invoiceName, price,"
+			String strsql = "INSERT INTO quickreach.orders_detail (QR_id, order_id, SKU, productName, invoiceName, price,"
 					+ " invoicePrice, qty, warehouse, comment, owner) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			PreparedStatement ps = conn.prepareStatement(strsql);
-			ps.setInt(1, i);
-			ps.setString(2, randomStringMixInt(6, 6));
-			ps.setString(3, randomDownCaseString(12));
-			ps.setString(4, randomDownCaseString(6));
-			ps.setDouble(5, randomPrice(10000));
-			ps.setDouble(6, randomPrice(100));
-			ps.setInt(7, randomNumber(50));
-			ps.setString(8, randomWarehouse());
-			ps.setString(9, randomDownCaseString(9));
-			ps.setString(10, randomOwner());
+			ps.setString(1, generateQR_IdforDetail());
+			ps.setInt(2, i);
+			ps.setString(3, randomStringMixInt(6, 6));
+			ps.setString(4, randomDownCaseString(12));
+			ps.setString(5, randomDownCaseString(6));
+			ps.setDouble(6, randomPrice(10000));
+			ps.setDouble(7, randomPrice(100));
+			ps.setInt(8, randomNumber(50));
+			ps.setString(9, randomWarehouse());
+			ps.setString(10, randomDownCaseString(9));
+			ps.setString(11, randomOwner());
 			
 			ps.executeUpdate();
 			System.out.println(strsql);
@@ -94,16 +254,17 @@ public class autoInsertData {
 	}
 
 	public static void insertToMaster(Connection conn, int forMin, int forMax) 
-			throws SQLException, ParseException {
+			throws IllegalAccessException, ClassNotFoundException, Exception {
 		for(int i = forMin; i <= forMax; i++) {
-			String strsql = "INSERT INTO quickreach.orders_master(order_id, QR_id, outsideCode, platform,"
+			String strsql = "INSERT INTO quickreach.orders_master(QR_id, order_id, outsideCode, platform,"
 					+ " company, eBayAccount, guestAccount, orderDate, payDate, logisticsId, logistics,"
-					+ " orderStatus, paypal_id, payment, shippingDate, shippingFees)"
+					+ " orderStatus, paypal_id, payment, shippingDate, shippingFees,"
+					+ " ebayFees, paypalFees, totalPrice)"
 					+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
-					+ " ?, ?, ?, ?, ?, ?)";
+					+ " ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement ps = conn.prepareStatement(strsql);
-			ps.setInt(1, i); //order_id
-			ps.setInt(2, randomNumber(100)); //QR_id
+			ps.setString(1, generateQR_Id()); //QR_id
+			ps.setInt(2, i); //order_id
 			ps.setString(3, randomStringMixInt(5, 5)); //outsideCode
 			ps.setString(4, randomPlatform()); //platform
 			ps.setString(5, randomDownCaseString(7)); //company
@@ -119,6 +280,9 @@ public class autoInsertData {
 			ps.setDouble(14, randomPrice(100)); //payment
 			ps.setString(15, randomDate(12,1,28)); //shippingDate
 			ps.setDouble(16, randomPrice(100)); //shippingFees
+			ps.setDouble(17, randomPrice(10));  // ebayFees
+			ps.setDouble(18, randomPrice(10));  //paypalFees
+			ps.setDouble(19, randomPrice(1000)); //totalPrice
 			ps.executeUpdate();
 			
 			
@@ -169,6 +333,24 @@ public class autoInsertData {
 		return formatted;
 	}
 	
+	public static String dateNow() {
+		//Calendar c=Calendar.getInstance();
+		Date today = Calendar.getInstance().getTime();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:MM:ss");
+		String formatted = formatter.format(today);
+		System.out.println(formatted);
+		return formatted;
+	}
+	
+	private static void getNowFormatter(Calendar c) {
+		 int[] a={c.get(Calendar.YEAR),
+	             c.get(Calendar.MONTH),
+	             c.get(Calendar.DAY_OF_MONTH),
+	             c.get(Calendar.HOUR_OF_DAY),
+	             c.get(Calendar.MINUTE),
+	             c.get(Calendar.SECOND)};		
+	}
+
 	public static Float randomPrice(int pMax){
 		
 		
@@ -242,7 +424,7 @@ public class autoInsertData {
 		
 		String str = "";
 		Random r = new Random();
-		Integer i = r.nextInt(4);
+		Integer i = r.nextInt(5);
 		if(i == 0)
 			str = "comenwin0903";
 		if(i == 1)
@@ -260,7 +442,7 @@ public class autoInsertData {
 		
 		String str = "";
 		Random r = new Random();
-		Integer i = r.nextInt(2);
+		Integer i = r.nextInt(3);
 		if(i == 0)
 			str = "DHL";
 		if(i == 1)
@@ -276,13 +458,13 @@ public class autoInsertData {
 		Random r = new Random();
 		Integer i = r.nextInt(3);
 		if(i == 0)
-			str = "�ݳB�z";
+			str = "待處理";
 		if(i == 1)
-			str = "�B�z��";
+			str = "處理中";
 		if(i == 2)
-			str = "�z�f��";
+			str = "揀貨中";
 		if(i == 3)
-			str = "�w����";
+			str = "已完成";
 		return str;
 	}
 	
@@ -290,18 +472,18 @@ public class autoInsertData {
 		
 		String str = "";
 		Random r = new Random();
-		Integer i = r.nextInt(1);
+		Integer i = r.nextInt(2);
 		if(i == 0)
-			str = "KH";
+			str = "KHH";
 		if(i == 1)
-			str = "US";
+			str = "USA";
 		return str;
 	}
 	
 	public static String randomOwner() {
 		String str = "";
 		Random r = new Random();
-		Integer i = r.nextInt(1);
+		Integer i = r.nextInt(2);
 		if(i == 0)
 			str = "William";
 		if(i == 1)

@@ -63,7 +63,7 @@
     <form name="searchform" method="post" action="../OrdersServlet" class="form-inline container"
     style="font-size: 100%; vertical-align: baseline; padding: 15px;">
       <fieldset class="font-weight" style="padding:0 30px 0 0;">
-        <legend>已完成</legend>
+        <legend>處理中</legend>
         <input type="hidden">
         <div class="row">
           <div class="col-md-4 form-group ">

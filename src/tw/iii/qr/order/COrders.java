@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class COrders {
 	COrderMaster COrderMaster = new COrderMaster();
-	//COrderDetail COrderDetail = new COrderDetail();
+	COrderDetail COrderDetailSingle = new COrderDetail();
 	LinkedList<COrderDetail> COrderDetail = new LinkedList<COrderDetail>();
 	COrderGuestInfo COrderGuestInfo = new COrderGuestInfo();
 	COrderReciever COrderReciever = new COrderReciever();
@@ -33,6 +33,12 @@ public class COrders {
 	}
 	public void setCOrderReciever(COrderReciever cOrderReciever) {
 		COrderReciever = cOrderReciever;
+	}
+	public COrderDetail getCOrderDetailSingle() {
+		return COrderDetailSingle;
+	}
+	public void setCOrderDetailSingle(COrderDetail cOrderDetailSingle) {
+		COrderDetailSingle = cOrderDetailSingle;
 	}
 	
 }

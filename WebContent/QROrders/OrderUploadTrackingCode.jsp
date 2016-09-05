@@ -21,12 +21,12 @@
     <div class="container">
    	  <div class="nav" style="background-color:#A45A21;" >
         	<ul class="nav nav-tabs">
-              <li><a href="SearchOrder.jsp">查詢訂單</a></li>
-              <li><a href="OrderProcessingPage.jsp">處理中</a></li>
-              <li><a href="OrderPickupPage.jsp">揀貨中</a></li>
+              <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
+              <li><a href="OrderProcessingPage.jsp?begin=0&end=10">處理中</a></li>
+              <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
               <li><a href="OrderUploadTrackingCode.jsp" style="color:#fff">上傳追蹤碼</a></li>
-              <li><a href="OrderFinished.jsp">已完成訂單</a></li>
-              <li><a href="OrderAbnormal.jsp">異常訂單</a></li>
+              <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
+              <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
             </ul>
         </div>
     </div>
