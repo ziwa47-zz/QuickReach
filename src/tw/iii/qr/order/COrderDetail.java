@@ -13,6 +13,8 @@ public class COrderDetail {
 	private String comment;
 	private String owner;
 	private String warehouse;
+	private int item;
+	private String QR_id;
 	
 	public String getOrder_id() {
 		return order_id;
@@ -74,4 +76,17 @@ public class COrderDetail {
 	public void setWarehouse(String warehouse) {
 		this.warehouse = warehouse;
 	}
+	public int getItem() {
+		return item;
+	}
+	public void setItem(int item) {
+		this.item = item;
+	}
+	public String getQR_id() {
+		return QR_id;
+	}
+	public void setQR_id(String qR_id) {
+		QR_id = qR_id;
+	}
+
 }
