@@ -60,8 +60,8 @@ public class COrderFactory extends COrders {
 
 		String strSql = "SELECT distinct m.order_id, platform, m.guestAccount, orderDate, shippingDate,"
 				+ " logistics, orderstatus, totalPrice, staffName, m.comment, m.eBayAccount, m.payDate," + " QR_id "
-				+ " FROM quickreach.orders_master as m inner join quickreach.orders_detail as d using (QR_id)"
-				+ " inner join quickreach.orders_guestinfo as g using (QR_id)" + " where '1' = '1' ";
+				+ " FROM  orders_master as m inner join  orders_detail as d using (QR_id)"
+				+ " inner join  orders_guestinfo as g using (QR_id)" + " where '1' = '1' ";
 
 		String eBayAccount = request.getParameter("eBayAccount");
 		if (!isNullorEmpty(eBayAccount)) {
@@ -283,7 +283,7 @@ public class COrderFactory extends COrders {
 			order.COrderMaster.setTotalPrice(rs.getDouble(8));
 			order.COrderMaster.setStaffName(rs.getString(9));
 
-			String strSql2 = "SELECT SKU, productName" + " FROM quickreach.orders_detail" + " where QR_id = ?";
+			String strSql2 = "SELECT SKU, productName" + " FROM  orders_detail" + " where QR_id = ?";
 
 			PreparedStatement ps2 = conn.prepareStatement(strSql2);
 			ps2.setString(1, rs.getString(13));
@@ -313,7 +313,7 @@ public class COrderFactory extends COrders {
 
 		String strSql = "SELECT distinct order_id, platform, guestAccount, orderDate, shippingDate,"
 				+ " logistics, orderstatus, totalPrice, staffName, comment, eBayAccount, payDate," + " QR_id "
-				+ " FROM quickreach.orders_master " + " where '1' = '1' and orderstatus = ?";
+				+ " FROM  orders_master " + " where '1' = '1' and orderstatus = ?";
 
 		System.out.println(status);
 		PreparedStatement ps = conn.prepareStatement(strSql);
@@ -336,7 +336,7 @@ public class COrderFactory extends COrders {
 			order.COrderMaster.setTotalPrice(rs.getDouble(8));
 			order.COrderMaster.setStaffName(rs.getString(9));
 
-			String strSql2 = "SELECT SKU, productName" + " FROM quickreach.orders_detail" + " where QR_id = ?";
+			String strSql2 = "SELECT SKU, productName" + " FROM  orders_detail" + " where QR_id = ?";
 
 			PreparedStatement ps2 = conn.prepareStatement(strSql2);
 			ps2.setString(1, rs.getString(13));
@@ -368,9 +368,9 @@ public class COrderFactory extends COrders {
 				+ ", r.recieverFirstName, r.recieverLastName, r.tel1, r.tel2, r.address, r.country, r.postcode"
 				+ ", d.sku, d.productName, d.invoiceName, d.price, d.invoicePrice, d.qty, d.warehouse, d.comment"
 				+ ", m.QR_id"
-				+ " from quickreach.orders_master as m inner join quickreach.orders_detail as d using (QR_id)"
-				+ " inner join quickreach.orders_guestinfo as g using (QR_id) "
-				+ " inner join quickreach.order_recieverinfo as r using (QR_id)" + " where QR_id = ?";
+				+ " from  orders_master as m inner join  orders_detail as d using (QR_id)"
+				+ " inner join  orders_guestinfo as g using (QR_id) "
+				+ " inner join  order_recieverinfo as r using (QR_id)" + " where QR_id = ?";
 
 		PreparedStatement ps = conn.prepareStatement(strsql);
 		ps.setString(1, QR_id);
@@ -420,9 +420,9 @@ public class COrderFactory extends COrders {
 
 		String strsql = "SELECT distinct"
 				+ " d.sku, d.productName, d.invoiceName, d.price, d.invoicePrice, d.qty, d.warehouse, d.comment, d.Item"
-				+ " from quickreach.orders_master as m inner join quickreach.orders_detail as d using (QR_id)"
-				+ " inner join quickreach.orders_guestinfo as g using (QR_id) "
-				+ " inner join quickreach.order_recieverinfo as r using (QR_id)" + " where QR_id = ?";
+				+ " from  orders_master as m inner join  orders_detail as d using (QR_id)"
+				+ " inner join  orders_guestinfo as g using (QR_id) "
+				+ " inner join  order_recieverinfo as r using (QR_id)" + " where QR_id = ?";
 
 		PreparedStatement ps = conn.prepareStatement(strsql);
 		ps.setString(1, QR_id);
@@ -450,7 +450,7 @@ public class COrderFactory extends COrders {
 
 	public void insertIntoShippingLog(HttpServletRequest request, Connection conn) throws SQLException {
 
-		String strSql = "insert into quickreach.shippinglog (QR_id, order_id, date, trackingCode, staffName)"
+		String strSql = "insert into  shippinglog (QR_id, order_id, date, trackingCode, staffName)"
 				+ " values( ?, ?, now(), ?, ?)";
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ps.setString(1, request.getParameter("QR_id"));
@@ -463,7 +463,7 @@ public class COrderFactory extends COrders {
 
 	public void InsertOrUpdateOrderDetail(HttpServletRequest request, Connection conn) throws SQLException {
 
-		String strSql = "update quickreach.orders_detail"
+		String strSql = "update  orders_detail"
 				+ " SET SKU=?, productName=?, invoiceName=?, price=?, invoicePrice=?, qty=?, warehouse=?, comment=?, owner=?"
 				+ " WHERE order_id= ? and SKU= ?;";
 
@@ -474,7 +474,7 @@ public class COrderFactory extends COrders {
 
 	public void updateOrderDetail(HttpServletRequest request, Connection conn) throws SQLException {
 
-		String strSql = "update quickreach.orders_detail" + " SET invoiceName= 'killing2222' "
+		String strSql = "update  orders_detail" + " SET invoiceName= 'killing2222' "
 				+ " WHERE SKU= ? and item= ?;";
 		System.out.println(strSql);
 		COrderDetail od = new COrderDetail();
@@ -520,7 +520,7 @@ public class COrderFactory extends COrders {
 			System.out.println(iterator2.next());
 		}
 		for (int i = 0; i < QR_ids.size(); i++) {
-			String strSql = "update quickreach.orders_master" + " set orderStatus = '處理中', logistics= ? "
+			String strSql = "update  orders_master" + " set orderStatus = '處理中', logistics= ? "
 					+ " where QR_id = ? ";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ps.setString(1, Logistics.get(i));
@@ -541,7 +541,7 @@ public class COrderFactory extends COrders {
 			System.out.println(iterator.next());
 		}
 		for (int i = 0; i < QR_ids.size(); i++) {
-			String strSql = "update quickreach.orders_master" + " set orderStatus = '揀貨中' " + " where QR_id = ? ";
+			String strSql = "update  orders_master" + " set orderStatus = '揀貨中' " + " where QR_id = ? ";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ps.setString(1, QR_ids.get(i));
 			ps.executeUpdate();
@@ -560,7 +560,7 @@ public class COrderFactory extends COrders {
 			System.out.println(iterator.next());
 		}
 		for (int i = 0; i < QR_ids.size(); i++) {
-			String strSql = "update quickreach.orders_master" + " set orderStatus = '已出貨' " + " where QR_id = ? ";
+			String strSql = "update  orders_master" + " set orderStatus = '已出貨' " + " where QR_id = ? ";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ps.setString(1, QR_ids.get(i));
 			ps.executeUpdate();
@@ -568,7 +568,7 @@ public class COrderFactory extends COrders {
 	}
 
 	public boolean checkOrderIdOrderStatus(HttpServletRequest request, Connection conn) throws Exception {
-		String strSql = "select QR_id, orderStatus from quickreach.orders_master";
+		String strSql = "select QR_id, orderStatus from  orders_master";
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		System.out.println(strSql);
 		ResultSet rs = ps.executeQuery();
@@ -594,7 +594,7 @@ public class COrderFactory extends COrders {
 	}
 
 	public void updateToFinished(HttpServletRequest request, Connection conn) throws Exception {
-		String strSql = "update quickreach.orders_master" + " set orderStatus = '已完成' " + " where QR_id = ? ";
+		String strSql = "update  orders_master" + " set orderStatus = '已完成' " + " where QR_id = ? ";
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ps.setString(1, request.getParameter("QR_id"));
 		ps.executeUpdate();
@@ -604,7 +604,7 @@ public class COrderFactory extends COrders {
 
 		LinkedList<COrderDetail> condition = getCondition(request, conn);
 		for (int i = 0; i < condition.size(); i++) {
-			String strSql = "update quickreach.storage" + " set qty = ? " + " where sku = ? and warehouse = ? ";
+			String strSql = "update  storage" + " set qty = ? " + " where sku = ? and warehouse = ? ";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ps.setInt(1, condition.get(i).getQty());
 			ps.setString(2, condition.get(i).getSKU());
@@ -619,7 +619,7 @@ public class COrderFactory extends COrders {
 		LinkedList<COrderDetail> result = new LinkedList<COrderDetail>();
 		for (int i = 0; i < condition.size(); i++) {
 			String strSql = "select distinct s.SKU, s.qty, d.qty, s.warehouse"
-					+ " from quickreach.storage as s inner join quickreach.orders_detail as d"
+					+ " from  storage as s inner join  orders_detail as d"
 					+ " using (SKU) where QR_id = ? and sku = ? and s.warehouse = ?";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 
@@ -645,7 +645,7 @@ public class COrderFactory extends COrders {
 	public LinkedList<COrderDetail> getSkuAndWarehouse(HttpServletRequest request, Connection conn) throws Exception {
 
 		String strSql = "select SKU, warehouse"
-				+ " from quickreach.orders_master as m inner join quickreach.orders_detail as d"
+				+ " from  orders_master as m inner join  orders_detail as d"
 				+ " using (QR_id) where QR_id = ?";
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ps.setString(1, request.getParameter("QR_id"));
