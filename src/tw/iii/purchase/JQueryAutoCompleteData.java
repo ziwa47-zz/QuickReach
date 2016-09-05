@@ -57,7 +57,7 @@ public class JQueryAutoCompleteData extends HttpServlet {
 			DataBaseConn jdbc = new DataBaseConn();
 			conn = jdbc.getConn();			
 			
-			String strSql = "SELECT SKU FROM quickreach.product where SKU like ?";
+			String strSql = "SELECT SKU FROM  product where SKU like ?";
 			
 			ps = conn.prepareStatement(strSql);
 			ps.setString(1, "%"+searchSKU+"%");

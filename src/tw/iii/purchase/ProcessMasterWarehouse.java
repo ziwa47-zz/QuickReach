@@ -63,7 +63,7 @@ public class ProcessMasterWarehouse extends HttpServlet {
 			DataBaseConn jdbc = new DataBaseConn();
 			conn = jdbc.getConn();			
 			
-			String strSql = " select count(*) from quickreach.purchaselog_master where (date < now()) and date >= curdate() and (warehouse = ?) order by date desc limit 0,1 ;";
+			String strSql = " select count(*) from  purchaselog_master where (date < now()) and date >= curdate() and (warehouse = ?) order by date desc limit 0,1 ;";
 
 			
 			ps = conn.prepareStatement(strSql);

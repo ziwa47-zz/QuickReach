@@ -27,7 +27,7 @@ public class BundlesFactory {
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
-		String sqlstr = "SELECT sku,P_name,brand,subBrand FROM quickreach.product where 1=1 ";
+		String sqlstr = "SELECT sku,P_name,brand,subBrand FROM  product where 1=1 ";
 		
 		if (brand != null && !brand.equals("select")){
 			sqlstr += " and brand='" + brand + "'";
@@ -68,7 +68,7 @@ public class BundlesFactory {
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
-		String sqlstr = "SELECT distinct brand FROM quickreach.product where brand is not null";
+		String sqlstr = "SELECT distinct brand FROM  product where brand is not null";
 		ResultSet rs = state.executeQuery(sqlstr);
 		lcp = new LinkedList<CProduct>();
 		CProduct cp ;
@@ -95,9 +95,9 @@ public class BundlesFactory {
 		state = conn.createStatement();
 		String sqlstr = "";
 		if (b==null || b.equals("select")){
-			sqlstr = "SELECT distinct subbrand FROM quickreach.product where subbrand is not null";
+			sqlstr = "SELECT distinct subbrand FROM  product where subbrand is not null";
 		}else if (!b.equals("select")){
-			sqlstr = "SELECT distinct subbrand FROM quickreach.product where subbrand is not null and brand = '"+b+"'";
+			sqlstr = "SELECT distinct subbrand FROM  product where subbrand is not null and brand = '"+b+"'";
 		}
 		ResultSet rs = state.executeQuery(sqlstr);
 		lcp = new LinkedList<CProduct>();
@@ -122,7 +122,7 @@ public class BundlesFactory {
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
-		String sqlstr = "SELECT SKU FROM quickreach.product";
+		String sqlstr = "SELECT SKU FROM  product";
 		ResultSet rs = state.executeQuery(sqlstr);
 		lcp = new LinkedList<CProduct>();
 		CProduct cp ;
@@ -146,7 +146,7 @@ public class BundlesFactory {
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
-		String sqlstr = "SELECT sku,P_name,comment FROM quickreach.product where  productType = '組合包'";
+		String sqlstr = "SELECT sku,P_name,comment FROM  product where  productType = '組合包'";
 	
 		ResultSet rs = state.executeQuery(sqlstr);
 		lcp = new LinkedList<CProduct>();
@@ -245,7 +245,7 @@ public class BundlesFactory {
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
-		String sqlstr = "SELECT b.p_SKU,p.P_name,b.qty FROM quickreach.bundles as b inner join quickreach.product as p on b.p_SKU=p.SKU  where m_SKU = '" + bdsku + "'";
+		String sqlstr = "SELECT b.p_SKU,p.P_name,b.qty FROM  bundles as b inner join  product as p on b.p_SKU=p.SKU  where m_SKU = '" + bdsku + "'";
 	
 		ResultSet rs = state.executeQuery(sqlstr);
 		bundlesList = new LinkedList<String[]>();
