@@ -56,12 +56,15 @@ public class TestJdbcMvcServlet extends HttpServlet {
 			
 			
 			String warehouse = request.getParameter("warehouse");
+			String insertDate = request.getParameter("date");
 			
-			String sqlCount = "select count(*) from quickreach.purchaselog_master where date >= curdate() and warehouse = ?";
+			String sqlCount = "select count(*) from  purchaselog_master where date >= ? and warehouse = ?";
 			
 			
 			preparedState = conn.prepareStatement(sqlCount);
-			preparedState.setString(1, warehouse);
+			
+			preparedState.setString(1, insertDate);
+			preparedState.setString(2 ,warehouse);
 			// stmt = conn.createStatement();
 
 			int count = 0;
@@ -88,12 +91,12 @@ public class TestJdbcMvcServlet extends HttpServlet {
 			LinkedList<String> pMaster = pcf.purchaseMaster(request);
 			
 		
-			String sqlstr1 = "Insert Into purchaselog_master(purchaseId,date,companyId,companyName,staffId,warehouse,comment,stockStatus) Values(?,now(),?,(select C_name from quickreach.company where C_id=?),?,?,?,1)";
+			String sqlstr1 = "Insert Into purchaselog_master(purchaseId,date,companyId,companyName,staffId,warehouse,comment,stockStatus) Values(?,now(),?,(select C_name from  company where C_id=?),?,?,?,1)";
 			preparedState = conn.prepareStatement(sqlstr1);
 			
 			preparedState.setString(1, oldPurchaseIdFront11+warehouse+df.format(count));
 			preparedState.setInt(2,Integer.parseInt(pMaster.get(0))); //companyId
-			preparedState.setInt(3,Integer.parseInt(pMaster.get(0))); //select C_name from quickreach.company where C_id=?
+			preparedState.setInt(3,Integer.parseInt(pMaster.get(0))); //select C_name from  company where C_id=?
 			preparedState.setString(4,pMaster.get(1));                //staffId
 			preparedState.setString(5,pMaster.get(2));     //warehouse
 			preparedState.setString(6,pMaster.get(3));   //purchaseMasterComment
@@ -128,7 +131,7 @@ public class TestJdbcMvcServlet extends HttpServlet {
 				  
 				  
 				
-				String sqlstr3 = "Update quickreach.storage set qty=qty+? where SKU=?";
+				String sqlstr3 = "Update  storage set qty=qty+? where SKU=?";
 				preparedState = conn.prepareStatement(sqlstr3);
 				preparedState.setInt(1, Integer.parseInt(Alllist.get(i).get(1).trim()));
 				preparedState.setString(2, Alllist.get(i).get(0));			

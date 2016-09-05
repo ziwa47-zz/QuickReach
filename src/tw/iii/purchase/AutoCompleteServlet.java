@@ -75,7 +75,7 @@ public class AutoCompleteServlet extends HttpServlet {
 			DataBaseConn jdbc = new DataBaseConn();
 			conn = jdbc.getConn();			
 			
-			String strSql = "SELECT  a.P_name, a.spec, a.color, b.warehousePosition1, b.warehousePosition2 FROM quickreach.product as a inner join quickreach.storage as b where a.SKU = b.SKU and a.SKU = ?;";
+			String strSql = "SELECT  a.P_name, a.spec, a.color, b.warehousePosition1, b.warehousePosition2 FROM  product as a inner join  storage as b where a.SKU = b.SKU and a.SKU = ?;";
 
 			
 			ps = conn.prepareStatement(strSql);

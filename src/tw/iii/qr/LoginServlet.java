@@ -70,7 +70,7 @@ public class LoginServlet extends HttpServlet {
 	}
 	public boolean checkLogin(String EmpName,String EmpPwd) throws IllegalAccessException, ClassNotFoundException, Exception{
 		Connection conn = new DataBaseConn().getConn();
-		String sqlstr3 = "SELECT * FROM QuickReach.Staff;";
+		String sqlstr3 = "SELECT * FROM  Staff;";
 		state = conn.createStatement();
 		rs = state.executeQuery(sqlstr3);
 		while (rs.next()) {
