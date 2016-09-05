@@ -41,7 +41,7 @@ public class autoInsertData {
 	
 	public static LinkedList<COrderDetail> getSKU(String orderId, Connection conn) throws SQLException{
 		String strSql = "SELECT SKU, productName"
-				+ " FROM quickreach.orders_master as m inner join quickreach.orders_detail as d"
+				+ " FROM  orders_master as m inner join  orders_detail as d"
 				+ " using (order_id)";
 
 		PreparedStatement ps = conn.prepareStatement(strSql);
@@ -59,7 +59,7 @@ public class autoInsertData {
 	
 	public static String generateQR_Id() throws IllegalAccessException, ClassNotFoundException, Exception {
 
-		String strsql = " select item, QR_id from quickreach.orders_master where QR_id like '%ebay%' order by item desc limit 0,1 ";
+		String strsql = " select item, QR_id from  orders_master where QR_id like '%ebay%' order by item desc limit 0,1 ";
 		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -97,7 +97,7 @@ public class autoInsertData {
 	public static void insertToRecieverInfo(Connection conn,int forMin, int forMax)
 			throws SQLException {
 		for(int i = forMin; i <= forMax; i++) {
-			String strsql = "INSERT INTO quickreach.order_recieverinfo"
+			String strsql = "INSERT INTO  order_recieverinfo"
 					+ " (order_id, recieverFirstName, recieverLastName, tel1, tel2, address, country, postCode)"
 					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 			
@@ -117,7 +117,7 @@ public class autoInsertData {
 
 	public static void insertToGuestInfo(Connection conn, int forMin, int forMax)  throws SQLException {
 		for(int i = forMin; i <= forMax; i++) {
-			String strsql = "INSERT INTO quickreach.orders_guestinfo (order_id, guestFirstName, guestLastName, guestAccount, email)"
+			String strsql = "INSERT INTO  orders_guestinfo (order_id, guestFirstName, guestLastName, guestAccount, email)"
 					+ " VALUES (?, ?, ?, ?, ?)";
 			
 			PreparedStatement ps = conn.prepareStatement(strsql);
@@ -133,7 +133,7 @@ public class autoInsertData {
 
 	public static void insertToDetail(Connection conn, int forMin, int forMax) throws SQLException {
 		for(int i = forMin; i <= forMax; i++) {
-			String strsql = "INSERT INTO quickreach.orders_detail (order_id, SKU, productName, invoiceName, price,"
+			String strsql = "INSERT INTO  orders_detail (order_id, SKU, productName, invoiceName, price,"
 					+ " invoicePrice, qty, warehouse, comment, owner) "
 					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
@@ -157,7 +157,7 @@ public class autoInsertData {
 	public static void insertToMaster(Connection conn, int forMin, int forMax) 
 			throws IllegalAccessException, ClassNotFoundException, Exception {
 		for(int i = forMin; i <= forMax; i++) {
-			String strsql = "INSERT INTO quickreach.orders_master(order_id, QR_id, outsideCode, platform,"
+			String strsql = "INSERT INTO  orders_master(order_id, QR_id, outsideCode, platform,"
 					+ " company, eBayAccount, guestAccount, orderDate, payDate, logisticsId, logistics,"
 					+ " orderStatus, paypal_id, payment, shippingDate, shippingFees)"
 					+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
@@ -199,7 +199,7 @@ public class autoInsertData {
 		if(!isNullorEmpty(conn.toString()))
 			System.out.println("conn ok");
 		for(int i = 1; i <= 10; i++) {
-			String strsql = "INSERT INTO quickreach.orders_master(order_id, QR_id, outsideCode, platform,"
+			String strsql = "INSERT INTO  orders_master(order_id, QR_id, outsideCode, platform,"
 					+ " company, eBayAccount, guestAccount, orderDate, payDate, logisticsId, logistics,"
 					+ " orderStatus, paypal_id, payment, shippingDate, shippingFees, refundFees, otherFees,"
 					+ " ebayFees, paypalFees, insurance, insurancePrice, insuranceTotal, currency, weight,"

@@ -42,7 +42,7 @@ public class autoInsertData {
 	
 	public static String generateQR_Id() throws IllegalAccessException, ClassNotFoundException, Exception {
 
-		String strsql = " select item, QR_id from quickreach.orders_master where QR_id like '%ebay%' order by item desc limit 0,1 ";
+		String strsql = " select item, QR_id from  orders_master where QR_id like '%ebay%' order by item desc limit 0,1 ";
 		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -79,7 +79,7 @@ public class autoInsertData {
 	
 	public static String generateQR_IdforDetail() throws IllegalAccessException, ClassNotFoundException, Exception {
 
-		String strsql = " select item, QR_id from quickreach.orders_detail where QR_id like '%ebay%' order by item desc limit 0,1 ";
+		String strsql = " select item, QR_id from orders_detail where QR_id like '%ebay%' order by item desc limit 0,1 ";
 		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -116,7 +116,7 @@ public class autoInsertData {
 	
 	public static String generateQR_IdforGuest() throws IllegalAccessException, ClassNotFoundException, Exception {
 
-		String strsql = " select item, QR_id from quickreach.orders_guestinfo where QR_id like '%ebay%' order by item desc limit 0,1 ";
+		String strsql = " select item, QR_id from orders_guestinfo where QR_id like '%ebay%' order by item desc limit 0,1 ";
 		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -153,7 +153,7 @@ public class autoInsertData {
 	
 	public static String generateQR_IdforReciever() throws IllegalAccessException, ClassNotFoundException, Exception {
 
-		String strsql = " select item, QR_id from quickreach.order_recieverinfo where QR_id like '%ebay%' order by item desc limit 0,1 ";
+		String strsql = " select item, QR_id from order_recieverinfo where QR_id like '%ebay%' order by item desc limit 0,1 ";
 		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -191,7 +191,7 @@ public class autoInsertData {
 	public static void insertToRecieverInfo(Connection conn,int forMin, int forMax)
 			throws IllegalAccessException, ClassNotFoundException, Exception {
 		for(int i = forMin; i <= forMax; i++) {
-			String strsql = "INSERT INTO quickreach.order_recieverinfo"
+			String strsql = "INSERT INTO order_recieverinfo"
 					+ " (QR_id, order_id, recieverFirstName, recieverLastName, tel1, tel2, address, country, postCode)"
 					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
@@ -213,7 +213,7 @@ public class autoInsertData {
 
 	public static void insertToGuestInfo(Connection conn, int forMin, int forMax)  throws IllegalAccessException, ClassNotFoundException, Exception {
 		for(int i = forMin; i <= forMax; i++) {
-			String strsql = "INSERT INTO quickreach.orders_guestinfo (QR_id, order_id, guestFirstName, guestLastName, guestAccount, email)"
+			String strsql = "INSERT INTO  orders_guestinfo (QR_id, order_id, guestFirstName, guestLastName, guestAccount, email)"
 					+ " VALUES (?, ?, ?, ?, ?, ?)";
 			
 			PreparedStatement ps = conn.prepareStatement(strsql);
@@ -231,7 +231,7 @@ public class autoInsertData {
 
 	public static void insertToDetail(Connection conn, int forMin, int forMax) throws IllegalAccessException, ClassNotFoundException, Exception {
 		for(int i = forMin; i <= forMax; i++) {
-			String strsql = "INSERT INTO quickreach.orders_detail (QR_id, order_id, SKU, productName, invoiceName, price,"
+			String strsql = "INSERT INTO  orders_detail (QR_id, order_id, SKU, productName, invoiceName, price,"
 					+ " invoicePrice, qty, warehouse, comment, owner) "
 					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
@@ -256,7 +256,7 @@ public class autoInsertData {
 	public static void insertToMaster(Connection conn, int forMin, int forMax) 
 			throws IllegalAccessException, ClassNotFoundException, Exception {
 		for(int i = forMin; i <= forMax; i++) {
-			String strsql = "INSERT INTO quickreach.orders_master(QR_id, order_id, outsideCode, platform,"
+			String strsql = "INSERT INTO  orders_master(QR_id, order_id, outsideCode, platform,"
 					+ " company, eBayAccount, guestAccount, orderDate, payDate, logisticsId, logistics,"
 					+ " orderStatus, paypal_id, payment, shippingDate, shippingFees,"
 					+ " ebayFees, paypalFees, totalPrice)"
@@ -302,7 +302,7 @@ public class autoInsertData {
 		if(!isNullorEmpty(conn.toString()))
 			System.out.println("conn ok");
 		for(int i = 1; i <= 10; i++) {
-			String strsql = "INSERT INTO quickreach.orders_master(order_id, QR_id, outsideCode, platform,"
+			String strsql = "INSERT INTO  orders_master(order_id, QR_id, outsideCode, platform,"
 					+ " company, eBayAccount, guestAccount, orderDate, payDate, logisticsId, logistics,"
 					+ " orderStatus, paypal_id, payment, shippingDate, shippingFees, refundFees, otherFees,"
 					+ " ebayFees, paypalFees, insurance, insurancePrice, insuranceTotal, currency, weight,"
