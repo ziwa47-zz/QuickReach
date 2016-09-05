@@ -34,10 +34,6 @@ var realPurchaseId;
 
 var dynamicId = 2;
 
-function alertPurchaseId(){
-	warehouseChange();
-	
-}
 
 function warehouseChange() {
 	
@@ -53,7 +49,7 @@ function warehouseChange() {
 			var date = $("#selectDate").val();
 		        realPurchaseId = date+response.warehousePurchaseId
 				$("#purchaseId").val(realPurchaseId);	
-		        alert("此進貨單單號:"+realPurchaseId)
+		        
 		},
 	})
 }
@@ -98,14 +94,17 @@ function test() {
      
 
 	$(function() {		
-				
+				//進場先檢查purchaseId
+		warehouseChange()
 		//聽說是自動驗證
 		$("#listForm").validate({
 			onfocusout:true,
+			delay:500,
 			submitHandler: function (form)
 		    {
 		        $('#submitButton').attr('disabled', 'disabled');
-		        alertPurchaseId()
+		        warehouseChange();
+		        alert("此進貨單單號:"+realPurchaseId)
 		        form.submit();
 		       
 		    },
@@ -366,8 +365,8 @@ display: block;
 			request.setAttribute("companyList", companyList);
 			String srno;
 			String srnoDate = checkno.getDay();
-			srno = checkno.processStorageRecord("01");//進貨單代碼 01
-			request.setAttribute("purchaseId", srno);
+// 			srno = checkno.processStorageRecord("01");//進貨單代碼 01
+// 			request.setAttribute("purchaseId", srno);
 			request.setAttribute("srnoDate", srnoDate);
 			
 			%>
@@ -384,11 +383,12 @@ display: block;
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" type="text" id="selectDate" name="date" value="${srnoDate}" readonly>
+								<input class="form-control" type="text" id="selectDate" name="date" value="${srnoDate}" onchange="warehouseChange()" readonly>
 							</div>
 						</div>
 					</div>
-					<div style="display:none" class="col-md-4 form-group ">
+<!-- 					style="display:none" -->
+					<div  class="col-md-4 form-group ">
 						<div class="row">
 							<div class="col-md-4">
 								<h5>
@@ -408,7 +408,7 @@ display: block;
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<select class="form-control" name="companyId" id="companyId" >
+								<select class="form-control" name="companyId" id="companyId"  >
                     
                     <c:forEach var = "i" begin="0" step="1" items="${companyList}">
                     
@@ -437,7 +437,7 @@ display: block;
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >倉別：</label></h5></div>
                     <div class="col-md-8">
-                      <select class="form-control" name="warehouse" id="warehouse" >
+                      <select class="form-control" name="warehouse" id="warehouse"  onchange="warehouseChange()">
                     
                     <c:forEach var = "i" begin="0" step="1" items="${warehouseList}">
                     

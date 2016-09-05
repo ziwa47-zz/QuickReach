@@ -29,18 +29,34 @@
  
 <script type="text/javascript">
 
+function jqueryAutoCompletePurchaseId() {
+	
+	
+	$("#purchaseId").autocomplete({
+		source:"../JQueryAutoCompletePurchaseId",
+		minLength:8,
+		delay:1000,
+		
+		
+	});
+
+}
+
+
+
 
 $(function() {		
 	
 	
 	jqueryAutoCompleteSKU();
+	jqueryAutoCompletePurchaseId()
 	
 	
 });
 
 function jqueryAutoCompleteSKU() {
 	
-	$("#sku").autocomplete({source:"../JQueryAutoCompleteSKUData",minLength:1});
+	$("#sku").autocomplete({source:"../JQueryAutoCompleteSKUData",minLength:1,delay:1000});
 	
 	
 }
@@ -123,10 +139,21 @@ function jqueryAutoCompleteSKU() {
 						</div>
 					</div>
 				</div>
-
-
-
+				
 				<div class="row">
+					<div class="col-md-4 form-group ">
+						<div class="row">
+							<div class="col-md-4">
+								<h5>
+									<label for="focusedInput ">單號：</label>
+								</h5>
+							</div>
+							<div class="col-md-8">
+								<input class="form-control" type="text" name="purchaseId" id="purchaseId"  >
+							</div>
+						</div>
+					</div>
+					
 					<div class="col-md-4 form-group ">
 						<div class="row">
 							<div class="col-md-4">
@@ -135,10 +162,17 @@ function jqueryAutoCompleteSKU() {
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" type="text" name="dateMin" style="width:89px" readonly> - <input class="form-control" type="text" name="dateMax" style="width:89px" readonly>
+								<input class="form-control" type="text" name="dateMin" style="width:89px" readonly> - <input class="form-control" type="text" style="width:89px" name="dateMax" readonly>
 							</div>
 						</div>
 					</div>
+				</div>
+				
+
+
+
+				<div class="row">
+					
 
 					<div class="col-md-4 form-group ">
 						<div class="row">
