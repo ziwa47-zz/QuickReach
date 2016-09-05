@@ -1,5 +1,6 @@
 package tw.iii.purchase;
 
+
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.Date;
@@ -175,14 +176,10 @@ public class purchaseFactory {
 			while (rs.next()) {
 				list = new LinkedList<>();
 
-				/*
-				if(rs.getString(1).equals(rs.previous())){
-					list.add("");
-					System.out.println("same!!!");
-				}else {
-					
-					
-				}*/
+//				
+//				if(rs.getString(13).equals("1")){
+//					System.out.println("進貨!!!!!!!!!!!!!");
+//				}
 				list.add(rs.getString(1));
 				list.add(rs.getString(2));
 				list.add(rs.getString(3));
@@ -195,6 +192,9 @@ public class purchaseFactory {
 				list.add(rs.getString(10));
 				list.add(rs.getString(11));
 				list.add(rs.getString(12));
+				list.add(rs.getString(13));
+				list.add(rs.getString(14));
+			
 
 				// System.out.println(list+"\n");
 				Alllist.add(list);
@@ -336,7 +336,7 @@ public class purchaseFactory {
 
 	public String searchCondition(String purchaseRecord, String outRecord,String date, String pname, String sku, String companyName, String owner,
 			String wareHouse, String warehousePosition, String qty, String price) {
-		String sqlstr1 = "select a.purchaseId,a.SKU,a.P_name,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment from quickreach.purchaselog_detail as a inner join quickreach.purchaselog_master as b where a.purchaseId =b.purchaseId  ";
+		String sqlstr1 = "select a.purchaseId,a.SKU,a.P_name,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment,a.stockStatus from quickreach.purchaselog_detail as a inner join quickreach.purchaselog_master as b where a.purchaseId =b.purchaseId  ";
 		System.out.println(sku);
 		
 
@@ -453,4 +453,44 @@ public class purchaseFactory {
 
 	}
 
+	public LinkedList<Cpurchase_detail> details (String sku,Connection conn){
+		 LinkedList<Cpurchase_detail> list = new LinkedList<>();
+		Cpurchase_detail d = new Cpurchase_detail();
+		String strsql = "select m.purchaseId,m.stockStatus,qty,date,m.warehouse from purchaselog_master as m inner join purchaselog_detail  where 1 = 1 "
+				+" and sku = ?";
+//		if(check1=="on" ){
+//			strsql += " and stockStatus = 1";
+//		}
+//		if(check2=="on"){
+//			strsql += " and stockStatus = 2";
+//		}
+		PreparedStatement ps;
+		try {
+			ps = conn.prepareStatement(strsql);
+			ps.setString(1, sku);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				d =  new Cpurchase_detail();
+				d.setPurchaseId(rs.getString(1));
+				if(rs.getString(2).equals("1")){
+					d.setStockStatus("進貨");
+				}else if (rs.getString(2).equals("2")){
+					d.setStockStatus("出貨");
+				}
+				d.setQty(rs.getInt(3));
+				d.setDate(rs.getDate(4));
+				d.setWarehouse(rs.getString(5));
+				list.add(d);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return list;
+		
+	}
+	
 }

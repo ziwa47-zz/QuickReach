@@ -15,10 +15,11 @@ public class BundlesFactory {
 	LinkedList<CProduct> lcp;
 	private Statement state;
 	public String[] bundles ;
-	LinkedList<String[]> bundlesList = new LinkedList<String[]>();
+	public LinkedList<String[]> bundlesList = new LinkedList<String[]>();
 	
-	public void setBundles(String brand,String subBrand,String SKU,String P_name,String qty) {
-		bundles=new String[]{brand,subBrand,SKU,P_name,qty};	
+	public void setBundles(String SKU,String P_name,String qty) {
+		//bundles=new String[]{brand,subBrand,SKU,P_name,qty};
+		bundles=new String[]{SKU,P_name,qty};
 	}
 	
 	public LinkedList<CProduct> getProductInfo(String brand,String subBrand,String SKU,String P_name) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
@@ -26,7 +27,7 @@ public class BundlesFactory {
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
-		String sqlstr = "SELECT sku,P_name,brand,subBrand FROM quickreach.product where 1=1";
+		String sqlstr = "SELECT sku,P_name,brand,subBrand FROM quickreach.product where 1=1 ";
 		
 		if (brand != null && !brand.equals("select")){
 			sqlstr += " and brand='" + brand + "'";
@@ -35,12 +36,12 @@ public class BundlesFactory {
 		if (subBrand != null && !subBrand.equals("select")){
 			sqlstr += " and subBrand='" + subBrand + "'";
 		}
-		if (SKU != null && !SKU.equals("select")){
-			sqlstr += " and SKU='" + SKU + "'";
-		}
-		if (P_name != null && !P_name.equals("select")){
-			sqlstr += " and P_name='" + P_name + "'";
-		}
+//		if (SKU != null && !SKU.equals("select")){
+//			sqlstr += " and SKU='" + SKU + "'";
+//		}
+//		if (P_name != null && !P_name.equals("select")){
+//			sqlstr += " and P_name='" + P_name + "'";
+//		}
 		
 		
 		ResultSet rs = state.executeQuery(sqlstr);
@@ -140,18 +141,52 @@ public class BundlesFactory {
 		return lcp;
 	}
 	
+	public LinkedList<CProduct> getTotalBundles() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+		//查看所有複合商品
+		DataBaseConn dbc = new DataBaseConn();		
+		Connection conn = dbc.getConn() ;
+		state = conn.createStatement();
+		String sqlstr = "SELECT sku,P_name,comment FROM quickreach.product where  productType = '組合包'";
+	
+		ResultSet rs = state.executeQuery(sqlstr);
+		lcp = new LinkedList<CProduct>();
+		CProduct cp ;
+		
+		while (rs.next()) {
+			cp=new CProduct();
+			cp.setSKU(rs.getString(1));
+			cp.setP_name(rs.getString(2));
+			cp.setComment(rs.getString(3));
+			lcp.add(cp);			
+		}
+		
+		rs.close();
+		state.close();
+		dbc.connclose(conn);
+		return lcp;
+	}
+	
 	public LinkedList<String[]> getBundlesInfo(){
 		return bundlesList;
 	}
 	
 	public void addItem(String[] a){
-		bundlesList.add(a); 
+		boolean n = true;
+		for(String[] x: bundlesList){
+			if(x[0].equals(a[0])){
+				a[2] = Integer.toString(Integer.parseInt(x[2])+Integer.parseInt(a[2]));
+				bundlesList.remove(x);
+			}
+		}
+		
+		bundlesList.add(a);
+		
 	}
 	
 	public void removeItem(String a){
 		
 		for(String[] x:bundlesList){
-			if(x[2].equals(a)){
+			if(x[0].equals(a)){
 				bundlesList.remove(x);
 			}
 		}
@@ -192,8 +227,8 @@ public class BundlesFactory {
 			PreparedStatement preparedState = conn.prepareStatement(sqlstr);		
 	
 			preparedState.setString(1, sku);
-			preparedState.setString(2, x[2]);
-			preparedState.setInt(3, Integer.parseInt(x[4]));
+			preparedState.setString(2, x[0]);
+			preparedState.setInt(3, Integer.parseInt(x[2]));
 			
 			
 			preparedState.execute();
@@ -203,6 +238,43 @@ public class BundlesFactory {
 		}
 		
 								
+	}
+	
+	public void showBundlesDetail(String bdsku) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+		
+		DataBaseConn dbc = new DataBaseConn();		
+		Connection conn = dbc.getConn() ;
+		state = conn.createStatement();
+		String sqlstr = "SELECT b.p_SKU,p.P_name,b.qty FROM quickreach.bundles as b inner join quickreach.product as p on b.p_SKU=p.SKU  where m_SKU = '" + bdsku + "'";
+	
+		ResultSet rs = state.executeQuery(sqlstr);
+		bundlesList = new LinkedList<String[]>();
+		
+		while (rs.next()) {
+			String[] x = new String[3];
+			x[0]=rs.getString(1);
+			x[1]=rs.getString(2);
+			x[2]=rs.getString(3);
+			bundlesList.add(x);			
+		}
+		
+		rs.close();
+		state.close();
+		dbc.connclose(conn);
+//		return bundlesList;
+	}
+	
+	public void bundlesDelete(String sku) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+		
+		DataBaseConn dbc = new DataBaseConn();		
+		Connection conn = dbc.getConn() ;
+		state = conn.createStatement();
+		
+		String sqlstr = "";
+		
+		state.executeUpdate(sqlstr);
+		state.close();
+		dbc.connclose(conn);
 	}
 	
 }
