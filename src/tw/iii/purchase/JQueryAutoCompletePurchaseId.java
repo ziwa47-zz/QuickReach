@@ -57,7 +57,7 @@ public class JQueryAutoCompletePurchaseId extends HttpServlet {
 			DataBaseConn jdbc = new DataBaseConn();
 			conn = jdbc.getConn();			
 			
-			String strSql = "SELECT purchaseId FROM quickreach.purchaseLog_master where purchaseId like ?";
+			String strSql = "SELECT purchaseId FROM  purchaseLog_master where purchaseId like ?";
 			
 			ps = conn.prepareStatement(strSql);
 			ps.setString(1, "%"+searchPurchaseId+"%");
