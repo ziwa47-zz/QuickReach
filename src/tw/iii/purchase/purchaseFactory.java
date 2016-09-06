@@ -1,4 +1,4 @@
-package tw.iii.purchase;
+﻿package tw.iii.purchase;
 
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -19,6 +19,9 @@ public class purchaseFactory {
 
 	private PrintWriter out;
 	private Connection conn;
+	
+	
+	
 
 	public purchaseFactory() {
 
@@ -31,16 +34,15 @@ public class purchaseFactory {
 
 		return false;
 	}
-	
-	//company<select>
-	public LinkedList<LinkedList<String>> companySelectOption()
-			throws ClassNotFoundException, SQLException, Exception {
+
+	// company<select>
+	public LinkedList<LinkedList<String>> companySelectOption() throws ClassNotFoundException, SQLException, Exception {
 
 		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
 		LinkedList<String> companyName = new LinkedList<>();
 
 		Connection conn = new DataBaseConn().getConn();
-		String strsql = "SELECT C_id,C_name FROM quickreach.company";
+		String strsql = "SELECT C_id,C_name FROM  company";
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -58,10 +60,6 @@ public class purchaseFactory {
 
 		return Alllist;
 	}
-	
-	
-
-	
 
 	// wareHouse <select>
 	public LinkedList<LinkedList<String>> warehouseSelectOption()
@@ -71,7 +69,7 @@ public class purchaseFactory {
 		LinkedList<String> wareHouseName = new LinkedList<>();
 
 		Connection conn = new DataBaseConn().getConn();
-		String strsql = "SELECT warehouse, warehouseName FROM quickreach.warehouse";
+		String strsql = "SELECT warehouse, warehouseName FROM  warehouse";
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -92,7 +90,7 @@ public class purchaseFactory {
 
 	public boolean istodaypurchase() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
 		Connection conn = new DataBaseConn().getConn();
-		String strsql = " select * from quickreach.purchaselog_master where date = curdate()+0  ";
+		String strsql = " select * from  purchaselog_master where date = curdate()+0  ";
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -106,12 +104,12 @@ public class purchaseFactory {
 
 	// �脣���� yyyyMMdd statusId US/KH 瘚偌���
 	public String processStorageRecord(String status) throws IllegalAccessException, ClassNotFoundException, Exception {
-
+//真真正正時代的眼淚
 		String time = getDay();
 
 		DecimalFormat df = new DecimalFormat("000");
 		int no = 1;
-		String strsql = " select purchaseid,date from quickreach.purchaselog_master where (date < now()) and  date >= curdate() and warehouse='KHH' order by date desc limit 0,1 ";
+		String strsql = " select purchaseid,date from  purchaselog_master where (date < now()) and  date >= curdate() and warehouse='KHH' order by date desc limit 0,1 ";
 		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
@@ -122,16 +120,10 @@ public class purchaseFactory {
 		while (rs.next()) {
 			check = rs.getString(1);
 		}
-//		System.out.println(2 + check);
-//		System.out.println("no:"+no);
-		// System.out.println((check.substring(12,check.length()-1)));
 		if (check != null) {
-			//System.out.println(Integer.valueOf(check.substring(13, check.length())));
 			if (no <= Integer.valueOf(check.substring(13, check.length()))) {
 				int i = Integer.valueOf(check.substring(13, check.length()));
-				no = i+1;
-				//Integer.valueOf((Integer.valueOf(check.substring(13, check.length()))) + 1);
-//				System.out.println("x"+no);
+				no = i + 1;
 			}
 			srno = time + status + "KHH" + df.format(no);
 
@@ -152,58 +144,68 @@ public class purchaseFactory {
 		System.out.println(dateFormat.format(date));
 		return time;
 	}
+	
+	
 
-	public LinkedList<LinkedList<String>> searchPurchase(Connection conn,String purchaseRecord, String outRecord, String date, String pname, String sku,
-			String companyName, String owner, String wareHouse, String warehousePosition, String qty, String price) {
+	public LinkedList<LinkedList<String>> searchPurchase(Connection conn, String purchaseRecord, String outRecord,
+			String purchaseId, String date1, String date2, String pname, String sku, String companyName, String owner, String wareHouse,
+			String warehousePositionOne, String warehousePositionTwo, String qty, String price) {
 		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
 		LinkedList<String> list = new LinkedList<>();
 		ResultSet rs = null;
 		java.sql.Statement stmt = null;
-		// DataBaseConn jdbc = new DataBaseConn();
 		System.out.println("I need stockRecord status:" + purchaseRecord + "," + outRecord);
 
-		String sqlstr1 = searchCondition(purchaseRecord, outRecord,date, pname, sku, companyName, owner, wareHouse, warehousePosition, qty,
-				price);
+		String sqlstr1 = searchCondition(purchaseRecord, outRecord, purchaseId, date1, date2, pname, sku, companyName, owner,
+				wareHouse, warehousePositionOne, warehousePositionTwo, qty, price);
 
 		System.out.println(sqlstr1);
 		try {
 			PreparedStatement ps = conn.prepareStatement(sqlstr1);
-			// stmt = conn.createStatement();
 
 			rs = ps.executeQuery(sqlstr1);
+			
+			//int count = ps.executeUpdate(sqlstr1);
+			
+			
+			
 
 			while (rs.next()) {
 				list = new LinkedList<>();
 
-				/*
-				if(rs.getString(1).equals(rs.previous())){
-					list.add("");
-					System.out.println("same!!!");
-				}else {
-					
-					
-				}*/
+				
+
+				if (rs.getString(15).equals("1")) {
+					list.add("進貨");
+
+				} else {
+					list.add("出貨");
+
+				}
+
 				list.add(rs.getString(1));
 				list.add(rs.getString(2));
 				list.add(rs.getString(3));
 				list.add(rs.getString(4));
 				list.add(rs.getString(5));
+
 				list.add(rs.getString(6));
 				list.add(rs.getString(7));
 				list.add(rs.getString(8));
-				list.add(rs.getString(9));
-				list.add(rs.getString(10));
+				list.add(rs.getString(9) + "-" + rs.getString(10));
 				list.add(rs.getString(11));
-				list.add(rs.getString(12));
 
-				// System.out.println(list+"\n");
+				list.add(rs.getString(12));
+				list.add(rs.getString(13));
+				list.add(rs.getString(14));
+
 				Alllist.add(list);
 
 			}
 
 			rs.close();
+			ps.close();
 
-			// stmt.close();
 			conn.close();
 
 		} catch (Exception e) {
@@ -220,16 +222,17 @@ public class purchaseFactory {
 		return Alllist;
 
 	}
-	public LinkedList<LinkedList<String>> SearchOutRecord(Connection conn, String date, String outRecord, String pname,
-			String sku, String companyName, String owner, String wareHouse, String warehousePosition, String qty,
-			String price) {
+
+	public LinkedList<LinkedList<String>> SearchOutRecord(Connection conn, String date1, String date2, String outRecord,
+			String pname, String sku, String companyName, String owner, String wareHouse, String warehousePosition,
+			String qty, String price) {
 		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
 		LinkedList<String> list = new LinkedList<>();
 		ResultSet rs = null;
 		java.sql.Statement stmt = null;
 		// DataBaseConn jdbc = new DataBaseConn();
 
-		String sqlOutRecord = sqlSearchOutRecord(date, outRecord, pname, sku, companyName, owner, wareHouse,
+		String sqlOutRecord = sqlSearchOutRecord(date1, date2, outRecord, pname, sku, companyName, owner, wareHouse,
 				warehousePosition, qty, price);
 		System.out.println(sqlOutRecord);
 
@@ -281,13 +284,17 @@ public class purchaseFactory {
 
 	}
 
-	public String sqlSearchOutRecord(String date, String outRecordId, String pname, String sku, String companyName,
-			String owner, String wareHouse, String warehousePosition, String qty, String price) {
-		String sqlOutRecord = "select a.SKU,a.P_name,a.purchaseId,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment from quickreach.purchaselog_detail as a inner join quickreach.purchaselog_master as b where a.purchaseId =b.purchaseId and a.stockStatus = 2";
+	public String sqlSearchOutRecord(String date1, String date2, String outRecordId, String pname, String sku,
+			String companyName, String owner, String wareHouse, String warehousePosition, String qty, String price) {
+		String sqlOutRecord = "select a.SKU,a.P_name,a.purchaseId,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment from  purchaselog_detail as a inner join  purchaselog_master as b where a.purchaseId =b.purchaseId and a.stockStatus = 2";
 
-		if (!isNullorEmpty(date)) {
-			sqlOutRecord += " and b.date  <= '" + date + "'";
-			System.out.println(date);
+		if (!isNullorEmpty(date1)) {
+			sqlOutRecord += " and b.date  <= '" + date1 + "'";
+			System.out.println(date1);
+		}
+		if (!isNullorEmpty(date2)) {
+			sqlOutRecord += " and b.date  >= '" + date2 + "'";
+			System.out.println(date2);
 		}
 
 		if (!isNullorEmpty(outRecordId)) {
@@ -329,38 +336,48 @@ public class purchaseFactory {
 			sqlOutRecord += " and a.price like '%" + price + "%'";
 			System.out.println(price);
 		}
-		
 
 		return sqlOutRecord;
 	}
 
-	public String searchCondition(String purchaseRecord, String outRecord,String date, String pname, String sku, String companyName, String owner,
-			String wareHouse, String warehousePosition, String qty, String price) {
-		String sqlstr1 = "select a.purchaseId,a.SKU,a.P_name,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment from quickreach.purchaselog_detail as a inner join quickreach.purchaselog_master as b where a.purchaseId =b.purchaseId  ";
+	public String searchCondition(String purchaseRecord, String outRecord,String purchaseId, String date1, String date2, String pname,
+			String sku, String companyName, String owner, String wareHouse, String warehousePositionOne,
+			String warehousePositionTwo, String qty, String price) {
+		String sqlstr1 = "select distinct a.purchaseId,a.SKU,c.P_name,c.spec,c.color,"
+				+ " a.qty,a.price,a.warehouse,a.warehousePosition1,a.warehousePosition2,"
+				+ " b.date,b.companyName,b.staffId,a.comment,a.stockStatus"
+				+ " from  purchaselog_detail as a inner join  purchaselog_master as b inner join  product as c where a.purchaseId =b.purchaseId and a.SKU = c.SKU  ";
 		System.out.println(sku);
-		
 
 		if (!isNullorEmpty(purchaseRecord) && !isNullorEmpty(outRecord)) {
 			sqlstr1 += "and (a.stockStatus = 1 or a.stockStatus = 2)";
-			System.out.println("both:"+purchaseRecord + outRecord);
+			System.out.println("both:" + purchaseRecord + outRecord);
 		} else {
 
 			if (!isNullorEmpty(purchaseRecord)) {
 				sqlstr1 += "and a.stockStatus = 1";
-				System.out.println("進貨:"+purchaseRecord);
+				System.out.println("進貨:" + purchaseRecord);
 			}
 
 			if (!isNullorEmpty(outRecord)) {
 				sqlstr1 += "and a.stockStatus = 2";
-				System.out.println("出貨:"+outRecord);
+				System.out.println("出貨:" + outRecord);
 			}
 
 		}
 		
-		
-		if (!isNullorEmpty(date)) {
-			sqlstr1 += " and b.date <= '"+date+"'";
-			System.out.println("搜尋日期:"+date);
+		if (!isNullorEmpty(purchaseId)) {
+			sqlstr1 += " and a.purchaseId  like'%" + purchaseId + "%'";
+			System.out.println(purchaseId);
+		}
+
+		if (!isNullorEmpty(date1)) {
+			sqlstr1 += " and b.date  >= '" + date1 + "'";
+			System.out.println(date1);
+		}
+		if (!isNullorEmpty(date2)) {
+			sqlstr1 += " and b.date  <= '" + date2 + "'";
+			System.out.println(date2);
 		}
 
 		if (!isNullorEmpty(pname)) {
@@ -384,10 +401,16 @@ public class purchaseFactory {
 			sqlstr1 += " and b.staffId like '%" + owner + "%'";
 			System.out.println(owner);
 		}
-		if (!isNullorEmpty(warehousePosition)) {
-			sqlstr1 += " and a.warehousePosition like '%" + warehousePosition + "%'";
-			System.out.println(warehousePosition);
+		if (!isNullorEmpty(warehousePositionOne)) {
+			sqlstr1 += " and a.warehousePosition1 like '%" + warehousePositionOne + "%'";
+			System.out.println(warehousePositionOne);
 		}
+
+		if (!isNullorEmpty(warehousePositionTwo)) {
+			sqlstr1 += " and a.warehousePosition2 like '%" + warehousePositionTwo + "%'";
+			System.out.println(warehousePositionTwo);
+		}
+
 		if (!isNullorEmpty(qty)) {
 			sqlstr1 += " and a.qty like '%" + qty + "%'";
 			System.out.println(qty);
@@ -397,6 +420,8 @@ public class purchaseFactory {
 			sqlstr1 += " and a.price like '%" + price + "%'";
 			System.out.println(price);
 		}
+		
+		sqlstr1 += " order by 1";
 		return sqlstr1;
 	}
 
@@ -416,21 +441,10 @@ public class purchaseFactory {
 			values = new LinkedList<>();
 
 			values.add(request.getParameter(("sku" + i)));
-
-			values.add(request.getParameter(("pName" + i)));
-
-			values.add(request.getParameter(("spec" + i)));
-
-			values.add(request.getParameter(("color" + i)));
-
 			values.add(request.getParameter(("qty" + i)));
-
 			values.add(request.getParameter(("price" + i)));
-
-			// values.add(request.getParameter(("warehouse"+i)));
-
-			values.add(request.getParameter(("warehousePosition" + i)));
-
+			values.add(request.getParameter(("warehousePositionOne" + i)));
+			values.add(request.getParameter(("warehousePositionTwo" + i)));
 			values.add(request.getParameter(("comment" + i)));
 			values.add(request.getParameter("warehouse"));
 
@@ -450,6 +464,44 @@ public class purchaseFactory {
 		pInfo.add(request.getParameter("purchaseMasterComment"));
 
 		return pInfo;
+
+	}
+
+	public LinkedList<Cpurchase_detail> details(String sku, Connection conn) {
+		LinkedList<Cpurchase_detail> list = new LinkedList<>();
+		Cpurchase_detail d = new Cpurchase_detail();
+		String strsql = "select m.purchaseId,m.stockStatus,qty,date,m.warehouse from purchaselog_master as m inner join purchaselog_detail  where 1 = 1 "
+				+ " and sku = ?";
+		// if(check1=="on" ){
+		// strsql += " and stockStatus = 1";
+		// }
+		// if(check2=="on"){
+		// strsql += " and stockStatus = 2";
+		// }
+		PreparedStatement ps;
+		try {
+			ps = conn.prepareStatement(strsql);
+			ps.setString(1, sku);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				d = new Cpurchase_detail();
+				d.setPurchaseId(rs.getString(1));
+				if (rs.getString(2).equals("1")) {
+					d.setStockStatus("進貨");
+				} else if (rs.getString(2).equals("2")) {
+					d.setStockStatus("出貨");
+				}
+				d.setQty(rs.getInt(3));
+				d.setDate(rs.getDate(4));
+				d.setWarehouse(rs.getString(5));
+				list.add(d);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return list;
 
 	}
 
