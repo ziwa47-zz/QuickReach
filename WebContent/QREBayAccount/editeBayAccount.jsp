@@ -113,8 +113,8 @@ session.setAttribute("eBayAccount", eBayAccount);
 					<tr>
 						<th class=""><span class="red"> * </span>paypal
 							帳號 </br>(E-mail)</th>
-						<td class=""><input id="id_fd-email" type="text" name="paypalAccount" value=""
-							class="" >${eBayAccount.getpaypalAccount() }</td>
+						<td class=""><input id="id_fd-email" type="text" name="paypalAccount" value="${eBayAccount.getpaypalAccount() }"
+							class="" ></td>
 						<td class=""></td>
 					</tr>
 

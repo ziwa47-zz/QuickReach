@@ -71,13 +71,13 @@
 <hr>
 
 <%
-Connection conn = new DataBaseConn().getConn();
+Connection conn1 = new DataBaseConn().getConn();
 
-LinkedList<CEbay> ebay = getebay.searchEbayAc(request,conn);
+LinkedList<CEbay> ebay1 = getebay.searchEbayAc(request,conn1);
 
-request.setAttribute("ebay", ebay);
+session.setAttribute("ebay", ebay1);
 
-conn.close();
+conn1.close();
 
 %>
 
@@ -86,8 +86,7 @@ conn.close();
 			<table class="Table"  >
 				<thead>
 					<tr>
-					<th class=""></th>
-					
+										
 						<th class="">編輯</th>
 						<th class="" width="190">eBayID</th>
 						<th class="" width="150">eBay Token</th>
