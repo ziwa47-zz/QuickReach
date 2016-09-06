@@ -50,7 +50,7 @@
     <div class="container">
    	  <div class="nav" style="background-color:#1CAF9A;" >
         	<ul class="nav nav-tabs">
-        	  <li ><a href="Competence.jsp" style="color:#000000">修改權限</a></li>
+        	  <li ><a href="Competence.jsp" style="color:#000000">檢視權限</a></li>
               <li class="" style="background-color:#1CAF9A"><a href="CompetenceInsert.jsp" style="color:#FFFFFF">新增權限</a></li>
             </ul>
         </div>
@@ -176,7 +176,7 @@
                   </div>
                   <div class="container-fluid form-horizontal">
                 	<div class="row text-center" >     
-                        <input type="submit" value="新增" name="" id="" />
+                        <button type="submit" value="insert" name="smt" id="">新增</button>
                     </div>
                 
                 </div>

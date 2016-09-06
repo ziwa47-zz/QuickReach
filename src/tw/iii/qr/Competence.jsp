@@ -38,8 +38,8 @@
 	</script>   
     <script type="text/javascript"> 
     function goct(){
-    	searchform.action = "Competence.jsp"
-    	searchform.submit()
+        document.form.action = "Competence.jsp"
+        document.form.submit()
      }
     </script> 
     
@@ -88,21 +88,17 @@
   
   <div class="container" >
   	<form name="searchform" method="post" action="Competence.jsp" style="font-size: 100%; vertical-align: baseline;" class=" form-group container">
+<%request.setCharacterEncoding("UTF-8");%>
 <%
-request.setCharacterEncoding("UTF-8");
 response.setContentType("text/html;charset=UTF-8");
 
 LinkedList<Competence> list =  new LinkedList<Competence>();
 list = ctsql.getCompetenceLevel();
 request.setAttribute("list",list);
 
-String cv = request.getParameter("Competencelv");
-cv = new String(cv.getBytes("ISO8859_1"),"UTF-8");
-
-request.setAttribute("cv",cv);
-out.print(cv);
-
 %>
+
+
 
           <input type="hidden">
               <h3 class="" style="background: #BCF1E5; border-left: 6px solid #1CAF9A;" >權限設定</h3>
