@@ -188,17 +188,18 @@ public class purchaseFactory {
 				list.add(rs.getString(3));
 				list.add(rs.getString(4));
 				list.add(rs.getString(5));
-
 				list.add(rs.getString(6));
-				list.add(rs.getString(7));
-				list.add(rs.getString(8));
-				list.add(rs.getString(9) + "-" + rs.getString(10));
-				list.add(rs.getString(11));
+				
 
+				list.add(rs.getString(7));
+				list.add(rs.getString(8)+"-"+ rs.getString(9));
+				list.add(rs.getString(10));
+				list.add(rs.getString(11));
 				list.add(rs.getString(12));
 				list.add(rs.getString(13));
-				list.add(rs.getString(14));
 
+				list.add(rs.getString(14));
+				
 				Alllist.add(list);
 
 			}
@@ -343,8 +344,8 @@ public class purchaseFactory {
 	public String searchCondition(String purchaseRecord, String outRecord,String purchaseId, String date1, String date2, String pname,
 			String sku, String companyName, String owner, String wareHouse, String warehousePositionOne,
 			String warehousePositionTwo, String qty, String price) {
-		String sqlstr1 = "select distinct a.purchaseId,a.SKU,c.P_name,c.spec,c.color,"
-				+ " a.qty,a.price,a.warehouse,a.warehousePosition1,a.warehousePosition2,"
+		String sqlstr1 = "select distinct a.purchaseId,c.productType,a.SKU,c.P_name,"
+				+ " a.qty,a.price,a.warehouse,a.warehousePosition1,a.warehousePosition2,c.owner,"
 				+ " b.date,b.companyName,b.staffId,a.comment,a.stockStatus"
 				+ " from  purchaselog_detail as a inner join  purchaselog_master as b inner join  product as c where a.purchaseId =b.purchaseId and a.SKU = c.SKU  ";
 		System.out.println(sku);
