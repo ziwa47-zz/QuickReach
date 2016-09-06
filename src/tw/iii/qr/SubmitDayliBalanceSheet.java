@@ -65,7 +65,7 @@ public class SubmitDayliBalanceSheet extends HttpServlet {
 			PreparedStatement ps = null ;
 			for(int i = 0; i<list.size();i++){
 			
-			String strsql = "UPDATE quickreach.orders_master SET orderstatus='處理中' WHERE order_id=?";
+			String strsql = "UPDATE  orders_master SET orderstatus='處理中' WHERE order_id=?";
 			ps = conn.prepareStatement(strsql);
 			
 			ps.setInt(1, list.get(i));

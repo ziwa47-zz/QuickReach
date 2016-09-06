@@ -41,9 +41,9 @@ public class DayliBalanceSheetFactory extends COrders {
 				+ " m.ebayprice,m.ebayTotal, m.payDate, m.paypalmentId, m.paypalTotal,m.paypalFees,"
 				+ " m.paypalNet, m.shippingDate, m.ebayFees, m.order_id,"
 				+ " d.sku, d.productName, d.qty, d.owner, d.price"
-				+ " FROM quickreach.orders_master as m inner join"
-				+ " quickreach.order_recieverinfo as r using (QR_id) inner join"
-				+ " quickreach.orders_detail as d using (QR_id)"
+				+ " FROM  orders_master as m inner join"
+				+ "  order_recieverinfo as r using (QR_id) inner join"
+				+ "  orders_detail as d using (QR_id)"
 				+ " where m.orderstatus = '待處理' order by m.QR_id";
 
 		PreparedStatement ps = conn.prepareStatement(strSql);
@@ -56,7 +56,7 @@ public class DayliBalanceSheetFactory extends COrders {
 			order.COrderMaster.setOrderDate(rs.getDate(1));
 			order.COrderMaster.setQR_id(rs.getString(2));
 			String strSql2 = "SELECT SKU, productName, owner, qty, price"
-					+ " FROM quickreach.orders_detail"
+					+ " FROM  orders_detail"
 					+ " where QR_id = ?";
 
 			PreparedStatement ps2 = conn.prepareStatement(strSql2);

@@ -56,7 +56,7 @@ public class SubmitToShipped extends HttpServlet {
 		try {
 			conn = jdbc.getConn();
 			for(int i = 0;i<list.size();i++){
-			String strsql = "UPDATE quickreach.orders_master SET orderstatus='已出貨' WHERE order_id=?";
+			String strsql = "UPDATE  orders_master SET orderstatus='已出貨' WHERE order_id=?";
 			ps = conn.prepareStatement(strsql); 
 			
 			

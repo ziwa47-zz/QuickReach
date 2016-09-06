@@ -12,7 +12,7 @@ public class DataBaseConn {
 	private Connection conn;
 	private boolean isclosed;
 	public Connection getConn() throws SQLException, Exception, IllegalAccessException, ClassNotFoundException {
-		String urlstr = "jdbc:mysql://localhost:3306/quickreach?zeroDateTimeBehavior=convertToNull&user=root&password=cr3321&Unicode=true&characterEncoding=utf-8";
+		String urlstr = "jdbc:mysql://ap-cdbr-azure-east-c.cloudapp.net:3306/qrdata?zeroDateTimeBehavior=convertToNull&user=b80eb20f3a035f&password=79b419f4&Unicode=true&characterEncoding=utf-8";
 
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
 

@@ -27,7 +27,7 @@ public class BundlesFactory {
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
-		String sqlstr = "SELECT sku,P_name,brand,subBrand FROM quickreach.product where 1=1 ";
+		String sqlstr = "SELECT sku,P_name,brand,subBrand FROM quickreach.product where (productType is null or productType !='組合包') ";
 		
 		if (brand != null && !brand.equals("select")){
 			sqlstr += " and brand='" + brand + "'";
@@ -171,7 +171,7 @@ public class BundlesFactory {
 	}
 	
 	public void addItem(String[] a){
-		boolean n = true;
+		
 		for(String[] x: bundlesList){
 			if(x[0].equals(a[0])){
 				a[2] = Integer.toString(Integer.parseInt(x[2])+Integer.parseInt(a[2]));
@@ -264,13 +264,26 @@ public class BundlesFactory {
 //		return bundlesList;
 	}
 	
-	public void bundlesDelete(String sku) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+	public void bundlesDeleteFormProduct(String sku) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
 		
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
 		
-		String sqlstr = "";
+		String sqlstr = "DELETE FROM `quickreach`.`product` WHERE `SKU`='"+sku+"';";
+		
+		state.executeUpdate(sqlstr);
+		state.close();
+		dbc.connclose(conn);
+	}
+	
+public void bundlesDeleteFormBundles(String sku) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+		
+		DataBaseConn dbc = new DataBaseConn();		
+		Connection conn = dbc.getConn() ;
+		state = conn.createStatement();
+		
+		String sqlstr = "DELETE FROM bundles WHERE `m_SKU`='"+sku+"';";
 		
 		state.executeUpdate(sqlstr);
 		state.close();
