@@ -12,9 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-import jdk.nashorn.internal.ir.RuntimeNode.Request;
 import tw.iii.qr.DataBaseConn;
 
 public class purchaseFactory {
@@ -44,7 +42,7 @@ public class purchaseFactory {
 		LinkedList<String> companyName = new LinkedList<>();
 
 		Connection conn = new DataBaseConn().getConn();
-		String strsql = "SELECT C_id,C_name FROM quickreach.company";
+		String strsql = "SELECT C_id,C_name FROM  company";
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -71,7 +69,7 @@ public class purchaseFactory {
 		LinkedList<String> wareHouseName = new LinkedList<>();
 
 		Connection conn = new DataBaseConn().getConn();
-		String strsql = "SELECT warehouse, warehouseName FROM quickreach.warehouse";
+		String strsql = "SELECT warehouse, warehouseName FROM  warehouse";
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -92,7 +90,7 @@ public class purchaseFactory {
 
 	public boolean istodaypurchase() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
 		Connection conn = new DataBaseConn().getConn();
-		String strsql = " select * from quickreach.purchaselog_master where date = curdate()+0  ";
+		String strsql = " select * from  purchaselog_master where date = curdate()+0  ";
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -111,7 +109,7 @@ public class purchaseFactory {
 
 		DecimalFormat df = new DecimalFormat("000");
 		int no = 1;
-		String strsql = " select purchaseid,date from quickreach.purchaselog_master where (date < now()) and  date >= curdate() and warehouse='KHH' order by date desc limit 0,1 ";
+		String strsql = " select purchaseid,date from  purchaselog_master where (date < now()) and  date >= curdate() and warehouse='KHH' order by date desc limit 0,1 ";
 		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
@@ -288,7 +286,7 @@ public class purchaseFactory {
 
 	public String sqlSearchOutRecord(String date1, String date2, String outRecordId, String pname, String sku,
 			String companyName, String owner, String wareHouse, String warehousePosition, String qty, String price) {
-		String sqlOutRecord = "select a.SKU,a.P_name,a.purchaseId,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment from quickreach.purchaselog_detail as a inner join quickreach.purchaselog_master as b where a.purchaseId =b.purchaseId and a.stockStatus = 2";
+		String sqlOutRecord = "select a.SKU,a.P_name,a.purchaseId,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment from  purchaselog_detail as a inner join  purchaselog_master as b where a.purchaseId =b.purchaseId and a.stockStatus = 2";
 
 		if (!isNullorEmpty(date1)) {
 			sqlOutRecord += " and b.date  <= '" + date1 + "'";
@@ -348,7 +346,7 @@ public class purchaseFactory {
 		String sqlstr1 = "select distinct a.purchaseId,a.SKU,c.P_name,c.spec,c.color,"
 				+ " a.qty,a.price,a.warehouse,a.warehousePosition1,a.warehousePosition2,"
 				+ " b.date,b.companyName,b.staffId,a.comment,a.stockStatus"
-				+ " from quickreach.purchaselog_detail as a inner join quickreach.purchaselog_master as b inner join quickreach.product as c where a.purchaseId =b.purchaseId and a.SKU = c.SKU  ";
+				+ " from  purchaselog_detail as a inner join  purchaselog_master as b inner join  product as c where a.purchaseId =b.purchaseId and a.SKU = c.SKU  ";
 		System.out.println(sku);
 
 		if (!isNullorEmpty(purchaseRecord) && !isNullorEmpty(outRecord)) {
