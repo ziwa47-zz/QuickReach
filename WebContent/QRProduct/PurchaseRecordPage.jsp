@@ -1,3 +1,4 @@
+<%@page import="org.omg.PortableServer.REQUEST_PROCESSING_POLICY_ID"%>
 <%@page import="tw.iii.purchase.purchaseFactory"%>
 
 <%@page import="tw.iii.qr.DataBaseConn"%>
@@ -27,11 +28,28 @@
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript">
 
+function jqueryAutoCompletePurchaseId() {
+	
+	
+	$("#purchaseId").autocomplete({
+		source:"../JQueryAutoCompletePurchaseId",
+		minLength:8,
+		delay:1000,
+		
+		
+	});
+
+}
+
+
 
 $(function() {		
 	
 	
+	
 	jqueryAutoCompleteSKU();
+	jqueryAutoCompletePurchaseId();
+	
 	
 	//var rowCount = $('#myTable tr').length;
 	//var rowCount = $("#myTable").attr('rows').length;
@@ -43,7 +61,7 @@ $(function() {
 
 function jqueryAutoCompleteSKU() {
 	
-	$("#sku").autocomplete({source:"../JQueryAutoCompleteSKUData",minLength:1});
+	$("#sku").autocomplete({source:"../JQueryAutoCompleteSKUData",minLength:1,delay:1000});
 	
 	
 }
@@ -62,6 +80,8 @@ function jqueryAutoCompleteSKU() {
 		
 		 String purchaseRecord = request.getParameter("purchaseRecord");
 		  String outRecord = request.getParameter("outRecord");
+		  
+		  String purchaseId = request.getParameter("purchaseId");
 
 		String date1 = request.getParameter("dateMin");
 		String date2= request.getParameter("dateMax");
@@ -79,7 +99,7 @@ function jqueryAutoCompleteSKU() {
 		String price = request.getParameter("price");
 
 		Connection conn = new DataBaseConn().getConn();
-		LinkedList<LinkedList<String>> allList = searchDetail.searchPurchase(conn, purchaseRecord,outRecord ,date1, date2, pname, sku, companyName,
+		LinkedList<LinkedList<String>> allList = searchDetail.searchPurchase(conn, purchaseRecord,outRecord,purchaseId,date1, date2, pname, sku, companyName,
 				owner, wareHouse, warehousePositionOne,warehousePositionTwo, qty, price);
 		
 
@@ -150,10 +170,22 @@ function jqueryAutoCompleteSKU() {
 						</div>
 					</div>
 				</div>
-
-
-
+				
+				
 				<div class="row">
+					<div class="col-md-4 form-group ">
+						<div class="row">
+							<div class="col-md-4">
+								<h5>
+									<label for="focusedInput ">單號：</label>
+								</h5>
+							</div>
+							<div class="col-md-8">
+								<input class="form-control" type="text" name="purchaseId" id="purchaseId"  >
+							</div>
+						</div>
+					</div>
+					
 					<div class="col-md-4 form-group ">
 						<div class="row">
 							<div class="col-md-4">
@@ -166,6 +198,12 @@ function jqueryAutoCompleteSKU() {
 							</div>
 						</div>
 					</div>
+				</div>
+
+
+
+				<div class="row">
+					
 
 					<div class="col-md-4 form-group ">
 						<div class="row">
