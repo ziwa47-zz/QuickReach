@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -7,7 +8,17 @@
 <title>新增產品</title>
 </head>
 <body>
-<%@ include file ="/href/navbar.jsp" %>
+
+<!--  <%@ include file ="/href/navbar.jsp" %> -->
+<!--    <script type="text/javascript">  --> 
+<!--    $(function () {      --> 
+<!--        //日期選擇器   --> 
+<!--        $("input[name=date]").datepicker();  --> 
+<!--        $("input[name=createDate]").datepicker();  --> 
+<!--    });  --> 
+<!--    </script>    --> 
+
+  
 <div class="nav">
   	<div class="container">
     	<div class="navbar-left" style="background-color:#BCF1E5;" >
@@ -29,9 +40,7 @@
         </div>
     </div>
   </div>
-  <script type="text/javascript">
   
-  </script>
   
   
   <div class="container container-fluid breadcrumbBox">
@@ -43,53 +52,54 @@
   </div>
 
 <div class="container" style="background: #9DDCD1; border-radius:20px;" >
-  <form id="listForm" name="listForm" method="post" action="PurchaseRecordPage.jsp" 
+  <form id="listForm" name="listForm" method="post" action="../ProductDo" 
   style="font-size: 100%; vertical-align: baseline; padding: 15px; " 
   class="form-inline container">
+
     <fieldset id="myfields" class="container-fluid" style="padding:0 30px 0 0;"><legend>新增產品</legend>
       <input type="hidden">
-      <div class="panel-group" id="accordion">
+      <div class="panel-group" id="accordion">  <label class="radio-inline"><button type="submit" name="submit" value="newProduct"
+						class="btn-lg btn-success">新增產品資料</button></label>
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title">
               <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">產品基本資料</a>
             </h4>
           </div>
-          
           <div id="collapse1" class="panel-collapse collapse in">
             <div class="panel-body">
               <div class="container-fluid form-horizontal">
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>商品編號</h4></div>
-                      <div class="col-md-5 well-sm"><input class="form-control" type="text" value="" ></div>
+                      <div class="col-md-5 well-sm"><input class="form-control" type="text" name="SKU" value="" ></div>
                   </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>條碼編號</h4></div>
-                      <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+                      <div class="col-md-5 well-sm"><input class="form-control" type="text" name="barCode" value=""></div>
                   </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>擁有者</h4></div>
-                    <div class="col-md-5 well-sm"><input class="form-control" type="text" value="" ></div>
+                    <div class="col-md-5 well-sm"><input class="form-control" type="text" name="owner" value="" ></div>
                   </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>商品類別</h4></div>
-                      <div class="col-md-5 well-sm"><input class="form-control" type="text" value="" ></div>
+                      <div class="col-md-5 well-sm"><input class="form-control" type="text" name="productType" value="" ></div>
                   </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>廠牌</h4></div>
-                      <div class="col-md-5 well-sm"><input class="form-control" type="text" value="" ></div>
+                      <div class="col-md-5 well-sm"><input class="form-control" type="text" name="brand" value="" ></div>
                   </div>
                    <div class="row">
                   	  <div class="col-md-3 text-right well-sm label-tag"  ><h4>副廠牌</h4></div>
-                   	  <div class="col-md-5 well-sm"><input class="form-control" type="text" value="" ></div>
+                   	  <div class="col-md-5 well-sm"><input class="form-control" type="text" name="subBrand" value="" ></div>
                   </div>
                   <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>EAN</h4></div>
-                  <div class="col-md-5 well-sm"><input class="form-control" type="text" value="" ></div>
+                  <div class="col-md-5 well-sm"><input class="form-control" type="text" name="EAN" value="" ></div>
               </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>ProductCode</h4></div>
-                      <div class="col-md-5 well-sm"><input class="form-control" type="text" value="" ></div>
+                      <div class="col-md-5 well-sm"><input class="form-control" type="text" name="productCode" value="" ></div>
                   </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>上傳圖片</h4></div>
@@ -114,36 +124,40 @@
              
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>品名</h4></div>
-                  <div class="col-md-5 well-sm"><input class="form-control" type="text" value="$" ></div>
+                  <div class="col-md-5 well-sm"><input class="form-control" type="text" name="P_name" value="" ></div>
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>規格</h4></div>
-                  <div class="col-md-5 well-sm"><input class="form-control" type="text" value="" ></div>
+                  <div class="col-md-5 well-sm"><input class="form-control" type="text" name ="spec" value="" ></div>
               </div>
             
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>顏色</h4></div>
-                  <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+                  <div class="col-md-5 well-sm"><input class="form-control" type="text" name="color" value=""></div>
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>安全庫存</h4></div>
-                  <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+                  <div class="col-md-5 well-sm"><input class="form-control" type="text" name="securedQty" value="0"></div>
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>成本</h4></div>
-                  <div class="col-md-5 well-sm"><input class="form-control" type="text" value="" ></div>
+                  <div class="col-md-5 well-sm"><input class="form-control" type="text" name="cost" value="0" ></div>
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>備註</h4></div>
-                  <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+                  <div class="col-md-5 well-sm"><input class="form-control" type="text" name="comment" value=""></div>
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>更新紀錄</h4></div>
-                  <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+                  <div class="col-md-5 well-sm"><input class="form-control" type="month" name="date" value=""></div>
               </div>
+              	 <div class="row">
+                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>上架否</h4></div>
+                  <div class="col-md-5 well-sm"><input class="form-control" type="text" name="added" value="" ></div>
+              </div>  
                 <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>重量</h4></div>
-                  <div class="col-md-5 well-sm"><input class="form-control" type="text" value="" ></div>
+                  <div class="col-md-5 well-sm"><input class="form-control" type="text" name="weight" value="0" ></div>
               </div>
 
             </div>
@@ -161,15 +175,15 @@
               <div class="container-fluid form-horizontal">
                     <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>包裝材質</h4></div>
-                  <div class="col-md-5 well-sm"><input class="form-control" type="text" value="" ></div>
+                  <div class="col-md-5 well-sm"><input class="form-control" type="text" name="packageMatrial" value="" ></div>
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>材積重</h4></div>
-                  <div class="col-md-5 well-sm"><input class="form-control" type="text" value="" ></div>
+                  <div class="col-md-5 well-sm"><input class="form-control" type="text" name="vilumetricWeight" value="0" ></div>
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>建檔日</h4></div>
-                  <div class="col-md-5 well-sm"><input class="form-control" type="text" value="" ></div>
+                  <div class="col-md-5 well-sm"><input class="form-control" type="text" name="createDate" value="" ></div>
               </div>
           
               </div>
