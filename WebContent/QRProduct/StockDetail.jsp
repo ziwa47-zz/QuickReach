@@ -10,47 +10,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>庫存細節</title>
+<title>庫存明細</title>
 </head>
 <body>
 <%@ include file ="/href/navbar.jsp" %>
-<div class="nav">
-  	<div class="container">
-    	<div class="navbar-left" style="background-color:#BCF1E5;" >
-        	<ul class="nav nav-tabs">
-              <li class="" style="background-color:#1CAF9A"><a href="SearchStockPage.jsp" style="color:#FFFFFF">庫存</a></li>
-              <li><a href="SearchProductPage.jsp" style="color:#000000">商品</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="container">
-   	  <div class="nav" style="background-color:#1CAF9A;" >
-        	<ul class="nav nav-tabs">
-              <li class="" style="background-color:#1CAF9A"><a href="SearchStockPage.jsp" style="color:#fff">查詢庫存</a></li>
-              <li><a href="NewProduct.jsp">新增產品</a></li>
-              <li ><a href="purchasePage.jsp" style="color:#000">進貨</a></li>
-              <li><a href="PurchaseRecordPage.jsp" style="color:#000000">進貨紀錄</a></li>
-              <li><a href="OutRecordPage.jsp" style="color:#000000">出貨紀錄</a></li>
-            </ul>
-        </div>
-    </div>
-  
-  </div>
-  
-  
-  
-<div class="container container-fluid breadcrumbBox">
-  <ol class="breadcrumb" >
-    <li><a href="#" >主要目錄</a></li>
-    <li class="active" style="display:"><a href="#">庫存</a></li>
-    <li><a href="#">庫存查詢</a></li>
-  </ol>
-</div>
-
-<div class="container" style="background: #9DDCD1; border-radius:20px;">
-  <form method="post" action="../ProductDo" 
-  style="font-size: 100%; vertical-align: baseline; padding: 15px;">
-    <fieldset id="myfields" class="container-fluid" style="padding:0 30px 0 0;" disabled ><legend>庫存明細</legend>
       <%
 String sku1 ;
 request.setCharacterEncoding("UTF-8");
@@ -74,6 +37,42 @@ conn1.close();
 }
 
 %>
+	<div class="nav">
+		<div class="container">
+			<div class="navbar-left" style="background-color: #BCF1E5;">
+				<ul class="nav nav-tabs">
+					<li class="" style="background-color: #1CAF9A"><a
+						href="SearchStockPage.jsp" style="color: #FFFFFF">庫存</a></li>
+					<li><a href="SearchProductPage.jsp" style="color: #000000">商品</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="container">
+			<div class="nav" style="background-color: #1CAF9A;">
+				<ul class="nav nav-tabs">
+					<li class="" style="background-color: #1CAF9A"><a href="SearchStockPage.jsp" style="color: #fff">查詢庫存</a></li>
+					<li ><a href="PurchasePage.jsp" style="color: #000">進貨</a></li>
+					<li ><a
+						href="PurchaseRecordPage.jsp" style="color: #000">進/出貨紀錄</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="container container-fluid breadcrumbBox">
+		<ol class="breadcrumb">
+			<li><a href="/HomePage.jsp">首頁</a></li>
+			<li class="active" style="display:"><a
+				href="SearchStockPage.jsp">庫存/商品管理</a></li>
+			<li><a href="StockDetail.jsp?sku=${product.getSKU()}">庫存明細</a></li>
+		</ol>
+	</div>
+
+<div class="container" style="background: #9DDCD1; border-radius:20px;">
+  <form method="post" action="../ProductDo" 
+  style="font-size: 100%; vertical-align: baseline; padding: 15px;">
+    <fieldset id="myfields" class="container-fluid" style="padding:0 30px 0 0;" disabled ><legend>庫存明細</legend>
+
       <input type="hidden">
       <div class="container-fluid form-horizontal">
         <div class="row">

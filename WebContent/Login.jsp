@@ -17,6 +17,7 @@
     <script src="./js/jquery-ui.min.js"></script>
     <script src="./js/jquery.ui.datepicker-zh-TW.js"></script>
 </head>
+<% session.removeAttribute("account"); %>
 <body>
 <%@include file ="/href/navbar.jsp" %>
 	<form action="LoginController.do" method="post" >
