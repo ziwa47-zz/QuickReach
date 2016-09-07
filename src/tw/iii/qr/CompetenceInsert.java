@@ -11,13 +11,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/QRAccess/CompetenceInsert.do")
 public class CompetenceInsert extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PrintWriter out;
 	CompetenceSql cs = new CompetenceSql();
-
+	HttpSession session;
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		processInsert(request, response);
@@ -25,12 +27,20 @@ public class CompetenceInsert extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		String submit = request.getParameter("smt");
+		if(submit.equals("insert")){
 		processInsert(request, response);
+		}else{
+			
+		}
 	}
 
 	private void processInsert(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
+		session = request.getSession();
 		out = response.getWriter();
 		CompetenceSql cs = new CompetenceSql();
 		Competence ct = new Competence();
@@ -118,7 +128,10 @@ public class CompetenceInsert extends HttpServlet {
 				}
 
 				cs.insetCompetence(ct);
-				out.write("新增成功");
+				//out.write("新增成功");
+				
+				response.sendRedirect("CompetenceInsert.jsp");
+				
 			} else {
 				out.write("請輸入LV名稱");
 			}

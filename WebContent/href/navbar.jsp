@@ -61,20 +61,20 @@
 	<nav class="navbar" style="background-color: #000000">
 	<div class="container-fluid">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="../QRMain/HomePage.jsp">QuickReach</a>
+			<a class="navbar-brand" href="HomePage.jsp">QuickReach</a>
 		</div>
 		<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="nav navbar-nav">
 
-				<li><a href="../QRProduct/SearchStockPage.jsp">商品/庫存 </a></li>
-				<li><a href="../QROrders/SearchOrder.jsp">訂單資訊</a></li>
-				<li><a href="../QREBayAccount/eBayAccount.jsp">Ebay帳號管理</a></li>
-				<li><a href="../QREmployee/Account.jsp">員工管理</a></li>
-				<li><a href="../QRAccess/Competence.jsp">權限管理</a></li>
+				<li><a href="QRProduct/SearchStockPage.jsp">商品/庫存 </a></li>
+				<li><a href="QROrders/SearchOrder.jsp">訂單資訊</a></li>
+				<li><a href="QREBayAccount/eBayAccount.jsp">Ebay帳號管理</a></li>
+				<li><a href="QREmployee/Account.jsp">員工管理</a></li>
+				<li><a href="QRAccess/Competence.jsp">權限管理</a></li>
 			</ul>
 
 			<ul class="nav navbar-right">
-				<li><a href="../QRMain/Login.jsp">${EmpName}${EmpStatus} <span
+				<li><a href="Login.jsp">${staffName}${'('}${account}${')'}<span
 						class="glyphicon glyphicon-log-in"></span> Logout
 				</a></li>
 			</ul>
