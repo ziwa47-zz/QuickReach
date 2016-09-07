@@ -82,7 +82,7 @@ public class ProductDo extends HttpServlet {
 		cpf.InsertNewProduct(request, conn);
 		
 		conn.close();
-		response.sendRedirect("QRProduct/NewProduct.jsp");
+		response.sendRedirect("/QRProduct/NewProduct.jsp");
 	}
 
 	private void processUpdateProduct(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
@@ -96,7 +96,7 @@ public class ProductDo extends HttpServlet {
 //		String prod = request.getParameter("producttype");
 //		System.out.println(prod);
 		conn.close();
-		response.sendRedirect("QRProduct/ProductDetail.jsp?sku="+sku);
+		response.sendRedirect("/QRProduct/ProductDetail.jsp?sku="+sku);
 	}
 
 	private void processSearchStorage(HttpServletRequest request, HttpServletResponse response)throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
@@ -110,7 +110,7 @@ public class ProductDo extends HttpServlet {
 		conn.close();
 		
 		
-		response.sendRedirect("QRProduct/SearchStockPage.jsp");
+		response.sendRedirect("/QRProduct/SearchStockPage.jsp");
 	}
 
 	private void processSearchProduct(HttpServletRequest request, HttpServletResponse response)
@@ -125,7 +125,7 @@ public class ProductDo extends HttpServlet {
 		conn.close();
 		
 		
-		response.sendRedirect("QRProduct/SearchProductPage.jsp");
+		response.sendRedirect("/QRProduct/SearchProductPage.jsp");
 		
 	}
 	

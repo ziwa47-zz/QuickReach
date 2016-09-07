@@ -70,23 +70,23 @@ public class OrdersServlet extends HttpServlet {
 					break;
 				case "processingSearch":
 					//session.setAttribute(sessionRecord.getOrderProcessing(), orderProcessingPageSearch);
-					response.sendRedirect("QROrders/OrderProcessingPage.jsp?begin=0&end=10");
+					response.sendRedirect("/QROrders/OrderProcessingPage.jsp?begin=0&end=10");
 					break;
 				case "pickupSearch":
 					//session.setAttribute(sessionRecord.getOrderPickUp(), orderProcessingPageSearch);
-					response.sendRedirect("QROrders/OrderPickupPage.jsp?begin=0&end=10");
+					response.sendRedirect("/QROrders/OrderPickupPage.jsp?begin=0&end=10");
 					break;
 				case "finishedSearch":
 					//session.setAttribute(sessionRecord.getOrderFinished(), orderProcessingPageSearch);
-					response.sendRedirect("QROrders/OrderFinished.jsp?begin=0&end=10");
+					response.sendRedirect("/QROrders/OrderFinished.jsp?begin=0&end=10");
 					break;
 				case "updateOrder":
 					//OFactory.updateOrderDetail(request, conn);
 					OFactory.updateOrderDetail(request, conn);
-					response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + request.getParameter("QR_id"));
+					response.sendRedirect("/QROrders/OrderDetail.jsp?QR_id=" + request.getParameter("QR_id"));
 					break;
 				default:
-					response.sendRedirect("QROrders/SearchOrder.jsp?begin=0&end=10");
+					response.sendRedirect("/QROrders/SearchOrder.jsp?begin=0&end=10");
 				}
 				
 				
