@@ -27,12 +27,9 @@
 
 <script type="text/javascript">
 
-
 </script>
 
 </head>
-
-
 
 
 <body>
@@ -85,8 +82,7 @@ conn1.close();
 		<div class="form_data">
 			<table class="Table"  >
 				<thead>
-					<tr>
-										
+					<tr>									
 						<th class="">編輯</th>
 						<th class="" width="190">eBayID</th>
 						<th class="" width="150">eBay Token</th>
@@ -98,23 +94,18 @@ conn1.close();
 						<th class="">狀態</th>
 						<th class="" width="250">Comment</th>
 						<th class="" width="250">SystemFeedback</th>
-						<th class="">        </th>
-						
+						<th class="">        </th>						
 					</tr>
-				</thead>
-				         			
-				<tbody>
-				
-					<c:forEach var="i" varStatus="check" items="${ebay}" begin="0" step="1">
-  					
- 				
+				</thead>				         			
+				<tbody>				
+					<c:forEach var="i" varStatus="check" items="${ebay}" begin="0" step="1">									
 				<tr>	
 					
 				    
 				    <td> <a href ="editeBayAccount.jsp?ebayId=${i.getebayId()}"> <img src="../img/compose-4.png"></a></td>	                                                     	 
                     <!-- <td width="50px" align="left"><input class="checker" type="checkbox" name="checking_companys[]" value="10"></td>	 -->			
-					<td width="80px" align="left"><a href="/settings/edit_ebay_account/?id=10">${i.getebayId()}</a></td> <!-- ebayId -->					
-					<td width="100px" align="left" nowrap=""><a href="/settings/edit_ebay_account/?id=10">${i.getendToken()}</a></td><!-- ebayToken -->
+					<td width="80px" align="left">${i.getebayId()}</a></td> <!-- ebayId -->					
+					<td width="100px" align="left" nowrap="">${i.getendToken()}</a></td><!-- ebayToken -->
                     <td width="100px">${i.getendToken()}</td> <!-- endToken -->
 					<td width="100px" align="left" nowrap="">${i.getpaypalAccount() }</td><!-- paypallAccount -->			
 					<td width="100px">${i.getcorrespondCompany()}</td><!-- correspondCompany-->
