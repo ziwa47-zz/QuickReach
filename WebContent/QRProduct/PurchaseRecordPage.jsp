@@ -72,7 +72,11 @@ function jqueryAutoCompleteSKU() {
 </head>
 <body>
 	<%@ include file="../href/navbar.jsp"%>
+	
 	<%
+	
+	
+	
 		LinkedList<LinkedList<String>> warehouseList = searchDetail.warehouseSelectOption();
 		LinkedList<LinkedList<String>> companyList = searchDetail.companySelectOption();
 		request.setAttribute("warehouseList", warehouseList);
@@ -378,34 +382,49 @@ function jqueryAutoCompleteSKU() {
 					<th>櫃位</th>
 					<th>Owner</th>
 					<th>日期</th>
-					<th>廠商</th>
+					<th>供應商</th>
 					<th>經手人</th>
 
 
 				</tr>
 
 
+<c:if test="${PageCompetence.getProductCostView() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>
+
+
+  
+</c:if>
+
 				<c:forEach var="i" begin="0" step="1" items="${logList}"
 					varStatus="nu">
 
-					<c:if test="${i.get(0) eq '進貨'}">
+					<c:if test="${'進貨' eq i.get(0)}">
 
 						<tr class="success" style="background-color: #9DDCD1">
-							<td rowspan="2" style="vertical-align: middle"><c:out
-									value="${nu.count}"></c:out></td>
+							<td rowspan="2" style="vertical-align: middle">
+							<c:out value="${nu.count}"></c:out>
+							</td>
 									
 							<c:forEach var="j" begin="0" end="12" step="1">
 								<td><c:out value="${i.get(j)}"></c:out></td>
 
 							</c:forEach>
-						</tr>
-
-
-						<tr class="success" style="background-color: #9DDCD1">
+							</tr>
+							<tr class="success" style="background-color: #9DDCD1">
+							
+							
 							<td colspan="13"><c:out value="${i.get(13)}"></c:out></td>
-						</tr>
+						    </tr>
+						
+						
+						
+						
+
+						
 					</c:if>
-					<c:if test="${i.get(0) eq '出貨'}">
+					
+					<c:if test="${'出貨' eq i.get(0)}">
 
 						<tr class="warning" style="background-color: #D4F4D8">
 							<td rowspan="2" style="vertical-align: middle"><c:out
@@ -415,8 +434,8 @@ function jqueryAutoCompleteSKU() {
 								<td><c:out value="${i.get(j)}"></c:out></td>
 
 							</c:forEach>
-						</tr>
-
+						</tr>	
+						
 
 						<tr class="warning" style="background-color: #D4F4D8">
 							<td colspan="13"><c:out value="${i.get(13)}"></c:out></td>

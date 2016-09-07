@@ -67,43 +67,48 @@ public class StatusDoServlet extends HttpServlet {
 					OFactory.updateToProcessing(request, conn);
 				} else{
 					LinkedList<String> printList = OFactory.unSelectedList(request);
+					out.write("<script type='text/javascript'>");
 					for(int i=0; i<printList.size(); i++){
-						out.write("<script type='text/javascript'>");
 						out.write("alert('" + printList.get(i) + "');");
-						out.write("window.location = 'QROrders/DayliBalanceSheet.jsp';");
-						out.write("</script>");
 					}
+					out.write("window.location = 'QROrders/DayliBalanceSheet.jsp';");
+					out.write("</script>");
 				}
 				response.sendRedirect("QROrders/OrderProcessingPage.jsp?begin=0&end=10");
+				conn.close();
 			} else {
 				out.write("<script type='text/javascript'>");
 				out.write("alert('未勾選任何一筆訂單，請再次操作');");
 				out.write("window.location = 'QROrders/DayliBalanceSheet.jsp';");
 				out.write("</script>");
+				conn.close();
 			}
 			break;
 		case "processing":
 			OFactory.updateToPickUp(request, conn);
 			response.sendRedirect("QROrders/OrderPickupPage.jsp?begin=0&end=10");
+			conn.close();
 			break;
 		case "pickUp":
 			OFactory.updateToComplete(request, conn);
 			response.sendRedirect("QROrders/OrderUploadTrackingCode.jsp?begin=0&end=10");
+			conn.close();
 			break;
 		case "sendTrackingCode":
 			if (!OFactory.checkOrderIdOrderStatus(request, conn) == false){
 				System.out.println("checked true");
 				OFactory.updateToFinished(request, conn);
-				//OFactory.deductStock(request, conn);
+				OFactory.deductStock(request, conn);
 				OFactory.insertIntoShippingLog(request, conn);
-				
 				response.sendRedirect("QROrders/OrderFinished.jsp?begin=0&end=10");
+				conn.close();
 			} else {
 				System.out.println("checked false");
 				out.write("<script type='text/javascript'>");
 				out.write("alert('not matched');");
 				out.write("window.location = 'QROrders/OrderUploadTrackingCode.jsp';");
 				out.write("</script>");
+				conn.close();
 			}
 			break;
 		}

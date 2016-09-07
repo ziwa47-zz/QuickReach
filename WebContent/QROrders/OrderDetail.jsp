@@ -347,11 +347,12 @@ conn.close();
 		            <td><input class="" type="text" name="invoicePrice" value="${i.getInvoicePrice()}"></td>
 		            <td><input class="" type="text" name="qty" value="${i.getQty()}"></td>
 		            <td>備註:<input class="" type="text" name="comment" value="${i.getComment()}">
-		            <input type="text" name="item" value="${i.getItem()}">
+		            <input type="hidden" name="item" value="${i.getItem()}">
 		            </td>
 		          </tr>
 		        </tbody>
 		        </c:forEach>
+		        <input type="hidden" name="QR_id" value="${result.getCOrderMaster().getQR_id()}">
 		      </table>
             </div>
           </div>

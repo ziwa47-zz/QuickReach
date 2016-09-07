@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE>
 <html>
 <head>
@@ -7,6 +8,11 @@
 <title>QuickReach</title>
 </head>
 <body>
+
+<c:if test="${account == null }">  
+<% response.sendRedirect("/Login.jsp"); %>
+</c:if>
+
 <%@ include file="/href/navbar.jsp"%>
 <div class="container container-fluid breadcrumbBox">
   <form name="Homeform" method="post" action="HomePageChoose" style="font-size: 100%; vertical-align: baseline; " class=" form-group container">
@@ -51,7 +57,6 @@
     </div>
   </form>
 </div>
-   
    
 	
 </body>

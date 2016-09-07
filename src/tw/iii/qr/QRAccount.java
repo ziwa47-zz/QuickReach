@@ -2,15 +2,15 @@ package tw.iii.qr;
 
 public class QRAccount {
 	
-	public String account ;  //1st
-	public String password ;
-	public String lastName ;
-	public String firstName ;
-	public String email ;
-	public String enName ;
-	public String signatureImage ;
-	public String competenceLV ;
-	public int status ; //9th
+	private String account ;  //1st
+	private String password ;
+	private String lastName ;
+	private String firstName ;
+	private String email ;
+	private String enName ;  //6th
+	private String signatureImage ;
+	private String competenceLV ;
+	private int status ; //9th
 	
 	
 	public String getAccount() {
