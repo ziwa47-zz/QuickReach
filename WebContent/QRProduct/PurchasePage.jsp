@@ -428,7 +428,7 @@ display: block;
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control required digits"  name="staffId" type="text">
+								<input class="form-control required digits"  name="staffId" type="text" value="${staffName}">
 							</div>
 						</div>
 					</div>
