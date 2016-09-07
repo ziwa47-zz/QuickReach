@@ -249,7 +249,7 @@ function test() {
                  +' <div class="col-md-4 form-group ">'
                   +'                <div class="row">'
             +'                  <div class="col-md-4"><h5><label for="focusedInput " >價格：</label></h5></div>'
-            +'                 <div class="col-md-8"><input class="form-control digits required" name="price'+dynamicId+'" title="價格必須大於0" type="text"></div>'
+            +'                 <div class="col-md-8"><input class="form-control number required" name="price'+dynamicId+'" title="價格必須大於0" type="text"></div>'
             +'                </div>'
             +'               </div>'
 	                
@@ -544,7 +544,7 @@ display: block;
                 <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >價格：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control digits required" title="價格必須大於0" name="price1" type="text"></div>
+                    <div class="col-md-8"><input class="form-control number required" title="價格必須大於0" name="price1" type="text"></div>
                   </div>
                 </div>
               
