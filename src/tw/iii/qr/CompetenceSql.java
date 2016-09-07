@@ -36,8 +36,8 @@ public class CompetenceSql {
 		preparedState.setInt(11, ct.totalAmountEdit);
 		preparedState.setInt(12, ct.ordersManage);
 		preparedState.setInt(13, ct.chartView); 
-		preparedState.setInt(14, ct.reportView); 
-		preparedState.setInt(15, ct.productProfitView); 
+		preparedState.setInt(14, ct.productProfitView);
+		preparedState.setInt(15, ct.reportView); 
 		preparedState.setInt(16, ct.productCostView); 
 		preparedState.setInt(17, ct.accountInfoEdit); 
 		preparedState.setInt(18, ct.paramSettingEdit); 
