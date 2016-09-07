@@ -9,7 +9,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>進貨</title>
 
+<!-- Bootstrap -->
+<link rel="stylesheet" type="text/css"
+	href="../css/smoothness/jquery-ui.css">
+<script src="../js/jquery-1.12.4.min.js"></script>
+<script src="../js/jquery-ui.min.js"></script>
+<script src="../js/jquery.ui.datepicker-zh-TW.js"></script>
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+
+  
+  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+
+
+
+
+  
 <script type="text/javascript">
 
 var skuName;
@@ -18,6 +34,10 @@ var realPurchaseId;
 
 var dynamicId = 2;
 
+function alertPurchaseId(){
+	warehouseChange();
+	
+}
 
 function warehouseChange() {
 	
@@ -33,7 +53,7 @@ function warehouseChange() {
 			var date = $("#selectDate").val();
 		        realPurchaseId = date+response.warehousePurchaseId
 				$("#purchaseId").val(realPurchaseId);	
-		        
+		        alert("此進貨單單號:"+realPurchaseId)
 		},
 	})
 }
@@ -78,17 +98,14 @@ function test() {
      
 
 	$(function() {		
-				//進場先檢查purchaseId
-		warehouseChange()
+				
 		//聽說是自動驗證
 		$("#listForm").validate({
 			onfocusout:true,
-			delay:500,
 			submitHandler: function (form)
 		    {
 		        $('#submitButton').attr('disabled', 'disabled');
-		        warehouseChange();
-		        alert("此進貨單單號:"+realPurchaseId)
+		        alertPurchaseId()
 		        form.submit();
 		       
 		    },
@@ -233,7 +250,7 @@ function test() {
                  +' <div class="col-md-4 form-group ">'
                   +'                <div class="row">'
             +'                  <div class="col-md-4"><h5><label for="focusedInput " >價格：</label></h5></div>'
-            +'                 <div class="col-md-8"><input class="form-control number required" name="price'+dynamicId+'" title="價格必須大於0" type="text"></div>'
+            +'                 <div class="col-md-8"><input class="form-control digits required" name="price'+dynamicId+'" title="價格必須大於0" type="text"></div>'
             +'                </div>'
             +'               </div>'
 	                
@@ -317,10 +334,11 @@ display: block;
 		<div class="container">
 			<div class="nav" style="background-color: #1CAF9A;">
 				<ul class="nav nav-tabs">
-					<li><a href="SearchStockPage.jsp" style="color: #000">查詢庫存</a></li>
-					<li class="" style="background-color: #1CAF9A"><a href="PurchasePage.jsp" style="color: #fff">進貨</a></li>
-					<li ><a
-						href="PurchaseRecordPage.jsp" style="color: #000">進/出貨紀錄</a></li>
+					<li><a href="SearchStockPage.jsp" style="color: #000000">查詢庫存</a></li>
+					<li class="" style="background-color: #1CAF9A"><a
+						href="PurchasePage.jsp" style="color: #FFFFFF">進貨</a></li>
+					<li><a href="searchPurchase.jsp" style="color: #000000">進/出貨紀錄</a></li>
+					<li><a href="searchOutRecordPage.jsp" style="color: #000000">出貨紀錄</a></li>
 				</ul>
 			</div>
 		</div>
@@ -328,7 +346,7 @@ display: block;
 
 	<div class="container container-fluid breadcrumbBox">
 		<ol class="breadcrumb">
-			<li><a href="/HomePage.jsp">首頁</a></li>
+			<li><a href="../QRMain/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchStockPage.jsp">庫存/商品管理</a></li>
 			<li><a href="PurchasePage.jsp">進貨</a></li>
@@ -348,8 +366,8 @@ display: block;
 			request.setAttribute("companyList", companyList);
 			String srno;
 			String srnoDate = checkno.getDay();
-// 			srno = checkno.processStorageRecord("01");//進貨單代碼 01
-// 			request.setAttribute("purchaseId", srno);
+			srno = checkno.processStorageRecord("01");//進貨單代碼 01
+			request.setAttribute("purchaseId", srno);
 			request.setAttribute("srnoDate", srnoDate);
 			
 			%>
@@ -366,12 +384,11 @@ display: block;
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" type="text" id="selectDate" name="date" value="${srnoDate}" onchange="warehouseChange()" readonly>
+								<input class="form-control" type="text" id="selectDate" name="date" value="${srnoDate}" readonly>
 							</div>
 						</div>
 					</div>
-<!-- 					style="display:none" -->
-					<div  class="col-md-4 form-group ">
+					<div style="display:none" class="col-md-4 form-group ">
 						<div class="row">
 							<div class="col-md-4">
 								<h5>
@@ -391,7 +408,7 @@ display: block;
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<select class="form-control" name="companyId" id="companyId"  >
+								<select class="form-control" name="companyId" id="companyId" >
                     
                     <c:forEach var = "i" begin="0" step="1" items="${companyList}">
                     
@@ -411,7 +428,7 @@ display: block;
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control required digits"  name="staffId" type="text" value="${staffName}">
+								<input class="form-control required digits"  name="staffId" type="text">
 							</div>
 						</div>
 					</div>
@@ -420,7 +437,7 @@ display: block;
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >倉別：</label></h5></div>
                     <div class="col-md-8">
-                      <select class="form-control" name="warehouse" id="warehouse"  onchange="warehouseChange()">
+                      <select class="form-control" name="warehouse" id="warehouse" >
                     
                     <c:forEach var = "i" begin="0" step="1" items="${warehouseList}">
                     
@@ -527,7 +544,7 @@ display: block;
                 <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >價格：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control number required" title="價格必須大於0" name="price1" type="text"></div>
+                    <div class="col-md-8"><input class="form-control digits required" title="價格必須大於0" name="price1" type="text"></div>
                   </div>
                 </div>
               

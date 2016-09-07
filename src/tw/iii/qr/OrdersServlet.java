@@ -25,7 +25,7 @@ public class OrdersServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			processOrdersFunction(request,response);
+			processSearchOrders(request,response);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -34,21 +34,14 @@ public class OrdersServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			processOrdersFunction(request,response);
+			processSearchOrders(request,response);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private void processOrdersFunction(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		processSearchOrders(request,response);
-	}
-
 	private void processSearchOrders(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		
 	
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
@@ -66,27 +59,32 @@ public class OrdersServlet extends HttpServlet {
 				switch(submit){
 				case "orderSearch":
 					//session.setAttribute(sessionRecord.getSearchOrder(), orderProcessingPageSearch);
+					conn.close();
 					response.sendRedirect("QROrders/SearchOrder.jsp?begin=0&end=10");
 					break;
 				case "processingSearch":
 					//session.setAttribute(sessionRecord.getOrderProcessing(), orderProcessingPageSearch);
-					response.sendRedirect("/QROrders/OrderProcessingPage.jsp?begin=0&end=10");
+					conn.close();
+					response.sendRedirect("QROrders/OrderProcessingPage.jsp?begin=0&end=10");
 					break;
 				case "pickupSearch":
 					//session.setAttribute(sessionRecord.getOrderPickUp(), orderProcessingPageSearch);
-					response.sendRedirect("/QROrders/OrderPickupPage.jsp?begin=0&end=10");
+					conn.close();
+					response.sendRedirect("QROrders/OrderPickupPage.jsp?begin=0&end=10");
 					break;
 				case "finishedSearch":
 					//session.setAttribute(sessionRecord.getOrderFinished(), orderProcessingPageSearch);
-					response.sendRedirect("/QROrders/OrderFinished.jsp?begin=0&end=10");
+					conn.close();
+					response.sendRedirect("QROrders/OrderFinished.jsp?begin=0&end=10");
 					break;
 				case "updateOrder":
 					//OFactory.updateOrderDetail(request, conn);
 					OFactory.updateOrderDetail(request, conn);
-					response.sendRedirect("/QROrders/OrderDetail.jsp?QR_id=" + request.getParameter("QR_id"));
+					conn.close();
+					response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + request.getParameter("QR_id"));
 					break;
 				default:
-					response.sendRedirect("/QROrders/SearchOrder.jsp?begin=0&end=10");
+					response.sendRedirect("QROrders/SearchOrder.jsp?begin=0&end=10");
 				}
 				
 				
