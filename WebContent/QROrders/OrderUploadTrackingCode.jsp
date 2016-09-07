@@ -125,7 +125,8 @@
               <c:choose>
                 <c:when test="${check.index%2 != 0}">
                   <tr style="background-color:#D4F4D8">
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
+                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id"
+                     value="${i.getCOrderMaster().getQR_id()}" onchange="preventDoubleOrder(this)"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td nowrap>${i.getCOrderMaster().getOrder_id()}
                     <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
@@ -151,7 +152,8 @@
                 </c:when>
                 <c:otherwise>
                   <tr>
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
+                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id"
+                     value="${i.getCOrderMaster().getQR_id()}" onchange="preventDoubleOrder(this)"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td nowrap>${i.getCOrderMaster().getOrder_id()}
                     <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
@@ -183,18 +185,17 @@
         </form>
       </div>
       </div>
-<!-- <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation" style="background-color:#000"> -->
-<!--   	<div class="container">							   -->
-<!--       <div class="row" >            -->
-<!--           <p class="col-md-5 copyright" id="copyright" >Copyright © 2016 III South -->
-<!--           </p>            -->
-<!--           <p class="text-center footer-bot" id="link">           -->
-<!--               <a href="#">關於我們</a>｜ -->
-<!--               <a href="#">服務合約書</a>｜            -->
-<!--               <a href="#">連絡我們</a>         -->
-<!--           </p>          -->
-<!--       </div>      -->
-<!--     </div> -->
-<!-- </nav> -->
+<script type="text/javascript">
+ 	function preventDoubleOrder(ele){
+ 	  var id = ele.value;
+	  if (ele.checked) {
+		  $("input[name=QR_id]").prop("disabled",true);
+		  $(ele).prop("disabled",false);
+		  alert('接著輸入追蹤碼');
+	  } else {
+		  $("input[name=QR_id]").prop("disabled",false);
+ 	  }
+   };
+</script>
 </body>
 </html>

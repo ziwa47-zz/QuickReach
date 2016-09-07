@@ -221,6 +221,7 @@
         </div>
         <br/>
         <div class="row text-center" >
+          <input type="hidden" name="pickup"  value="pickup"> <!-- 控制搜尋結果在揀貨中 -->
           <button class="btn-lg btn-primary" type="submit" name="submit" value="pickupSearch">搜尋</button>
           <button class="btn-lg btn-primary" type="button" name="" >清空</button>
         </div>
