@@ -410,6 +410,8 @@ public class COrderFactory extends COrders {
 			orderInfo.COrderDetailSingle.setQty(rs.getInt(26));
 			orderInfo.COrderDetailSingle.setWarehouse(rs.getString(27));
 			orderInfo.COrderDetailSingle.setComment(rs.getString(28));
+			
+			orderInfo.COrderMaster.setQR_id(rs.getString(29));
 		}
 
 		return orderInfo;
@@ -419,7 +421,7 @@ public class COrderFactory extends COrders {
 	public LinkedList<COrderDetail> getOrderDetails(String QR_id, Connection conn) throws SQLException {
 
 		String strsql = "SELECT distinct"
-				+ " d.sku, d.productName, d.invoiceName, d.price, d.invoicePrice, d.qty, d.warehouse, d.comment, d.Item"
+				+ " d.sku, d.productName, d.invoiceName, d.price, d.invoicePrice, d.qty, d.warehouse, d.comment, d.Item, d.QR_id"
 				+ " from  orders_master as m inner join  orders_detail as d using (QR_id)"
 				+ " inner join  orders_guestinfo as g using (QR_id) "
 				+ " inner join  order_recieverinfo as r using (QR_id)" + " where QR_id = ?";
@@ -442,6 +444,7 @@ public class COrderFactory extends COrders {
 			detail.setWarehouse(rs.getString(7));
 			detail.setComment(rs.getString(8));
 			detail.setItem(Integer.valueOf(rs.getString(9)));
+			detail.setQR_id(rs.getString(10));
 			detailList.add(detail);
 		}
 		return detailList;
@@ -473,32 +476,49 @@ public class COrderFactory extends COrders {
 	}
 
 	public void updateOrderDetail(HttpServletRequest request, Connection conn) throws SQLException {
-
-		String strSql = "update  orders_detail" + " SET invoiceName= 'killing2222' "
-				+ " WHERE SKU= ? and item= ?;";
-		System.out.println(strSql);
-		COrderDetail od = new COrderDetail();
-		System.out.println(request.getParameter("item"));
-		System.out.println(request.getParameter("SKU"));
-		od.setInvoiceName(request.getParameter("invoiceName"));
-		od.setPrice(Double.valueOf(request.getParameter("price")));
-		od.setInvoicePrice(Double.valueOf(request.getParameter("invoicePrice")));
-		od.setQty(Integer.valueOf(request.getParameter("qty")));
-		od.setComment(request.getParameter("comment"));
-		od.setQR_id(request.getParameter("QR_Id"));
-		od.setItem(Integer.valueOf(request.getParameter("item")));
-
-		PreparedStatement ps = conn.prepareStatement(strSql);
-
-		// ps.setString(1, od.getInvoiceName());
-		// ps.setDouble(1, od.getPrice());
-		// ps.setDouble(2, od.getInvoicePrice());
-		// ps.setInt(3, od.getQty());
-		// ps.setString(4, od.getComment());
-		ps.setString(1, od.getSKU());
-		ps.setInt(2, od.getItem());
-		ps.executeUpdate();
-
+		
+		String[] itemList = request.getParameterValues("item");
+		String[] SKUList = request.getParameterValues("SKU");
+		String[] invoiceNameList = request.getParameterValues("invoiceName");
+		String[] priceList = request.getParameterValues("price");
+		String[] invoicePriceList = request.getParameterValues("invoicePrice");
+		String[] qtyList = request.getParameterValues("qty");
+		String[] commentList = request.getParameterValues("comment");
+		
+		LinkedList<String> items = new LinkedList<String>(Arrays.asList(itemList));
+		LinkedList<String> SKUs = new LinkedList<String>(Arrays.asList(SKUList));
+		LinkedList<String> invoiceNames = new LinkedList<String>(Arrays.asList(invoiceNameList));
+		LinkedList<String> prices = new LinkedList<String>(Arrays.asList(priceList));
+		LinkedList<String> invoicePrices = new LinkedList<String>(Arrays.asList(invoicePriceList));
+		LinkedList<String> qtys = new LinkedList<String>(Arrays.asList(qtyList));
+		LinkedList<String> comments = new LinkedList<String>(Arrays.asList(commentList));
+		
+		for(int i=0; i<items.size(); i++){
+			String strSql = "update orders_detail"
+					+ " SET invoiceName= ?, price= ?, invoicePrice= ?, qty= ?, comment=? "
+					+ " WHERE SKU= ? and item= ?;";
+			System.out.println(strSql);
+			COrderDetail od = new COrderDetail();
+			od.setInvoiceName(invoiceNames.get(i));
+			od.setPrice(Double.valueOf(prices.get(i)));
+			od.setInvoicePrice(Double.valueOf(invoicePrices.get(i)));
+			od.setQty(Integer.valueOf(qtys.get(i)));
+			od.setComment(comments.get(i));
+			od.setItem(Integer.valueOf(items.get(i)));
+			od.setSKU(SKUs.get(i));
+			System.out.println(items.get(i));
+			System.out.println(SKUs.get(i));
+			PreparedStatement ps = conn.prepareStatement(strSql);
+	
+			ps.setString(1, od.getInvoiceName());
+			ps.setDouble(2, od.getPrice());
+			ps.setDouble(3, od.getInvoicePrice());
+			ps.setInt(4, od.getQty());
+			ps.setString(5, od.getComment());
+			ps.setString(6, od.getSKU());
+			ps.setInt(7, od.getItem());
+			int x = ps.executeUpdate();
+		}
 	}
 
 	public void updateToProcessing(HttpServletRequest request, Connection conn) throws SQLException {

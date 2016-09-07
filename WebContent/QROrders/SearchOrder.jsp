@@ -275,12 +275,6 @@
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
         <form name="searchform" method="post" action="../StatusDo" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
-          <button type="submit" name="" class="btn-sm btn-info">選擇全部</button>
-          <button type="submit" name="" class="btn-sm btn-info">清除勾選</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印撿貨/出貨單</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印EMS</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印Invoice</button>
-          <button type="submit" name="" class="btn-sm btn-info">回復</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
@@ -399,12 +393,6 @@
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
         <form name="searchform" method="post" action="../SubmitToShipped" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
-          <button type="submit" name="" class="btn-sm btn-info">選擇全部</button>
-          <button type="submit" name="" class="btn-sm btn-info">清除勾選</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印撿貨/出貨單</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印EMS</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印Invoice</button>
-          <button type="submit" name="" class="btn-sm btn-info">回復</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
