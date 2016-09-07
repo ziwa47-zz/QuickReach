@@ -3,7 +3,6 @@
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.Date;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +12,9 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import jdk.nashorn.internal.ir.RuntimeNode.Request;
 import tw.iii.qr.DataBaseConn;
 
 public class purchaseFactory {
@@ -105,7 +106,7 @@ public class purchaseFactory {
 
 	// �脣���� yyyyMMdd statusId US/KH 瘚偌���
 	public String processStorageRecord(String status) throws IllegalAccessException, ClassNotFoundException, Exception {
-//真真正正時代的眼淚
+
 		String time = getDay();
 
 		DecimalFormat df = new DecimalFormat("000");
@@ -149,16 +150,15 @@ public class purchaseFactory {
 	
 
 	public LinkedList<LinkedList<String>> searchPurchase(Connection conn, String purchaseRecord, String outRecord,
-			String purchaseId, String date1, String date2, String pname, String sku, String companyName, String owner, String wareHouse,
+			String date1, String date2, String pname, String sku, String companyName, String owner, String wareHouse,
 			String warehousePositionOne, String warehousePositionTwo, String qty, String price) {
 		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
 		LinkedList<String> list = new LinkedList<>();
 		ResultSet rs = null;
 		java.sql.Statement stmt = null;
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		System.out.println("I need stockRecord status:" + purchaseRecord + "," + outRecord);
 
-		String sqlstr1 = searchCondition(purchaseRecord, outRecord, purchaseId, date1, date2, pname, sku, companyName, owner,
+		String sqlstr1 = searchCondition(purchaseRecord, outRecord, date1, date2, pname, sku, companyName, owner,
 				wareHouse, warehousePositionOne, warehousePositionTwo, qty, price);
 
 		System.out.println(sqlstr1);
@@ -174,14 +174,13 @@ public class purchaseFactory {
 
 			while (rs.next()) {
 				list = new LinkedList<>();
-				System.out.println(dateFormat.format(rs.getDate(11)));
 
 				
 
-				if ("1".equals(rs.getString(15))) {
+				if (rs.getString(15).equals("1")) {
 					list.add("進貨");
 
-				} else if ("2".equals(rs.getString(15))){
+				} else {
 					list.add("出貨");
 
 				}
@@ -191,23 +190,17 @@ public class purchaseFactory {
 				list.add(rs.getString(3));
 				list.add(rs.getString(4));
 				list.add(rs.getString(5));
-				list.add(rs.getString(6));
-				
 
+				list.add(rs.getString(6));
 				list.add(rs.getString(7));
-				list.add(rs.getString(8)+"-"+ rs.getString(9));
-				list.add(rs.getString(10));
-				list.add(dateFormat.format(rs.getDate(11)));//date
-				
-		
-				
+				list.add(rs.getString(8));
+				list.add(rs.getString(9) + "-" + rs.getString(10));
+				list.add(rs.getString(11));
+
 				list.add(rs.getString(12));
 				list.add(rs.getString(13));
-
 				list.add(rs.getString(14));
-				
-			
-				
+
 				Alllist.add(list);
 
 			}
@@ -292,10 +285,7 @@ public class purchaseFactory {
 		return Alllist;
 
 	}
-	
-	
 
-	//retire
 	public String sqlSearchOutRecord(String date1, String date2, String outRecordId, String pname, String sku,
 			String companyName, String owner, String wareHouse, String warehousePosition, String qty, String price) {
 		String sqlOutRecord = "select a.SKU,a.P_name,a.purchaseId,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffId,a.comment from  purchaselog_detail as a inner join  purchaselog_master as b where a.purchaseId =b.purchaseId and a.stockStatus = 2";
@@ -352,12 +342,12 @@ public class purchaseFactory {
 		return sqlOutRecord;
 	}
 
-	public String searchCondition(String purchaseRecord, String outRecord,String purchaseId, String date1, String date2, String pname,
+	public String searchCondition(String purchaseRecord, String outRecord, String date1, String date2, String pname,
 			String sku, String companyName, String owner, String wareHouse, String warehousePositionOne,
 			String warehousePositionTwo, String qty, String price) {
-		String sqlstr1 = "select distinct a.purchaseId,c.productType,a.SKU,c.P_name,"
-				+ " a.qty,a.price,a.warehouse,a.warehousePosition1,a.warehousePosition2,c.owner,"
-				+ " b.date,b.companyName,b.staffId,a.comment,a.stockStatus"//add cost!!
+		String sqlstr1 = "select distinct a.purchaseId,a.SKU,c.P_name,c.spec,c.color,"
+				+ " a.qty,a.price,a.warehouse,a.warehousePosition1,a.warehousePosition2,"
+				+ " b.date,b.companyName,b.staffId,a.comment,a.stockStatus"
 				+ " from  purchaselog_detail as a inner join  purchaselog_master as b inner join  product as c where a.purchaseId =b.purchaseId and a.SKU = c.SKU  ";
 		System.out.println(sku);
 
@@ -376,11 +366,6 @@ public class purchaseFactory {
 				System.out.println("出貨:" + outRecord);
 			}
 
-		}
-		
-		if (!isNullorEmpty(purchaseId)) {
-			sqlstr1 += " and a.purchaseId  like'%" + purchaseId + "%'";
-			System.out.println(purchaseId);
 		}
 
 		if (!isNullorEmpty(date1)) {
@@ -498,9 +483,9 @@ public class purchaseFactory {
 			while (rs.next()) {
 				d = new Cpurchase_detail();
 				d.setPurchaseId(rs.getString(1));
-				if ("1".equals(rs.getString(2))) {
+				if (rs.getString(2).equals("1")) {
 					d.setStockStatus("進貨");
-				} else if ("2".equals(rs.getString(2))) {
+				} else if (rs.getString(2).equals("2")) {
 					d.setStockStatus("出貨");
 				}
 				d.setQty(rs.getInt(3));

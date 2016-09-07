@@ -42,7 +42,7 @@
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
         <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
-        <li><a href="ShipmentRecord.jsp" >訂單出貨記錄</a></li>
+        <li><a href="ShipmentRecord.jsp?begin=0&end=10" >訂單出貨記錄</a></li>
       </ul>
     </div>
   </div>

@@ -4,9 +4,12 @@
 <%@ page import="java.util.*"%>
 <%@ page import="java.io.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-
-<!DOCTYPE html ">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <jsp:useBean id="blf" scope="session"
 	class="tw.iii.qr.stock.BundlesFactory" />
@@ -17,8 +20,19 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>新增組合商品</title>
+<title>新增複合商品</title>
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css"
+	href="css/smoothness/jquery-ui.css">
 
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.js"></script>
+
+
+<script src="js/jquery-1.12.4.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/jquery.ui.datepicker-zh-TW.js"></script>
 <script type="text/javascript">
 	function getSelect() {
 		listForm.action = "ProductAddPage.jsp"
@@ -64,12 +78,10 @@
 			<div class="nav" style="background-color: #1CAF9A;">
 				<ul class="nav nav-tabs">
 					<li><a href="SearchProductPage.jsp" style="color: #000">查詢商品</a></li>
-					<li><a href="TotalBundles.jsp" style="color: #000000">查詢組合商品</a></li>
-					<li ><a
-						href="NewProduct.jsp" style="color: #000">新增單項商品</a></li>
 					<li class="" style="background-color: #1CAF9A"><a
-						href="ProductAddPage.jsp" style="color: #fff">新增組合商品</a></li>
-					
+						href="ProductAddPage.jsp" style="color: #fff">新增複合商品</a></li>
+					<li><a href="ProductEditPage.jsp" style="color: #000000">修改商品</a></li>
+					<li><a href="TotalBundles.jsp" style="color: #000000">查詢複合商品</a></li>
 				</ul>
 			</div>
 		</div>
@@ -78,10 +90,10 @@
 
 	<div class="container container-fluid breadcrumbBox">
 		<ol class="breadcrumb">
-			<li><a href="/HomePage.jsp">首頁</a></li>
+			<li><a href="../QRMain/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchProductPage.jsp">庫存/商品管理</a></li>
-			<li><a href="ProductAddPage.jsp">新增組合商品</a></li>
+			<li><a href="ProductAddPage.jsp">新增複合商品</a></li>
 		</ol>
 	</div>
 
@@ -342,7 +354,7 @@
 			blf.bundlesToProduct(bdsku, bdname, ps);
 			blf.bundlesToDetail(bdsku);
 			session.invalidate();
-			response.sendRedirect("/QRProduct/ProductAddPage.jsp");
+			response.sendRedirect("../QRProduct/ProductAddPage.jsp");
 		}
 	%>
 
