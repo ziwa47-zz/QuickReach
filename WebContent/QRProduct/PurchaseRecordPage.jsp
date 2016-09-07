@@ -64,7 +64,7 @@ function jqueryAutoCompleteSKU() {
 <title>進貨紀錄</title>
 </head>
 <body>
-	<%@ include file="../href/navbar.jsp"%>
+	<%@ include file="/href/navbar.jsp"%>
 	
 	<%
 	
@@ -101,7 +101,7 @@ function jqueryAutoCompleteSKU() {
 		
 
 		request.setAttribute("logList", allList);
-		
+	
 	%>
 
 
@@ -341,13 +341,13 @@ function jqueryAutoCompleteSKU() {
 
 				<br />
 				<div class="row text-center">
-					<input type="submit" name="" value="搜尋" class="btn-lg btn-success">
+					<input type="submit" name="Record" value="搜尋" class="btn-lg btn-success">
 				</div>
 			</fieldset>
 		</form>
 	</div>
 	<hr />
-	
+	<c:if test="${logList != null}">
 	<div class="container table-responsive bg-warning table-hover"
 		style="border-radius: 20px" id = "myTable">
 		<form name="searchform" method="post" action="#"
@@ -440,8 +440,9 @@ function jqueryAutoCompleteSKU() {
 
 		</form>
 	</div>
+	</c:if>
 </body>
 
-<%@ include file="../href/footer.jsp"%>
+<%@ include file="/href/footer.jsp"%>
 
 </html>
