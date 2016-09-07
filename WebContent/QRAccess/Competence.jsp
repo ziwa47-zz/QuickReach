@@ -116,10 +116,14 @@
 					System.out.println("null");
 
 				}
-
+				
 				//System.out.print(1+cv);
 				//session.setAttribute("cv", cv);
 			%>
+			
+			<c:if test="${PageCompetence.getAccountInfoEdit() == 0 }">  
+			<% response.sendRedirect("/HomePage.jsp"); %>
+			</c:if>
 
 
 			<input type="hidden">
