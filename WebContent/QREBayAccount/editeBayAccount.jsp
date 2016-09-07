@@ -113,8 +113,8 @@ session.setAttribute("eBayAccount", eBayAccount);
 					<tr>
 						<th class=""><span class="red"> * </span>paypal
 							帳號 </br>(E-mail)</th>
-						<td class=""><input id="id_fd-email" type="text" name="paypalAccount" value="${eBayAccount.getpaypalAccount() }"
-							class="" ></td>
+						<td class=""><input id="id_fd-email" type="text" name="paypalAccount" value=""
+							class="" >${eBayAccount.getpaypalAccount() }</td>
 						<td class=""></td>
 					</tr>
 
@@ -164,7 +164,7 @@ session.setAttribute("eBayAccount", eBayAccount);
 
 
 		<div class="" align="center">
-			<button type="submit" name="submit" value="updateEbayAccount">修改送出</button> <td><a href="eBayAccount.jsp"><input type="button" value="取消"></a></td>
+			<button type="submit" name="submit" value="updateEbayAccount">修改送出</button> <td><a href="eBayAccount.jsp"><input type="button" value="取消"></td>
 		</div>
 		<input type="hidden" name="id" value="">
 	</form>

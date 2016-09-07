@@ -1,4 +1,4 @@
- package tw.iii.qr;
+package tw.iii.qr;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -40,7 +40,6 @@ public class ProductDo extends HttpServlet {
 		}
 	}
 
-	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
@@ -58,9 +57,7 @@ public class ProductDo extends HttpServlet {
 			case "updateProduct":
 				processUpdateProduct(request, response);
 				break;
-			case "newProduct":
-				processnewProduct(request,response);
-				break;
+			
 			default:
 				break;
 				
@@ -73,18 +70,6 @@ public class ProductDo extends HttpServlet {
 
 	
 
-	private void processnewProduct(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
-		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html;charset=UTF-8");
-		conn = new DataBaseConn().getConn();
-		CProductFactory cpf = new CProductFactory();
-		System.out.println(request.getParameter("SKU"));
-		cpf.InsertNewProduct(request, conn);
-		
-		conn.close();
-		response.sendRedirect("/QRProduct/NewProduct.jsp");
-	}
-
 	private void processUpdateProduct(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
@@ -93,10 +78,10 @@ public class ProductDo extends HttpServlet {
 		CProductFactory cpf = new CProductFactory();
 		cpf.updateProduct(request,conn);
 		String sku = request.getParameter("sku");
-//		String prod = request.getParameter("producttype");
-//		System.out.println(prod);
+		String prod = request.getParameter("producttype");
+		System.out.println(prod);
 		conn.close();
-		response.sendRedirect("/QRProduct/ProductDetail.jsp?sku="+sku);
+		response.sendRedirect("QRProduct/ProductDetail.jsp?sku="+sku);
 	}
 
 	private void processSearchStorage(HttpServletRequest request, HttpServletResponse response)throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
@@ -110,7 +95,7 @@ public class ProductDo extends HttpServlet {
 		conn.close();
 		
 		
-		response.sendRedirect("/QRProduct/SearchStockPage.jsp");
+		response.sendRedirect("QRProduct/SearchStockPage.jsp");
 	}
 
 	private void processSearchProduct(HttpServletRequest request, HttpServletResponse response)
@@ -125,7 +110,7 @@ public class ProductDo extends HttpServlet {
 		conn.close();
 		
 		
-		response.sendRedirect("/QRProduct/SearchProductPage.jsp");
+		response.sendRedirect("QRProduct/SearchProductPage.jsp");
 		
 	}
 	

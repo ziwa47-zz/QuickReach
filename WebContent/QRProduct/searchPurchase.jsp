@@ -25,6 +25,8 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+ 
 <script type="text/javascript">
 
 
@@ -32,11 +34,6 @@ $(function() {
 	
 	
 	jqueryAutoCompleteSKU();
-	
-	//var rowCount = $('#myTable tr').length;
-	//var rowCount = $("#myTable").attr('rows').length;
-	var rowCount = $('#myTable tr:last').index() ;
-	$("#myTable").prepend('<label class="text-success"><h2>共找到    '+ rowCount/2+' 筆資料</h2></label>');
 	
 	
 });
@@ -59,31 +56,7 @@ function jqueryAutoCompleteSKU() {
 		LinkedList<LinkedList<String>> companyList = searchDetail.companySelectOption();
 		request.setAttribute("warehouseList", warehouseList);
 		request.setAttribute("companyList", companyList);
-		
-		 String purchaseRecord = request.getParameter("purchaseRecord");
-		  String outRecord = request.getParameter("outRecord");
-
-		String date1 = request.getParameter("dateMin");
-		String date2= request.getParameter("dateMax");
-
-		String sku = request.getParameter("sku");
-		String pname = request.getParameter("pName");
-
-		String companyName = request.getParameter("companyName");
-		String owner = request.getParameter("owner");
-		String wareHouse = request.getParameter("wareHouse");
-
-		String warehousePositionOne = request.getParameter("warehousePositionOne");
-		String warehousePositionTwo = request.getParameter("warehousePositionTwo");
-		String qty = request.getParameter("qty");
-		String price = request.getParameter("price");
-
-		Connection conn = new DataBaseConn().getConn();
-		LinkedList<LinkedList<String>> allList = searchDetail.searchPurchase(conn, purchaseRecord,outRecord ,date1, date2, pname, sku, companyName,
-				owner, wareHouse, warehousePositionOne,warehousePositionTwo, qty, price);
-		
-
-		request.setAttribute("logList", allList);
+				
 		
 	%>
 
@@ -132,7 +105,7 @@ function jqueryAutoCompleteSKU() {
 				<legend>進/出貨紀錄查詢</legend>
 				<input type="hidden">
 				
-					<div class="row">
+				<div class="row">
 					<div class="col-md-4 form-group ">
 						<div class="row">
 							
@@ -162,7 +135,7 @@ function jqueryAutoCompleteSKU() {
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" type="text" name="dateMin" style="width:89px" readonly> - <input class="form-control" type="text" style="width:89px" name="dateMax" readonly>
+								<input class="form-control" type="text" name="dateMin" style="width:89px" readonly> - <input class="form-control" type="text" name="dateMax" style="width:89px" readonly>
 							</div>
 						</div>
 					</div>
@@ -314,16 +287,15 @@ function jqueryAutoCompleteSKU() {
 	</div>
 	<hr />
 	
-	<div class="container table-responsive bg-warning table-hover"
-		style="border-radius: 20px" id = "myTable">
+	<div class="container table-responsive bg-warning"
+		style="border-radius: 20px">
 		<form name="searchform" method="post" action="#"
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
 			class="form-inline container">
-			
 			<table
 				class="table table-bordered table-hover table-condensed pull-left"
 				style="margin: 0 0 0 -15px">
-			
+				<thead><c:out value="共找到   筆結果"></c:out></thead>
 				<tr class="ListTitle" style="background-color: #A65758; color: #fff">
 					<th>項目</th>
 					<th>種類</th>
@@ -349,9 +321,9 @@ function jqueryAutoCompleteSKU() {
 				<c:forEach var="i" begin="0" step="1" items="${logList}"
 					varStatus="nu">
 
-					<c:if test="${i.get(0) eq '進貨'}">
+					<c:if test="${nu.count%2==0}">
 
-						<tr class="success" style="background-color: #9DDCD1">
+						<tr style="background-color: #9DDCD1">
 							<td rowspan="2" style="vertical-align: middle"><c:out
 									value="${nu.count}"></c:out></td>
 									
@@ -362,13 +334,13 @@ function jqueryAutoCompleteSKU() {
 						</tr>
 
 
-						<tr class="success" style="background-color: #9DDCD1">
+						<tr style="background-color: #9DDCD1">
 							<td colspan="13"><c:out value="${i.get(13)}"></c:out></td>
 						</tr>
 					</c:if>
-					<c:if test="${i.get(0) eq '出貨'}">
+					<c:if test="${nu.count%2 !=0}">
 
-						<tr class="warning" style="background-color: #D4F4D8">
+						<tr style="background-color: #D4F4D8">
 							<td rowspan="2" style="vertical-align: middle"><c:out
 									value="${nu.count}"></c:out></td>
 
@@ -379,7 +351,7 @@ function jqueryAutoCompleteSKU() {
 						</tr>
 
 
-						<tr class="warning" style="background-color: #D4F4D8">
+						<tr style="background-color: #D4F4D8">
 							<td colspan="13"><c:out value="${i.get(13)}"></c:out></td>
 						</tr>
 					</c:if>

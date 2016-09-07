@@ -1,5 +1,5 @@
 <%@page import="tw.iii.purchase.purchaseFactory"%>
-
+<%@page import="com.mysql.fabric.xmlrpc.base.Param"%>
 <%@page import="tw.iii.qr.DataBaseConn"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -10,47 +10,11 @@
 <jsp:useBean id="searchDetail" class="tw.iii.purchase.purchaseFactory"
 	scope="page" />
 
-
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<link rel="stylesheet" type="text/css"
-	href="../css/smoothness/jquery-ui.css">
-<script src="../js/jquery-1.12.4.min.js"></script>
-<script src="../js/jquery-ui.min.js"></script>
-<script src="../js/jquery.ui.datepicker-zh-TW.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script type="text/javascript">
-
-
-$(function() {		
-	
-	
-	jqueryAutoCompleteSKU();
-	
-	//var rowCount = $('#myTable tr').length;
-	//var rowCount = $("#myTable").attr('rows').length;
-	var rowCount = $('#myTable tr:last').index() ;
-	$("#myTable").prepend('<label class="text-success"><h2>共找到    '+ rowCount/2+' 筆資料</h2></label>');
-	
-	
-});
-
-function jqueryAutoCompleteSKU() {
-	
-	$("#sku").autocomplete({source:"../JQueryAutoCompleteSKUData",minLength:1});
-	
-	
-}
-
-	
-</script>
-<title>進貨紀錄</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Shipping Record</title>
 </head>
 <body>
 	<%@ include file="../href/navbar.jsp"%>
@@ -59,12 +23,8 @@ function jqueryAutoCompleteSKU() {
 		LinkedList<LinkedList<String>> companyList = searchDetail.companySelectOption();
 		request.setAttribute("warehouseList", warehouseList);
 		request.setAttribute("companyList", companyList);
-		
-		 String purchaseRecord = request.getParameter("purchaseRecord");
-		  String outRecord = request.getParameter("outRecord");
-
-		String date1 = request.getParameter("dateMin");
-		String date2= request.getParameter("dateMax");
+		String date = request.getParameter("date");
+		String outRecord = request.getParameter("outRecordId");
 
 		String sku = request.getParameter("sku");
 		String pname = request.getParameter("pName");
@@ -73,22 +33,17 @@ function jqueryAutoCompleteSKU() {
 		String owner = request.getParameter("owner");
 		String wareHouse = request.getParameter("wareHouse");
 
-		String warehousePositionOne = request.getParameter("warehousePositionOne");
-		String warehousePositionTwo = request.getParameter("warehousePositionTwo");
+		String warehousePosition = request.getParameter("warehousePosition");
 		String qty = request.getParameter("qty");
 		String price = request.getParameter("price");
 
 		Connection conn = new DataBaseConn().getConn();
-		LinkedList<LinkedList<String>> allList = searchDetail.searchPurchase(conn, purchaseRecord,outRecord ,date1, date2, pname, sku, companyName,
-				owner, wareHouse, warehousePositionOne,warehousePositionTwo, qty, price);
-		
+
+		LinkedList<LinkedList<String>> allList = searchDetail.SearchOutRecord(conn, date, outRecord, pname, sku,
+				companyName, owner, wareHouse, warehousePosition, qty, price);
 
 		request.setAttribute("logList", allList);
-		
 	%>
-
-
-
 	<div class="nav">
 		<div class="container">
 			<div class="navbar-left" style="background-color: #BCF1E5;">
@@ -102,11 +57,10 @@ function jqueryAutoCompleteSKU() {
 		<div class="container">
 			<div class="nav" style="background-color: #1CAF9A;">
 				<ul class="nav nav-tabs">
-					<li><a href="SearchStockPage.jsp" style="color: #000">查詢庫存</a></li>
-					<li><a href="PurchasePage.jsp" style="color: #000">進貨</a></li>
-					<li class="" style="background-color: #1CAF9A"><a
-						href="searchPurchase.jsp" style="color: #fff">進/出貨紀錄</a></li>
-					<li><a href="searchOutRecordPage.jsp" style="color: #000000">出貨紀錄</a></li>
+					<li><a href="SearchStockPage.jsp">查詢庫存</a></li>
+					<li><a href="PurchasePage.jsp">進貨</a></li>
+					<li><a href="searchPurchase.jsp">進貨紀錄</a></li>
+					<li><a href="searchOutRecordPage.jsp" style="color: #fff">出貨紀錄</a></li>
 				</ul>
 			</div>
 		</div>
@@ -117,41 +71,19 @@ function jqueryAutoCompleteSKU() {
 			<li><a href="../QRMain/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchStockPage.jsp">庫存/商品管理</a></li>
-			<li><a href="searchPurchase.jsp">進/出貨紀錄</a></li>
+			<li><a href="searchOutRecordPage.jsp">出貨查詢</a></li>
 		</ol>
 	</div>
 
 
-
 	<div class="container"
 		style="background: #9DDCD1; border-radius: 20px;">
-		<form name="searchform" method="POST" action="PurchaseRecordPage.jsp"
+		<form name="searchform" method="post" action="OutRecordPage.jsp"
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
 			class="form-inline container">
 			<fieldset>
-				<legend>進/出貨紀錄查詢</legend>
+				<legend>出貨紀錄查詢</legend>
 				<input type="hidden">
-				
-					<div class="row">
-					<div class="col-md-4 form-group ">
-						<div class="row">
-							
-							<div class="col-md-4">
-							<h5>
-								<label for="focusedInput">種類：</label> 
-							</h5>
-							</div>
-							<div class="col-md-8">
-								<label class="checkbox-inline" style="margin-top: 7 "><input
-									type="checkbox" name="purchaseRecord" value="purchase" >進貨紀錄</label>
-								<label class="checkbox-inline"  style="margin-top: 7"><input type="checkbox"
-									name="outRecord" value="outRecord" >出貨記錄</label>
-							</div>
-						</div>
-					</div>
-				</div>
-
-
 
 				<div class="row">
 					<div class="col-md-4 form-group ">
@@ -162,7 +94,7 @@ function jqueryAutoCompleteSKU() {
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" type="text" name="dateMin" style="width:89px" readonly> - <input class="form-control" type="text" style="width:89px" name="dateMax" readonly>
+								<input class="form-control" type="text" name="date">
 							</div>
 						</div>
 					</div>
@@ -171,11 +103,29 @@ function jqueryAutoCompleteSKU() {
 						<div class="row">
 							<div class="col-md-4">
 								<h5>
+									<label for="focusedInput ">單號：</label>
+								</h5>
+							</div>
+							<div class="col-md-8">
+								<input class="form-control" type="text" name="outRecordId">
+							</div>
+						</div>
+					</div>
+
+
+
+
+				</div>
+				<div class="row">
+					<div class="col-md-4 form-group ">
+						<div class="row">
+							<div class="col-md-4">
+								<h5>
 									<label for="focusedInput ">SKU：</label>
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" name="sku" id="sku" type="text" value="">
+								<input class="form-control" name="sku" type="text" value="">
 							</div>
 						</div>
 					</div>
@@ -188,15 +138,16 @@ function jqueryAutoCompleteSKU() {
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" name="pname" type="text" value="">
+								<input class="form-control" name="pName" type="text" value="">
 							</div>
 						</div>
 					</div>
 
-
 				</div>
 
+
 				<div class="row">
+
 					<div class="col-md-4 form-group ">
 						<div class="row">
 							<div class="col-md-4">
@@ -207,11 +158,9 @@ function jqueryAutoCompleteSKU() {
 							<div class="col-md-8">
 								<select class="form-control" name="companyName" id="companyName">
 									<option value=""></option>
-
-
 									<c:forEach var="i" begin="0" step="1" items="${companyList}">
 
-										<option value="${i.get(1)}">${i.get(1)}</option>
+										<option value="${i.get(0)}">${i.get(0)}</option>
 
 									</c:forEach>
 
@@ -260,50 +209,44 @@ function jqueryAutoCompleteSKU() {
 					</div>
 				</div>
 
-<!-- 				<div class="row"> -->
-<!-- 					<div class="col-md-8 form-group "> -->
-<!-- 						<div class="row"> -->
-<!-- 							<div class="col-md-2"> -->
-<!-- 								<h5> -->
-<!-- 									<label for="focusedInput ">櫃位：</label> -->
-<!-- 								</h5> -->
-<!-- 							</div> -->
-<!-- 							<div class="col-md-8"> -->
-<!-- 								<input class="form-control" id="warehousePositionOne" name="warehousePositionOne" type="text">-<input class="form-control" id="warehousePositionTwo" name="warehousePositionTwo" type="text"> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-					
-<!-- 					<div class="col-md-4 form-group "> -->
-<!-- 						<div class="row"> -->
-<!-- 							<div class="col-md-4"> -->
-<!-- 								<h5> -->
-<!-- 									<label for="focusedInput ">數量：</label> -->
-<!-- 								</h5> -->
-<!-- 							</div> -->
-<!-- 							<div class="col-md-8"> -->
-<!-- 								<input class="form-control" name="qty" type="text"> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-					
-<!-- 				</div> -->
-				
-<!-- 				<div class="row"> -->
-<!-- 				<div class="col-md-4 form-group "> -->
-<!-- 						<div class="row"> -->
-<!-- 							<div class="col-md-4"> -->
-<!-- 								<h5> -->
-<!-- 									<label for="focusedInput ">價格：</label> -->
-<!-- 								</h5> -->
-<!-- 							</div> -->
-<!-- 							<div class="col-md-8"> -->
-<!-- 								<input class="form-control" name="price" type="text"> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-
+				<div class="row">
+					<div class="col-md-4 form-group ">
+						<div class="row">
+							<div class="col-md-4">
+								<h5>
+									<label for="focusedInput ">櫃位：</label>
+								</h5>
+							</div>
+							<div class="col-md-8">
+								<input class="form-control" name="warehousePosition" type="text">
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4 form-group ">
+						<div class="row">
+							<div class="col-md-4">
+								<h5>
+									<label for="focusedInput ">數量：</label>
+								</h5>
+							</div>
+							<div class="col-md-8">
+								<input class="form-control" name="qty" type="text">
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4 form-group ">
+						<div class="row">
+							<div class="col-md-4">
+								<h5>
+									<label for="focusedInput ">價格：</label>
+								</h5>
+							</div>
+							<div class="col-md-8">
+								<input class="form-control" name="price" type="text">
+							</div>
+						</div>
+					</div>
+				</div>
 
 				<br />
 				<div class="row text-center">
@@ -313,48 +256,46 @@ function jqueryAutoCompleteSKU() {
 		</form>
 	</div>
 	<hr />
-	
-	<div class="container table-responsive bg-warning table-hover"
-		style="border-radius: 20px" id = "myTable">
+
+	<div class="container table-responsive bg-warning"
+		style="border-radius: 20px;">
 		<form name="searchform" method="post" action="#"
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
 			class="form-inline container">
-			
 			<table
 				class="table table-bordered table-hover table-condensed pull-left"
 				style="margin: 0 0 0 -15px">
-			
 				<tr class="ListTitle" style="background-color: #A65758; color: #fff">
+					<th>選取</th>
 					<th>項目</th>
-					<th>種類</th>
-					<th>單號</th>
 					<th>SKU</th>
 					<th>品名</th>
-					
+					<th>出貨單號</th>
+
 					<th>規格</th>
 					<th>顏色</th>
 					<th>數量</th>
 					<th>成本</th>
 					<th>倉別</th>
-					
+
 					<th>櫃位</th>
 					<th>日期</th>
 					<th>廠商</th>
+					<!-- 14 -->
 					<th>經手人</th>
-
-
 				</tr>
 
 
 				<c:forEach var="i" begin="0" step="1" items="${logList}"
 					varStatus="nu">
+					<c:if test="${nu.count%2==0}">
 
-					<c:if test="${i.get(0) eq '進貨'}">
-
-						<tr class="success" style="background-color: #9DDCD1">
+						<tr style="background-color: #9DDCD1">
+							<td rowspan="2" style="vertical-align: middle"><input
+								type="checkbox"></td>
 							<td rowspan="2" style="vertical-align: middle"><c:out
 									value="${nu.count}"></c:out></td>
-									
+
 							<c:forEach var="j" begin="0" end="12" step="1">
 								<td><c:out value="${i.get(j)}"></c:out></td>
 
@@ -362,36 +303,41 @@ function jqueryAutoCompleteSKU() {
 						</tr>
 
 
-						<tr class="success" style="background-color: #9DDCD1">
-							<td colspan="13"><c:out value="${i.get(13)}"></c:out></td>
+						<tr style="background-color: #9DDCD1">
+							<td colspan="12"><c:out value="${i.get(12)}"></c:out></td>
 						</tr>
 					</c:if>
-					<c:if test="${i.get(0) eq '出貨'}">
+					<c:if test="${nu.count%2 !=0}">
+						<tr style="background-color: #D4F4D8">
+							<td rowspan="2" style="vertical-align: middle"><input
+								type="checkbox"></td>
 
-						<tr class="warning" style="background-color: #D4F4D8">
+
 							<td rowspan="2" style="vertical-align: middle"><c:out
 									value="${nu.count}"></c:out></td>
 
-							<c:forEach var="j" begin="0" end="12" step="1">
+							<c:forEach var="j" begin="0" end="11" step="1">
 								<td><c:out value="${i.get(j)}"></c:out></td>
 
 							</c:forEach>
 						</tr>
 
 
-						<tr class="warning" style="background-color: #D4F4D8">
-							<td colspan="13"><c:out value="${i.get(13)}"></c:out></td>
+						<tr style="background-color: #D4F4D8">
+							<td colspan="12"><c:out value="${i.get(12)}"></c:out></td>
 						</tr>
 					</c:if>
 				</c:forEach>
-
 			</table>
-
-
 		</form>
 	</div>
+
 </body>
 
 <%@ include file="../href/footer.jsp"%>
 
+
+
+
+</body>
 </html>
