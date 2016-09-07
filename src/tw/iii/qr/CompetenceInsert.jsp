@@ -1,18 +1,10 @@
-<%@ page import="tw.iii.qr.Competence"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.*" %>
-<%@ page import="java.io.*" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-
-<jsp:useBean id="ctsql" scope="session" class="tw.iii.qr.CompetenceSql" />
-<jsp:setProperty name="ctsql" property="*"/>   
-    
-<!DOCTYPE html >
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
-<title>檢視權限</title>
+<title>新增權限</title>
 <!-- Bootstrap -->
 	<link href="/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/smoothness/jquery-ui.css">
@@ -31,16 +23,7 @@
             $("input[name=date]").datepicker({ dateFormat: 'yy/mm/dd', showOn: "both" });
             
            });
-        
 	</script>   
-    <script type="text/javascript"> 
-    function goct(){
-    	searchform.action = "Competence.jsp"
-    	
-    	searchform.submit()
-    	
-     }
-    </script> 
     
     <style type="text/css">
             .label-tag {
@@ -67,8 +50,8 @@
     <div class="container">
    	  <div class="nav" style="background-color:#1CAF9A;" >
         	<ul class="nav nav-tabs">
-              <li class="" style="background-color:#1CAF9A"><a href="Competence.jsp" style="color:#FFFFFF">檢視權限</a></li>
-              <li class="" ><a href="CompetenceInsert.jsp" style="color:#000000">新增權限</a></li>
+        	  <li ><a href="Competence.jsp" style="color:#000000">檢視權限</a></li>
+              <li class="" style="background-color:#1CAF9A"><a href="CompetenceInsert.jsp" style="color:#FFFFFF">新增權限</a></li>
             </ul>
         </div>
     </div>
@@ -79,56 +62,21 @@
     <ol class="breadcrumb" >
           <li><a href="../QRMain/HomePag.jsp" >首頁</a></li>
           <li class="active" style="display:"><a href="Competence.jsp">權限管理</a></li>
-          <li><a href="Competence.jsp">檢視權限</a></li>
+          <li><a href="Competence.jsp">新增權限</a></li>
       </ol>
-      <h3>檢視權限</h3>
+      <h3>新增權限</h3>
       <hr/>
   </div>
   
   <div class="container" >
-  	<form name="searchform" method="post" action="Competence.jsp" style="font-size: 100%; vertical-align: baseline;" class=" form-group container">
-<%
-request.setCharacterEncoding("UTF-8");
-response.setContentType("text/html;charset=UTF-8");
-
-LinkedList<Competence> list =  new LinkedList<Competence>();
-list = ctsql.getCompetenceLevel();
-session.setAttribute("list",list);
-
-
-
-if (request.getParameter("Competencelv") != null) {
-	System.out.println(request.getParameter("Competencelv"));
-
-	String csv = new String(request.getParameter("Competencelv").getBytes("8859_1"),"UTF-8");
-	System.out.println(csv);
-	out.write(csv);
-}else{
-	System.out.println("null");
-	
-}
-
-//System.out.print(1+cv);
-//session.setAttribute("cv", cv);
-
-%>
-
-
+  	<form name="searchform" action="CompetenceInsert.do" method="post" style="font-size: 100%; vertical-align: baseline;" class=" form-group container">
+      
           <input type="hidden">
               <h3 class="" style="background: #BCF1E5; border-left: 6px solid #1CAF9A;" >權限設定</h3>
               <div class="container-fluid form-horizontal">
                   <div class="row">
-                      <div class="col-md-3 text-right well-sm label-tag" ><h4>權限等級</h4></div>
-                      <div class="col-md-5 well-sm">
-						<select class="form-control" name="Competencelv" onChange="goct()"> 
-						    <option value="ab" >==請選擇==</option>
-						    <c:forEach var="i" varStatus="check" items="${list}" begin="0" step="1">
-						    
-						    <option value="${i.getCompetenceLv()}" >${i.getCompetenceLv()}</option>						    
-						 
-						    </c:forEach>
-						</select>
-					  </div>
+                      <div class="col-md-3 text-right well-sm label-tag"  ><h4>權限等級</h4></div>
+                      <div class="col-md-5 well-sm"><input class="form-control" type="text" name="CompetenceLv"></div>
                   </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>商品權限</h4></div>
@@ -226,12 +174,13 @@ if (request.getParameter("Competencelv") != null) {
 					   
 					  </div>
                   </div>
-                    <div class="container-fluid form-horizontal">
+                  <div class="container-fluid form-horizontal">
                 	<div class="row text-center" >     
                         <input type="submit" value="新增" name="" id="" />
                     </div>
                 
                 </div>
+                  
               </div>
               
 </form>

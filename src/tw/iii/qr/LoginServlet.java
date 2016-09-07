@@ -21,72 +21,84 @@ public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Statement state;
 	private ResultSet rs;
-	private String empName;
-	private String empPwd;
-	private String empStatus;
-
+	private String account;
+	private String password;
+	String competencelv;
+	boolean ok = false;
+	String staffName;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	try {
-		processLogin(request,response);
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+	
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		try {
 			processLogin(request,response);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println("NONO");
 		}
+		
+		
+			
 	}
 
 	private void processLogin(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException, ClassNotFoundException, Exception {
 		request.setCharacterEncoding("UTF-8");
-		empName = request.getParameter("EmpName");
-		empPwd = request.getParameter("EmpPwd");
-		empStatus = null;
+		account = request.getParameter("account");
+		password = request.getParameter("password");		
 		HttpSession session = request.getSession();
+		System.out.println("yo");
 		
-		if(checkLogin(empName,empPwd)){
+		checkLogin(account,password);
+		
+		if(ok){
 			//Login true
-			
-			
-			session.setAttribute("EmpName", empName);
-			session.setAttribute("EmpStatus", empStatus);
-			request.getRequestDispatcher("../QRMain/HomePage.jsp").forward(request, response);
+			System.out.println(competencelv);
+			session.setAttribute("account", account);
+			session.setAttribute("password", password);
+			session.setAttribute("competencelv",competencelv);
+			session.setAttribute("staffName",staffName);
+			request.getRequestDispatcher("HomePage.jsp").forward(request, response);
 		}else{
 			//Login false
+			System.out.println("NO");
 			response.setContentType("text/html;charset=UTF-8");
-			response.sendRedirect("../QRMain/Login.jsp");
+			response.sendRedirect("Login.jsp");
 		}
-		
-		
-		
-		
-		
+	
 	}
-	public boolean checkLogin(String EmpName,String EmpPwd) throws IllegalAccessException, ClassNotFoundException, Exception{
+	public void checkLogin(String account,String password) throws IllegalAccessException, ClassNotFoundException, Exception{
 		Connection conn = new DataBaseConn().getConn();
-		String sqlstr3 = "SELECT * FROM  Staff;";
+		String sqlstr = "SELECT * FROM accountinfo ;";
 		state = conn.createStatement();
-		rs = state.executeQuery(sqlstr3);
+		rs = state.executeQuery(sqlstr);
 		while (rs.next()) {
-			if(EmpName.equals(rs.getString(2))){
-				if(EmpPwd.equals(rs.getString(3))){
-					//Login
-					empStatus=rs.getString(6);
+			if(account.equals(rs.getString(1))){
+				System.out.println("acc");
+				if(password.equals(rs.getString(2))){
+					System.out.println("pass");
+					if(rs.getInt(9)==1){
+						System.out.println("cv");
+						staffName = rs.getString(3)+rs.getString(4);
+						System.out.println(staffName);
+						competencelv = rs.getString(8);
+						ok = true;
+						rs.close();
+						state.close();
+						conn.close();
+						return ;
+					}
 					rs.close();
 					state.close();
 					conn.close();
-					return true;
+					
 				}
 				rs.close();
 				state.close();
 				conn.close();
-				return false;
+				
 			}
 
 		}
@@ -94,6 +106,6 @@ public class LoginServlet extends HttpServlet {
 		rs.close();
 		state.close();
 		conn.close();
-		return false;
+		
 	}
 }
