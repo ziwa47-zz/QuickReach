@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import tw.iii.qr.stock.CEbay;
 
-public class QRAccountFactory {
+public class QRAccountFactory extends QRAccount{
 
 	private Statement state;
 	
@@ -25,15 +25,15 @@ public class QRAccountFactory {
 		String sqlstr = "insert into quickreach.accountinfo values(?,?,?,?,?,?,?,?,?)"; //9個
 		PreparedStatement preparedState = conn.prepareStatement(sqlstr);
 		
-		preparedState.setString(1, qra.account);
-		preparedState.setString(2, qra.password);
-		preparedState.setString(3, qra.lastName);
-		preparedState.setString(4, qra.firstName);
-		preparedState.setString(5, qra.email);
-		preparedState.setString(6, qra.enName);
-		preparedState.setString(7, qra.signatureImage); //簽名檔先不做
-		preparedState.setString(8, qra.competenceLV);
-		preparedState.setInt(9, qra.status);
+		preparedState.setString(1, qra.getAccount());  //1st
+		preparedState.setString(2, qra.getPassword());
+		preparedState.setString(3, qra.getLastName());
+		preparedState.setString(4, qra.getFirstName());
+		preparedState.setString(5, qra.getEmail());
+		preparedState.setString(6, qra.getEnName());  //6th
+		preparedState.setString(7, qra.getSignatureImage()); //簽名檔先不做
+		preparedState.setString(8, qra.getCompetenceLV());
+		preparedState.setInt(9, qra.getStatus());  //9th
 		
 		preparedState.execute();
 		preparedState.close();
@@ -82,15 +82,15 @@ public class QRAccountFactory {
 				+ "signatureImage = ?," + "competenceLV =?," + "status = ?"; //9個
 		PreparedStatement preparedState = conn.prepareStatement(sqlstr);
 		
-		preparedState.setString(1, qra.account);
-		preparedState.setString(2, qra.password);
-		preparedState.setString(3, qra.lastName);
-		preparedState.setString(4, qra.firstName);
-		preparedState.setString(5, qra.email);
-		preparedState.setString(6, qra.enName);
-		preparedState.setString(7, qra.signatureImage); //簽名檔先不做
-		preparedState.setString(8, qra.competenceLV);
-		preparedState.setInt(9, qra.status);
+		preparedState.setString(1, qra.getAccount());  // 1st
+		preparedState.setString(2, qra.getPassword());
+		preparedState.setString(3, qra.getLastName());
+		preparedState.setString(4, qra.getFirstName());
+		preparedState.setString(5, qra.getEmail());
+		preparedState.setString(6, qra.getEnName());  //6th
+		preparedState.setString(7, qra.getSignatureImage()); //簽名檔先不做
+		preparedState.setString(8, qra.getCompetenceLV());
+		preparedState.setInt(9, qra.getStatus());
 		
 		preparedState.execute();
 		preparedState.close();
