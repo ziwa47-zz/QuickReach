@@ -127,7 +127,7 @@ public class TestJdbcMvcServlet extends HttpServlet {
 				  preparedState.executeUpdate();
 				//更新product資料表   該品項之成本
 				  for(int k = 0 ; k <Alllist.size() ; k++){
-				  String sqlstr5 = "Update product set price=? where SKU=?";
+				  String sqlstr5 = "Update product set cost=? where SKU=?";
 				  preparedState = conn.prepareStatement(sqlstr5);
 				  preparedState.setString(1, Alllist.get(k).get(2));
 				  preparedState.setString(2, Alllist.get(k).get(0));
