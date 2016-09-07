@@ -1,17 +1,14 @@
 <%@ page import="tw.iii.qr.Competence"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ page import="java.io.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 
 <jsp:useBean id="ctsql" scope="session" class="tw.iii.qr.CompetenceSql" />
 <jsp:setProperty name="ctsql" property="*"/>   
     
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html >
 <html>
 <head>
 <meta charset="utf-8">
@@ -39,7 +36,9 @@
     <script type="text/javascript"> 
     function goct(){
     	searchform.action = "Competence.jsp"
+    	
     	searchform.submit()
+    	
      }
     </script> 
     
@@ -94,15 +93,26 @@ response.setContentType("text/html;charset=UTF-8");
 
 LinkedList<Competence> list =  new LinkedList<Competence>();
 list = ctsql.getCompetenceLevel();
-request.setAttribute("list",list);
+session.setAttribute("list",list);
 
-String cv = request.getParameter("Competencelv");
-cv = new String(cv.getBytes("ISO8859_1"),"UTF-8");
 
-request.setAttribute("cv",cv);
-out.print(cv);
+
+if (request.getParameter("Competencelv") != null) {
+	System.out.println(request.getParameter("Competencelv"));
+
+	String csv = new String(request.getParameter("Competencelv").getBytes("8859_1"),"UTF-8");
+	System.out.println(csv);
+	out.write(csv);
+}else{
+	System.out.println("null");
+	
+}
+
+//System.out.print(1+cv);
+//session.setAttribute("cv", cv);
 
 %>
+
 
           <input type="hidden">
               <h3 class="" style="background: #BCF1E5; border-left: 6px solid #1CAF9A;" >權限設定</h3>
@@ -111,7 +121,7 @@ out.print(cv);
                       <div class="col-md-3 text-right well-sm label-tag" ><h4>權限等級</h4></div>
                       <div class="col-md-5 well-sm">
 						<select class="form-control" name="Competencelv" onChange="goct()"> 
-						    <option value="ab" >==請選擇==${param.Competencelv}</option>
+						    <option value="ab" >==請選擇==</option>
 						    <c:forEach var="i" varStatus="check" items="${list}" begin="0" step="1">
 						    
 						    <option value="${i.getCompetenceLv()}" >${i.getCompetenceLv()}</option>						    
