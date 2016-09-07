@@ -451,29 +451,6 @@ public class COrderFactory extends COrders {
 
 	}
 
-	public void insertIntoShippingLog(HttpServletRequest request, Connection conn) throws SQLException {
-
-		String strSql = "insert into  shippinglog (QR_id, order_id, date, trackingCode, staffName)"
-				+ " values( ?, ?, now(), ?, ?)";
-		PreparedStatement ps = conn.prepareStatement(strSql);
-		ps.setString(1, request.getParameter("QR_id"));
-		ps.setString(2, request.getParameter("orderId"));
-		ps.setString(3, request.getParameter("trackingCode"));
-		ps.setString(4, "system");
-
-		ps.executeUpdate();
-	}
-
-	public void InsertOrUpdateOrderDetail(HttpServletRequest request, Connection conn) throws SQLException {
-
-		String strSql = "update  orders_detail"
-				+ " SET SKU=?, productName=?, invoiceName=?, price=?, invoicePrice=?, qty=?, warehouse=?, comment=?, owner=?"
-				+ " WHERE order_id= ? and SKU= ?;";
-
-		PreparedStatement ps = conn.prepareStatement(strSql);
-		ps.setString(1, request.getParameter("orderId"));
-		ps.executeUpdate();
-	}
 
 	public void updateOrderDetail(HttpServletRequest request, Connection conn) throws SQLException {
 		
@@ -586,6 +563,13 @@ public class COrderFactory extends COrders {
 			ps.executeUpdate();
 		}
 	}
+	
+	public void updateToFinished(HttpServletRequest request, Connection conn) throws Exception {
+		String strSql = "update  orders_master" + " set orderStatus = '已完成' " + " where QR_id = ? ";
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		ps.setString(1, request.getParameter("QR_id"));
+		ps.executeUpdate();
+	}
 
 	public boolean checkOrderIdOrderStatus(HttpServletRequest request, Connection conn) throws Exception {
 		String strSql = "select QR_id, orderStatus from  orders_master";
@@ -604,32 +588,45 @@ public class COrderFactory extends COrders {
 
 		for (int i = 0; i < orderList.size(); i++) {
 			if (request.getParameter("QR_id").equals(orderList.get(i).getCOrderMaster().getQR_id().toString())) {
-				System.out.println("QRID:true");
-				if (orderList.get(i).getCOrderMaster().getOrderStatus().toString().equals("已出貨"))
+				System.out.println(request.getParameter("QR_id"));
+				if ("已出貨".equals(orderList.get(i).getCOrderMaster().getOrderStatus().toString()))
 					return true;
 			}
 		}
 		System.out.println("QRId is invalid or wrong order status.");
 		return false;
 	}
-
-	public void updateToFinished(HttpServletRequest request, Connection conn) throws Exception {
-		String strSql = "update  orders_master" + " set orderStatus = '已完成' " + " where QR_id = ? ";
-		PreparedStatement ps = conn.prepareStatement(strSql);
-		ps.setString(1, request.getParameter("QR_id"));
-		ps.executeUpdate();
+	
+	public void insertIntoShippingLog(HttpServletRequest request, Connection conn) throws SQLException {
+		
+		LinkedList<ShipmentRecord> ShippingLog = new LinkedList<ShipmentRecord>();
+		for(int i=0; i<ShippingLog.size(); i++){
+			String strSql = "insert into  shippinglog (QR_id, date, trackingCode, staffName)"
+					+ " values( ?, now(), ?, ?)";
+			PreparedStatement ps = conn.prepareStatement(strSql);
+			ps.setString(1, ShippingLog.get(i).getQR_id());
+			ps.setString(2, ShippingLog.get(i).getTrackingCode());
+			ps.setString(3, ShippingLog.get(i).getStaffName());
+	
+			ps.executeUpdate();
+			System.out.println(ShippingLog.get(i).getQR_id());
+			System.out.println(ShippingLog.get(i).getTrackingCode());
+			System.out.println(ShippingLog.get(i).getStaffName());
+		}
 	}
 
 	public void deductStock(HttpServletRequest request, Connection conn) throws Exception {
 
 		LinkedList<COrderDetail> condition = getCondition(request, conn);
 		for (int i = 0; i < condition.size(); i++) {
-			String strSql = "update  storage" + " set qty = ? " + " where sku = ? and warehouse = ? ";
+			String strSql = "update  storage" + " set qty = ? " + " where sku = ? and warehouse = ? and item= ?";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ps.setInt(1, condition.get(i).getQty());
 			ps.setString(2, condition.get(i).getSKU());
 			ps.setString(3, condition.get(i).getWarehouse());
+			ps.setInt(4, condition.get(i).getItem());
 			ps.executeUpdate();
+			
 		}
 	}
 
@@ -638,7 +635,7 @@ public class COrderFactory extends COrders {
 		LinkedList<COrderDetail> condition = getSkuAndWarehouse(request, conn);
 		LinkedList<COrderDetail> result = new LinkedList<COrderDetail>();
 		for (int i = 0; i < condition.size(); i++) {
-			String strSql = "select distinct s.SKU, s.qty, d.qty, s.warehouse"
+			String strSql = "select distinct s.SKU, s.qty, d.qty, s.warehouse, s.item"
 					+ " from  storage as s inner join  orders_detail as d"
 					+ " using (SKU) where QR_id = ? and sku = ? and s.warehouse = ?";
 			PreparedStatement ps = conn.prepareStatement(strSql);
@@ -653,12 +650,10 @@ public class COrderFactory extends COrders {
 				detail.setSKU(rs.getString(1));
 				detail.setQty(rs.getInt(2) - rs.getInt(3));
 				detail.setWarehouse(rs.getString(4));
+				detail.setItem(Integer.valueOf(rs.getString(5)));
 				result.add(detail);
 			}
 		}
-		System.out.println(result);
-		System.out.println(result);
-		System.out.println(result.get(0).toString());
 		return result;
 	}
 
@@ -678,6 +673,7 @@ public class COrderFactory extends COrders {
 			detail.setWarehouse(rs.getString(2));
 			result.add(detail);
 		}
+		System.out.println("true");
 		return result;
 	}
 
@@ -716,5 +712,19 @@ public class COrderFactory extends COrders {
 			}
 		}
 		return unSelected;
+	}
+	
+	public LinkedList<ShipmentRecord> getShipmentRecord (HttpServletRequest request, Connection conn) throws Exception {
+		
+		String strSql = "select s.date, s.QR_id, s.type, m.eBayAccount, d.SKU, d.productName, d.qty,"
+				+ " r.country, d.owner, d.warehouse, m.staffName, s.comment"
+				+ " from orders_master as m inner join shippinglog as s"
+				+ " inner join order_recieverinfo as r"
+				+ " inner join orders_detail as d";
+		
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		ps.setString(1, request.getParameter("QR_id"));
+		ResultSet rs = ps.executeQuery();
+
 	}
 }
