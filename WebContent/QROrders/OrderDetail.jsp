@@ -14,14 +14,14 @@
 <body>
   <%@ include file ="/href/navbar.jsp" %>
 <%
-String orderId ;
+String QR_id ;
 request.setCharacterEncoding("UTF-8");
-if(request.getParameter("orderId") != null || request.getParameter("orderId") != ""){
+if(request.getParameter("QR_id") != null || request.getParameter("QR_id") != ""){
 Connection conn = new DataBaseConn().getConn();
-orderId = request.getParameter("orderId");
-COrders searchResult = COrderFactory.getOrderAllInfo(orderId, conn);
+QR_id = request.getParameter("QR_id");
+COrders searchResult = COrderFactory.getOrderAllInfo(QR_id, conn);
 session.setAttribute("result", searchResult);
-LinkedList<COrderDetail> resultDetail = COrderFactory.getOrderDetails(orderId, conn);
+LinkedList<COrderDetail> resultDetail = COrderFactory.getOrderDetails(QR_id, conn);
 session.setAttribute("resultDetail", resultDetail);
 
 conn.close();
@@ -44,11 +44,11 @@ conn.close();
    	  <div class="nav" style="background-color:#A45A21;">
         <ul class="nav nav-tabs">
           <li><a href="SearchOrder.jsp" style="color:#fff">訂單查詢</a></li>
-          <li><a href="OrderProcessingPage.jsp" style="color:#000000">處理中</a></li>
-          <li><a href="OrderPickupPage.jsp" style="color:#000000">揀貨中</a></li>
-          <li><a href="OrderUploadTrackingCode.jsp" style="color:#000000">上傳追蹤碼</a></li>
-          <li><a href="OrderFinished.jsp" style="color:#000000">已完成訂單</a></li>
-          <li><a href="OrderAbnormal.jsp" style="color:#000000">異常訂單</a></li>
+          <li><a href="OrderProcessingPage.jsp">處理中</a></li>
+          <li><a href="OrderPickupPage.jsp">揀貨中</a></li>
+          <li><a href="OrderUploadTrackingCode.jsp">上傳追蹤碼</a></li>
+          <li><a href="OrderFinished.jsp">已完成訂單</a></li>
+          <li><a href="OrderAbnormal.jsp">異常訂單</a></li>
         </ul>
       </div>
     </div>
@@ -70,7 +70,7 @@ conn.close();
         <label class="radio-inline"><input type="radio" name="optionsRadios" id="optionsRadios1">開啟</label>
         <label class="radio-inline"><input type="radio" name="optionsRadios" id="optionsRadios2">關閉</label>
     	<label class="radio-inline">
-    	<button type="submit" name="submit" value="updateProduct"	class="btn-lg btn-success">更新產品資料</button>
+    	<button type="submit" name="submit" value="updateOrder" class="btn-lg btn-success">更新產品資料</button>
       	</label>
       </div>
     </div>
@@ -340,26 +340,25 @@ conn.close();
 		        <tbody>
 		          <tr>
 		            <td><input class="" type="text" name="SKU" value="${i.getSKU()}"></td>
-		            <td>${i.getProductName()}
-						Invoice Name:<input class="" type="text" name="invoiceName" value="${i.getInvoiceName()}">
+		            <td>Product Name:<br/>${i.getProductName()}<br/>
+						Invoice Name:<br/><input class="" type="text" name="invoiceName" value="${i.getInvoiceName()}">
 		            </td>
 		            <td><input class="" type="text" name="price" value="${i.getPrice()}"></td>
 		            <td><input class="" type="text" name="invoicePrice" value="${i.getInvoicePrice()}"></td>
 		            <td><input class="" type="text" name="qty" value="${i.getQty()}"></td>
 		            <td>備註:<input class="" type="text" name="comment" value="${i.getComment()}">
+		            <input type="hidden" name="item" value="${i.getItem()}">
 		            </td>
 		          </tr>
 		        </tbody>
 		        </c:forEach>
+		        <input type="hidden" name="QR_id" value="${result.getCOrderMaster().getQR_id()}">
 		      </table>
             </div>
           </div>
         </div>
       </div>
     </fieldset>
-    <div class="row text-center">
-      <button type="submit" name="" class="btn-lg btn-primary" id="send">送出</button>
-    </div>
     </form>
   </div>
 </body>

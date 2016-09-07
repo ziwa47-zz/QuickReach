@@ -17,7 +17,7 @@ public class CProductFactory extends CProduct {
 	}
 
 	public LinkedList<CProduct> searchProduct(HttpServletRequest request, Connection conn) throws SQLException {
-		String strsql = " select distinct sku,brand,subbrand,p_name,spec,color from QuickReach.product inner join QuickReach.storage using (sku) where '1' = '1' ";
+		String strsql = " select distinct sku,brand,subbrand,p_name,spec,color from  product inner join  storage using (sku) where '1' = '1' ";
 		int param = 1;
 
 		PreparedStatement ps = null;
@@ -127,7 +127,7 @@ public class CProductFactory extends CProduct {
 		String strsql = "SELECT  SKU ,  owner ,  productType ,  brand ,  subBrand ,"
 				+ "  EAN ,  productCode ,  P_name ,  spec ,  color ,"
 				+ "  securedQty ,  cost ,  comment ,  checkupdate ,  added , "
-				+ "  weight , packageMatrial,  vilumetricWeight ,  createDate  FROM  QuickReach.product "
+				+ "  weight , packageMatrial,  vilumetricWeight ,  createDate  FROM   product "
 				+ " where 1 = 1 and sku = ? ";
 
 		PreparedStatement ps = null;
@@ -165,7 +165,7 @@ public class CProductFactory extends CProduct {
 	}
 
 	public void updateProduct(HttpServletRequest request, Connection conn) throws SQLException {
-		String strsql = "UPDATE QuickReach.product SET " 
+		String strsql = "UPDATE  product SET " 
 				+ "owner  = ?," + "productType  = ?," + "brand  = ?,"
 				+ "subBrand  = ?," + "EAN  = ?," + "productCode  = ?," + "P_name  = ?," + "spec  = ?," + "color  = ?,"
 				+ "cost  = ?," + "comment  = ?," + "checkupdate  = ?," + "added  = ?," + "weight  = ?,"
@@ -188,6 +188,7 @@ public class CProductFactory extends CProduct {
 		cp.setWeight(Double.valueOf(request.getParameter("weight")));
 		cp.setPackageMatrial(request.getParameter("package"));
 		cp.setVilumetricWeight(Double.valueOf(request.getParameter("vilu")));
+		
 		PreparedStatement ps = null;
 		System.out.print("rq"+request.getParameter("producttype"));
 		ps = conn.prepareStatement(strsql);
