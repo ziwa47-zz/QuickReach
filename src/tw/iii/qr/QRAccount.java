@@ -7,7 +7,7 @@ public class QRAccount {
 	private String lastName ;
 	private String firstName ;
 	private String email ;
-	private String enName ;
+	private String enName ;  //6th
 	private String signatureImage ;
 	private String competenceLV ;
 	private int status ; //9th

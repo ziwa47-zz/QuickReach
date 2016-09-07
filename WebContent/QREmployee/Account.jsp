@@ -108,10 +108,12 @@
 						</select>
 					  </div>
                   </div>
-                  <div class="row">
+                  
+    <!--                <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>簽名圖檔</h4></div>
                       <div class="col-md-5 well-sm"><input class="checkbox-inline" name="signatureImage" type="file" ></div>
                   </div>
+     -->              
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>帳號狀態</h4></div>
                       <div class="col-md-5 well-sm">

@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>新增帳號</title>
+<title>修改員工帳號</title>
 <!-- Bootstrap -->
 	<link href="/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/smoothness/jquery-ui.css">
@@ -69,7 +69,7 @@
           <li class="active" style="display:"><a href="Account.jsp">員工管理</a></li>
           <li><a href="Account.jsp">新增帳號</a></li>
       </ol>
-      <h3>新增帳號</h3>
+      <h3>帳號修改</h3>
       <hr/>
   </div>
   
@@ -77,17 +77,21 @@
   	<form name="searchform" method="post" action="QRAccountServlet.do" style="font-size: 100%; vertical-align: baseline;" class=" form-group container">
       
 <%
-
-String account1 = request.getParameter("account");
 request.setCharacterEncoding("UTF-8");
-//out.print(ebayId);        		
-if(account1 != null || account1.equals("")){
+String account1 = request.getParameter("p");
+
+System.out.println(account1);   
+System.out.println(request.getParameter("p"));
+if(!"".equals(account1) || account1 != null){
 Connection conn = new DataBaseConn().getConn();
 
-QRAccount accountinfo  = getaccount.searchDetail("account1");
+QRAccount accountinfo  = getaccount.searchDetail(account1);
 session.setAttribute("accountinfo", accountinfo);
-}
+System.out.println(accountinfo.getAccount());
 
+
+
+}
 
 
 %>  
@@ -96,7 +100,7 @@ session.setAttribute("accountinfo", accountinfo);
       
       
           <input type="hidden">
-              <h3 class="" style="background: #BCF1E5; border-left: 6px solid #1CAF9A;" >輸入帳號資料</h3>
+              <h3 class="" style="background: #BCF1E5; border-left: 6px solid #1CAF9A;" >輸入修改資料</h3>
               <div class="container-fluid form-horizontal">
               
                   <div class="row">
@@ -134,12 +138,7 @@ session.setAttribute("accountinfo", accountinfo);
 						</select>
 					  </div>
                   </div>
-   <!--              
-                  <div class="row">
-                      <div class="col-md-3 text-right well-sm label-tag"  ><h4>簽名圖檔</h4></div>
-                      <div class="col-md-5 well-sm"><input class="checkbox-inline" name="signatureImage" type="file" ></div>
-                  </div>
-    -->              
+                
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>帳號狀態</h4></div>
                       <div class="col-md-5 well-sm">
@@ -149,9 +148,11 @@ session.setAttribute("accountinfo", accountinfo);
 					   
 					  </div>
                   </div>
-                  <div class="row">
-                     <center><input class="checkbox-inline" name="signatureImage" type="submit" value="新增" ></center>
-                  </div>
+                  
+                 	 	<div class="" align="center">
+						<button type="submit" name="submit" value="updateEbayAccount">修改送出</button> <td><a href="eBayAccount.jsp"><input type="button" value="取消"></a></td>
+						</div>
+                  	
               </div>
               
 </form>

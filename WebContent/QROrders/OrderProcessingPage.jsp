@@ -61,7 +61,6 @@
     style="font-size: 100%; vertical-align: baseline; padding: 15px;">
       <fieldset class="font-weight" style="padding:0 30px 0 0;">
         <legend>處理中</legend>
-        <input type="hidden">
         <div class="row">
           <div class="col-md-4 form-group ">
             <div class="row">
@@ -223,6 +222,7 @@
         </div>
         <br/>
         <div class="row text-center" >
+          <input type="hidden" name="processing"  value="processing"> <!-- 控制搜尋結果在處理中 -->
           <button class="btn-lg btn-primary" type="submit" name="submit" value="processingSearch">搜尋</button>
           <button class="btn-lg btn-primary" type="button" name="" >清空</button>
         </div>
@@ -244,28 +244,28 @@
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
-                <li><a href="OrderUploadTrackingCode.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
+                <li><a href="OrderProcessingPage.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
               </c:when>
               <c:otherwise>
-                <li class="disabled"><a href="OrderUploadTrackingCode.jsp.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
+                <li class="disabled"><a href="OrderProcessingPage.jsp.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
               </c:otherwise>
             </c:choose>
             <c:forEach begin="0" end="${SearchOrdersResult.size()/10}" step="1" varStatus="check">
               <c:choose>
                 <c:when test="${(check.index*10) != begin}">
-                  <li><a href="OrderUploadTrackingCode.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
+                  <li><a href="OrderProcessingPage.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
                 </c:when>
                 <c:otherwise>
-                  <li class="active"><a href="OrderUploadTrackingCode.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
+                  <li class="active"><a href="OrderProcessingPage.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
                 </c:otherwise>
               </c:choose>
             </c:forEach>
             <c:choose>
               <c:when test="${end < SearchOrdersResult.size()}">
-                <li><a href="OrderUploadTrackingCode.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
+                <li><a href="OrderProcessingPage.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:when>
               <c:otherwise>
-                <li class="disabled"><a href="OrderUploadTrackingCode.jsp.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
+                <li class="disabled"><a href="OrderProcessingPage.jsp.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:otherwise>
             </c:choose>
             <label>共有:${SearchOrdersResult.size()}筆</label>
@@ -433,7 +433,6 @@
                     <td>${i.getCOrderMaster().getShippingDate()}</td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
-                      <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
@@ -451,7 +450,6 @@
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td nowrap>${i.getCOrderMaster().getOrder_id()}
-                      <input type="hidden" name="orderId" value="${i.getCOrderMaster().getOrder_id()}"></td>
                     <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
@@ -460,7 +458,6 @@
                     <td>${i.getCOrderMaster().getShippingDate()}</td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
-                      <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
