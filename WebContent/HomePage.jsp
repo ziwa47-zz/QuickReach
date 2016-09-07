@@ -9,9 +9,7 @@
 </head>
 <body>
 
-<c:if test="${account == null }">  
-<% response.sendRedirect("/Login.jsp"); %>
-</c:if>
+
 
 <%@ include file="/href/navbar.jsp"%>
 <div class="container container-fluid breadcrumbBox">
