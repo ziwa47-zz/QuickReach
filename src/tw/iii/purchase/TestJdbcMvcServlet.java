@@ -116,25 +116,24 @@ public class TestJdbcMvcServlet extends HttpServlet {
 			for(int i = 0 ; i <Alllist.size() ; i++){
 				String sqlstr2 = "Insert Into purchaselog_detail(purchaseId,SKU,qty,price,warehousePosition1,warehousePosition2,comment,stockStatus,warehouse)"
 						+"Values(?,?,?,?,?,?,?,1,?)";
-				
 								
 				preparedState = conn.prepareStatement(sqlstr2);
-				
-			
-				
-				
 				preparedState.setString(1, purchaseId);
-				//preparedState.setString(1, oldPurchaseIdFront11+warehouse+df.format(count));  //時代的眼淚WTF
 	
 				for(int j = 0 ; j < Alllist.get(i).size() ; j++){
 					preparedState.setString(j+2, Alllist.get(i).get(j));					
 					System.out.print(Alllist.get(i).get(j)+",");
 				}
-				//preparedState.setString(Alllist.get(i).size(),pMaster.get(2) );
 				  preparedState.executeUpdate();
-				  
-				  
-				
+				//更新product資料表   該品項之成本
+				  for(int k = 0 ; k <Alllist.size() ; k++){
+				  String sqlstr5 = "Update product set price=? where SKU=?";
+				  preparedState = conn.prepareStatement(sqlstr5);
+				  preparedState.setString(1, Alllist.get(k).get(2));
+				  preparedState.setString(2, Alllist.get(k).get(0));
+				  preparedState.executeUpdate();
+				  }
+				//更新庫存
 				String sqlstr3 = "Update  storage set qty=qty+? where SKU=?";
 				preparedState = conn.prepareStatement(sqlstr3);
 				preparedState.setInt(1, Integer.parseInt(Alllist.get(i).get(1).trim()));
