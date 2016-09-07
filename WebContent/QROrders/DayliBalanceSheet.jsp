@@ -123,7 +123,7 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
                 </tr>
                 <tr>
                   <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id"
-                   id="${i.getCOrderMaster().getQR_id()}" value="${i.getCOrderMaster().getQR_id()}"
+                    value="${i.getCOrderMaster().getQR_id()}" id="${i.getCOrderMaster().getQR_id()}"
                     onchange="enableOrderStatus(this)"></td>
                   <td>${i.getCOrderMaster().getOrderDate()}</td>
                   <td>${i.getCOrderMaster().getQR_id()}</td>
@@ -199,19 +199,23 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
   </form>
 </div>
 <script type="text/javascript">
-	function enableOrderStatus(ele){
-		var id = ele.value;
+ 	function enableOrderStatus(ele){
+ 	  var id = ele.value;
 	  if (ele.checked) {
-		  $("#" + id).attr("name","logistics");
+		  $(ele).attr("name","QR_id");
 	  } else {
-		  $("#" + id).attr("name","init");
-		  alert("請勾選訂單並選擇物流");
-	  }
-  };
-//   function autoChecked(ele){
-// 		var id = ele.id ;
-// 		$("#" + id).prop("checked", true);
-// };
+		  $(ele).attr("name","init");
+		  alert("取消勾選了一筆訂單");
+ 	  }
+   };
+   function autoChecked(ele){
+ 		var id = ele.id ;
+ 		$("#" + id).prop("checked", true);
+ 		$(ele).attr("name","logistics");
+ 		if(ele.value == '請選擇'){
+ 			$(ele).attr("name","init");
+ 		}
+ };
 </script>
 </body>
 </html>

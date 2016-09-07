@@ -66,7 +66,7 @@ public class ProcessMasterWarehouse extends HttpServlet {
 			DataBaseConn jdbc = new DataBaseConn();
 			conn = jdbc.getConn();			
 			
-			String strSql = " select count(*) from quickreach.purchaselog_master where purchaseId like ? order by 1 desc limit 0,1;";
+			String strSql = " select count(*) from  purchaselog_master where purchaseId like ? order by 1 desc limit 0,1;";
 
 			
 			ps = conn.prepareStatement(strSql);
