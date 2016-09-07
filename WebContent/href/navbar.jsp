@@ -31,7 +31,7 @@
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.js"></script>
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.min.js"></script>
   
-  
+ 
 
 
 <script type="text/javascript">
@@ -65,7 +65,18 @@
 </script>
 </head>
 <body>
+<%
+String ac =(String)session.getAttribute("account");
+if(ac==null || "".equals(ac)){
+	if("0".equals(request.getParameter("p"))){
+		
+	}else{
+		response.sendRedirect("/Login.jsp?p=0");
+	}
+	
+}
 
+%>
 	<nav class="navbar" style="background-color: #000000">
 	<div class="container-fluid">
 		<div class="navbar-header">
