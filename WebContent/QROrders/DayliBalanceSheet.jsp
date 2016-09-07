@@ -12,10 +12,10 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>查詢訂單</title>
+<title>日結表</title>
 </head>
 <body>
-<%@ include file = "../href/navbar.jsp"%>
+<%@ include file = "/href/navbar.jsp"%>
 
 <%
 Connection conn = new DataBaseConn().getConn();
@@ -24,39 +24,38 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
 // LinkedList<COrders> dayliBalanceSheet = DBSF.dayliBalanceSheet(request,response, conn);
 // request.setAttribute("dbs", dayliBalanceSheet);
 %>
-  <div class="nav">
-  	<div class="container">
-    	<div class="navbar-left" style="background-color:#F3CE9A;" >
-        	<ul class="nav nav-tabs">
-              <li><a href="SearchOrder.jsp">訂單管理</a></li>
-              <li style="background-color:#A45A21;"><a href="DayliBalanceSheet.jsp" style="color:#FFFFFF">日結表</a></li>
-              <li><a href="SearchComment.jsp">查詢評價</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="container">
-   	  <div class="nav" style="background-color:#A45A21;" >
-        	<ul class="nav nav-tabs" id="test" >
-              <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
-           <li><a href="OrderProcessingPage.jsp?begin=0&end=10">處理中</a></li>
-           <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
-           <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
-           <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
-           <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
-            </ul>
-        </div>
+ <div class="nav">
+  <div class="container">
+    <div class="navbar-left" style="background-color:#F3CE9A;" >
+      <ul class="nav nav-tabs">
+        <li ><a href="SearchOrder.jsp" >訂單管理</a></li>
+        <li class="" style="background-color:#A45A21"><a href="DayliBalanceSheet.jsp" style="color:#fff">日結表</a></li>
+      </ul>
     </div>
   </div>
-
-
-
-  <div class="container container-fluid breadcrumbBox">
-	<ol class="breadcrumb">
-		<li><a href="../QRMain/HomePage.jsp">首頁</a></li>
-		<li class="active" style="display:"><a href="SearchOrder.jsp">訂單</a></li>
-		<li><a href="DayliBalanceSheet.jsp">日結表</a></li>
-	</ol>
+  <div class="container">
+    <div class="nav" style="background-color:#A45A21;" >
+      <ul class="nav nav-tabs">
+        <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
+        <li><a href="OrderProcessingPage.jsp?begin=0&end=10">處理中</a></li>
+        <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
+        <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
+        <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
+        <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
+        <li><a href="ShipmentRecord.jsp?begin=0&end=10" >訂單出貨記錄</a></li>
+      </ul>
+    </div>
   </div>
+</div>
+
+<div class="container container-fluid breadcrumbBox">
+  <ol class="breadcrumb" >
+    <li><a href="/HomePage.jsp" >首頁</a></li>
+    <li class="active" style="display:"><a href="SearchOrder.jsp?begin=0&end=10">訂單管理</a></li>
+    <li><a href="DayliBalanceSheet.jsp">日結表</a></li>
+  </ol>
+</div>
+
   
 <div class="container table-responsive" style="background: #D9A56B; border-radius:20px;">
   <form name="searchform" method="post" action="../StatusDo" class="container"
