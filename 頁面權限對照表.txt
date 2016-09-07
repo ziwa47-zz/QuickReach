@@ -17,3 +17,17 @@
 17.${PageCompetence.getEbayPaypalAccountEdit()} 編輯ebay/paypal帳號
 18.${PageCompetence.getParamSettingEdit()}	修改參數設定
 19.${PageCompetence.getInventoryCostView()} 	查看庫存成本
+
+權限驗證範例 :
+
+無"管理商品"權限 跳回首頁
+
+<c:if test="${PageCompetence.getProductManage() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
+
+登入驗證 
+
+<c:if test="${account == null }">  
+<% response.sendRedirect("/Login.jsp"); %>
+</c:if>
