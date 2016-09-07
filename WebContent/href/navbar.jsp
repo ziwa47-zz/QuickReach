@@ -77,6 +77,7 @@ if(ac==null || "".equals(ac)){
 }
 
 %>
+
 	<nav class="navbar" style="background-color: #000000">
 	<div class="container-fluid">
 		<div class="navbar-header">
@@ -94,11 +95,11 @@ if(ac==null || "".equals(ac)){
 
 			<ul class="nav navbar-right">
 				<c:if test="${account != null}">
-					<li><a href="Login.jsp">${staffName}${'('}${account}${')'}<span
+					<li><a href="/Login.jsp">${staffName}${'('}${account}${')'}<span
 							class="glyphicon glyphicon-log-in"></span> Logout</a></li>
 				</c:if>	
 				<c:if test="${account == null}">
-					<li><a href="Login.jsp"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+					<li><a href="/Login.jsp"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 				</c:if>	
 			</ul>
 		</div>
