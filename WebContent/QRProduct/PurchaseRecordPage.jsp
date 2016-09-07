@@ -72,7 +72,11 @@ function jqueryAutoCompleteSKU() {
 </head>
 <body>
 	<%@ include file="../href/navbar.jsp"%>
+	
 	<%
+	
+	
+	
 		LinkedList<LinkedList<String>> warehouseList = searchDetail.warehouseSelectOption();
 		LinkedList<LinkedList<String>> companyList = searchDetail.companySelectOption();
 		request.setAttribute("warehouseList", warehouseList);
@@ -384,6 +388,13 @@ function jqueryAutoCompleteSKU() {
 
 				</tr>
 
+
+<c:if test="${PageCompetence.getProductCostView() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>
+
+
+  
+</c:if>
 
 				<c:forEach var="i" begin="0" step="1" items="${logList}"
 					varStatus="nu">
