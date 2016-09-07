@@ -37,6 +37,11 @@
 <script type="text/javascript">
 	$(function() {
 		//日期選擇器
+		$(".yymmdd").datepicker({
+			dateFormat : 'yymmdd',
+			
+		});
+		
 		$("input[name=dateMin]").datepicker({
 			dateFormat : 'yymmdd',
 		});

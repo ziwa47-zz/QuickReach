@@ -78,10 +78,10 @@ function jqueryAutoCompleteSKU() {
 		request.setAttribute("warehouseList", warehouseList);
 		request.setAttribute("companyList", companyList);
 		
-		 String purchaseRecord = request.getParameter("purchaseRecord");
-		  String outRecord = request.getParameter("outRecord");
+		String purchaseRecord = request.getParameter("purchaseRecord");
+		String outRecord = request.getParameter("outRecord");
 		  
-		  String purchaseId = request.getParameter("purchaseId");
+		String purchaseId = request.getParameter("purchaseId");
 
 		String date1 = request.getParameter("dateMin");
 		String date2= request.getParameter("dateMax");
@@ -364,18 +364,19 @@ function jqueryAutoCompleteSKU() {
 			
 				<tr class="ListTitle" style="background-color: #A65758; color: #fff">
 					<th>項目</th>
-					<th>種類</th>
+					<th>單別</th>
 					<th>單號</th>
+					<th>種類</th>
 					<th>SKU</th>
 					<th>品名</th>
 					
-					<th>規格</th>
-					<th>顏色</th>
+				
 					<th>數量</th>
 					<th>成本</th>
 					<th>倉別</th>
 					
 					<th>櫃位</th>
+					<th>Owner</th>
 					<th>日期</th>
 					<th>廠商</th>
 					<th>經手人</th>

@@ -95,7 +95,7 @@ public class TestJdbcMvcServlet extends HttpServlet {
 			System.out.println("Tell me who you are?:"+purchaseId);
 			
 		
-			String sqlstr1 = "Insert Into purchaselog_master(purchaseId,date,companyId,companyName,staffId,warehouse,comment,stockStatus) Values(?,now(),?,(select C_name from quickreach.company where C_id=?),?,?,?,1)";
+			String sqlstr1 = "Insert Into purchaselog_master(purchaseId,date,companyId,companyName,staffId,warehouse,comment,stockStatus) Values(?,now(),?,(select C_name from company where C_id=?),?,?,?,1)";
 			preparedState = conn.prepareStatement(sqlstr1);
 			preparedState.setString(1, purchaseId);
 			//preparedState.setString(1, oldPurchaseIdFront11+warehouse+df.format(count));
@@ -135,7 +135,7 @@ public class TestJdbcMvcServlet extends HttpServlet {
 				  
 				  
 				
-				String sqlstr3 = "Update quickreach.storage set qty=qty+? where SKU=?";
+				String sqlstr3 = "Update  storage set qty=qty+? where SKU=?";
 				preparedState = conn.prepareStatement(sqlstr3);
 				preparedState.setInt(1, Integer.parseInt(Alllist.get(i).get(1).trim()));
 				preparedState.setString(2, Alllist.get(i).get(0));			

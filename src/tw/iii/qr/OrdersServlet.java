@@ -1,6 +1,7 @@
 package tw.iii.qr;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.util.LinkedList;
@@ -59,7 +60,7 @@ public class OrdersServlet extends HttpServlet {
 		LinkedList<COrders> orderProcessingPageSearch = OFactory.orderProcessingPageSearch(request, conn);
 		SessionRecord sessionRecord = new SessionRecord();
 		session.setAttribute(sessionRecord.getOrdersResult(), orderProcessingPageSearch);
-		conn.close();
+		//conn.close();
 		String submit = request.getParameter("submit");
 		
 				switch(submit){
@@ -72,15 +73,19 @@ public class OrdersServlet extends HttpServlet {
 					response.sendRedirect("QROrders/OrderProcessingPage.jsp?begin=0&end=10");
 					break;
 				case "pickupSearch":
-					session.setAttribute(sessionRecord.getOrderPickUp(), orderProcessingPageSearch);
+					//session.setAttribute(sessionRecord.getOrderPickUp(), orderProcessingPageSearch);
 					response.sendRedirect("QROrders/OrderPickupPage.jsp?begin=0&end=10");
 					break;
 				case "finishedSearch":
-					session.setAttribute(sessionRecord.getOrderFinished(), orderProcessingPageSearch);
+					//session.setAttribute(sessionRecord.getOrderFinished(), orderProcessingPageSearch);
 					response.sendRedirect("QROrders/OrderFinished.jsp?begin=0&end=10");
 					break;
+				case "updateOrder":
+					//OFactory.updateOrderDetail(request, conn);
+					OFactory.updateOrderDetail(request, conn);
+					response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + request.getParameter("QR_id"));
+					break;
 				default:
-					session.setAttribute("ResultOrders", orderProcessingPageSearch);
 					response.sendRedirect("QROrders/SearchOrder.jsp?begin=0&end=10");
 				}
 				
