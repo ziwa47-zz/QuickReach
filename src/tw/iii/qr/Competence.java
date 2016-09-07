@@ -17,8 +17,8 @@ public class Competence {
 	public int totalAmountEdit =0;
 	public int ordersManage =0;
 	public int chartView =0;
-	public int reportView =0;
 	public int productProfitView =0;
+	public int reportView =0;
 	public int productCostView =0;
 	public int accountInfoEdit =0;
 	public int paramSettingEdit =0;

@@ -11,13 +11,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/QRAccess/CompetenceInsert.do")
 public class CompetenceInsert extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PrintWriter out;
 	CompetenceSql cs = new CompetenceSql();
-
+	HttpSession session;
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		processInsert(request, response);
@@ -25,39 +27,47 @@ public class CompetenceInsert extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		String submit = request.getParameter("smt");
+		if(submit.equals("insert")){
 		processInsert(request, response);
+		}else{
+			
+		}
 	}
 
 	private void processInsert(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
+		session = request.getSession();
 		out = response.getWriter();
 		CompetenceSql cs = new CompetenceSql();
 		Competence ct = new Competence();
 
 		try {
-			String a = request.getParameter("1");
+			String a = request.getParameter("CompetenceLv");
 			ct.setCompetenceLv(a);
 			if (a != null && !a.equals("")) {
-				String b = request.getParameter("2");
-				String c = request.getParameter("3");
-				String d = request.getParameter("4");
-				String e = request.getParameter("5");
-				String f = request.getParameter("6");
-				String g = request.getParameter("7");
-				String h = request.getParameter("8");
-				String i = request.getParameter("9");
-				String j = request.getParameter("10");
-				String k = request.getParameter("11");
-				String l = request.getParameter("12");
-				String m = request.getParameter("13");
-				String n = request.getParameter("14");
-				String o = request.getParameter("15");
-				String p = request.getParameter("16");
-				String q = request.getParameter("17");
-				String r = request.getParameter("18");
-				String s = request.getParameter("19");
-				String t = request.getParameter("20");
+				String b = request.getParameter("ProductManage");
+				String c = request.getParameter("PurchaseManage");
+				String d = request.getParameter("InventoryManage");
+				String e = request.getParameter("InventoryInfoEdit");
+				String f = request.getParameter("ClientManage");
+				String g = request.getParameter("EntireOrders");
+				String h = request.getParameter("OrdersInvoiceDownload");
+				String i = request.getParameter("PriceChange");
+				String j = request.getParameter("PendingOrdersEdit");
+				String k = request.getParameter("TotalAmountEdit");
+				String l = request.getParameter("OrdersManage");
+				String m = request.getParameter("ChartView");
+				String n = request.getParameter("ProductProfitView");
+				String o = request.getParameter("ReportView");
+				String p = request.getParameter("ProductCostView");
+				String q = request.getParameter("AccountInfoEdit");
+				String r = request.getParameter("EbayPaypalAccountEdit");
+				String s = request.getParameter("ParamSettingEdit");
+				String t = request.getParameter("InventoryCostView");
 
 				if (b != null && b.equals("on")) {
 					ct.setProductManage(1);
@@ -118,7 +128,10 @@ public class CompetenceInsert extends HttpServlet {
 				}
 
 				cs.insetCompetence(ct);
-				out.write("新增成功");
+				//out.write("新增成功");
+				
+				response.sendRedirect("CompetenceInsert.jsp");
+				
 			} else {
 				out.write("請輸入LV名稱");
 			}

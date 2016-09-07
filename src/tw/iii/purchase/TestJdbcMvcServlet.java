@@ -54,14 +54,17 @@ public class TestJdbcMvcServlet extends HttpServlet {
 			purchaseFactory pcf = new purchaseFactory();
 			PreparedStatement preparedState = null;
 			
-			
+			/*
 			String warehouse = request.getParameter("warehouse");
+			int date = Integer.valueOf(request.getParameter("date"));
 			
-			String sqlCount = "select count(*) from quickreach.purchaselog_master where date >= curdate() and warehouse = ?";
+			String sqlCount = "select count(*) from quickreach.purchaselog_master where date >= ? and date <= ? and warehouse = ?";
 			
 			
 			preparedState = conn.prepareStatement(sqlCount);
-			preparedState.setString(1, warehouse);
+			preparedState.setInt(1, date);
+			preparedState.setInt(2, date+1);
+			preparedState.setString(3, warehouse);
 			// stmt = conn.createStatement();
 
 			int count = 0;
@@ -80,18 +83,22 @@ public class TestJdbcMvcServlet extends HttpServlet {
 			System.out.println("針對倉庫之count(*):"+df.format(count));
 			
 			
-			String oldPurchaseIdFront11 = request.getParameter("purchaseId").substring(0,10);
+			String oldPurchaseIdFront11 = request.getParameter("date")+"01";
 			System.out.println("原16碼之前11碼(流水號):"+oldPurchaseIdFront11);
 			
-			System.out.println("finally:\n"+oldPurchaseIdFront11+warehouse+count);
+			System.out.println("finally:\n"+oldPurchaseIdFront11+warehouse+df.format(count));*/
 		//purchaseLog_Master
+			
+			String purchaseId = request.getParameter("purchaseId");
 			LinkedList<String> pMaster = pcf.purchaseMaster(request);
+		
+			System.out.println("Tell me who you are?:"+purchaseId);
 			
 		
-			String sqlstr1 = "Insert Into purchaselog_master(purchaseId,date,companyId,companyName,staffId,warehouse,comment,stockStatus) Values(?,now(),?,(select C_name from quickreach.company where C_id=?),?,?,?,1)";
+			String sqlstr1 = "Insert Into purchaselog_master(purchaseId,date,companyId,companyName,staffId,warehouse,comment,stockStatus) Values(?,now(),?,(select C_name from company where C_id=?),?,?,?,1)";
 			preparedState = conn.prepareStatement(sqlstr1);
-			
-			preparedState.setString(1, oldPurchaseIdFront11+warehouse+df.format(count));
+			preparedState.setString(1, purchaseId);
+			//preparedState.setString(1, oldPurchaseIdFront11+warehouse+df.format(count));
 			preparedState.setInt(2,Integer.parseInt(pMaster.get(0))); //companyId
 			preparedState.setInt(3,Integer.parseInt(pMaster.get(0))); //select C_name from quickreach.company where C_id=?
 			preparedState.setString(4,pMaster.get(1));                //staffId
@@ -100,35 +107,36 @@ public class TestJdbcMvcServlet extends HttpServlet {
 			
 			preparedState.executeUpdate();
 			
-			
+		
 			
 			LinkedList<LinkedList<String>> Alllist = pcf.checkvalue(request);
+			
+			System.out.println("cccccccc:"+Integer.parseInt(Alllist.get(0).get(1).trim()));
 		//purchaseLog_Detail
 			for(int i = 0 ; i <Alllist.size() ; i++){
-				String sqlstr2 = "Insert Into purchaselog_detail(purchaseId,SKU,P_name,specification,color,qty,price,warehousePosition,comment,stockStatus,warehouse)"
-						+"Values(?,?,?,?,?,?,?,?,?,1,?)";
-				
+				String sqlstr2 = "Insert Into purchaselog_detail(purchaseId,SKU,qty,price,warehousePosition1,warehousePosition2,comment,stockStatus,warehouse)"
+						+"Values(?,?,?,?,?,?,?,1,?)";
 								
 				preparedState = conn.prepareStatement(sqlstr2);
-				
-				System.out.println(i+":\n");
-				
-				
-				
-				preparedState.setString(1, oldPurchaseIdFront11+warehouse+df.format(count));  //時代的眼淚WTF
+				preparedState.setString(1, purchaseId);
 	
 				for(int j = 0 ; j < Alllist.get(i).size() ; j++){
 					preparedState.setString(j+2, Alllist.get(i).get(j));					
 					System.out.print(Alllist.get(i).get(j)+",");
 				}
-				//preparedState.setString(Alllist.get(i).size(),pMaster.get(2) );
 				  preparedState.executeUpdate();
-				  
-				  
-				
-				String sqlstr3 = "Update quickreach.storage set qty=qty+? where SKU=?";
+				//更新product資料表   該品項之成本
+				  for(int k = 0 ; k <Alllist.size() ; k++){
+				  String sqlstr5 = "Update product set cost=? where SKU=?";
+				  preparedState = conn.prepareStatement(sqlstr5);
+				  preparedState.setString(1, Alllist.get(k).get(2));
+				  preparedState.setString(2, Alllist.get(k).get(0));
+				  preparedState.executeUpdate();
+				  }
+				//更新庫存
+				String sqlstr3 = "Update  storage set qty=qty+? where SKU=?";
 				preparedState = conn.prepareStatement(sqlstr3);
-				preparedState.setInt(1, Integer.parseInt(Alllist.get(i).get(4).trim()));
+				preparedState.setInt(1, Integer.parseInt(Alllist.get(i).get(1).trim()));
 				preparedState.setString(2, Alllist.get(i).get(0));			
 			
 				 preparedState.executeUpdate();

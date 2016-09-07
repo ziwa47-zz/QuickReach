@@ -121,7 +121,7 @@ public class CEbayFactory extends CEbay {
 		LinkedList<CEbay> ebayall = new LinkedList<CEbay>();
 		CEbay ebay ;
 		
-		String strsql = "select * from QuickReach.ebayaccount ";
+		String strsql = "select * from ebayaccount ";
 		
 		PreparedStatement ps = conn.prepareStatement(strsql);
 		//int index  = 1; 

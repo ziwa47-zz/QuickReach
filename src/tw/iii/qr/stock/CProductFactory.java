@@ -17,7 +17,7 @@ public class CProductFactory extends CProduct {
 	}
 
 	public LinkedList<CProduct> searchProduct(HttpServletRequest request, Connection conn) throws SQLException {
-		String strsql = " select distinct sku,brand,subbrand,p_name,spec,color from QuickReach.product inner join QuickReach.storage using (sku) where '1' = '1' ";
+		String strsql = " select distinct sku,brand,subbrand,p_name,spec,color from  product inner join  storage using (sku) where '1' = '1' ";
 		int param = 1;
 
 		PreparedStatement ps = null;
@@ -127,7 +127,7 @@ public class CProductFactory extends CProduct {
 		String strsql = "SELECT  SKU ,  owner ,  productType ,  brand ,  subBrand ,"
 				+ "  EAN ,  productCode ,  P_name ,  spec ,  color ,"
 				+ "  securedQty ,  cost ,  comment ,  checkupdate ,  added , "
-				+ "  weight , packageMatrial,  vilumetricWeight ,  createDate  FROM  QuickReach.product "
+				+ "  weight , packageMatrial,  vilumetricWeight ,  createDate  FROM   product "
 				+ " where 1 = 1 and sku = ? ";
 
 		PreparedStatement ps = null;
@@ -165,7 +165,7 @@ public class CProductFactory extends CProduct {
 	}
 
 	public void updateProduct(HttpServletRequest request, Connection conn) throws SQLException {
-		String strsql = "UPDATE QuickReach.product SET " 
+		String strsql = "UPDATE  product SET " 
 				+ "owner  = ?," + "productType  = ?," + "brand  = ?,"
 				+ "subBrand  = ?," + "EAN  = ?," + "productCode  = ?," + "P_name  = ?," + "spec  = ?," + "color  = ?,"
 				+ "cost  = ?," + "comment  = ?," + "checkupdate  = ?," + "added  = ?," + "weight  = ?,"
@@ -190,7 +190,7 @@ public class CProductFactory extends CProduct {
 		cp.setVilumetricWeight(Double.valueOf(request.getParameter("vilu")));
 		
 		PreparedStatement ps = null;
-		System.out.print("rq"+request.getParameter("producttype"));
+		System.out.print("rq"+request.getParameter("checkupdate"));
 		ps = conn.prepareStatement(strsql);
 
 		ps.setString(1, cp.getOwner()); //owner
@@ -212,6 +212,40 @@ public class CProductFactory extends CProduct {
 		ps.setString(17,cp.getSKU());
 		int i = ps.executeUpdate();
 		
+	}
+	
+	public void InsertNewProduct (HttpServletRequest request, Connection conn) throws SQLException{
+		String strsql = "INSERT INTO product(SKU,owner,productType,brand,subbrand,ean,productCode,p_name,spec"
+				+ ",color,securedQty,cost,comment,checkupdate,added,weight,packageMatrial,vilumetricWeight,createDate,picturePath) "+
+			 " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; //(20個)，還未加入barCode
+	
+		PreparedStatement ps = null;
+		System.out.print(strsql); 
+		ps = conn.prepareStatement(strsql);
+		
+		ps.setString(1, request.getParameter("SKU"));
+		//ps.setString(1, request.getParameter("barCode")); //此行未加入
+		ps.setString(2, request.getParameter("owner"));
+		ps.setString(3, request.getParameter("productType"));
+		ps.setString(4, request.getParameter("brand"));
+		ps.setString(5, request.getParameter("subBrand"));
+		ps.setString(6, request.getParameter("EAN"));//(6)
+		ps.setString(7, request.getParameter("productCode"));
+		ps.setString(8, request.getParameter("P_name"));
+		ps.setString(9, request.getParameter("spec"));
+		ps.setString(10, request.getParameter("color"));
+		ps.setInt(11, Integer.valueOf(request.getParameter("securedQty")));//(11)
+		ps.setDouble(12, Double.valueOf(request.getParameter("cost")));
+		ps.setString(13, request.getParameter("comment"));
+		ps.setDate(14, Date.valueOf(request.getParameter("checkupdate")));
+		ps.setString(15, request.getParameter("added"));
+		ps.setDouble(16, Double.valueOf(request.getParameter("weight")));//(16)
+		ps.setString(17, request.getParameter("packageMatrial"));
+		ps.setDouble(18, Double.valueOf(request.getParameter("vilumetricWeight")));
+		ps.setDate(19, Date.valueOf(request.getParameter("createDate")));
+		ps.setString(20, request.getParameter("picturePath")); //picturePath(20)
+		
+		int i =ps.executeUpdate();
 	}
 
 }

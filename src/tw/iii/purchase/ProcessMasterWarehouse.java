@@ -47,7 +47,7 @@ public class ProcessMasterWarehouse extends HttpServlet {
 		
 		
 			 String autoWarehouse =request.getParameter("warehouse");
-			 //searchSku = request.getParameter(autoCompleteNumber);
+			 int date = Integer.valueOf(request.getParameter("date")) ;
 		
 		
 		HashMap<String, String> hm = new HashMap<String, String>();		
@@ -57,18 +57,22 @@ public class ProcessMasterWarehouse extends HttpServlet {
 			request.setCharacterEncoding("UTF-8");
 			response.setContentType("text/html;charset=UTF-8");
 			
+			String checkPurchaseId = date+"01"+autoWarehouse;
+			System.out.println(checkPurchaseId+"%");
+			
 			int count = 0;
 			DecimalFormat df = new DecimalFormat("000");
 			
 			DataBaseConn jdbc = new DataBaseConn();
 			conn = jdbc.getConn();			
 			
-			String strSql = " select count(*) from quickreach.purchaselog_master where (date < now()) and date >= curdate() and (warehouse = ?) order by date desc limit 0,1 ;";
+			String strSql = " select count(*) from  purchaselog_master where purchaseId like ? order by 1 desc limit 0,1;";
 
 			
 			ps = conn.prepareStatement(strSql);
 			
-			ps.setString(1, autoWarehouse);
+			
+			ps.setString(1, checkPurchaseId+"%");
 			ResultSet rs = ps.executeQuery();
 			
 			if(rs.next()){
@@ -81,6 +85,7 @@ public class ProcessMasterWarehouse extends HttpServlet {
 			
 			System.out.println("warehouse:\n"+autoWarehouse);
 			System.out.println("count:\n"+count);
+			System.out.println("fffffinally"+autoWarehouse+df.format(count+1));
 			System.out.println("HashMap:\n"+hm);
 			JSONObject responseJSONObject = new JSONObject(hm);
 			PrintWriter out = response.getWriter();

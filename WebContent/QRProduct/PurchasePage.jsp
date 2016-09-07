@@ -1,7 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
- <%@page import="org.json.JSONObject"%>
+<%@page import="org.json.JSONObject"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:useBean id="checkno" class="tw.iii.purchase.purchaseFactory" scope="page"/>
 <!DOCTYPE>
@@ -16,10 +15,16 @@
 <script src="../js/jquery-1.12.4.min.js"></script>
 <script src="../js/jquery-ui.min.js"></script>
 <script src="../js/jquery.ui.datepicker-zh-TW.js"></script>
+
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
   
+  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+
+
+
+
   
 <script type="text/javascript">
 
@@ -27,11 +32,8 @@ var skuName;
 var setValueId;
 var realPurchaseId;
 
-function alertPurchaseId(){
-	warehouseChange();
-	//alert(realPurchaseId);
-	
-}
+var dynamicId = 2;
+
 
 function warehouseChange() {
 	
@@ -47,7 +49,7 @@ function warehouseChange() {
 			var date = $("#selectDate").val();
 		        realPurchaseId = date+response.warehousePurchaseId
 				$("#purchaseId").val(realPurchaseId);	
-		        alert(realPurchaseId)
+		        
 		},
 	})
 }
@@ -56,13 +58,15 @@ function warehouseChange() {
 
 
 function autoComplete(id){
-	$("#sku"+id).blur(function (){
+	$("#sku"+id).blur(function() {
 		skuName = $(this).attr("name");
 		var skuNum = $(this).val();
 	     setValueId = skuName.substring(3);
 		$("#autoCompleteNumber").val(skuNum);
 		test();
-	});
+		
+			});
+	
 };
 
 
@@ -90,17 +94,61 @@ function test() {
      
 
 	$(function() {		
-		
+				//進場先檢查purchaseId
+		warehouseChange()
+		//聽說是自動驗證
+		$("#listForm").validate({
+			onfocusout:true,
+			delay:500,
+			submitHandler: function (form)
+		    {
+		        $('#submitButton').attr('disabled', 'disabled');
+		        warehouseChange();
+		        alert("此進貨單單號:"+realPurchaseId)
+		        form.submit();
+		       
+		    },
+		   
+			
+			})
+ 				
 		//日期選擇器  
 		$("input[name=date]").datepicker({
 			dateFormat : 'yymmdd',
-			showOn : "both",
-			//onSelect:warehouseChange
+			
+			
 		});
 
 	});
+	
+// 	function jqueryAutoCompleteSKU1() {
+// 		$("#sku1").autocomplete({source:"../JQueryAutoCompleteSKUData",minLength:1});
+		
+// 		if ($("#sku1").val().length == 15 || $("#sku1").val().length == 8) {
+// 			autoComplete(1)
+			
+// 		}
+		
+// 	}
+	
+	function jqueryAutoCompleteSKU(id) {
+		
+		
+			$("#sku"+id).autocomplete({
+				source:"../JQueryAutoCompleteSKUData",
+				minLength:1,
+				select:function(event,ui){
+					autoComplete(id)
+				}
+					
+				
+			});
+		
 
-	var dynamicId = 2;
+		
+	}
+
+
 	//dynamic remove
 	function cleanFirstItem() {
 		$("#dynamic1 input").val(""), $("#firstItemClean").val("清空");
@@ -130,25 +178,27 @@ function test() {
 
 		$("#formSubmit")  //'+dynamicId+'
 				.before(
+						
+						//	+'			<button type="button" class="close" onclick="onclick="removeDynamicItem('+dynamicId+')"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> '
+						
 
 						'<div class="panel panel-default" id="dynamic'+dynamicId+'" style="background-color: #E7D29F">'
 							+'<div class="panel-heading">'
 							+'	<div class="panel-title row ">'
 							+'			<div class="col-md-11 form-group">'
 							+'			<a data-toggle="collapse" data-parent="#accordion"'
-							+'				href="#collapse1">進貨項目'+dynamicId+'</a>'
+							+'				href="#collapse'+dynamicId+'">進貨項目'+dynamicId+'</a>'
 							+'				<input type="hidden" name="times" value="'+dynamicId+'">'//計算進貨筆數
 											
 							+'		</div>'
 							+'		<div align="right" class="col-md-1 form-group">'
-							+'			<input type="button" value="刪除" onclick="removeDynamicItem('+dynamicId+')" '
-							+'				id="firstItemClean">'
+							+'			<button type="button" class="close" onclick="removeDynamicItem('+dynamicId+')"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button> '
 							+'		</div>'
 							+'	</div>'
 
 
 							+'	</div>'
-							+'			<div id="collapse1" class="panel-collapse collapse in">'
+							+'			<div id="collapse'+dynamicId+'" class="panel-collapse collapse in">'
 							+'				<div class="panel-body">'
 							+'					<input type="hidden">'
 	    	  
@@ -158,7 +208,7 @@ function test() {
 							+' 	<div class="col-md-4 form-group ">'
 							+'        <div class="row">'
 							+'           <div class="col-md-4"><h5><label for="focusedInput " >SKU：</label></h5></div>'
-							+'            <div class="col-md-8"><input class="form-control con" id="sku'+dynamicId+'" name="sku'+dynamicId+'" type="text" onchange="autoComplete('+dynamicId+')" value="" ></div>'
+							+'            <div class="col-md-8"><input class="form-control required" id="sku'+dynamicId+'" name="sku'+dynamicId+'" type="text" onfocus="jqueryAutoCompleteSKU('+dynamicId+')" value="" ></div>'
 	                    +'          </div>'
 	                    +'        </div>'
 	            	
@@ -192,25 +242,28 @@ function test() {
 						 +'<div class="col-md-4 form-group ">'
                         +'                <div class="row">'
                   +'                  <div class="col-md-4"><h5><label for="focusedInput " >數量：</label></h5></div>'
-                  +'                 <div class="col-md-8"><input class="form-control" name="qty'+dynamicId+'" type="text"></div>'
+                  +'                 <div class="col-md-8"><input class="form-control digits required" name="qty'+dynamicId+'" title="數量必須大於0" type="text"></div>'
                   +'                </div>'
                   +'               </div>'
                   
                  +' <div class="col-md-4 form-group ">'
                   +'                <div class="row">'
             +'                  <div class="col-md-4"><h5><label for="focusedInput " >價格：</label></h5></div>'
-            +'                 <div class="col-md-8"><input class="form-control" name="price'+dynamicId+'" type="text"></div>'
+            +'                 <div class="col-md-8"><input class="form-control number required" name="price'+dynamicId+'" title="價格必須大於0" type="text"></div>'
             +'                </div>'
             +'               </div>'
 	                
 	              
 	                        +'             </div>'
+	                        
+
+	                        
 	            
 	                        +'           <div class="row">'
-	                        +'         	<div class="col-md-4 form-group ">'
+	                        +'         	<div class="col-md-8 form-group ">'
 	                        +'             <div class="row">'
-	                        +'              <div class="col-md-4"><h5><label for="focusedInput " >櫃位：</label></h5></div>'
-	                        +'              <div class="col-md-8"><input class="form-control" id="warehousePosition'+dynamicId+'" name="warehousePosition'+dynamicId+'" type="text"></div>'
+	                        +'              <div class="col-md-2"><h5><label for="focusedInput " >櫃位：</label></h5></div>'
+	                        +'              <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo" name="warehousePositionTwo1" type="text"></div>'
 	                        +'            </div>'
 	                        +'                </div>'
 	                                    
@@ -252,7 +305,16 @@ function test() {
 	document.onkeydown = keyFunction;
 	//f2 end
 </script>
+<style type="text/css">
+#listForm label.error {
+font-size: 0.8em;
+color: #F00;
+font-weight: bold;
+display: block;
 
+
+}
+</style>
 
 </head>
 <body>
@@ -303,8 +365,8 @@ function test() {
 			request.setAttribute("companyList", companyList);
 			String srno;
 			String srnoDate = checkno.getDay();
-			srno = checkno.processStorageRecord("01");//進貨單代碼 01
-			request.setAttribute("purchaseId", srno);
+// 			srno = checkno.processStorageRecord("01");//進貨單代碼 01
+// 			request.setAttribute("purchaseId", srno);
 			request.setAttribute("srnoDate", srnoDate);
 			
 			%>
@@ -321,11 +383,12 @@ function test() {
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" type="text" id="selectDate" name="date" value="${srnoDate}" readonly>
+								<input class="form-control" type="text" id="selectDate" name="date" value="${srnoDate}" onchange="warehouseChange()" readonly>
 							</div>
 						</div>
 					</div>
-					<div style="display:none" class="col-md-4 form-group ">
+<!-- 					style="display:none" -->
+					<div  class="col-md-4 form-group ">
 						<div class="row">
 							<div class="col-md-4">
 								<h5>
@@ -345,7 +408,7 @@ function test() {
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<select class="form-control" name="companyId" id="companyId" >
+								<select class="form-control" name="companyId" id="companyId"  >
                     
                     <c:forEach var = "i" begin="0" step="1" items="${companyList}">
                     
@@ -365,7 +428,7 @@ function test() {
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" name="staffId" type="text">
+								<input class="form-control required digits"  name="staffId" type="text" value="${staffName}">
 							</div>
 						</div>
 					</div>
@@ -374,7 +437,7 @@ function test() {
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >倉別：</label></h5></div>
                     <div class="col-md-8">
-                      <select class="form-control" name="warehouse" id="warehouse" >
+                      <select class="form-control" name="warehouse" id="warehouse"  onchange="warehouseChange()">
                     
                     <c:forEach var = "i" begin="0" step="1" items="${warehouseList}">
                     
@@ -406,11 +469,11 @@ function test() {
 			<br />
 			<div class="row text-center">
 				<button id="buttonAddItem" type="button" name=""
-					onclick="dynamicAdd()" class="btn-lg btn-success">新增欄位</button>
+					onclick="dynamicAdd()" class="btn-lg btn-success">新增欄位(F2)</button>
 			</div>
 			<fieldset class="container-fluid" style="padding: 0 30 0 0;">
 
-				<legend>按F2多重新增</legend>
+				<legend></legend>
 				<input type="hidden">
 
 				<div class="panel-group" id="accordion">
@@ -426,8 +489,7 @@ function test() {
 										<input type="hidden" id = "autoCompleteNumber" name="autoCompleteNumber" value= "1">
 								</div>
 								<div align="right" class="col-md-1 form-group">
-									<input type="button" value="清空" onclick="cleanFirstItem()"
-										id="firstItemClean">
+									<button type="button" class="close" onclick="cleanFirstItem()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 								</div>
 							</div>
 
@@ -443,8 +505,8 @@ function test() {
             	<div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >SKU：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control con" id="sku1" name="sku1" type="text" onchange="autoComplete(1)" value=""></div>
-                  </div>
+                    <div class="col-md-8"><input class="form-control  required" id="sku1" name="sku1" type="text" onfocus="jqueryAutoCompleteSKU(1)"   value=""></div>
+                  </div>                                                                                    <!--  onchange="autoComplete(1)" -->                                     
                 </div>
             	
             	 <div class="col-md-4 form-group ">
@@ -474,7 +536,7 @@ function test() {
                   <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >數量：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="qty1" type="text"></div>
+                    <div class="col-md-8"><input class="form-control digits required" title="數量必須大於0" name="qty1" type="text"></div>
                   </div>
                 </div>
                 
@@ -482,19 +544,22 @@ function test() {
                 <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >價格：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="price1" type="text"></div>
+                    <div class="col-md-8"><input class="form-control number required" title="價格必須大於0" name="price1" type="text"></div>
                   </div>
                 </div>
               
                 </div>
             
             <div class="row">
-            	<div class="col-md-4 form-group ">
+            	<div class="col-md-8 form-group ">
                   <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >櫃位：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" id="warehousePosition1" name="warehousePosition1" type="text"></div>
+                    <div class="col-md-2"><h5><label for="focusedInput " >櫃位：</label></h5></div>
+                    <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo" name="warehousePositionTwo1" type="text"></div>
                   </div>
                 </div>
+                
+             
+                
                 
                 <div class="col-md-4 form-group ">
                   <div class="row">
@@ -516,7 +581,7 @@ function test() {
 					<br />
 
 					<div class="row text-center" id="formSubmit">
-						<button type="submit" name="" class="btn-lg btn-success" onclick="alertPurchaseId()">送出</button>
+						<button type="submit" id="submitButton" name="submitButton" class="btn-lg btn-success" >送出</button>
 					</div>
 				</div>
 			</fieldset>

@@ -323,7 +323,7 @@
               <th>客戶帳號</th>
               <th>購買日期</th>
               <th>出貨日期</th>
-              <th>資料狀態</th>
+              <th>物流</th>
               <th>訂單狀態</th>
               <th>總金額</th>
               <th>使用者</th>
@@ -332,8 +332,8 @@
               <c:choose>
                 <c:when test="${check.index%2 != 0}">
                   <tr>
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox"></td>
-                    <td><a href="OrderDetail.jsp?orderId=${i.getCOrderMaster().getOrder_id()}"><img src="../img/compose-4.png" ></a></td>
+                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
+                    <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td nowrap>${i.getCOrderMaster().getOrder_id()}
                     <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
@@ -341,7 +341,7 @@
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
                     <td>${i.getCOrderMaster().getShippingDate()}</td>
-                    <td>icon</td>
+                    <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
@@ -358,17 +358,16 @@
                 </c:when>
                 <c:otherwise>
                   <tr style="background-color:#FFFFFF">
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox"></td>
-                    <td><a href="OrderDetail.jsp?orderId=${i.getCOrderMaster().getOrder_id()}"><img src="../img/compose-4.png" ></a></td>
+                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
+                    <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td nowrap>${i.getCOrderMaster().getOrder_id()}
-                      <input type="hidden" name="orderId" value="${i.getCOrderMaster().getOrder_id()}"></td>
                     <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
                     <td>${i.getCOrderMaster().getShippingDate()}</td>
-                    <td>icon</td>
+                    <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
@@ -448,7 +447,7 @@
               <th>客戶帳號</th>
               <th>購買日期</th>
               <th>出貨日期</th>
-              <th>資料狀態</th>
+              <th>物流</th>
               <th>訂單狀態</th>
               <th>總金額</th>
               <th>使用者</th>
@@ -456,9 +455,9 @@
             <c:forEach var="i" items="${list}" begin="${begin}" end="${end}" step="1" varStatus="check">
               <c:choose>
                 <c:when test="${check.index%2 != 0}">
-                  <tr>
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox"></td>
-                    <td><a href="OrderDetail.jsp?orderId=${i.getCOrderMaster().getOrder_id()}"><img src="../img/compose-4.png" ></a></td>
+                  <tr style="background-color:#D4F4D8">
+                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
+                    <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td nowrap>${i.getCOrderMaster().getOrder_id()}
                     <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
@@ -466,45 +465,44 @@
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
                     <td>${i.getCOrderMaster().getShippingDate()}</td>
-                    <td>icon</td>
+                    <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
-                  <tr>
+                  <tr style="background-color:#D4F4D8">
                     <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}
                         (SKU/productName)</c:forEach></td>
                     <td colspan="3"></td>
                   </tr>
-                  <tr>
+                  <tr style="background-color:#D4F4D8">
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
                   </tr>
                 </c:when>
                 <c:otherwise>
-                  <tr style="background-color:#FFFFFF">
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox"></td>
-                    <td><a href="OrderDetail.jsp?orderId=${i.getCOrderMaster().getOrder_id()}"><img src="../img/compose-4.png" ></a></td>
+                  <tr>
+                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
+                    <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td nowrap>${i.getCOrderMaster().getOrder_id()}
-                      <input type="hidden" name="orderId" value="${i.getCOrderMaster().getOrder_id()}"></td>
                     <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
                     <td>${i.getCOrderMaster().getShippingDate()}</td>
-                    <td>icon</td>
+                    <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
-                  <tr style="background-color:#FFFFFF">
+                  <tr>
                     <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}<br/>
                       </c:forEach></td>
                     <td colspan="3"></td>
                   </tr>
-                  <tr style="background-color:#FFFFFF">
+                  <tr>
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
                   </tr>
                 </c:otherwise>

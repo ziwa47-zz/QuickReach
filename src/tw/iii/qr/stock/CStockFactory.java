@@ -13,8 +13,8 @@ public class CStockFactory extends CStock {
 	}
 	public LinkedList<CStock> searchDetailStock(String sku,Connection conn) throws SQLException {
 
-	String strsql = "select warehouse,warehousePosition1,warehousePosition2,qty,3,qty-3,purchaseDate,comment from QuickReach.storage where sku = ? ";
-	//	String strsql = "select warehouse,warehousePosition,qty,3,qty-3,purchaseDate,comment from QuickReach.storage where sku = ? ";
+	String strsql = "select warehouse,warehousePosition1,warehousePosition2,qty,3,qty-3,purchaseDate,comment from  storage where sku = ? ";
+	//	String strsql = "select warehouse,warehousePosition,qty,3,qty-3,purchaseDate,comment from  storage where sku = ? ";
 		PreparedStatement ps = null;
 
 		ps = conn.prepareStatement(strsql);
@@ -43,8 +43,8 @@ public class CStockFactory extends CStock {
 	}
 	public LinkedList<CStock> searchDetailStock2(String sku,Connection conn) throws SQLException {
 
-		String strsql = "select warehouse,warehousePosition1,warehousePosition2,qty,3,qty-3,purchaseDate,comment from QuickReach.storage where sku = ? ";
-		//	String strsql = "select warehouse,warehousePosition,qty,3,qty-3,purchaseDate,comment from QuickReach.storage where sku = ? ";
+		String strsql = "select warehouse,warehousePosition1,warehousePosition2,qty,3,qty-3,purchaseDate,comment from  storage where sku = ? ";
+		//	String strsql = "select warehouse,warehousePosition,qty,3,qty-3,purchaseDate,comment from  storage where sku = ? ";
 			PreparedStatement ps = null;
 
 			ps = conn.prepareStatement(strsql);
@@ -72,7 +72,7 @@ public class CStockFactory extends CStock {
 
 		}
 	public LinkedList<CStock> searchStorage(HttpServletRequest request, Connection conn) throws SQLException {
-		String strsql = " select distinct sku,brand,subbrand,p_name,spec,color from QuickReach.product inner join QuickReach.storage using (sku) where '1' = '1' ";
+		String strsql = " select distinct sku,brand,subbrand,p_name,spec,color from  product inner join  storage using (sku) where '1' = '1' ";
 		int param = 1;
 
 		PreparedStatement ps = null;

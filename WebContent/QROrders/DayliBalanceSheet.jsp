@@ -6,7 +6,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-	<jsp:useBean id="DBSF" class="tw.iii.qr.order.DayliBalanceSheetFactory2" scope="page" />
 	<jsp:useBean id="newd" class="tw.iii.qr.order.DayliBalanceSheetFactory"	scope="page" />
 <html lang="en">
 <head>
@@ -38,12 +37,12 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
     <div class="container">
    	  <div class="nav" style="background-color:#A45A21;" >
         	<ul class="nav nav-tabs" id="test" >
-              <li><a href="SearchOrder.jsp">查詢訂單</a></li>
-              <li><a href="OrderProcessingPage.jsp">處理中</a></li>
-              <li><a href="OrderPickupPage.jsp">揀貨中</a></li>
-              <li><a href="OrderUploadTrackingCode.jsp">上傳追蹤碼</a></li>
-              <li><a href="OrderFinished.jsp">已完成訂單</a></li>
-              <li><a href="OrderAbnormal.jsp">異常訂單</a></li>
+              <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
+           <li><a href="OrderProcessingPage.jsp?begin=0&end=10">處理中</a></li>
+           <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
+           <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
+           <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
+           <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
             </ul>
         </div>
     </div>
@@ -62,8 +61,8 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
 <div class="container table-responsive" style="background: #D9A56B; border-radius:20px;">
   <form name="searchform" method="post" action="../StatusDo" class="container"
    style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
-    <button type="submit" name="" class="btn-sm btn-info">選擇全部</button>
-    <button type="submit" name="" class="btn-sm btn-info">清除勾選</button>
+    <button type="" name="" class="btn-sm btn-info">選擇全部</button>
+    <button type="" name="" class="btn-sm btn-info">清除勾選</button>
     <label>共有:${ndbs.size()}筆</label>
     <c:forEach var="i" items="${ndbs}" begin="0" step="1" varStatus="check">
     <div class="panel-group" id="accordion">
@@ -123,9 +122,11 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
                   <th>貨重</th>
                 </tr>
                 <tr>
-                  <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="orderId" value="${i.getCOrderMaster().getOrder_id()}"></td>
+                  <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id"
+                    value="${i.getCOrderMaster().getQR_id()}" id="${i.getCOrderMaster().getQR_id()}"
+                    onchange="enableOrderStatus(this)"></td>
                   <td>${i.getCOrderMaster().getOrderDate()}</td>
-                  <td>${i.getCOrderMaster().getOrder_id()}</td>
+                  <td>${i.getCOrderMaster().getQR_id()}</td>
                   <td colspan="3">${i.getCOrderDetailSingle().getSKU()}</td><!--sku-->
                   <td colspan="6">${i.getCOrderDetailSingle().getProductName()}</td><!--productName-->
                   <td>${i.getCOrderGuestInfo().getTel1()}</td>
@@ -155,7 +156,6 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
                   <td>EBAYFEE (US)</td>
                 </tr>
                 <tr>
-                  <% //sku  品茗 without tracking code %>
                   <td>${i.getCOrderMaster().getEbayNO()}</td>
                   <td>${i.getCOrderMaster().getEbayItemNO()}</td>
                   <td>${i.getCOrderDetailSingle().getQty()}</td><!--qty-->
@@ -171,12 +171,19 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
                   <td>${i.getCOrderMaster().getPaypalNet()}</td>
                   <td>${i.getCOrderDetailSingle().getPrice()}</td><!--Pricex-->
                   <td>${i.getCOrderMaster().getShippingDate()}</td>
-                  <td><select name="logistics" onchange="selectLogistics(this)">
-                      <option>DHL</option>
-                      <option>Fedex</option>
-                      <option>EMS</option>
-                      <option>Post</option>
-                    </select></td>
+                  <td>
+                    <select name="init" id="${i.getCOrderMaster().getQR_id()}" onchange="autoChecked(this)">
+                      <option value="">請選擇</option>
+                      <option value="DHL">DHL</option>
+                      <option value="Fedex">Fedex</option>
+                      <option value="EMS">EMS</option>
+                      <option value="AP">AP</option>
+                      <option value="RA">RA</option>
+                      <option value="seven">seven</option>
+                      <option value="familyMart">familyMart</option>
+                      <option value="Post">Post</option>
+                    </select>
+                  </td>
                   <td>${i.getCOrderMaster().getEbayFees()}</td>
                 </tr>
             </table>
@@ -186,17 +193,29 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
     </div>
     </c:forEach>
     <div class="row text-center" >
-      <button type="submit" name="send" value="dayliBalance" class="btn-lg btn-primary ">送出</button>
+      <button type="submit" name="send" value="dayliBalance" class="btn-lg btn-primary"
+       >送出</button>
     </div>
   </form>
 </div>
 <script type="text/javascript">
-$( document ).ready(function() {
-	//select all
-	//$("input[name=orderId]").prop("checked", true);
-});
-
-
+ 	function enableOrderStatus(ele){
+ 	  var id = ele.value;
+	  if (ele.checked) {
+		  $(ele).attr("name","QR_id");
+	  } else {
+		  $(ele).attr("name","init");
+		  alert("取消勾選了一筆訂單");
+ 	  }
+   };
+   function autoChecked(ele){
+ 		var id = ele.id ;
+ 		$("#" + id).prop("checked", true);
+ 		$(ele).attr("name","logistics");
+ 		if(ele.value == '請選擇'){
+ 			$(ele).attr("name","init");
+ 		}
+ };
 </script>
 </body>
 </html>
