@@ -190,7 +190,7 @@ public class CProductFactory extends CProduct {
 		cp.setVilumetricWeight(Double.valueOf(request.getParameter("vilu")));
 		
 		PreparedStatement ps = null;
-		System.out.print("rq"+request.getParameter("producttype"));
+		System.out.print("rq"+request.getParameter("checkupdate"));
 		ps = conn.prepareStatement(strsql);
 
 		ps.setString(1, cp.getOwner()); //owner
