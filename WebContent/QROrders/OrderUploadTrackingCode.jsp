@@ -137,7 +137,7 @@
                     <td>${i.getCOrderMaster().getShippingDate()}</td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
-                      <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
+                      <input type="hidden" name="staffName" value="${i.getCOrderMaster().getStaffName()}"></td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
@@ -164,7 +164,7 @@
                     <td>${i.getCOrderMaster().getShippingDate()}</td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
-                      <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
+                      <input type="hidden" name="staffName" value="${i.getCOrderMaster().getStaffName()}"></td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
