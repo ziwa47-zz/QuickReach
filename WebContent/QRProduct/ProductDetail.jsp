@@ -7,7 +7,7 @@
 <html>
   
 <head>
-
+<script src="../js/jquery-1.12.4.min.js"></script>
 
 
 <script type="text/javascript">
@@ -231,7 +231,7 @@ conn.close();
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>建檔日</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control required yymmdd" type="text"name="cdate" value="${resultDetail.getCreateDate()}" readonly></div>
+                  <div class="col-md-8 well-sm"><input class="form-control  yymmdd" type="text"name="cdate" value="${resultDetail.getCreateDate()}" readonly></div>
               </div>
           
               </div>

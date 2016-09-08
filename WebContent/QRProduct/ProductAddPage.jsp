@@ -341,7 +341,7 @@
 		if (x != null && x.equals("insert")) {
 			blf.bundlesToProduct(bdsku, bdname, ps);
 			blf.bundlesToDetail(bdsku);
-			session.invalidate();
+
 			response.sendRedirect("/QRProduct/ProductAddPage.jsp");
 		}
 	%>

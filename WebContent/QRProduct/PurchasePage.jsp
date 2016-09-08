@@ -120,7 +120,7 @@ function test() {
 		
 			$("#sku"+id).autocomplete({
 				source:"../JQueryAutoCompleteSKUData",
-				minLength:1,
+				minLength:3,
 				select:function(event,ui){
 					autoComplete(id)
 				}
@@ -371,7 +371,7 @@ display: block;
 						</div>
 					</div>
 <!-- 					style="display:none" -->
-					<div  class="col-md-4 form-group ">
+					<div  class="col-md-4 form-group " style="display:none">
 						<div class="row">
 							<div class="col-md-4">
 								<h5>

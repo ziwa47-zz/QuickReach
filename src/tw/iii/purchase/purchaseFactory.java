@@ -163,7 +163,7 @@ public class purchaseFactory {
 	public String getDay() {
 		Date date = new Date();
 
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		String time = dateFormat.format(date);
 		System.out.println(dateFormat.format(date));

@@ -22,7 +22,7 @@ public class QRAccountFactory extends QRAccount{
 	public void insertQRAccount (QRAccount qra) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
 		
 		Connection conn = new DataBaseConn().getConn();
-		String sqlstr = "insert into quickreach.accountinfo values(?,?,?,?,?,?,?,?,?)"; //9個
+		String sqlstr = "insert into  accountinfo values(?,?,?,?,?,?,?,?,?)"; //9個
 		PreparedStatement preparedState = conn.prepareStatement(sqlstr);
 		
 		preparedState.setString(1, qra.getAccount());  //1st
@@ -45,7 +45,7 @@ public class QRAccountFactory extends QRAccount{
 
 		DataBaseConn dbc = new DataBaseConn();	
 		Connection conn = dbc.getConn();		
-		String strsql = "SELECT  *  FROM  QuickReach.accountinfo where account = '" + account +"'";
+		String strsql = "SELECT  *  FROM   accountinfo where account = '" + account +"'";
 
 				
 		state = conn.createStatement();
@@ -76,7 +76,7 @@ public class QRAccountFactory extends QRAccount{
 	public void editQRAccount (QRAccount qra) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
 		
 		Connection conn = new DataBaseConn().getConn();
-		String sqlstr = "UPDATE quickreach.accountinfo set"
+		String sqlstr = "UPDATE  accountinfo set "
 				+ "account = ?," + "password = ?," + "lastname = ?,"
 				+ "firstname = ?," + "email = ?," + "ename = ?,"
 				+ "signatureImage = ?," + "competenceLV =?," + "status = ?"; //9個
@@ -103,7 +103,7 @@ public class QRAccountFactory extends QRAccount{
 		LinkedList<QRAccount> employeeall = new LinkedList<QRAccount>();
 		QRAccount qraccount ;
 		
-		String strsql = "select * from QuickReach.accountinfo ";
+		String strsql = "select * from  accountinfo ";
 		
 		PreparedStatement ps = conn.prepareStatement(strsql);
 		

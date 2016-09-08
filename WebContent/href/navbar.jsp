@@ -37,16 +37,22 @@
 <script type="text/javascript">
 	$(function() {
 		//日期選擇器
-		$(".yymmdd").datepicker({
-			dateFormat : 'yymmdd',
+	 	$(".yymmdd").datepicker({
+			dateFormat : 'yy-mm-dd',
 			
-		});
+		}); 
 		
+		$("input[name=checkupdate]").datepicker({
+			dateFormat : 'yy-mm-dd',
+		});
+		$("input[name=cdate]").datepicker({
+			dateFormat : 'yy-mm-dd',
+		});
 		$("input[name=dateMin]").datepicker({
-			dateFormat : 'yymmdd',
+			dateFormat : 'yy-mm-dd',
 		});
 		$("input[name=dateMax]").datepicker({
-			dateFormat : 'yymmdd',
+			dateFormat : 'yy-mm-dd',
 
 		});
 		 $("input[name=date1]").datepicker({dateFormat : 'yy/mm/dd'});
