@@ -51,7 +51,7 @@
    	  <div class="nav" style="background-color:#1CAF9A;" >
         	<ul class="nav nav-tabs">
               <li class="" style="background-color:#1CAF9A"><a href="Account.jsp" style="color:#FFFFFF">新增帳號</a></li>
-              <li><a href="#" style="color:#000000">修改帳號資料</a></li>
+              <li><a href="accountManage.jsp" style="color:#000000">修改帳號資料</a></li>
             </ul>
         </div>
     </div>
@@ -61,7 +61,7 @@
   <div class="container container-fluid breadcrumbBox">
     <ol class="breadcrumb" >
           <li><a href="../QRMain/HomePage.jsp" >首頁</a></li>
-          <li class="active" style="display:"><a href="Account.jsp">員工管理</a></li>
+          <li class="active" style="display:"><a href="accountManage.jsp">員工管理</a></li>
           <li><a href="Account.jsp">新增帳號</a></li>
       </ol>
       <h3>新增帳號</h3>
@@ -118,13 +118,13 @@
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>帳號狀態</h4></div>
                       <div class="col-md-5 well-sm">
                       	
-                      	<label class="checkbox-inline"><input type="radio" id="id_fd-is_active_0" value="1" name="status" /> 有效</label>
+                      	<label class="checkbox-inline"><input type="radio" id="id_fd-is_active_0" value="1" name="status" />有效</label>
 					 	<label class="checkbox-inline"><input type="radio" id="id_fd-is_active_1" value="0" name="status" checked/> 停用</label>
 					   
 					  </div>
                   </div>
                   <div class="row">
-                     <center><input class="checkbox-inline" name="signatureImage" type="submit" value="新增" ></center>
+                     <center><button class="checkbox-inline" name="submit" type="submit" value="addAccount" >新增</button></center>
                   </div>
               </div>
               

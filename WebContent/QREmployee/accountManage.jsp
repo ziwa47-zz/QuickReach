@@ -26,7 +26,7 @@
   	<div class="container">
     	<div class="navbar-left" style="background-color:#BCF1E5;" >
         	<ul class="nav nav-tabs">
-              <li><a href="./eBayAccount.jsp" style="color:#000000">員工帳號管理</a></li>
+              <li><a href="./accountManage.jsp" style="color:#000000">員工帳號管理</a></li>
             </ul>
         </div>
     </div>

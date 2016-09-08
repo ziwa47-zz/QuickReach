@@ -77,10 +77,10 @@ public class QRAccountFactory extends QRAccount{
 		
 		Connection conn = new DataBaseConn().getConn();
 		String sqlstr = "UPDATE quickreach.accountinfo set " 
-			    + " password = ?," + " lastname = ?," 
-				+ " firstname = ?," + " email = ?," + " enName = ?," 
-				+ " signatureImage = ?," + " competenceLV =?," + "status = ?,"
-				+ " where account = ?"; //9個
+			    + " password = ?," + " lastName = ?," 
+				+ " firstName = ?," + " Email = ?," + " enName = ?," 
+				+  " competenceLV =?," + "status = ?"
+				+ " where account = ?"; //8個
 		PreparedStatement preparedState = conn.prepareStatement(sqlstr);
 			 
 		preparedState.setString(1, qra.getPassword());
@@ -88,10 +88,10 @@ public class QRAccountFactory extends QRAccount{
 		preparedState.setString(3, qra.getFirstName());
 		preparedState.setString(4, qra.getEmail());
 		preparedState.setString(5, qra.getEnName());  //6th
-		preparedState.setString(6, qra.getSignatureImage()); //簽名檔先不做
-		preparedState.setString(7, qra.getCompetenceLV());
-		preparedState.setInt(8, qra.getStatus());
-		preparedState.setString(9, qra.getAccount()); 
+		//preparedState.setString(6, qra.getSignatureImage()); //簽名檔先不做
+		preparedState.setString(6, qra.getCompetenceLV());
+		preparedState.setInt(7, qra.getStatus());
+		preparedState.setString(8, qra.getAccount()); 
 		
 		preparedState.execute();
 		preparedState.close();
