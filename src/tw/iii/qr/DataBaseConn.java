@@ -12,7 +12,8 @@ public class DataBaseConn {
 	private Connection conn;
 	private boolean isclosed;
 	public Connection getConn() throws SQLException, Exception, IllegalAccessException, ClassNotFoundException {
-		String urlstr = "jdbc:mysql://localhost:3306/quickreach?user=root&password=cr3321&Unicode=true&characterEncoding=utf-8";
+		//String urlstr = "jdbc:mysql://localhost:3306/quickreach?user=root&password=cr3321&Unicode=true&characterEncoding=utf-8";
+ -		String urlstr = "jdbc:mysql://localhost:3306/qrdata?user=root&password=root&Unicode=true&characterEncoding=utf-8";
 
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
 

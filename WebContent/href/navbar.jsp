@@ -31,7 +31,7 @@
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.js"></script>
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.min.js"></script>
   
-  
+ 
 
 
 <script type="text/javascript">
@@ -49,9 +49,14 @@
 			dateFormat : 'yymmdd',
 
 		});
-		$("input[name=date1]").datepicker();
-		$("input[name=date2]").datepicker();
-	});
+		 $("input[name=date1]").datepicker({dateFormat : 'yy/mm/dd'});
+	        $("input[name=date2]").datepicker({dateFormat : 'yy/mm/dd'});
+	        $("input[name=payDateMin]").datepicker({dateFormat : 'yy/mm/dd'});
+	        $("input[name=payDateMax]").datepicker({dateFormat : 'yy/mm/dd'});
+	        $("input[name=shippingDateMin]").datepicker({dateFormat : 'yy/mm/dd'});
+	        $("input[name=shippingDateMax]").datepicker({dateFormat : 'yy/mm/dd'});
+	   });
+	
 
 	$(function() {
 		//feildset prop enable
@@ -61,10 +66,51 @@
 		$("#optionsRadios2").click(function() {
 			$("#myfields").prop("disabled", true);
 		});
-	})
+	});
+	
+	    function checkAllOrders(ele) {
+    	//select all
+		if (ele.checked) {
+			$("input[name=all]").prop("checked", true);
+	        $("input[name=waitProcess]").prop("checked", true);
+	        $("input[name=processing]").prop("checked", true);
+	        $("input[name=pickup]").prop("checked", true);
+	        $("input[name=finished]").prop("checked", true);
+	        $("input[name=refund]").prop("checked", true);
+	        $("input[name=oothers]").prop("checked", true);
+	        $("input[name=deducted]").prop("checked", true);
+	    } else {
+	    	$("input[name=all]").prop("checked", false);
+	        $("input[name=waitProcess]").prop("checked", false);
+	        $("input[name=processing]").prop("checked", false);
+	        $("input[name=pickup]").prop("checked", false);
+	        $("input[name=finished]").prop("checked", false);
+	        $("input[name=refund]").prop("checked", false);
+	        $("input[name=oothers]").prop("checked", false);
+	        $("input[name=deducted]").prop("checked", false);
+	    }
+};
+	$(function () {
+	$("button[name=send]").click(function() {
+		confirm("確認是否送出訂單");
+	});
+});
 </script>
 </head>
 <body>
+<%
+// String ac =(String)session.getAttribute("account");
+// if(ac==null || "".equals(ac)){
+// 	if("0".equals(request.getParameter("p"))){
+		
+// 	}else{
+// 		response.sendRedirect("/Login.jsp?p=0");
+// 	}
+	
+// }
+
+%>
+
 	<nav class="navbar" style="background-color: #000000">
 	<div class="container-fluid">
 		<div class="navbar-header">
@@ -82,11 +128,11 @@
 
 			<ul class="nav navbar-right">
 				<c:if test="${account != null}">
-					<li><a href="Login.jsp">${staffName}${'('}${account}${')'}<span
+					<li><a href="/Login.jsp">${staffName}${'('}${account}${')'}<span
 							class="glyphicon glyphicon-log-in"></span> Logout</a></li>
 				</c:if>	
 				<c:if test="${account == null}">
-					<li><a href="Login.jsp"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+					<li><a href="/Login.jsp"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 				</c:if>	
 			</ul>
 		</div>

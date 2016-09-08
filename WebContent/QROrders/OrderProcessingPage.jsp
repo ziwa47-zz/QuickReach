@@ -30,7 +30,6 @@
       <ul class="nav nav-tabs">
         <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp" style="color:#FFFFFF">訂單管理</a></li>
         <li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
-        <li><a href="SearchComment.jsp">查詢評價</a></li>
       </ul>
     </div>
   </div>
@@ -43,6 +42,7 @@
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
         <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
+        <li><a href="ShipmentRecord.jsp" >訂單出貨記錄</a></li>
       </ul>
     </div>
   </div>
@@ -50,9 +50,9 @@
 
 <div class="container container-fluid breadcrumbBox">
   <ol class="breadcrumb" >
-    <li><a href="#" >主要目錄</a></li>
-    <li class="active" style="display:"><a href="#">訂單</a></li>
-    <li><a href="#">訂單查詢</a></li>
+    <li><a href="/HomePage.jsp" >首頁</a></li>
+    <li class="active" style="display:"><a href="SearchOrder.jsp?begin=0&end=10">訂單管理</a></li>
+    <li><a href="OrderProcessingPage.jsp?begin=0&end=10">處理中</a></li>
   </ol>
 </div>
 <div class="nav">
@@ -85,11 +85,11 @@
             <div class="row">
               <div class="col-md-4">
                 <h5>
-                  <label>ebay訂單編號：</label>
+                  <label>訂單編號：</label>
                 </h5>
               </div>
               <div class="col-md-8">
-                <input class="form-control" name="ebayNO" type="text">
+                <input class="form-control" name="QR_id" type="text">
               </div>
             </div>
           </div>
@@ -304,7 +304,7 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td>${i.getCOrderMaster().getShippingDate()}</td>
+                    <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
@@ -331,7 +331,7 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td>${i.getCOrderMaster().getShippingDate()}</td>
+                    <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
@@ -430,7 +430,7 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td>${i.getCOrderMaster().getShippingDate()}</td>
+                    <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
@@ -455,7 +455,7 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td>${i.getCOrderMaster().getShippingDate()}</td>
+                    <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>

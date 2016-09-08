@@ -7,17 +7,7 @@
 <html>
   
 <head>
-<link rel="stylesheet" type="text/css"
-	href="../css/smoothness/jquery-ui.css">
-<script src="../js/jquery-1.12.4.min.js"></script>
-<script src="../js/jquery-ui.min.js"></script>
-<script src="../js/jquery.ui.datepicker-zh-TW.js"></script>
 
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-
-  
-  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 
 
 <script type="text/javascript">
@@ -57,42 +47,10 @@ display: block;
 
 }
 </style>
-<title>Product Detail</title>
+<title>商品明細</title>
 </head>
 <body>
-<%@ include file ="../href/navbar.jsp" %>
-<div class="nav">
-  	<div class="container">
-    	<div class="navbar-left" style="background-color:#BCF1E5;" >
-        	<ul class="nav nav-tabs">
-              <li class="" style="background-color:#1CAF9A"><a href="SearchStockPage.jsp" style="color:#FFFFFF">庫存</a></li>
-              <li><a href="SearchProductPage.jsp" style="color:#000000">商品</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="container">
-   	  <div class="nav" style="background-color:#1CAF9A;" >
-        	<ul class="nav nav-tabs">
-              <li class="" style="background-color:#1CAF9A"><a href="SearchStockPage.jsp" style="color:#fff">查詢庫存</a></li>
-              <li><a href="NewProduct.jsp">新增產品</a></li>
-              <li ><a href="purchasePage.jsp" style="color:#000">進貨</a></li>
-              <li><a href="PurchaseRecordPage.jsp" style="color:#000000">進貨紀錄</a></li>
-              <li><a href="OutRecordPage.jsp" style="color:#000000">出貨紀錄</a></li>
-            </ul>
-        </div>
-    </div>
-  
-  </div>
-  
-  
-  
-  <div class="container container-fluid breadcrumbBox">
-      <ol class="breadcrumb" >
-          <li><a href="#" >主要目錄</a></li>
-          <li class="active" style="display:"><a href="#">庫存</a></li>
-          <li><a href="#">庫存查詢</a></li>
-      </ol>
-  </div>
+<%@ include file ="/href/navbar.jsp" %>
 <%
 String sku ;
 request.setCharacterEncoding("UTF-8");
@@ -105,11 +63,48 @@ conn.close();
 }
 
 %>
+    	<div class="nav">
+		<div class="container">
+			<div class="navbar-left" style="background-color: #BCF1E5;">
+				<ul class="nav nav-tabs">
+					<li><a href="SearchStockPage.jsp" style="color: #000">庫存</a></li>
+					<li class="" style="background-color: #1CAF9A"><a
+						href="SearchProductPage.jsp" style="color: #fff">商品</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="container">
+			<div class="nav" style="background-color: #1CAF9A;">
+				<ul class="nav nav-tabs">
+					<li class="" style="background-color: #1CAF9A"><a href="SearchProductPage.jsp" style="color: #fff">查詢商品</a></li>
+					<li><a href="TotalBundles.jsp" style="color: #000000">查詢組合商品</a></li>
+					<li ><a
+						href="NewProduct.jsp" style="color: #000">新增單項商品</a></li>
+					<li ><a
+						href="ProductAddPage.jsp" style="color: #000">新增組合商品</a></li>
+					
+				</ul>
+			</div>
+		</div>
+
+	</div>
+  
+  
+  
+  <div class="container container-fluid breadcrumbBox">
+		<ol class="breadcrumb">
+			<li><a href="/HomePage.jsp">首頁</a></li>
+			<li class="active" style="display:"><a
+				href="SearchProductPage.jsp">庫存/商品管理</a></li>
+			<li><a href="ProductDetail.jsp?sku=${resultDetail.getSKU()}">商品明細</a></li>
+		</ol>
+	</div>
+
 
 <div class="container" style="background: #9DDCD1; border-radius:20px;" >
   <form id="listForm" name="listForm" method="post" action="../ProductDo" 
   style="font-size: 100%; vertical-align: baseline; padding: 15px; " 
-  class="form-inline container">
+  class="container">
     <div class="row">
         <label for="inputPassword" class="col-md-2 control-label text-left">編輯模式</label>
           <div class="col-md-4">
@@ -136,35 +131,35 @@ conn.close();
               <div class="container-fluid form-horizontal">
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>商品編號</h4></div>
-                      <div class="col-md-8 well-sm"><input class="form-control required"  title="請輸入正確SKU" style="width:700px"  type="text" name="sku" value="${resultDetail.getSKU()}" ></div>
+                      <div class="col-md-8 well-sm"><input class="form-control required"  title="請輸入正確SKU" type="text" name="sku" value="${resultDetail.getSKU()}" ></div>
                   </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>條碼編號</h4></div>
-                      <div class="col-md-8 well-sm"><input class="form-control"  style="width:700px" type="text" name="barcode" value="${resultDetail.getSKU()}"></div>
+                      <div class="col-md-8 well-sm"><input class="form-control" type="text" name="barcode" value="${resultDetail.getSKU()}"></div>
                   </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>擁有者</h4></div>
-                    <div class="col-md-8 well-sm"><input class="form-control" style="width:700px"  type="text" name="owner" value="${resultDetail.getOwner()}" ></div>
+                    <div class="col-md-8 well-sm"><input class="form-control" type="text" name="owner" value="${resultDetail.getOwner()}" ></div>
                   </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>商品類別</h4></div>
-                      <div class="col-md-8 well-sm"><input class="form-control required"  style="width:700px" title="請輸入正確商品類別" type="text" name="producttype" value="${resultDetail.getProductType()}" ></div>
+                      <div class="col-md-8 well-sm"><input class="form-control required" title="請輸入正確商品類別" type="text" name="producttype" value="${resultDetail.getProductType()}" ></div>
                   </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>廠牌</h4></div>
-                      <div class="col-md-8 well-sm"><input class="form-control required"  style="width:700px" title="請輸入正確廠牌" type="text" name="brand" value="${resultDetail.getBrand()}" ></div>
+                      <div class="col-md-8 well-sm"><input class="form-control required" title="請輸入正確廠牌" type="text" name="brand" value="${resultDetail.getBrand()}" ></div>
                   </div>
                    <div class="row">
                   	  <div class="col-md-3 text-right well-sm label-tag"  ><h4>副廠牌</h4></div>
-                   	  <div class="col-md-8 well-sm"><input class="form-control" style="width:700px"  type="text" name="subbrand" value="${resultDetail.getSubBrand()}" ></div>
+                   	  <div class="col-md-8 well-sm"><input class="form-control" type="text" name="subbrand" value="${resultDetail.getSubBrand()}" ></div>
                   </div>
                   <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>EAN</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control"  style="width:700px" type="text" name="ean" value="${resultDetail.getEAN()}" ></div>
+                  <div class="col-md-8 well-sm"><input class="form-control" type="text" name="ean" value="${resultDetail.getEAN()}" ></div>
               </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>ProductCode</h4></div>
-                      <div class="col-md-8 well-sm"><input class="form-control"  style="width:700px" type="text" name="productcode" value="${resultDetail.getProductCode()}" ></div>
+                      <div class="col-md-8 well-sm"><input class="form-control" type="text" name="productcode" value="${resultDetail.getProductCode()}" ></div>
                   </div>
               </div>
             </div>
@@ -178,40 +173,39 @@ conn.close();
           </div>
           <div id="collapse2" class="panel-collapse collapse">
             <div class="panel-body">
-            
              
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>品名</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control required"  style="width:700px" title="請輸入正確品名" type="text" name="pname" value="${resultDetail.getP_name()}" ></div>
+                  <div class="col-md-8 well-sm"><input class="form-control required" title="請輸入正確品名" type="text" name="pname" value="${resultDetail.getP_name()}" ></div>
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>規格</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control required"  style="width:700px" title="請輸入正確規格" type="text" name="spec" value="${resultDetail.getSpec()}" ></div>
+                  <div class="col-md-8 well-sm"><input class="form-control required" title="請輸入正確規格" type="text" name="spec" value="${resultDetail.getSpec()}" ></div>
               </div>
             
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>顏色</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control required"  style="width:700px" title="請輸入正確顏色" type="text" name="color" value="${resultDetail.getColor()}"></div>
+                  <div class="col-md-8 well-sm"><input class="form-control required" title="請輸入正確顏色" type="text" name="color" value="${resultDetail.getColor()}"></div>
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>安全庫存</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control digits required"  style="width:700px" title="請輸入正確安全庫存" type="text"name="securedqty" value="${resultDetail.getSecuredQty()}"></div>
+                  <div class="col-md-8 well-sm"><input class="form-control digits required" title="請輸入正確安全庫存" type="text"name="securedqty" value="${resultDetail.getSecuredQty()}"></div>
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>成本</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control number required"  style="width:700px" title="請輸入正確成本" type="text" name="cost" value="${resultDetail.getCost()}" ></div>
+                  <div class="col-md-8 well-sm"><input class="form-control number required" title="請輸入正確成本" type="text" name="cost" value="${resultDetail.getCost()}" ></div>
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>備註</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control"  style="width:700px" type="text" name="comment" value="${resultDetail.getComment()}"></div>
+                  <div class="col-md-8 well-sm"><input class="form-control" type="text" name="comment" value="${resultDetail.getComment()}"></div>
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>更新紀錄</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control required yymmdd"  style="width:700px" type="text" name="checkupdate" value="${resultDetail.getCheckupdate()}" readonly></div>
+                  <div class="col-md-8 well-sm"><input class="form-control required yymmdd" type="text" name="checkupdate" value="${resultDetail.getCheckupdate()}" readonly></div>
               </div>
                 <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>重量</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control number" style="width:700px"  type="text" name="weight" value="${resultDetail.getWeight()}" ></div>
+                  <div class="col-md-8 well-sm"><input class="form-control number" type="text" name="weight" value="${resultDetail.getWeight()}" ></div>
               </div>
 
             </div>
@@ -229,15 +223,15 @@ conn.close();
               <div class="container-fluid form-horizontal">
                     <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>包裝材質</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control"  style="width:700px" style="width:700px" type="text" name="package" value="${resultDetail.getPackageMatrial()}" ></div>
+                  <div class="col-md-8 well-sm"><input class="form-control" style="width:700px" type="text" name="package" value="${resultDetail.getPackageMatrial()}" ></div>
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>材積重</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control number" style="width:700px" type="text"name="vilu" value="${resultDetail.getVilumetricWeight()}" ></div>
+                  <div class="col-md-8 well-sm"><input class="form-control number"type="text"name="vilu" value="${resultDetail.getVilumetricWeight()}" ></div>
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>建檔日</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control required yymmdd"  style="width:700px" type="text"name="cdate" value="${resultDetail.getCreateDate()}" readonly></div>
+                  <div class="col-md-8 well-sm"><input class="form-control required yymmdd" type="text"name="cdate" value="${resultDetail.getCreateDate()}" readonly></div>
               </div>
           
               </div>
