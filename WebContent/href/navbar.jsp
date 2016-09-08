@@ -92,7 +92,10 @@
 };
 	$(function () {
 	$("button[name=send]").click(function() {
-		confirm("確認是否送出訂單");
+		bool = confirm("確認是否送出訂單");
+		if(!bool){
+			window.location = './';
+		}
 	});
 });
 </script>
