@@ -128,16 +128,4 @@ public class CompetenceSql {
 		
 	}
 	
-	public void competenceDelete(String cv) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
-		DataBaseConn dbc = new DataBaseConn();		
-		Connection conn = dbc.getConn() ;
-		state = conn.createStatement();
-		
-		String sqlstr = "DELETE FROM competencelv WHERE competenceLV='"+cv+"';";
-		
-		state.executeUpdate(sqlstr);
-		state.close();
-		dbc.connclose(conn);
-	}
-	
 }
