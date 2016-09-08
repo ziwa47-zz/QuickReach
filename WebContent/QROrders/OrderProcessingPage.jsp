@@ -85,11 +85,11 @@
             <div class="row">
               <div class="col-md-4">
                 <h5>
-                  <label>ebay訂單編號：</label>
+                  <label>訂單編號：</label>
                 </h5>
               </div>
               <div class="col-md-8">
-                <input class="form-control" name="ebayNO" type="text">
+                <input class="form-control" name="QR_id" type="text">
               </div>
             </div>
           </div>
@@ -304,7 +304,7 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td>${i.getCOrderMaster().getShippingDate()}</td>
+                    <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
@@ -331,7 +331,7 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td>${i.getCOrderMaster().getShippingDate()}</td>
+                    <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
@@ -430,7 +430,7 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td>${i.getCOrderMaster().getShippingDate()}</td>
+                    <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
@@ -455,7 +455,7 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td>${i.getCOrderMaster().getShippingDate()}</td>
+                    <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>

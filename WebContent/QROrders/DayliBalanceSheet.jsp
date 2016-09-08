@@ -21,8 +21,6 @@
 Connection conn = new DataBaseConn().getConn();
 LinkedList<COrders> dayliBalanceSheetnew = newd.dayliBalanceSheet(request,response, conn);
 request.setAttribute("ndbs", dayliBalanceSheetnew);
-// LinkedList<COrders> dayliBalanceSheet = DBSF.dayliBalanceSheet(request,response, conn);
-// request.setAttribute("dbs", dayliBalanceSheet);
 %>
  <div class="nav">
   <div class="container">
