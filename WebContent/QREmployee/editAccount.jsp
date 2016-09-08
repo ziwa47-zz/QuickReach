@@ -150,7 +150,7 @@ System.out.println(accountinfo.getAccount());
                   </div>
                   
                  	 	<div class="" align="center">
-						<button type="submit" name="submit" value="updateEbayAccount">修改送出</button> <td><a href="eBayAccount.jsp"><input type="button" value="取消"></a></td>
+						<button type="submit" name="submit" value="updateEbayAccount">修改送出</button> <td><a href="accountManage.jsp"><input type="button" value="取消"></a></td>
 						</div>
                   	
               </div>
