@@ -21,7 +21,7 @@ public class LoginVerifyJavaBean {
 
 		if (session.getAttribute("account") == null) {
 
-			response.sendRedirect("../Login.jsp");
+			response.sendRedirect("/Login.jsp");
 		}
 
 	}
