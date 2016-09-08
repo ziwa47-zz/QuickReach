@@ -210,7 +210,7 @@
         </table>
       </form>
     </div>
-    <% session.invalidate(); %>
+  
   </c:when>
 </c:choose>
 

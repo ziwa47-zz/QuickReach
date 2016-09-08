@@ -100,6 +100,7 @@ public class StatusDoServlet extends HttpServlet {
 				OFactory.updateToFinished(request, conn);
 				OFactory.deductStock(request, conn);
 				OFactory.insertIntoShippingLog(request, conn);
+				
 				response.sendRedirect("QROrders/OrderFinished.jsp?begin=0&end=10");
 				conn.close();
 			} else {
