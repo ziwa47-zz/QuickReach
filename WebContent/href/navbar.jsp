@@ -49,9 +49,14 @@
 			dateFormat : 'yymmdd',
 
 		});
-		$("input[name=date1]").datepicker();
-		$("input[name=date2]").datepicker();
-	});
+		 $("input[name=date1]").datepicker({dateFormat : 'yy/mm/dd'});
+	        $("input[name=date2]").datepicker({dateFormat : 'yy/mm/dd'});
+	        $("input[name=payDateMin]").datepicker({dateFormat : 'yy/mm/dd'});
+	        $("input[name=payDateMax]").datepicker({dateFormat : 'yy/mm/dd'});
+	        $("input[name=shippingDateMin]").datepicker({dateFormat : 'yy/mm/dd'});
+	        $("input[name=shippingDateMax]").datepicker({dateFormat : 'yy/mm/dd'});
+	   });
+	
 
 	$(function() {
 		//feildset prop enable
@@ -61,20 +66,48 @@
 		$("#optionsRadios2").click(function() {
 			$("#myfields").prop("disabled", true);
 		});
-	})
+	});
+	
+	    function checkAllOrders(ele) {
+    	//select all
+		if (ele.checked) {
+			$("input[name=all]").prop("checked", true);
+	        $("input[name=waitProcess]").prop("checked", true);
+	        $("input[name=processing]").prop("checked", true);
+	        $("input[name=pickup]").prop("checked", true);
+	        $("input[name=finished]").prop("checked", true);
+	        $("input[name=refund]").prop("checked", true);
+	        $("input[name=oothers]").prop("checked", true);
+	        $("input[name=deducted]").prop("checked", true);
+	    } else {
+	    	$("input[name=all]").prop("checked", false);
+	        $("input[name=waitProcess]").prop("checked", false);
+	        $("input[name=processing]").prop("checked", false);
+	        $("input[name=pickup]").prop("checked", false);
+	        $("input[name=finished]").prop("checked", false);
+	        $("input[name=refund]").prop("checked", false);
+	        $("input[name=oothers]").prop("checked", false);
+	        $("input[name=deducted]").prop("checked", false);
+	    }
+};
+	$(function () {
+	$("button[name=send]").click(function() {
+		confirm("確認是否送出訂單");
+	});
+});
 </script>
 </head>
 <body>
 <%
-String ac =(String)session.getAttribute("account");
-if(ac==null || "".equals(ac)){
-	if("0".equals(request.getParameter("p"))){
+// String ac =(String)session.getAttribute("account");
+// if(ac==null || "".equals(ac)){
+// 	if("0".equals(request.getParameter("p"))){
 		
-	}else{
-		response.sendRedirect("/Login.jsp?p=0");
-	}
+// 	}else{
+// 		response.sendRedirect("/Login.jsp?p=0");
+// 	}
 	
-}
+// }
 
 %>
 

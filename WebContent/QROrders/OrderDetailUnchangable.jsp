@@ -64,16 +64,6 @@ conn.close();
   <div class="container table-responsive" style="background: #D9A56B; border-radius:20px;">
   	<form name="searchform" method="post" action="../OrdersServlet" class="form-inline container" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
-  	<div class="row">
-      <label for="inputPassword" class="col-md-2 control-label text-left">編輯模式</label>
-      <div class="col-md-4">
-        <label class="radio-inline"><input type="radio" name="optionsRadios" id="optionsRadios1">開啟</label>
-        <label class="radio-inline"><input type="radio" name="optionsRadios" id="optionsRadios2">關閉</label>
-    	<label class="radio-inline">
-    	<button type="submit" name="submit" value="updateOrder" class="btn-lg btn-success">更新商品資料</button>
-      	</label>
-      </div>
-    </div>
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;" disabled><legend>訂單明細</legend>
       <div class="panel-group" id="accordion">
         <div class="panel panel-default" style="background-color:#E7D29F">
