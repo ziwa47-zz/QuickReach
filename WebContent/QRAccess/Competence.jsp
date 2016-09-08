@@ -94,7 +94,7 @@
 	</div>
 
 	<div class="container">
-		<form name="searchform" method="post" action="Competence.jsp"
+		<form name="searchform" method="post" action="CompetenceInsert.do"
 			style="font-size: 100%; vertical-align: baseline;"
 			class=" form-group container">
 			<%
@@ -105,10 +105,10 @@
 				list = ctsql.getCompetenceLevel();
 				session.setAttribute("list", list);
 
-				if (request.getParameter("Competencelv") != null) {
+				if (request.getParameter("CompetenceLv") != null) {
 					//System.out.println(request.getParameter("Competencelv"));
 
-					String csv = new String(request.getParameter("Competencelv").getBytes("8859_1"), "UTF-8");
+					String csv = new String(request.getParameter("CompetenceLv").getBytes("8859_1"), "UTF-8");
 					session.setAttribute("csv", csv);
 					//System.out.println(csv);
 					//out.write(csv);
@@ -135,7 +135,7 @@
 						<h4>權限等級</h4>
 					</div>
 					<div class="col-md-5 well-sm">
-						<select class="form-control" name="Competencelv" onChange="goct()">
+						<select class="form-control" name="CompetenceLv" onChange="goct()">
 							<option value="ab">==請選擇==</option>
 							<c:forEach var="i" varStatus="check" items="${list}" begin="0"
 								step="1">
@@ -420,7 +420,8 @@
 
 						<div class="container-fluid form-horizontal">
 							<div class="row text-center">
-								<input type="submit" value="修改" name="" id="" />
+								<button type="submit" value="update" name="smt" id="">修改</button>
+								<button type="submit" value="delete" name="smt" id="">刪除</button>
 							</div>
 						</div>
 					</c:if>

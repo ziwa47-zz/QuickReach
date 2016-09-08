@@ -10,7 +10,7 @@
 <body>
 
 <c:if test="${account == null }">  
-<% response.sendRedirect("/Login.jsp"); %>
+<% response.sendRedirect("Login.jsp"); %>
 </c:if>
 
 <%@ include file="/href/navbar.jsp"%>
