@@ -99,15 +99,15 @@
 </head>
 <body>
 <%
-// String ac =(String)session.getAttribute("account");
-// if(ac==null || "".equals(ac)){
-// 	if("0".equals(request.getParameter("p"))){
+ String ac =(String)session.getAttribute("account");
+ if(ac==null || "".equals(ac)){
+ 	if("0".equals(request.getParameter("p"))){
 		
-// 	}else{
-// 		response.sendRedirect("/Login.jsp?p=0");
-// 	}
+ 	}else{
+ 		response.sendRedirect("/Login.jsp?p=0");
+ 	}
 	
-// }
+ }
 
 %>
 

@@ -80,7 +80,7 @@ public class CGetEbay {
 //		  System.out.println("款項調整:"+order.getAdjustmentAmount().getValue());
 //		  System.out.println("款項調整:"+order.getAdjustmentAmount().getCurrencyID());
 		  System.out.println("已付款項:"+order.getAmountPaid().getValue());
-		  System.out.println("已付款項:"+order.getTransactionArray().getTransaction()[0].getAmountPaid().getValue());
+//		  System.out.println("已付款項:"+order.getTransactionArray().getTransaction()[0].getAmountPaid().getValue());
 		  System.out.println("已付款項:"+order.getAmountPaid().getCurrencyID());
 //		  System.out.println("款項調整2:"+order.getAmountSaved().getValue());
 //		  System.out.println("款項調整2:"+order.getAmountSaved().getCurrencyID());
