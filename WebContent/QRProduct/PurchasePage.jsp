@@ -9,23 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>進貨</title>
 
-<!-- Bootstrap -->
-<link rel="stylesheet" type="text/css"
-	href="../css/smoothness/jquery-ui.css">
-<script src="../js/jquery-1.12.4.min.js"></script>
-<script src="../js/jquery-ui.min.js"></script>
-<script src="../js/jquery.ui.datepicker-zh-TW.js"></script>
 
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-
-  
-  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
-
-
-
-
-  
 <script type="text/javascript">
 
 var skuName;
@@ -333,11 +317,10 @@ display: block;
 		<div class="container">
 			<div class="nav" style="background-color: #1CAF9A;">
 				<ul class="nav nav-tabs">
-					<li><a href="SearchStockPage.jsp" style="color: #000000">查詢庫存</a></li>
-					<li class="" style="background-color: #1CAF9A"><a
-						href="PurchasePage.jsp" style="color: #FFFFFF">進貨</a></li>
-					<li><a href="searchPurchase.jsp" style="color: #000000">進/出貨紀錄</a></li>
-					<li><a href="searchOutRecordPage.jsp" style="color: #000000">出貨紀錄</a></li>
+					<li><a href="SearchStockPage.jsp" style="color: #000">查詢庫存</a></li>
+					<li class="" style="background-color: #1CAF9A"><a href="PurchasePage.jsp" style="color: #fff">進貨</a></li>
+					<li ><a
+						href="PurchaseRecordPage.jsp" style="color: #000">進/出貨紀錄</a></li>
 				</ul>
 			</div>
 		</div>
@@ -345,7 +328,7 @@ display: block;
 
 	<div class="container container-fluid breadcrumbBox">
 		<ol class="breadcrumb">
-			<li><a href="../QRMain/HomePage.jsp">首頁</a></li>
+			<li><a href="/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchStockPage.jsp">庫存/商品管理</a></li>
 			<li><a href="PurchasePage.jsp">進貨</a></li>
@@ -428,7 +411,7 @@ display: block;
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control required digits"  name="staffId" type="text">
+								<input class="form-control required digits"  name="staffId" type="text" value="${staffName}">
 							</div>
 						</div>
 					</div>

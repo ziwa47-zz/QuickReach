@@ -8,12 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>查詢庫存</title>
-<!-- Bootstrap -->
-<link rel="stylesheet" type="text/css"
-	href="../css/smoothness/jquery-ui.css">
-<script src="../js/jquery-1.12.4.min.js"></script>
-<script src="../js/jquery-ui.min.js"></script>
-<script src="../js/jquery.ui.datepicker-zh-TW.js"></script>
+
 <script type="text/javascript">
 	$(function() {
 		//日期選擇器
@@ -28,33 +23,36 @@
 </head>
 <body>
 <%@ include file="/href/navbar.jsp"%>
-<div class="nav">
-  <div class="container">
-    <div class="navbar-left" style="background-color: #BCF1E5;">
-      <ul class="nav nav-tabs">
-        <li class="" style="background-color: #1CAF9A"><a href="SearchStockPage.jsp" style="color: #FFFFFF">庫存</a></li>
-        <li><a href="SearchProductPage.jsp" style="color: #000000">商品</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="container">
-    <div class="nav" style="background-color: #1CAF9A;">
-      <ul class="nav nav-tabs">
-        <li class="" style="background-color: #1CAF9A"><a href="SearchStockPage.jsp" style="color: #fff">查詢庫存</a></li>
-        <li><a href="PurchasePage.jsp">進貨</a></li>
-        <li><a href="searchOutRecordPage.jsp">進貨紀錄</a></li>
-        <li><a href="searchOutRecordPage.jsp">出貨紀錄</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
-<div class="container container-fluid breadcrumbBox">
-  <ol class="breadcrumb">
-    <li><a href="../QRMain/HomePage.jsp">首頁</a></li>
-    <li class="active" style="display:"><a href="SearchStockPage.jsp">庫存/商品管理</a></li>
-    <li><a href="SearchStockPage.jsp">查詢庫存</a></li>
-  </ol>
-</div>
+	<div class="nav">
+		<div class="container">
+			<div class="navbar-left" style="background-color: #BCF1E5;">
+				<ul class="nav nav-tabs">
+					<li class="" style="background-color: #1CAF9A"><a
+						href="SearchStockPage.jsp" style="color: #FFFFFF">庫存</a></li>
+					<li><a href="SearchProductPage.jsp" style="color: #000000">商品</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="container">
+			<div class="nav" style="background-color: #1CAF9A;">
+				<ul class="nav nav-tabs">
+					<li class="" style="background-color: #1CAF9A"><a href="SearchStockPage.jsp" style="color: #fff">查詢庫存</a></li>
+					<li ><a href="PurchasePage.jsp" style="color: #000">進貨</a></li>
+					<li ><a
+						href="PurchaseRecordPage.jsp" style="color: #000">進/出貨紀錄</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="container container-fluid breadcrumbBox">
+		<ol class="breadcrumb">
+			<li><a href="/HomePage.jsp">首頁</a></li>
+			<li class="active" style="display:"><a
+				href="SearchStockPage.jsp">庫存/商品管理</a></li>
+			<li><a href="SearchStockPage.jsp">庫存</a></li>
+		</ol>
+	</div>
 <div class="container" style="background: #9DDCD1; border-radius: 20px;">
   <form name="searchform" method="post" action="../ProductDo" style="font-size: 100%; vertical-align: baseline; padding: 15px;" class="form-inline container">
     <fieldset>

@@ -3,12 +3,9 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.io.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!DOCTYPE html >
 
 <jsp:useBean id="blf" scope="session" class="tw.iii.qr.stock.BundlesFactory" />
 <jsp:setProperty name="blf" property="*"/>   
@@ -19,17 +16,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>新增複合商品</title>
-    <!-- Bootstrap -->
-	<link href="css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui.css">
-
-      <!-- Include all compiled plugins (below), or include individual files as needed -->
-      <script src="js/bootstrap.js"></script>
-
-    
-    <script src="js/jquery-1.12.4.min.js"></script>
-    <script src="js/jquery-ui.min.js"></script>
-    <script src="js/jquery.ui.datepicker-zh-TW.js"></script>
+  
     <script type="text/javascript">
     function getSelect(){
     	listForm.action = "BundlesDetail.jsp"
@@ -63,35 +50,40 @@
   <body>
  <%@ include file = "/href/navbar.jsp"%>
   <div class="nav">
-  	<div class="container">
-    	<div class="navbar-left" style="background-color:#BCF1E5;" >
-        	<ul class="nav nav-tabs">
-              <li ><a href="SearchStockPage.jsp" style="color:#000">庫存</a></li>
-              <li class="" style="background-color:#1CAF9A"><a href="SearchProductPage.jsp" style="color:#fff">商品</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="container">
-   	  <div class="nav" style="background-color:#1CAF9A;" >
-        	<ul class="nav nav-tabs">
-              <li ><a href="SearchProductPage.jsp" style="color:#000">查詢商品</a></li>
-              <li ><a href="ProductAddPage.jsp" style="color:#000">新增複合商品</a></li>
-              <li ><a href="ProductEditPage.jsp" style="color:#000000">修改商品</a></li>
-              <li class="" style="background-color:#1CAF9A"><a href="TotalBundles.jsp" style="color:#fff">查詢複合商品</a></li>
-            </ul>
-        </div>
-    </div>
-  
-  </div>
-  
-  <div class="container container-fluid breadcrumbBox">
-    <ol class="breadcrumb" >
-          <li><a href="../QRMain/HomePage.jsp" >首頁</a></li>
-          <li class="active" style="display:"><a href="SearchProductPage.jsp">庫存/商品管理</a></li>
-          <li><a href="TotalBundles.jsp">查詢複合商品</a></li>
-          <li><a href="TotalBundles.jsp">修改複合商品</a></li>
-      </ol>
-        </div>
+		<div class="container">
+			<div class="navbar-left" style="background-color: #BCF1E5;">
+				<ul class="nav nav-tabs">
+					<li><a href="SearchStockPage.jsp" style="color: #000">庫存</a></li>
+					<li class="" style="background-color: #1CAF9A"><a
+						href="SearchProductPage.jsp" style="color: #fff">商品</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="container">
+			<div class="nav" style="background-color: #1CAF9A;">
+				<ul class="nav nav-tabs">
+					<li><a href="SearchProductPage.jsp" style="color: #000">查詢商品</a></li>
+					<li class="" style="background-color: #1CAF9A"><a href="TotalBundles.jsp" style="color: #FFF">查詢組合商品</a></li>
+					<li ><a
+						href="NewProduct.jsp" style="color: #000">新增單項商品</a></li>
+					<li ><a
+						href="ProductAddPage.jsp" style="color: #000">新增組合商品</a></li>
+					
+				</ul>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="container container-fluid breadcrumbBox">
+		<ol class="breadcrumb">
+			<li><a href="/HomePage.jsp">首頁</a></li>
+			<li class="active" style="display:"><a
+				href="SearchProductPage.jsp">庫存/商品管理</a></li>
+			<li><a href="BundlesDetail.jsp">組合商品明細</a></li>
+		</ol>
+	</div>
+
   
   <div class="container table-responsive bg-warning" style="background: #9DDCD1; border-radius:20px">
   	<form id="listForm" name="listForm" method="post" action="bundles.do" style="font-size: 100%; vertical-align: baseline; 
@@ -127,7 +119,7 @@ request.setAttribute("listSKU",listSKU);
 
 %>
 
-      <fieldset class="container-fluid" style="padding:0 30 0 0;"><legend>新增複合商品</legend>
+      <fieldset class="container-fluid" style="padding:0 30 0 0;"><legend>組合商品明細</legend>
     	<input type="hidden">
   
         <div class="row">

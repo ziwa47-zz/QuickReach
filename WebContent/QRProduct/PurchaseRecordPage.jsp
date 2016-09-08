@@ -18,14 +18,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" type="text/css"
-	href="../css/smoothness/jquery-ui.css">
-<script src="../js/jquery-1.12.4.min.js"></script>
-<script src="../js/jquery-ui.min.js"></script>
-<script src="../js/jquery.ui.datepicker-zh-TW.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
 <script type="text/javascript">
 
 function jqueryAutoCompletePurchaseId() {
@@ -72,7 +65,11 @@ function jqueryAutoCompleteSKU() {
 </head>
 <body>
 	<%@ include file="../href/navbar.jsp"%>
+	
 	<%
+	
+	
+	
 		LinkedList<LinkedList<String>> warehouseList = searchDetail.warehouseSelectOption();
 		LinkedList<LinkedList<String>> companyList = searchDetail.companySelectOption();
 		request.setAttribute("warehouseList", warehouseList);
@@ -125,8 +122,7 @@ function jqueryAutoCompleteSKU() {
 					<li><a href="SearchStockPage.jsp" style="color: #000">查詢庫存</a></li>
 					<li><a href="PurchasePage.jsp" style="color: #000">進貨</a></li>
 					<li class="" style="background-color: #1CAF9A"><a
-						href="searchPurchase.jsp" style="color: #fff">進/出貨紀錄</a></li>
-					<li><a href="searchOutRecordPage.jsp" style="color: #000000">出貨紀錄</a></li>
+						href="PurchaseRecordPage.jsp" style="color: #fff">進/出貨紀錄</a></li>
 				</ul>
 			</div>
 		</div>
@@ -134,10 +130,10 @@ function jqueryAutoCompleteSKU() {
 
 	<div class="container container-fluid breadcrumbBox">
 		<ol class="breadcrumb">
-			<li><a href="../QRMain/HomePage.jsp">首頁</a></li>
+			<li><a href="/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchStockPage.jsp">庫存/商品管理</a></li>
-			<li><a href="searchPurchase.jsp">進/出貨紀錄</a></li>
+			<li><a href="PurchaseRecordPage.jsp">進/出貨紀錄</a></li>
 		</ol>
 	</div>
 
@@ -384,6 +380,13 @@ function jqueryAutoCompleteSKU() {
 
 				</tr>
 
+
+<c:if test="${PageCompetence.getProductCostView() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>
+
+
+  
+</c:if>
 
 				<c:forEach var="i" begin="0" step="1" items="${logList}"
 					varStatus="nu">
