@@ -7,17 +7,7 @@
 <html>
   
 <head>
-<link rel="stylesheet" type="text/css"
-	href="../css/smoothness/jquery-ui.css">
-<script src="../js/jquery-1.12.4.min.js"></script>
-<script src="../js/jquery-ui.min.js"></script>
-<script src="../js/jquery.ui.datepicker-zh-TW.js"></script>
 
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-
-  
-  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 
 
 <script type="text/javascript">
@@ -57,42 +47,10 @@ display: block;
 
 }
 </style>
-<title>Product Detail</title>
+<title>商品明細</title>
 </head>
 <body>
-<%@ include file ="../href/navbar.jsp" %>
-<div class="nav">
-  	<div class="container">
-    	<div class="navbar-left" style="background-color:#BCF1E5;" >
-        	<ul class="nav nav-tabs">
-              <li class="" style="background-color:#1CAF9A"><a href="SearchStockPage.jsp" style="color:#FFFFFF">庫存</a></li>
-              <li><a href="SearchProductPage.jsp" style="color:#000000">商品</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="container">
-   	  <div class="nav" style="background-color:#1CAF9A;" >
-        	<ul class="nav nav-tabs">
-              <li class="" style="background-color:#1CAF9A"><a href="SearchStockPage.jsp" style="color:#fff">查詢庫存</a></li>
-              <li><a href="NewProduct.jsp">新增產品</a></li>
-              <li ><a href="purchasePage.jsp" style="color:#000">進貨</a></li>
-              <li><a href="PurchaseRecordPage.jsp" style="color:#000000">進貨紀錄</a></li>
-              <li><a href="OutRecordPage.jsp" style="color:#000000">出貨紀錄</a></li>
-            </ul>
-        </div>
-    </div>
-  
-  </div>
-  
-  
-  
-  <div class="container container-fluid breadcrumbBox">
-      <ol class="breadcrumb" >
-          <li><a href="#" >主要目錄</a></li>
-          <li class="active" style="display:"><a href="#">庫存</a></li>
-          <li><a href="#">庫存查詢</a></li>
-      </ol>
-  </div>
+<%@ include file ="/href/navbar.jsp" %>
 <%
 String sku ;
 request.setCharacterEncoding("UTF-8");
@@ -105,6 +63,43 @@ conn.close();
 }
 
 %>
+    	<div class="nav">
+		<div class="container">
+			<div class="navbar-left" style="background-color: #BCF1E5;">
+				<ul class="nav nav-tabs">
+					<li><a href="SearchStockPage.jsp" style="color: #000">庫存</a></li>
+					<li class="" style="background-color: #1CAF9A"><a
+						href="SearchProductPage.jsp" style="color: #fff">商品</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="container">
+			<div class="nav" style="background-color: #1CAF9A;">
+				<ul class="nav nav-tabs">
+					<li class="" style="background-color: #1CAF9A"><a href="SearchProductPage.jsp" style="color: #fff">查詢商品</a></li>
+					<li><a href="TotalBundles.jsp" style="color: #000000">查詢組合商品</a></li>
+					<li ><a
+						href="NewProduct.jsp" style="color: #000">新增單項商品</a></li>
+					<li ><a
+						href="ProductAddPage.jsp" style="color: #000">新增組合商品</a></li>
+					
+				</ul>
+			</div>
+		</div>
+
+	</div>
+  
+  
+  
+  <div class="container container-fluid breadcrumbBox">
+		<ol class="breadcrumb">
+			<li><a href="/HomePage.jsp">首頁</a></li>
+			<li class="active" style="display:"><a
+				href="SearchProductPage.jsp">庫存/商品管理</a></li>
+			<li><a href="ProductDetail.jsp?sku=${resultDetail.getSKU()}">商品明細</a></li>
+		</ol>
+	</div>
+
 
 <div class="container" style="background: #9DDCD1; border-radius:20px;" >
   <form id="listForm" name="listForm" method="post" action="../ProductDo" 

@@ -18,14 +18,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" type="text/css"
-	href="../css/smoothness/jquery-ui.css">
-<script src="../js/jquery-1.12.4.min.js"></script>
-<script src="../js/jquery-ui.min.js"></script>
-<script src="../js/jquery.ui.datepicker-zh-TW.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
 <script type="text/javascript">
 
 function jqueryAutoCompletePurchaseId() {
@@ -71,7 +64,7 @@ function jqueryAutoCompleteSKU() {
 <title>進貨紀錄</title>
 </head>
 <body>
-	<%@ include file="../href/navbar.jsp"%>
+	<%@ include file="/href/navbar.jsp"%>
 	
 	<%
 	
@@ -108,7 +101,7 @@ function jqueryAutoCompleteSKU() {
 		
 
 		request.setAttribute("logList", allList);
-		
+	
 	%>
 
 
@@ -129,8 +122,7 @@ function jqueryAutoCompleteSKU() {
 					<li><a href="SearchStockPage.jsp" style="color: #000">查詢庫存</a></li>
 					<li><a href="PurchasePage.jsp" style="color: #000">進貨</a></li>
 					<li class="" style="background-color: #1CAF9A"><a
-						href="searchPurchase.jsp" style="color: #fff">進/出貨紀錄</a></li>
-					<li><a href="searchOutRecordPage.jsp" style="color: #000000">出貨紀錄</a></li>
+						href="PurchaseRecordPage.jsp" style="color: #fff">進/出貨紀錄</a></li>
 				</ul>
 			</div>
 		</div>
@@ -138,10 +130,10 @@ function jqueryAutoCompleteSKU() {
 
 	<div class="container container-fluid breadcrumbBox">
 		<ol class="breadcrumb">
-			<li><a href="../QRMain/HomePage.jsp">首頁</a></li>
+			<li><a href="/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchStockPage.jsp">庫存/商品管理</a></li>
-			<li><a href="searchPurchase.jsp">進/出貨紀錄</a></li>
+			<li><a href="PurchaseRecordPage.jsp">進/出貨紀錄</a></li>
 		</ol>
 	</div>
 
@@ -349,13 +341,13 @@ function jqueryAutoCompleteSKU() {
 
 				<br />
 				<div class="row text-center">
-					<input type="submit" name="" value="搜尋" class="btn-lg btn-success">
+					<input type="submit" name="Record" value="搜尋" class="btn-lg btn-success">
 				</div>
 			</fieldset>
 		</form>
 	</div>
 	<hr />
-	
+	<c:if test="${logList != null}">
 	<div class="container table-responsive bg-warning table-hover"
 		style="border-radius: 20px" id = "myTable">
 		<form name="searchform" method="post" action="#"
@@ -448,8 +440,9 @@ function jqueryAutoCompleteSKU() {
 
 		</form>
 	</div>
+	</c:if>
 </body>
 
-<%@ include file="../href/footer.jsp"%>
+<%@ include file="/href/footer.jsp"%>
 
 </html>

@@ -98,8 +98,9 @@ public class StatusDoServlet extends HttpServlet {
 			if (!OFactory.checkOrderIdOrderStatus(request, conn) == false){
 				System.out.println("checked true");
 				OFactory.updateToFinished(request, conn);
-				//OFactory.deductStock(request, conn);
+				OFactory.deductStock(request, conn);
 				OFactory.insertIntoShippingLog(request, conn);
+				
 				response.sendRedirect("QROrders/OrderFinished.jsp?begin=0&end=10");
 				conn.close();
 			} else {
