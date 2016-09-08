@@ -17,6 +17,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../js/jquery-1.12.4.min.js"></script><!-- jqueryAutoComplete 不可以在../js/jquery-1.12.4.min.js 之前 -->
 
 
 <script type="text/javascript">
@@ -64,16 +65,18 @@ function jqueryAutoCompleteSKU() {
 <title>進貨紀錄</title>
 </head>
 <body>
-	<%@ include file="/href/navbar.jsp"%>
+	<%@ include file="../href/navbar.jsp"%>
 	
 	<%
 	
 	
 	
-		LinkedList<LinkedList<String>> warehouseList = searchDetail.warehouseSelectOption();
-		LinkedList<LinkedList<String>> companyList = searchDetail.companySelectOption();
-		request.setAttribute("warehouseList", warehouseList);
-		request.setAttribute("companyList", companyList);
+	LinkedList<LinkedList<String>> warehouseList = searchDetail.warehouseSelectOption();
+	LinkedList<LinkedList<String>> companyList = searchDetail.companySelectOption();
+	LinkedList<LinkedList<String>> accountList = searchDetail.accountSelectOption();
+	request.setAttribute("warehouseList", warehouseList);
+	request.setAttribute("companyList", companyList);
+	request.setAttribute("accountList", accountList);
 		
 		String purchaseRecord = request.getParameter("purchaseRecord");
 		String outRecord = request.getParameter("outRecord");
@@ -182,9 +185,9 @@ function jqueryAutoCompleteSKU() {
 						</div>
 					</div>
 					
-					<div class="col-md-4 form-group ">
+					<div class="col-md-5 form-group ">
 						<div class="row">
-							<div class="col-md-4">
+							<div class="col-md-3">
 								<h5>
 									<label for="focusedInput ">日期：</label>
 								</h5>
@@ -265,9 +268,11 @@ function jqueryAutoCompleteSKU() {
 							<div class="col-md-8">
 								<select class="form-control" name="owner">
 									<option value=""></option>
-									<option value="William">William</option>
-									<option value="Eric">Eric</option>
-									<option value="OBU">OBU</option>
+								<c:forEach var="i" begin="0" step="1" items="${accountList}">
+
+										<option value="${i.get(0)}">${i.get(0)}</option>
+
+									</c:forEach>
 								</select>
 							</div>
 						</div>
@@ -359,81 +364,72 @@ function jqueryAutoCompleteSKU() {
 				style="margin: 0 0 0 -15px">
 			
 				<tr class="ListTitle" style="background-color: #A65758; color: #fff">
-					<th>項目</th>
-					<th>單別</th>
-					<th>單號</th>
-					<th>種類</th>
-					<th>SKU</th>
-					<th>品名</th>
-					
-				
-					<th>數量</th>
-					<th>成本</th>
-					<th>倉別</th>
-					
-					<th>櫃位</th>
-					<th>Owner</th>
-					<th>日期</th>
-					<th>供應商</th>
-					<th>經手人</th>
+				<th>項目</th>
+						<th>單別</th>
+						<th>單號</th>
+						
+						<th>SKU</th>
+						<th>品名</th>
+
+
+						<th>數量</th>
+						
+						<th>倉別</th>
+
+						<th>櫃位</th>
+						<th>Owner</th>
+						<th>日期</th>
+						<th>供應商</th>
+						<th>經手人</th>
+
 
 
 				</tr>
 
 
-<c:if test="${PageCompetence.getProductCostView() == 0 }">  
-<% response.sendRedirect("/HomePage.jsp"); %>
+					<c:forEach var="i" begin="0" step="1" items="${logList}"
+						varStatus="nu">
 
+						<c:if test="${'進貨' eq i.get(0)}">
 
-  
-</c:if>
+							<tr class="success" style="background-color: #9DDCD1">
+								<td rowspan="2" style="vertical-align: middle"><c:out
+										value="${nu.count}"></c:out></td>
 
-				<c:forEach var="i" begin="0" step="1" items="${logList}"
-					varStatus="nu">
+								<c:forEach var="j" begin="0" end="10" step="1">
+									<td><c:out value="${i.get(j)}"></c:out></td>
 
-					<c:if test="${'進貨' eq i.get(0)}">
-
-						<tr class="success" style="background-color: #9DDCD1">
-							<td rowspan="2" style="vertical-align: middle">
-							<c:out value="${nu.count}"></c:out>
-							</td>
-									
-							<c:forEach var="j" begin="0" end="12" step="1">
-								<td><c:out value="${i.get(j)}"></c:out></td>
-
-							</c:forEach>
+								</c:forEach>
 							</tr>
 							<tr class="success" style="background-color: #9DDCD1">
-							
-							
-							<td colspan="13"><c:out value="${i.get(13)}"></c:out></td>
-						    </tr>
-						
-						
-						
-						
 
-						
-					</c:if>
-					
-					<c:if test="${'出貨' eq i.get(0)}">
+								<c:if test="${PageCompetence.getProductCostView() == 1 }">
+									<th>成本</th><td><c:out value="${i.get(12)}"></c:out></td>
 
-						<tr class="warning" style="background-color: #D4F4D8">
-							<td rowspan="2" style="vertical-align: middle"><c:out
-									value="${nu.count}"></c:out></td>
+								</c:if>
+								<td colspan="13"><c:out value="${i.get(11)}"></c:out></td>
+							</tr>
 
-							<c:forEach var="j" begin="0" end="12" step="1">
-								<td><c:out value="${i.get(j)}"></c:out></td>
+						</c:if>
 
-							</c:forEach>
-						</tr>	
-						
+						<c:if test="${'出貨' eq i.get(0)}">
 
-						<tr class="warning" style="background-color: #D4F4D8">
-							<td colspan="13"><c:out value="${i.get(13)}"></c:out></td>
-						</tr>
-					</c:if>
-				</c:forEach>
+							<tr class="warning" style="background-color: #D4F4D8">
+								<td rowspan="2" style="vertical-align: middle"><c:out
+										value="${nu.count}"></c:out></td>
+
+								<c:forEach var="j" begin="0" end="10" step="1">
+									<td><c:out value="${i.get(j)}"></c:out></td>
+
+								</c:forEach>
+							</tr>
+
+
+							<tr class="warning" style="background-color: #D4F4D8">
+								<td colspan="13"><c:out value="${i.get(11)}"></c:out></td>
+							</tr>
+						</c:if>
+					</c:forEach>
 
 			</table>
 
@@ -443,6 +439,6 @@ function jqueryAutoCompleteSKU() {
 	</c:if>
 </body>
 
-<%@ include file="/href/footer.jsp"%>
+<%@ include file="../href/footer.jsp"%>
 
 </html>
