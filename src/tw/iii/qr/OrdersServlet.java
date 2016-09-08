@@ -47,7 +47,6 @@ public class OrdersServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
 		
-		
 		Connection conn = new DataBaseConn().getConn();
 		COrderFactory OFactory = new COrderFactory();
 		LinkedList<COrders> orderProcessingPageSearch = OFactory.orderProcessingPageSearch(request, conn);
@@ -84,7 +83,9 @@ public class OrdersServlet extends HttpServlet {
 					response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + request.getParameter("QR_id"));
 					break;
 				default:
+					conn.close();
 					response.sendRedirect("QROrders/SearchOrder.jsp?begin=0&end=10");
+					
 				}
 				
 				

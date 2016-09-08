@@ -133,7 +133,7 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td>${i.getCOrderMaster().getShippingDate()}</td>
+                    <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="staffName" value="${i.getCOrderMaster().getStaffName()}"></td>
@@ -160,7 +160,7 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td>${i.getCOrderMaster().getShippingDate()}</td>
+                    <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="staffName" value="${i.getCOrderMaster().getStaffName()}"></td>

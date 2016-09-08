@@ -62,12 +62,12 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("password", password);
 			session.setAttribute("staffName",staffName);
 			competenceSession(request,competencelv);
-			request.getRequestDispatcher("HomePage.jsp").forward(request, response);
+			request.getRequestDispatcher("/HomePage.jsp").forward(request, response);
 		}else{
 			//Login false
 			System.out.println("NO");
 			response.setContentType("text/html;charset=UTF-8");
-			response.sendRedirect("Login.jsp");
+			response.sendRedirect("/Login.jsp");
 		}
 	
 	}
