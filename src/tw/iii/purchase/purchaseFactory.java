@@ -17,13 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import tw.iii.qr.DataBaseConn;
 
 public class purchaseFactory {
-
-	private PrintWriter out;
-	private Connection conn;
-	
-	
-	
-
 	public purchaseFactory() {
 
 	}
@@ -112,6 +105,7 @@ public class purchaseFactory {
 
 		return Alllist;
 	}
+<<<<<<< HEAD
 	
 	
 	//retire
@@ -146,6 +140,15 @@ public class purchaseFactory {
 		System.out.println(1 + srno);
 		return srno;
 	}
+=======
+
+
+
+	// end
+
+	// �脣���� yyyyMMdd statusId US/KH 瘚偌���
+	
+>>>>>>> testziwa
 
 	public String getDay() {
 		Date date = new Date();
@@ -326,8 +329,18 @@ public class purchaseFactory {
 		return sqlstr1;
 	}
 
+<<<<<<< HEAD
 	
 	
+=======
+	
+
+	//retire
+	
+
+	
+
+>>>>>>> testziwa
 	public LinkedList<LinkedList<String>> checkvalue(HttpServletRequest request) {
 		LinkedList<String> values = new LinkedList<String>();
 

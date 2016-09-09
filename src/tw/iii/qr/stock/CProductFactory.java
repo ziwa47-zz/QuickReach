@@ -17,7 +17,7 @@ public class CProductFactory extends CProduct {
 	}
 
 	public LinkedList<CProduct> searchProduct(HttpServletRequest request, Connection conn) throws SQLException {
-		String strsql = " select distinct sku,brand,subbrand,p_name,spec,color from  product inner join  storage using (sku) where '1' = '1' ";
+		String strsql = " select distinct sku,brand,subbrand,p_name,spec,color from  product left join  storage using (sku) where '1' = '1' ";
 		int param = 1;
 
 		PreparedStatement ps = null;
@@ -220,7 +220,7 @@ public class CProductFactory extends CProduct {
 			 " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; //(20個)，還未加入barCode
 	
 		PreparedStatement ps = null;
-		System.out.print(strsql); 
+		//System.out.print(strsql); 
 		ps = conn.prepareStatement(strsql);
 		
 		ps.setString(1, request.getParameter("SKU"));
