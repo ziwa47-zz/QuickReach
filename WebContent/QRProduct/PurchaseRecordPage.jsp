@@ -101,7 +101,7 @@ function jqueryAutoCompleteSKU() {
 		Connection conn = new DataBaseConn().getConn();
 		LinkedList<LinkedList<String>> allList = searchDetail.searchPurchase(conn, purchaseRecord,outRecord,purchaseId,date1, date2, pname, sku, companyName,
 				owner, wareHouse, warehousePositionOne,warehousePositionTwo, qty, price);
-		
+		conn.close();
 
 		request.setAttribute("logList", allList);
 	
