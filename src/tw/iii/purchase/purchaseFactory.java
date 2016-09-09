@@ -17,13 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import tw.iii.qr.DataBaseConn;
 
 public class purchaseFactory {
-
-	private PrintWriter out;
-	private Connection conn;
-	
-	
-	
-
 	public purchaseFactory() {
 
 	}
@@ -113,52 +106,12 @@ public class purchaseFactory {
 		return Alllist;
 	}
 
-	public boolean istodaypurchase() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
-		Connection conn = new DataBaseConn().getConn();
-		String strsql = " select * from  purchaselog_master where date = curdate()+0  ";
-		PreparedStatement ps = null;
-		ps = conn.prepareStatement(strsql);
-		ResultSet rs = ps.executeQuery();
-		if (rs.wasNull()) {
-			return false;
-		}
-		return true;
-	}
+
 
 	// end
 
 	// �脣���� yyyyMMdd statusId US/KH 瘚偌���
-	public String processStorageRecord(String status) throws IllegalAccessException, ClassNotFoundException, Exception {
-//真真正正時代的眼淚
-		String time = getDay();
-
-		DecimalFormat df = new DecimalFormat("000");
-		int no = 1;
-		String strsql = " select purchaseid,date from  purchaselog_master where (date < now()) and  date >= curdate() and warehouse='KHH' order by date desc limit 0,1 ";
-		Connection conn = new DataBaseConn().getConn();
-		PreparedStatement ps = null;
-		ps = conn.prepareStatement(strsql);
-		ResultSet rs = ps.executeQuery();
-		String srno = "";
-
-		String check = null;
-		while (rs.next()) {
-			check = rs.getString(1);
-		}
-		if (check != null) {
-			if (no <= Integer.valueOf(check.substring(13, check.length()))) {
-				int i = Integer.valueOf(check.substring(13, check.length()));
-				no = i + 1;
-			}
-			srno = time + status + "KHH" + df.format(no);
-
-		} else {
-			String srnoDate = getDay();
-			srno = srnoDate + "01KHH001";
-		}
-		System.out.println(1 + srno);
-		return srno;
-	}
+	
 
 	public String getDay() {
 		Date date = new Date();
@@ -178,7 +131,6 @@ public class purchaseFactory {
 		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
 		LinkedList<String> list = new LinkedList<>();
 		ResultSet rs = null;
-		java.sql.Statement stmt = null;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		System.out.println("I need stockRecord status:" + purchaseRecord + "," + outRecord);
 		
@@ -340,125 +292,10 @@ public class purchaseFactory {
 		return sqlstr1;
 	}
 
-	public LinkedList<LinkedList<String>> SearchOutRecord(Connection conn, String date1, String date2, String outRecord,
-			String pname, String sku, String companyName, String owner, String wareHouse, String warehousePosition,
-			String qty, String price) {
-		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
-		LinkedList<String> list = new LinkedList<>();
-		ResultSet rs = null;
-		java.sql.Statement stmt = null;
-		// DataBaseConn jdbc = new DataBaseConn();
-
-		String sqlOutRecord = sqlSearchOutRecord(date1, date2, outRecord, pname, sku, companyName, owner, wareHouse,
-				warehousePosition, qty, price);
-		System.out.println(sqlOutRecord);
-
-		try {
-			PreparedStatement ps = conn.prepareStatement(sqlOutRecord);
-			// stmt = conn.createStatement();
-
-			rs = ps.executeQuery(sqlOutRecord);
-
-			while (rs.next()) {
-				list = new LinkedList<>();
-
-				list.add(rs.getString(1));
-				list.add(rs.getString(2));
-				list.add(rs.getString(3));
-				list.add(rs.getString(4));
-				list.add(rs.getString(5));
-				list.add(rs.getString(6));
-				list.add(rs.getString(7));
-				list.add(rs.getString(8));
-				list.add(rs.getString(9));
-				list.add(rs.getString(10));
-				list.add(rs.getString(11));
-				list.add(rs.getString(12));
-				list.add(rs.getString(13));
-
-				// System.out.println(list+"\n");
-				Alllist.add(list);
-
-			}
-
-			rs.close();
-
-			// stmt.close();
-			conn.close();
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
-
-		if (Alllist.isEmpty()) {
-			System.out.println("gogogo");
-		} else {
-
-			System.out.println(Alllist);
-		}
-		return Alllist;
-
-	}
-	
 	
 
 	//retire
-	public String sqlSearchOutRecord(String date1, String date2, String outRecordId, String pname, String sku,
-			String companyName, String owner, String wareHouse, String warehousePosition, String qty, String price) {
-		String sqlOutRecord = "select a.SKU,a.P_name,a.purchaseId,a.specification,a.color,a.qty,a.price,a.warehouse,a.warehousePosition,b.date,b.companyName,b.staffName,a.comment from  purchaselog_detail as a inner join  purchaselog_master as b where a.purchaseId =b.purchaseId and a.stockStatus = 2";
-
-		if (!isNullorEmpty(date1)) {
-			sqlOutRecord += " and b.date  <= '" + date1 + "'";
-			System.out.println(date1);
-		}
-		if (!isNullorEmpty(date2)) {
-			sqlOutRecord += " and b.date  >= '" + date2 + "'";
-			System.out.println(date2);
-		}
-
-		if (!isNullorEmpty(outRecordId)) {
-			sqlOutRecord += " and a.purchaseId like '%" + outRecordId + "%'";
-			System.out.println(outRecordId);
-		}
-
-		if (!isNullorEmpty(pname)) {
-			sqlOutRecord += " and a.P_name like '%" + pname + "%'";
-			System.out.println(pname);
-		}
-		if (!isNullorEmpty(sku)) {
-			sqlOutRecord += " and a.SKU like '%" + sku + "%'";
-			System.out.println(sku);
-		}
-
-		if (!isNullorEmpty(companyName)) {
-			sqlOutRecord += " and b.companyName like '%" + companyName + "%'";
-			System.out.println(companyName);
-		}
-		if (!isNullorEmpty(wareHouse)) {
-			sqlOutRecord += " and a.warehouse like '%" + wareHouse + "%'";
-			System.out.println(wareHouse);
-		}
-		if (!isNullorEmpty(owner)) {
-			sqlOutRecord += " and b.staffName like '%" + owner + "%'";
-			System.out.println(owner);
-		}
-		if (!isNullorEmpty(warehousePosition)) {
-			sqlOutRecord += " and a.warehousePosition like '%" + warehousePosition + "%'";
-			System.out.println(warehousePosition);
-		}
-		if (!isNullorEmpty(qty)) {
-			sqlOutRecord += " and a.qty like '%" + qty + "%'";
-			System.out.println(qty);
-		}
-
-		if (!isNullorEmpty(price)) {
-			sqlOutRecord += " and a.price like '%" + price + "%'";
-			System.out.println(price);
-		}
-
-		return sqlOutRecord;
-	}
+	
 
 	
 

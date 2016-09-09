@@ -24,8 +24,8 @@ import com.ebay.soap.eBLBaseComponents.TradingRoleCodeType;
 public class CGetEbay {
 	public CGetEbay() {
 		// TODO Auto-generated constructor stub
-	}
-	public static void main(String[] args) {
+	
+	
 		 try {
 //110183287995
 	          // Instantiate  ApiContext and initialize with token and Trading API URL
@@ -72,7 +72,7 @@ public class CGetEbay {
 		int size = orders != null ? orders.length : 0;
 		 System.out.println(size);
 		 for (int i = 0; i < size; i++) {
-		  String strsql = "insert into orders_master values();"
+		  String strsql = "insert into orders_master values();";
 		  OrderType order = orders[i];
 		  
 		  System.out.println("訂單編號:"+order.getOrderID());

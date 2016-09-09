@@ -10,7 +10,7 @@
 
 <body>
 <%@include file ="/href/navbar.jsp" %>
-	<form action="LoginController.do" method="post" >
+	<form action="/LoginController.do" method="post" >
 	<div align="center">
 		<p align="center">
 		<input type="text" name="account" placeholder="請輸入帳號" /><br /> 
