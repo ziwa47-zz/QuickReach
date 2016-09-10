@@ -8,30 +8,25 @@
   
 <head>
 
-
+<script src="../js/jquery-1.12.4.min.js"></script>
+<!-- jqueryAutoComplete 不可以在../js/jquery-1.12.4.min.js 之前 -->
 
 <script type="text/javascript">
-$(function () {
+function invalidate() {
+	$("#collapse2").addClass("in");
+	$("#collapse3").addClass("in");
 
-	
+};
+$(function() {
+
 	$("#listForm").validate({
 		//debug:true,
-		ignore:[],
-			
-// 		submitHandler: function (form)
-// 	    {
-// 	        $('#addProductSubmit').attr('disabled', 'disabled');
-// 	       alert("ok!!!~!!")
-// 	        form.submit();
-	       
-// 	    },
-	   
-		
-		
-	});
+		ignore : [],
+		invalidHandler : function(form) {
+			invalidate();
 
-	
-	
+		}
+	});
 });
 
 </script>
@@ -173,6 +168,7 @@ conn.close();
           </div>
           <div id="collapse2" class="panel-collapse collapse">
             <div class="panel-body">
+             <div class="container-fluid form-horizontal">
              
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>品名</h4></div>
@@ -209,6 +205,7 @@ conn.close();
               </div>
 
             </div>
+            </div>
           </div>
         </div>
         <div class="panel panel-default">
@@ -231,7 +228,7 @@ conn.close();
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>建檔日</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control required yymmdd" type="text"name="cdate" value="${resultDetail.getCreateDate()}" readonly></div>
+                  <div class="col-md-8 well-sm"><input class="form-control yymmdd" type="text"name="cdate" value="${resultDetail.getCreateDate()}" readonly></div>
               </div>
           
               </div>
