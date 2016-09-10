@@ -255,6 +255,12 @@ public class CGetEbay {
 
 	        //set Api Server Url
 	        //input = ConsoleUtil.readString("Enter eBay SOAP server URL (e.g., https://api.ebay.com/wsapi): ");
+<<<<<<< HEAD
+=======
+	        input = "https://api.ebay.com/wsapi";
+	        //https://api.sandbox.ebay.com/wsapi
+	        apiContext.setApiServerUrl(input);
+>>>>>>> refs/remotes/origin/master
 
 	        //input = "https://api.sandbox.ebay.com/wsapi";
 	        input = "https://api.ebay.com/wsapi";
@@ -262,6 +268,7 @@ public class CGetEbay {
 	}
 	 
 
+<<<<<<< HEAD
 
 	private static String checkExistedOrNot(Connection conn) throws SQLException{
 		
@@ -276,3 +283,6 @@ public class CGetEbay {
 	}
 }
 
+=======
+}
+>>>>>>> refs/remotes/origin/master
