@@ -12,9 +12,10 @@ public class DataBaseConn {
 	private Connection conn;
 	private boolean isclosed;
 	public Connection getConn() throws SQLException, Exception, IllegalAccessException, ClassNotFoundException {
-		String urlstr = "jdbc:mysql://localhost:3306/quickreach?zeroDateTimeBehavior=convertToNull&user=root&password=password&Unicode=true&characterEncoding=utf-8";
 
-		Class.forName("com.mysql.jdbc.Driver").newInstance();
+		String urlstr = "jdbc:sqlserver://qrdata.database.windows.net:1433;database=qrdata;user=qruser;password=P@ssword;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+		
+		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
 		conn = DriverManager.getConnection(urlstr);
 		isclosed = !conn.isClosed();

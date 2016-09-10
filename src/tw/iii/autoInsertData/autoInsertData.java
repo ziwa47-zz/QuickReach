@@ -42,7 +42,7 @@ public class autoInsertData {
 	
 	public static String generateQR_Id() throws IllegalAccessException, ClassNotFoundException, Exception {
 
-		String strsql = " select item, QR_id from  orders_master where QR_id like '%ebay%' order by item desc limit 0,1 ";
+		String strsql = " select top 1 item, QR_id from  orders_master where QR_id like '%ebay%' order by item desc ";
 		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
