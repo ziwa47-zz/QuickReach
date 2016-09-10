@@ -35,8 +35,8 @@ import tw.iii.qr.DataBaseConn;
 public class CGetEbay {
 	public CGetEbay() {
 		// TODO Auto-generated constructor stub
-	}
-	public static void main(String[] args) {
+	
+	
 		 try {
 //110183287995
 	          // Instantiate  ApiContext and initialize with token and Trading API URL
@@ -85,7 +85,7 @@ public class CGetEbay {
 		int size = orders != null ? orders.length : 0;
 		 System.out.println(size);
 		 for (int i = 0; i < size; i++) {
-		  
+		  String strsql = "insert into orders_master values();";
 		  OrderType order = orders[i];
 		  Connection conn = new DataBaseConn().getConn();
 		  System.out.println(order.getCheckoutStatus().getStatus().toString());
@@ -255,14 +255,13 @@ public class CGetEbay {
 
 	        //set Api Server Url
 	        //input = ConsoleUtil.readString("Enter eBay SOAP server URL (e.g., https://api.ebay.com/wsapi): ");
+
 	        //input = "https://api.sandbox.ebay.com/wsapi";
 	        input = "https://api.ebay.com/wsapi";
 	        
-	        apiContext.setApiServerUrl(input);
-	
-	        return apiContext;
 	}
 	 
+
 
 	private static String checkExistedOrNot(Connection conn) throws SQLException{
 		
@@ -276,3 +275,4 @@ public class CGetEbay {
 		return outsideCode;
 	}
 }
+

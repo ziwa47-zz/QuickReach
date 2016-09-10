@@ -99,6 +99,10 @@ public class purchaseFactory {
 		return Alllist;
 	}
 
+	
+	
+	
+
 	public String getDay() {
 		Date date = new Date();
 
@@ -109,6 +113,8 @@ public class purchaseFactory {
 		return time;
 	}
 
+
+
 	public String purchaseGetDay() {
 		Date date = new Date();
 
@@ -117,64 +123,6 @@ public class purchaseFactory {
 		String time = dateFormat.format(date);
 		System.out.println(dateFormat.format(date));
 		return time;
-	}
-
-	public void insertIntoPurchase(HttpServletRequest request, Connection conn) throws SQLException {
-
-
-		String purchaseId = request.getParameter("purchaseId");
-		LinkedList<String> pMaster = purchaseMaster(request);
-		
-
-		System.out.println("Tell me who you are?:" + purchaseId);
-
-		String sqlstr1 = "Insert Into purchaselog_master(purchaseId,date,companyId,companyName,staffName,warehouse,comment,stockStatus) Values(?,getdate(),?,(select C_name from company where C_id=?),?,?,?,1)";
-		PreparedStatement ps = conn.prepareStatement(sqlstr1);
-		ps.setString(1, purchaseId);
-		ps.setInt(2, Integer.parseInt(pMaster.get(0))); // companyId
-		ps.setInt(3, Integer.parseInt(pMaster.get(0))); // select C_name from
-														// quickreach.company
-														// where C_id=?
-		ps.setString(4, pMaster.get(1)); // staffId
-		ps.setString(5, pMaster.get(2)); // warehouse
-		ps.setString(6, pMaster.get(3)); // purchaseMasterComment
-
-		ps.executeUpdate();
-
-		LinkedList<LinkedList<String>> Alllist = checkvalue(request);
-
-		System.out.println("cccccccc:" + Integer.parseInt(Alllist.get(0).get(1).trim()));
-		// purchaseLog_Detail
-		for (int i = 0; i < Alllist.size(); i++) {
-			String sqlstr2 = "Insert Into purchaselog_detail(purchaseId,SKU,qty,price,warehousePosition1,warehousePosition2,comment,stockStatus,warehouse)"
-					+ "Values(?,?,?,?,?,?,?,1,?)";
-
-			ps = conn.prepareStatement(sqlstr2);
-			ps.setString(1, purchaseId);
-
-			for (int j = 0; j < Alllist.get(i).size(); j++) {
-				ps.setString(j + 2, Alllist.get(i).get(j));
-				System.out.print(Alllist.get(i).get(j) + ",");
-			}
-			ps.executeUpdate();
-			// 更新product資料表 該品項之成本
-			for (int k = 0; k < Alllist.size(); k++) {
-				String sqlstr5 = "Update product set cost=? where SKU=?";
-				ps = conn.prepareStatement(sqlstr5);
-				ps.setString(1, Alllist.get(k).get(2));
-				ps.setString(2, Alllist.get(k).get(0));
-				ps.executeUpdate();
-			}
-			// 更新庫存
-			String sqlstr3 = "Update  storage set qty=qty+? where SKU=?";
-			ps = conn.prepareStatement(sqlstr3);
-			ps.setInt(1, Integer.parseInt(Alllist.get(i).get(1).trim()));
-			ps.setString(2, Alllist.get(i).get(0));
-
-			ps.executeUpdate();
-
-		}
-		ps.close();
 	}
 
 	
@@ -351,6 +299,7 @@ public class purchaseFactory {
 		return sqlstr1;
 	}
 
+
 	public void insertIntoPurchaseTest(HttpServletRequest request, Connection conn) throws SQLException {
 
 		String purchaseId = request.getParameter("purchaseId");
@@ -458,49 +407,8 @@ public class purchaseFactory {
 
 	}
 
-	public LinkedList<LinkedList<String>> checkvalue(HttpServletRequest request) {
-		LinkedList<String> values = new LinkedList<String>();
 
-		int count = Integer.parseInt(request.getParameter("count"));
-		LinkedList<Integer> times = new LinkedList<>();
-		for (String s : request.getParameterValues("times")) {
-			times.add(Integer.parseInt(s));
-		}
-		LinkedList<LinkedList<String>> Allist = new LinkedList<>();
-
-		for (int i = 1; i <= count; i++) {
-			if (times.indexOf(i) == -1)
-				continue;
-
-			values = new LinkedList<>();
-
-			values.add(request.getParameter(("sku" + i)));
-			values.add(request.getParameter(("qty" + i)));
-			values.add(request.getParameter(("price" + i)));
-			values.add(request.getParameter(("warehousePositionOne" + i)));
-			values.add(request.getParameter(("warehousePositionTwo" + i)));
-			values.add(request.getParameter(("comment" + i)));
-			values.add(request.getParameter("warehouse"));
-
-			Allist.add(values);
-		}
-		return Allist;
-
-		// insert data
-	}
-
-	public LinkedList<String> purchaseMaster(HttpServletRequest request) {
-		LinkedList<String> pInfo = new LinkedList<String>();
-
-		pInfo.add(request.getParameter("companyId"));
-		pInfo.add(request.getParameter("staffId"));
-		pInfo.add(request.getParameter("warehouse"));
-		pInfo.add(request.getParameter("purchaseMasterComment"));
-
-		return pInfo;
-
-	}
-
+	
 	// 輝哥
 	public LinkedList<Cpurchase_detail> details(String sku, Connection conn) {
 		LinkedList<Cpurchase_detail> list = new LinkedList<>();
