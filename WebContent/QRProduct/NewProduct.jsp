@@ -48,11 +48,12 @@ display: block;
 
 <%
 String today = checkno.getDay();
+System.out.print(today);
 session.setAttribute("today", today);
 
 %>
 
-  <%@ include file ="../href/navbar.jsp" %> 
+  <%@ include file ="/href/navbar.jsp" %> 
 
 
   
