@@ -310,8 +310,8 @@ public class purchaseFactory {
 		String sqlstr1 = "Insert Into purchaselog_master(purchaseId,date,companyId,companyName,staffName,warehouse,comment,stockStatus) Values(?,getdate(),?,(select C_name from company where C_id=?),?,?,?,1)";
 		PreparedStatement ps = conn.prepareStatement(sqlstr1);
 		ps.setString(1, purchaseId);
-		ps.setInt(2, preparePurchaseMaster.getCompanyId()); // companyId
-		ps.setInt(3, preparePurchaseMaster.getCompanyId()); // select C_name from
+		ps.setString(2, preparePurchaseMaster.getCompanyId()); // companyId
+		ps.setString(3, preparePurchaseMaster.getCompanyId()); // select C_name from
 												// quickreach.company where
 												// C_id=?
 		ps.setString(4, preparePurchaseMaster.getStaffId()); // staffId
@@ -351,13 +351,35 @@ public class purchaseFactory {
 			ps.executeUpdate();
 
 			// 更新庫存
-			String sqlstr3 = "Update  storage set qty=qty+? where SKU=?";
-			ps = conn.prepareStatement(sqlstr3);
+			
+			String sqlsql = "select * from storage where sku = ? and warehouse = ?";
+			ps = conn.prepareStatement(sqlsql);
+			ps.setString(1, preparePurchaseDetail.get(i).getSKU());
+			ps.setString(2, preparePurchaseDetail.get(i).getWarehouse());
+
+			ResultSet rs = ps.executeQuery();
+			if (rs.wasNull()){
+				String sqlstr3 = "Insert into storage values(?,?,?,?,?,?,getdate())";
+				ps = conn.prepareStatement(sqlstr3);
+				ps.setString(1,preparePurchaseDetail.get(i).getSKU());
+				ps.setString(2, preparePurchaseDetail.get(i).getWarehouse());
+				ps.setString(3, preparePurchaseDetail.get(i).getWarehousePosition());
+				ps.setString(4, preparePurchaseDetail.get(i).getWarehousePosition2());
+				ps.setInt(5, preparePurchaseDetail.get(i).getQty());
+				ps.setString(6, preparePurchaseDetail.get(i).getComment());
+			
+				ps.executeUpdate();
+			}else{
+			
+			String sqlstr6 = "Update  storage set qty=qty+? where SKU=? and warehouse =?";
+			ps = conn.prepareStatement(sqlstr6);
 			ps.setInt(1, Integer.valueOf(preparePurchaseDetail.get(i).getQty()));
 			ps.setString(2, preparePurchaseDetail.get(i).getSKU());
+			ps.setString(3, preparePurchaseDetail.get(i).getWarehouse());
 
 			ps.executeUpdate();
 
+			}
 		}
 		ps.close();
 	}
@@ -397,7 +419,7 @@ public class purchaseFactory {
 	public Cpurchase_master preparePurchaseMaster(HttpServletRequest request) {
 		Cpurchase_master purchaseMaster = new Cpurchase_master();
 
-		purchaseMaster.setCompanyId(Integer.valueOf(request.getParameter("companyId")));
+		purchaseMaster.setCompanyId(request.getParameter("companyId"));
 		purchaseMaster.setStaffId(request.getParameter("staffId"));
 		purchaseMaster.setWarehouse(request.getParameter("warehouse"));
 		purchaseMaster.setComment(request.getParameter("purchaseMasterComment"));

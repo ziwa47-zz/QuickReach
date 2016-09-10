@@ -70,12 +70,13 @@ public class AjaxProcessAutoComplete extends HttpServlet {
 			DataBaseConn jdbc = new DataBaseConn();
 			conn = jdbc.getConn();			
 			
-			String strSql = "SELECT  a.P_name, a.spec, a.color, b.warehousePosition1, b.warehousePosition2 FROM  product as a inner join  storage as b on a.SKU = b.SKU where a.SKU = ?;";
+			String strSql = "SELECT  a.P_name, a.spec, a.color, b.warehousePosition1, b.warehousePosition2 FROM  product as a left join  storage as b on a.SKU = b.SKU where a.SKU = ? and warehouse = ?;";
 
 			
 			ps = conn.prepareStatement(strSql);
 			
 			ps.setString(1, autoCompleteNumber);
+			ps.setString(2, request.getParameter("warehouse"));
 			ResultSet rs = ps.executeQuery();
 			
 			if(rs.next()){
@@ -84,7 +85,8 @@ public class AjaxProcessAutoComplete extends HttpServlet {
 			hm.put("spec", rs.getString(2));
 			hm.put("color", rs.getString(3));
 				
-			hm.put("warehousePosition", rs.getString(4)+"-"+rs.getString(5));
+			hm.put("warehousePosition", rs.getString(4));
+			hm.put("warehousePosition2", rs.getString(5));
 	
 			
 			}

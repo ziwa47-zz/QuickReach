@@ -74,7 +74,9 @@ function test() {
             	 $("#pName"+setValueId).val(response.pName);
                  $("#spec"+setValueId).val(response.spec);
                  $("#color"+setValueId).val(response.color);
-                 $("#warehousePosition"+setValueId).val(response.warehousePosition);        
+                 
+                 $("#warehousePositionOne"+setValueId).val(response.warehousePosition);
+                 $("#warehousePositionTwo"+setValueId).val(response.warehousePosition2);   
 
         },        
 	})
@@ -244,7 +246,7 @@ function test() {
 	                        +'         	<div class="col-md-8 form-group ">'
 	                        +'             <div class="row">'
 	                        +'              <div class="col-md-2"><h5><label for="focusedInput " >櫃位：</label></h5></div>'
-	                        +'              <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo" name="warehousePositionTwo1" type="text"></div>'
+	                        +'              <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text"></div>'
 	                        +'            </div>'
 	                        +'                </div>'
 	                                    
@@ -334,7 +336,7 @@ display: block;
 
 	<div class="container" style="background: #9DDCD1; border-radius: 20px">
 		<form id="listForm" name="listForm" method="post"
-			action="../TestJdbcMvcServlet"
+			action="../InsertPurchaseServlet.do"
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
 			class="form-inline container">
 			<%
@@ -385,7 +387,7 @@ display: block;
 						<div class="row">
 							<div class="col-md-4">
 								<h5>
-									<label for="focusedInput ">廠商：</label>
+									<label for="focusedInput ">供應商：</label>
 								</h5>
 							</div>
 							<div class="col-md-8">
@@ -405,11 +407,11 @@ display: block;
 						<div class="row">
 							<div class="col-md-4">
 								<h5>
-									<label for="focusedInput ">員工編號：</label>
+									<label for="focusedInput ">員工姓名：</label>
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control required digits"  name="staffId" type="text" value="${staffName}">
+								<input class="form-control required "  name="staffId" type="text" value="${staffName}">
 							</div>
 						</div>
 					</div>
@@ -569,7 +571,7 @@ display: block;
 		</form>
 	</div>
 
-	<%@ include file="../href/footer.jsp"%>
+	<%@ include file="/href/footer.jsp"%>
 
 </body>
 </html>

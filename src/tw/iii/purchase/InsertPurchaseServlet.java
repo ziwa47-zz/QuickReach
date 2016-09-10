@@ -22,7 +22,7 @@ import com.mysql.jdbc.ReplicationMySQLConnection;
 import tw.iii.qr.DataBaseConn;
 
 
-@WebServlet("/TestJdbcMvcServlet")
+@WebServlet("/InsertPurchaseServlet.do")
 public class InsertPurchaseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
