@@ -29,7 +29,7 @@ function warehouseChange() {
 	$.ajax({
 		
 		type:"GET",
-		url:"../ProcessMasterWarehouse",
+		url:"../AjaxProcessMasterWarehouse",
 		data:$("#listForm").serialize(),
 		dataType:"json",
 		
@@ -65,7 +65,7 @@ function test() {
 	$.ajax({
 		
 		type:"GET",                  
-	    url: "../AutoCompleteServlet",        
+	    url: "../AjaxProcessAutoComplete",        
 	    data: $("#listForm").serialize(), 
         dataType: "json", 
 
