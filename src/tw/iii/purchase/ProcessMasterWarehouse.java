@@ -47,7 +47,7 @@ public class ProcessMasterWarehouse extends HttpServlet {
 		
 		
 			 String autoWarehouse =request.getParameter("warehouse");
-			 int date = Integer.valueOf(request.getParameter("date")) ;
+			 int date = Integer.valueOf(request.getParameter("purchaseDate")) ;
 		
 		
 		HashMap<String, String> hm = new HashMap<String, String>();		
@@ -66,7 +66,7 @@ public class ProcessMasterWarehouse extends HttpServlet {
 			DataBaseConn jdbc = new DataBaseConn();
 			conn = jdbc.getConn();			
 			
-			String strSql = " select count(*) from  purchaselog_master where purchaseId like ? order by 1 desc limit 0,1;";
+			String strSql = " select count(*) from  purchaselog_master where purchaseId like ? ";
 
 			
 			ps = conn.prepareStatement(strSql);
