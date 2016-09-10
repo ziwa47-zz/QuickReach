@@ -105,7 +105,7 @@ System.out.println(accountinfo.getAccount());
               
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>帳號資訊</h4></div>
-                      <div class="col-md-5 well-sm"><input class="form-control" name="account" type="text" value="${accountinfo.getAccount()}"></div>
+                      <div class="col-md-5 well-sm"><input class="form-control" name="account" type="text" value="${accountinfo.getAccount()}" readonly></div>
                   </div>
                  
                   <div class="row">
@@ -150,7 +150,7 @@ System.out.println(accountinfo.getAccount());
                   </div>
                   
                  	 	<div class="" align="center">
-						<button type="submit" name="submit" value="updateEbayAccount">修改送出</button> <td><a href="accountManage.jsp"><input type="button" value="取消"></a></td>
+						<button type="submit" name="submit" value="editAccount">修改送出</button> <td><a href="accountManage.jsp"><input type="button" value="取消"></a></td>
 						</div>
                   	
               </div>

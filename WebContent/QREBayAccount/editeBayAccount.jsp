@@ -92,7 +92,7 @@ session.setAttribute("eBayAccount", eBayAccount);
 					<tr>
 						<th class=""><span> * </span>ebay ID</th>
 						<td class=""><input id="id_fd-name" type="text" name="ebayId" value="${eBayAccount.getebayId() }"
-							class=""  maxlength="50" ></td>
+							class=""  maxlength="50" readonly></td>
 						<td class=""></td>
 					</tr>
 
