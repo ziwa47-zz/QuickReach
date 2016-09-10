@@ -178,13 +178,34 @@ public class purchaseFactory {
 	}
 
 	
-	public LinkedList<LinkedList<String>> searchPurchase(Connection conn, String purchaseRecord, String outRecord,
-			String purchaseId, String date1, String date2, String pname, String sku, String companyName, String owner,
-			String wareHouse, String warehousePositionOne, String warehousePositionTwo, String qty, String price) {
+	public LinkedList<LinkedList<String>> searchPurchase(Connection conn,HttpServletRequest request) {
+		
 		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
 		LinkedList<String> list = new LinkedList<>();
 		ResultSet rs = null;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String purchaseRecord = request.getParameter("purchaseRecord");
+		String outRecord = request.getParameter("outRecord");
+		  
+		String purchaseId = request.getParameter("purchaseId");
+
+		String date1 = request.getParameter("dateMin");
+		String date2= request.getParameter("dateMax");
+
+		String sku = request.getParameter("sku");
+		String pname = request.getParameter("pName");
+
+		String companyName = request.getParameter("companyName");
+		String owner = request.getParameter("owner");
+		String wareHouse = request.getParameter("wareHouse");
+
+		String warehousePositionOne = request.getParameter("warehousePositionOne");
+		String warehousePositionTwo = request.getParameter("warehousePositionTwo");
+		String qty = request.getParameter("qty");
+		String price = request.getParameter("price");
+
+		
 		System.out.println("I need stockRecord status:" + purchaseRecord + "," + outRecord);
 
 		//

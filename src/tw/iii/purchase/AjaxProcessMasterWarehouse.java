@@ -21,8 +21,8 @@ import tw.iii.qr.DataBaseConn;
 /**
  * Servlet implementation class ProcessMasterWarehouse
  */
-@WebServlet("/ProcessMasterWarehouse")
-public class ProcessMasterWarehouse extends HttpServlet {
+@WebServlet("/AjaxProcessMasterWarehouse")
+public class AjaxProcessMasterWarehouse extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection conn;
 
