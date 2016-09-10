@@ -22,10 +22,34 @@ public class QRAccountServlet extends HttpServlet {
 	
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processInsert(request,response);
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		try {
+			request.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html;charset=UTF-8");
+			String submitType = request.getParameter("submit");
+			switch(submitType){
+			
+//			case "submitAccount":
+//				processeBayAccount(request, response); //search Account
+//				break;
+			case "addAccount":
+				processInsert(request,response); // new a Account
+				break;
+			case "editAccount":
+				processEdit(request,response); // update Account
+				break;
+			default:
+				break;
+				
+			}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
 	}
-
+	
+	
 	private void processInsert(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		request.setCharacterEncoding("UTF-8");
@@ -73,7 +97,7 @@ private void processEdit(HttpServletRequest request, HttpServletResponse respons
 			
 			try {
 				qraf.editQRAccount(qra);
-				response.sendRedirect("Account.jsp");
+				response.sendRedirect("accountManage.jsp");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

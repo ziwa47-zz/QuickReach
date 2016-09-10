@@ -2,15 +2,10 @@ package tw.iii.purchase;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,8 +17,8 @@ import tw.iii.qr.DataBaseConn;
 
 import org.json.JSONObject;
 
-@WebServlet("/AutoCompleteServlet")
-public class AutoCompleteServlet extends HttpServlet {
+@WebServlet("/AjaxProcessAutoComplete")
+public class AjaxProcessAutoComplete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection conn;
 
@@ -75,7 +70,7 @@ public class AutoCompleteServlet extends HttpServlet {
 			DataBaseConn jdbc = new DataBaseConn();
 			conn = jdbc.getConn();			
 			
-			String strSql = "SELECT  a.P_name, a.spec, a.color, b.warehousePosition1, b.warehousePosition2 FROM  product as a inner join  storage as b where a.SKU = b.SKU and a.SKU = ?;";
+			String strSql = "SELECT  a.P_name, a.spec, a.color, b.warehousePosition1, b.warehousePosition2 FROM  product as a inner join  storage as b on a.SKU = b.SKU where a.SKU = ?;";
 
 			
 			ps = conn.prepareStatement(strSql);

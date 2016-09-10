@@ -92,7 +92,7 @@ session.setAttribute("eBayAccount", eBayAccount);
 					<tr>
 						<th class=""><span> * </span>ebay ID</th>
 						<td class=""><input id="id_fd-name" type="text" name="ebayId" value="${eBayAccount.getebayId() }"
-							class=""  maxlength="50" ></td>
+							class=""  maxlength="50" readonly></td>
 						<td class=""></td>
 					</tr>
 
@@ -122,9 +122,9 @@ session.setAttribute("eBayAccount", eBayAccount);
 						<th class="">對應公司</th>
 						<td class=""><select name="correspondCompany" value =${eBayAccount.getcorrespondCompany() }
 							id="id_fd-company_id"> 
-								<option value="5">HUANG PO-WEI</option>
-								<option value="6">YU CHIN WU</option>
-								<option value="7">WHIRLWIND SPEED LIMITED</option>
+								<option value="HUANG PO-WEI">HUANG PO-WEI</option>
+								<option value="YU CHIN WU">YU CHIN WU</option>
+								<option value="WHIRLWIND SPEED LIMITED">WHIRLWIND SPEED LIMITED</option>
 						</select></td>
 						<td class=""></td>
 					</tr>
