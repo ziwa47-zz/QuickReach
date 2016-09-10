@@ -72,7 +72,7 @@ public class CStockFactory extends CStock {
 
 		}
 	public LinkedList<CStock> searchStorage(HttpServletRequest request, Connection conn) throws SQLException {
-		String strsql = " select distinct sku,brand,subbrand,p_name,spec,color from  product left join  storage using (sku) where '1' = '1' ";
+		String strsql = " select distinct p.sku,p.brand,p.subbrand,p.p_name,p.spec,p.color from  product p left join  storage s on p.sku=s.sku where '1' = '1' ";
 		int param = 1;
 
 		PreparedStatement ps = null;

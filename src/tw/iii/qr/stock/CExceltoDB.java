@@ -8,11 +8,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -21,14 +17,21 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import tw.iii.qr.DataBaseConn;
 
 public class CExceltoDB {
-	
-	
-	public CExceltoDB() throws IOException {
-		addBundle();
+	public static void main(String[] args) {
+		try {
+			addProduct();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
-	private static void addBundle() {
-String path = "/Users/Ziwa/Desktop/庫存表1.xlsx"; 
+	public CExceltoDB() throws IOException {
+		
+	}
+	private static void addProduct()  throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+String path = "C:\\Users\\ziwa\\Desktop\\庫存表 20160908v2 oliver(系統用).xlsx"; 
 		
 		XSSFWorkbook wb = new XSSFWorkbook(path);
 		XSSFSheet sheet = wb.getSheetAt(0);
@@ -63,7 +66,7 @@ String path = "/Users/Ziwa/Desktop/庫存表1.xlsx";
 			
 			
 			
-			
+			System.out.println("Sku:"+strData[5]+" Brand:"+strData[11]);
 			
 			try{
 			
@@ -126,18 +129,19 @@ String path = "/Users/Ziwa/Desktop/庫存表1.xlsx";
 			ps.setDate(19, p.getCreateDate());
 			ps.setString(20, p.getPicturePath()); //picturePath(20)
 			
-			int j =ps.executeUpdate();
+			
 			
 			}
+			//int j =ps.executeUpdate();
 			catch(Exception e){
 				e.printStackTrace();
 			}
 		}
 		
 	}
-	public static void addProduct()
+	public static void addBundle()
 			throws IOException, SQLException, Exception, IllegalAccessException, ClassNotFoundException {
-		String path = "/Users/Ziwa/Desktop/庫存表1.xlsx"; 
+		String path = "C:\\Users\\ziwa\\Desktop\\庫存表 20160908v2 oliver(系統用).xlsx"; 
 		
 		XSSFWorkbook wb = new XSSFWorkbook(path);
 		XSSFSheet sheet = wb.getSheetAt(0);

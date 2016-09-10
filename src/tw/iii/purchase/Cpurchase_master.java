@@ -5,7 +5,7 @@ import java.util.Date;
 public class Cpurchase_master {
 	private String purchaseId;
 	private Date date;
-	private String companyId;
+	private int companyId;
 	private String companyName;
 	private String staffId;
 	private String comment;
@@ -25,10 +25,10 @@ public class Cpurchase_master {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public String getCompanyId() {
+	public int getCompanyId() {
 		return companyId;
 	}
-	public void setCompanyId(String companyId) {
+	public void setCompanyId(int companyId) {
 		this.companyId = companyId;
 	}
 	public String getCompanyName() {

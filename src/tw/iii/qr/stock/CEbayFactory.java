@@ -81,19 +81,13 @@ public class CEbayFactory extends CEbay {
 	}
 	
 	public void updateEbayAccount (HttpServletRequest request, Connection conn) throws SQLException{
-<<<<<<< HEAD
-		String strsql = "UPDATE quickreach.ebayaccount SET "	
-			 + " ebayToken = ?," + "endToken = ?," + "paypalAccount = ?," 
-			 + " correspondCompany = ?," + "startTime = ?," + "lastFixTime = ?,"	
-			 + " status = ?," + "comment = ?," + "systemFeedback = ?"  
-			 + " where ebayId = ?"; //(10個)
-=======
+
 		String strsql = "UPDATE  ebayaccount SET "	
 			 + "ebayToken = ?," + "endToken = ?," + "paypalAccount = ?,"
 			 + "correspondCompany = ?," + "startTime = ?," + "lastFixTime = ?,"	
 			 + "status = ?," + "comment = ?," + "systemFeedback = ?,"
 			 + "where ebayId = ?"; //(10個)
->>>>>>> testziwa
+
 	
 		PreparedStatement ps = null;
 		System.out.print(strsql); 
