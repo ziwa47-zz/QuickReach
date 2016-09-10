@@ -69,11 +69,11 @@ function jqueryAutoCompleteSKU() {
 	
 	<%
 	
+	Connection conn = new DataBaseConn().getConn();
 	
-	
-	LinkedList<LinkedList<String>> warehouseList = searchDetail.warehouseSelectOption();
-	LinkedList<LinkedList<String>> companyList = searchDetail.companySelectOption();
-	LinkedList<LinkedList<String>> accountList = searchDetail.accountSelectOption();
+	LinkedList<LinkedList<String>> warehouseList = searchDetail.warehouseSelectOption(conn);
+	LinkedList<LinkedList<String>> companyList = searchDetail.companySelectOption(conn);
+	LinkedList<LinkedList<String>> accountList = searchDetail.accountSelectOption(conn);
 	request.setAttribute("warehouseList", warehouseList);
 	request.setAttribute("companyList", companyList);
 	request.setAttribute("accountList", accountList);
@@ -98,7 +98,7 @@ function jqueryAutoCompleteSKU() {
 		String qty = request.getParameter("qty");
 		String price = request.getParameter("price");
 
-		Connection conn = new DataBaseConn().getConn();
+		
 		LinkedList<LinkedList<String>> allList = searchDetail.searchPurchase(conn, purchaseRecord,outRecord,purchaseId,date1, date2, pname, sku, companyName,
 				owner, wareHouse, warehousePositionOne,warehousePositionTwo, qty, price);
 		conn.close();
