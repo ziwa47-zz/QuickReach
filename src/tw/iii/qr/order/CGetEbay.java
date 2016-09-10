@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.servlet.http.HttpSession;
+
 import com.ebay.sdk.ApiContext;
 import com.ebay.sdk.ApiCredential;
 import com.ebay.sdk.call.GetOrdersCall;
@@ -36,7 +38,7 @@ public class CGetEbay {
 	          Calendar cal = apiCall.geteBayOfficialTime();
 	          
 	    
-	        
+	         
 	          GetOrdersCall apiord = new GetOrdersCall(apiContext);
 	          apiord.setDetailLevel(new DetailLevelCodeType[]{DetailLevelCodeType.RETURN_ALL,DetailLevelCodeType.ITEM_RETURN_DESCRIPTION,DetailLevelCodeType.ITEM_RETURN_ATTRIBUTES});
 	          apiord.setNumberOfDays(30);
