@@ -105,7 +105,7 @@ conn1.close();
 				    <td> <a href ="editeBayAccount.jsp?ebayId=${i.getebayId()}"> <img src="../img/compose-4.png"></a></td>	                                                     	 
                     <!-- <td width="50px" align="left"><input class="checker" type="checkbox" name="checking_companys[]" value="10"></td>	 -->			
 					<td width="80px" align="left">${i.getebayId()}</a></td> <!-- ebayId -->					
-					<td width="100px" align="left" nowrap="">${i.getendToken()}</a></td><!-- ebayToken -->
+					<td width="100px" align="left" nowrap="">${i.getebayToken()}</a></td><!-- ebayToken -->
                     <td width="100px">${i.getendToken()}</td> <!-- endToken -->
 					<td width="100px" align="left" nowrap="">${i.getpaypalAccount() }</td><!-- paypallAccount -->			
 					<td width="100px">${i.getcorrespondCompany()}</td><!-- correspondCompany-->

@@ -366,8 +366,12 @@ public class COrderFactory extends COrders {
 		String strsql = "SELECT distinct g.guestFirstName, g.guestLastName, g.guestAccount, g.email, g.tel1, g.tel2"
 				+ ", g.mobile, g.birthday, g.company, g.address, g.country, g.postcode, g.gender"
 				+ ", r.recieverFirstName, r.recieverLastName, r.tel1, r.tel2, r.address, r.country, r.postcode"
-				+ ", d.sku, d.productName, d.invoiceName, d.price, d.invoicePrice, d.qty, d.warehouse, d.comment"
-				+ ", m.QR_id"
+				
+				+ ", m.outsideCode, m.orderStatus, m.order_id, m.QR_id, m.company, m.platform, m.eBayAccount, "
+				+ " m.orderDate, m.payDate, m.logisticsId, m.logistics, m.paypal_id, m.payment,"
+				+ " m.shippingDate, m.shippingFees, m.refundFees, m.otherFees, m.ebayFees, m.paypalFees,"
+				+ " m.insurance, m.insurancePrice, m.insuranceTotal, m.currency, m.weight, m.totalWeight,"
+				+ " m.FedexService, m.staffName, m.size, m.totalPrice"
 				+ " from  orders_master as m inner join  orders_detail as d using (QR_id)"
 				+ " inner join  orders_guestinfo as g using (QR_id) "
 				+ " inner join  order_recieverinfo as r using (QR_id)" + " where QR_id = ?";
@@ -402,16 +406,36 @@ public class COrderFactory extends COrders {
 			orderInfo.COrderReciever.setCountry(rs.getString(19));
 			orderInfo.COrderReciever.setPostCode(rs.getString(20));
 
-			orderInfo.COrderDetailSingle.setSKU(rs.getString(21));
-			orderInfo.COrderDetailSingle.setProductName(rs.getString(22));
-			orderInfo.COrderDetailSingle.setInvoiceName(rs.getString(23));
-			orderInfo.COrderDetailSingle.setPrice(rs.getDouble(24));
-			orderInfo.COrderDetailSingle.setInvoicePrice(rs.getDouble(25));
-			orderInfo.COrderDetailSingle.setQty(rs.getInt(26));
-			orderInfo.COrderDetailSingle.setWarehouse(rs.getString(27));
-			orderInfo.COrderDetailSingle.setComment(rs.getString(28));
+			orderInfo.COrderMaster.setOutsideCode(rs.getString(21));
+			orderInfo.COrderMaster.setOrderStatus(rs.getString(22));
+			orderInfo.COrderMaster.setOrder_id(rs.getString(23));
+			orderInfo.COrderMaster.setQR_id(rs.getString(24));
+			orderInfo.COrderMaster.setCompany(rs.getString(25));
+			orderInfo.COrderMaster.setPlatform(rs.getString(26));
+			orderInfo.COrderMaster.setEbayAccount(rs.getString(27));
+			orderInfo.COrderMaster.setOrderDate(rs.getDate(28));
+			orderInfo.COrderMaster.setPayDate(rs.getDate(29));
+			orderInfo.COrderMaster.setLogisticsID(rs.getString(30));
+			orderInfo.COrderMaster.setLogistics(rs.getString(31));
+			orderInfo.COrderMaster.setPaypalId(rs.getString(32));
+			orderInfo.COrderMaster.setPayment(rs.getInt(33));
+			orderInfo.COrderMaster.setShippingDate(rs.getDate(34));
+			orderInfo.COrderMaster.setShippingFees(rs.getDouble(35));
+			orderInfo.COrderMaster.setRefundFees(rs.getDouble(36));
+			orderInfo.COrderMaster.setOtherFees(rs.getDouble(37));
+			orderInfo.COrderMaster.setEbayFees(rs.getDouble(38));
+			orderInfo.COrderMaster.setPaypalFees(rs.getDouble(39));
+			orderInfo.COrderMaster.setInsurance(rs.getBoolean(40));
+			orderInfo.COrderMaster.setInsurancePrice(rs.getDouble(41));
+			orderInfo.COrderMaster.setInsuranceTotal(rs.getDouble(42));
+			orderInfo.COrderMaster.setCurrency(rs.getString(43));
+			orderInfo.COrderMaster.setWeight(rs.getDouble(44));
+			orderInfo.COrderMaster.setTotalWeight(rs.getDouble(45));
+			orderInfo.COrderMaster.setFedexService(rs.getString(46));
+			orderInfo.COrderMaster.setStaffName(rs.getString(47));
+			orderInfo.COrderMaster.setSize(rs.getString(48));
+			orderInfo.COrderMaster.setTotalPrice(rs.getDouble(49));
 			
-			orderInfo.COrderMaster.setQR_id(rs.getString(29));
 		}
 
 		return orderInfo;
@@ -600,19 +624,15 @@ public class COrderFactory extends COrders {
 	public void insertIntoShippingLog(HttpServletRequest request, Connection conn) throws SQLException {
 		
 		LinkedList<ShipmentRecord> ShippingLog = new LinkedList<ShipmentRecord>();
-		for(int i=0; i<ShippingLog.size(); i++){
 			String strSql = "insert into  shippinglog (QR_id, date, trackingCode, staffName)"
 					+ " values( ?, now(), ?, ?)";
 			PreparedStatement ps = conn.prepareStatement(strSql);
-			ps.setString(1, ShippingLog.get(i).getQR_id());
-			ps.setString(2, ShippingLog.get(i).getTrackingCode());
-			ps.setString(3, ShippingLog.get(i).getStaffName());
+			ps.setString(1, request.getParameter("QR_id"));
+			ps.setString(2, request.getParameter("trackingCode"));
+			ps.setString(3, request.getParameter("staffName"));
 	
-			ps.executeUpdate();
-			System.out.println(ShippingLog.get(i).getQR_id());
-			System.out.println(ShippingLog.get(i).getTrackingCode());
-			System.out.println(ShippingLog.get(i).getStaffName());
-		}
+			int x =ps.executeUpdate();
+		
 	}
 
 	public void deductStock(HttpServletRequest request, Connection conn) throws Exception {
@@ -714,17 +734,138 @@ public class COrderFactory extends COrders {
 		return unSelected;
 	}
 	
-	public LinkedList<ShipmentRecord> getShipmentRecord (HttpServletRequest request, Connection conn) throws Exception {
+	public LinkedList<ShipmentRecord> searchShipmentRecord (HttpServletRequest request, Connection conn) throws Exception {
 		
 		String strSql = "select s.date, s.QR_id, s.type, m.eBayAccount, d.SKU, d.productName, d.qty,"
 				+ " r.country, d.owner, d.warehouse, m.staffName, s.comment"
-				+ " from orders_master as m inner join shippinglog as s"
-				+ " inner join order_recieverinfo as r"
-				+ " inner join orders_detail as d";
-		
-		PreparedStatement ps = conn.prepareStatement(strSql);
-		ps.setString(1, request.getParameter("QR_id"));
-		ResultSet rs = ps.executeQuery();
+				+ " from orders_master as m inner join shippinglog as s using (QR_id)"
+				+ " inner join order_recieverinfo as r using (QR_id)"
+				+ " inner join orders_detail as d using (QR_id)"
+				+ " where '1' = '1' ";
 
+		String eBayAccount = request.getParameter("eBayAccount");
+		if (!isNullorEmpty(eBayAccount)) {
+			strSql += " and eBayAccount = ? ";
+		};
+		String type = request.getParameter("type");
+		if (!isNullorEmpty(type)) {
+			strSql += " and type like ? ";
+		};
+		String owner = request.getParameter("owner");
+		if (!isNullorEmpty(owner)) {
+			strSql += " and owner like ? ";
+		};
+		String QR_id = request.getParameter("QR_id");
+		if (!isNullorEmpty(QR_id)) {
+			strSql += " and QR_id like ? ";
+		};
+		String country = request.getParameter("country");
+		if (!isNullorEmpty(country)) {
+			strSql += " and country like ? ";
+		};
+		String SKU = request.getParameter("SKU");
+		if (!isNullorEmpty(SKU)) {
+			strSql += " and SKU like ? ";
+		};
+		String productName = request.getParameter("productName");
+		if (!isNullorEmpty(productName)) {
+			strSql += " and productName like ? ";
+		};
+		String warehouse = request.getParameter("warehouse");
+		if (!isNullorEmpty(warehouse)) {
+			strSql += " and warehouse like ? ";
+		};
+		String staffName = request.getParameter("staffName");
+		if (!isNullorEmpty(staffName)) {
+			strSql += " and staffName like ? ";
+		};
+		String comment = request.getParameter("comment");
+		if (!isNullorEmpty(comment)) {
+			strSql += " and comment like ? ";
+		};
+		String shippingDateMin = request.getParameter("shippingDateMin");
+		if (!isNullorEmpty(shippingDateMin)) {
+			strSql += " and payDate >= ? ";
+		}
+		String shippingDateMax = request.getParameter("shippingDateMax");
+		if (!isNullorEmpty(shippingDateMax)) {
+			strSql += " and payDate <= ? ";
+		}
+		
+		LinkedList<ShipmentRecord> shipmentRecord = new LinkedList<ShipmentRecord>();
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		int param = 1;
+		
+		if (!isNullorEmpty(eBayAccount)) {
+			ps.setString(param, eBayAccount);
+			param++;
+		}
+		if (!isNullorEmpty(type)) {
+			ps.setString(param, "%" + type + "%");
+			param++;
+		}
+		if (!isNullorEmpty(owner)) {
+			ps.setString(param, "%" + owner + "%");
+			param++;
+		}
+		if (!isNullorEmpty(QR_id)) {
+			ps.setString(param, "%" + QR_id + "%");
+			param++;
+		}
+		if (!isNullorEmpty(country)) {
+			ps.setString(param, "%" + country + "%");
+			param++;
+		}
+		if (!isNullorEmpty(SKU)) {
+			ps.setString(param, "%" + SKU + "%");
+			param++;
+		}
+		if (!isNullorEmpty(productName)) {
+			ps.setString(param, "%" + productName + "%");
+			param++;
+		}
+		if (!isNullorEmpty(warehouse)) {
+			ps.setString(param, "%" + warehouse + "%");
+			param++;
+		}
+		if (!isNullorEmpty(staffName)) {
+			ps.setString(param, "%" + staffName + "%");
+			param++;
+		}
+		if (!isNullorEmpty(comment)) {
+			ps.setString(param, "%" + comment + "%");
+			param++;
+		}
+		if (!isNullorEmpty(shippingDateMin)) {
+			ps.setString(param, "%" + shippingDateMin + "%");
+			param++;
+		}
+		if (!isNullorEmpty(shippingDateMax)) {
+			ps.setString(param, "%" + shippingDateMax + "%");
+			param++;
+		}
+		
+		System.out.println(strSql);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		
+		while(rs.next()){
+			ShipmentRecord record = new ShipmentRecord();
+			record.setShippingDate(rs.getDate(1));
+			record.setQR_id(rs.getString(2));
+			record.setType(rs.getString(3));
+			record.setEbayAccount(rs.getString(4));
+			record.setSKU(rs.getString(5));
+			record.setProductName(rs.getString(6));
+			record.setQty(rs.getInt(7));
+			record.setCountry(rs.getString(8));
+			record.setOwner(rs.getString(9));
+			record.setWarehouse(rs.getString(10));
+			record.setStaffName(rs.getString(11));
+			record.setComment(rs.getString(12));
+			shipmentRecord.add(record);
+		}
+		return shipmentRecord;
 	}
 }
