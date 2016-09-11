@@ -1,10 +1,16 @@
 package tw.iii.qr.order;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
-import javax.servlet.http.HttpSession;
+import javax.swing.undo.AbstractUndoableEdit;
+
+import java.sql.Date;
 
 import com.ebay.sdk.ApiContext;
 import com.ebay.sdk.ApiCredential;
@@ -23,6 +29,9 @@ import com.ebay.soap.eBLBaseComponents.ShippingDetailsType;
 import com.ebay.soap.eBLBaseComponents.ShippingServiceOptionsType;
 import com.ebay.soap.eBLBaseComponents.TradingRoleCodeType;
 
+import tw.iii.autoInsertData.autoInsertData;
+import tw.iii.qr.DataBaseConn;
+
 public class CGetEbay {
 	public CGetEbay() {
 		// TODO Auto-generated constructor stub
@@ -37,8 +46,7 @@ public class CGetEbay {
 	          GeteBayOfficialTimeCall apiCall = new GeteBayOfficialTimeCall(apiContext);
 	          Calendar cal = apiCall.geteBayOfficialTime();
 	          
-	    
-	         
+	        
 	          GetOrdersCall apiord = new GetOrdersCall(apiContext);
 	          apiord.setDetailLevel(new DetailLevelCodeType[]{DetailLevelCodeType.RETURN_ALL,DetailLevelCodeType.ITEM_RETURN_DESCRIPTION,DetailLevelCodeType.ITEM_RETURN_ATTRIBUTES});
 	          apiord.setNumberOfDays(30);
@@ -70,13 +78,88 @@ public class CGetEbay {
 	          e.printStackTrace();
 	      }
 	}
-	private static void displayOrders(OrderType[] orders) {
+	
+	private static void displayOrders(OrderType[] orders) throws IllegalAccessException, ClassNotFoundException, Exception {
+		
+		
 		int size = orders != null ? orders.length : 0;
 		 System.out.println(size);
 		 for (int i = 0; i < size; i++) {
 		  String strsql = "insert into orders_master values();";
 		  OrderType order = orders[i];
+		  Connection conn = new DataBaseConn().getConn();
+		  System.out.println(order.getCheckoutStatus().getStatus().toString());
+		  if("COMPLETE".equals(order.getCheckoutStatus().getStatus().toString())){
 		  
+			  if(checkExistedOrNot(conn).equals(order.getExtendedOrderID())){
+				  continue;
+			  }
+		  ShippingServiceOptionsType sso = order.getShippingServiceSelected();
+		  String QR_id = autoInsertData.generateQR_Id();
+		  
+		  
+		  String strSql = "INSERT INTO orders_master (QR_id, order_id, outsideCode, platform, company,"
+		  		+ " eBayAccount, guestAccount, orderDate, payDate, logisticsId, logistics, orderStatus, paypal_id,"
+		  		+ " payment, ebayFees, paypalFees, totalPrice)"
+		  		+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		  
+		  PreparedStatement ps = conn.prepareStatement(strSql);
+		  ps.setString(1, QR_id);
+		  ps.setString(2, order.getOrderID());
+		  ps.setString(3, order.getExtendedOrderID());
+		  ps.setString(4, "ebay");
+		  ps.setString(5, order.getShippingAddress().getCompanyName());
+		  ps.setString(6, order.getSellerUserID());
+		  ps.setString(7, order.getMonetaryDetails().getPayments().getPayment()[0].getPayer().getValue());
+		  ps.setTimestamp(8, new java.sql.Timestamp(order.getCreatedTime().getTimeInMillis()));
+		  ps.setTimestamp(9, (new java.sql.Timestamp(order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentTime().getTimeInMillis()))); //payDate
+		  ps.setString(10, "logisticsId");
+		  ps.setString(11, sso.getShippingService().toString());
+		  ps.setString(12, order.getOrderStatus().toString());
+		  ps.setString(13, order.getMonetaryDetails().getPayments().getPayment()[0].getPayer().getValue());
+		  ps.setDouble(14, order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentAmount().getValue());
+		  ps.setDouble(15, order.getMonetaryDetails().getPayments().getPayment()[0].getFeeOrCreditAmount().getValue());
+		  ps.setDouble(16, order.getExternalTransaction()[0].getFeeOrCreditAmount().getValue());
+		  ps.setDouble(17, order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentAmount().getValue());
+		  
+		  int x =ps.executeUpdate();
+		  
+
+		  String strSql2 = "INSERT INTO order_recieverinfo (QR_id, order_id, recieverFirstName, recieverLastName,"
+		  		+ " tel1, tel2, address, country, postCode)"
+		  		+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+		  PreparedStatement ps2 = conn.prepareStatement(strSql2);
+		  ps2.setString(1, QR_id);
+		  ps2.setString(2, order.getOrderID());
+		  ps2.setString(3, order.getShippingAddress().getFirstName());
+		  ps2.setString(4, order.getShippingAddress().getLastName());
+		  ps2.setString(5, order.getShippingAddress().getPhone());
+		  ps2.setString(6, order.getShippingAddress().getPhone2());
+		  ps2.setString(7, order.getShippingAddress().getName());
+		  ps2.setString(8, order.getShippingAddress().getCounty());
+		  ps2.setString(9, order.getShippingAddress().getPostalCode());
+		  
+		  int y =ps2.executeUpdate();
+		  
+			  
+		 for(int l =0; l<order.getTransactionArray().getTransaction().length;l++){
+		  String strSql3 = "INSERT INTO orders_detail (QR_id, order_id, SKU, productName, invoiceName"
+		  		+ ", price, invoicePrice, qty, comment )"
+		  		+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+		  PreparedStatement ps3 = conn.prepareStatement(strSql3);
+		  ps3.setString(1, QR_id);
+		  ps3.setString(2, order.getOrderID());
+		  ps3.setString(3, order.getTransactionArray().getTransaction()[l].getItem().getSKU());
+		  ps3.setString(4, order.getTransactionArray().getTransaction()[l].getItem().getTitle());
+		  ps3.setString(5, order.getTransactionArray().getTransaction()[l].getItem().getTitle());
+		  ps3.setDouble(6, order.getTotal().getValue());
+		  ps3.setDouble(7, order.getTotal().getValue());
+		  ps3.setInt(8, order.getTransactionArray().getTransaction()[l].getQuantityPurchased());
+		  ps3.setString(9, order.getBuyerCheckoutMessage());
+		  int z =ps3.executeUpdate();
+		 }
 		  System.out.println("訂單編號:"+order.getOrderID());
 		  
 //		  System.out.println("款項調整:"+order.getAdjustmentAmount().getValue());
@@ -144,7 +227,7 @@ public class CGetEbay {
 		  }
 		  
 		  
-		  ShippingServiceOptionsType sso = order.getShippingServiceSelected();
+		  //ShippingServiceOptionsType sso = order.getShippingServiceSelected();
 	      if (sso != null) {
 	    	  System.out.println ("客戶選擇的物流:"+ sso.getShippingService().toString());
 	      }
@@ -156,6 +239,8 @@ public class CGetEbay {
 	      
 	      //MultiLegShipping (Added for SDK 777 Release)
 	      System.out.println( Utils.booleanToYesNo(order.isIsMultiLegShipping()));
+		  }
+		 
 		 }
 	}
 	private static ApiContext getApiContext() throws IOException {
@@ -170,12 +255,26 @@ public class CGetEbay {
 
 	        //set Api Server Url
 	        //input = ConsoleUtil.readString("Enter eBay SOAP server URL (e.g., https://api.ebay.com/wsapi): ");
+
 	        input = "https://api.ebay.com/wsapi";
 	        //https://api.sandbox.ebay.com/wsapi
 	        apiContext.setApiServerUrl(input);
 
-	        return apiContext;
+	        
 	}
 	 
 
+
+
+	private static String checkExistedOrNot(Connection conn) throws SQLException{
+		
+		String outsideCode = null;
+		String strSql = "select top 1 outsideCode from orders_master order by item desc ";
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()){
+			outsideCode = rs.getString(1);
+		}
+		return outsideCode;
+	}
 }
