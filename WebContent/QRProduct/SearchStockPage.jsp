@@ -115,13 +115,13 @@
           <div class="row">
             <div class="col-md-2">
               <h5>
-                <label>儲位區間：</label>
+              <!--   <label>儲位區間：</label> -->
               </h5>
             </div>
             <div class="col-md-10">
-              <input class="form-control" type="text" name="location1">
+             <!--  <input class="form-control" type="text" name="location1">
               <label>~</label>
-              <input class="form-control" type="text" name="location2">
+              <input class="form-control" type="text" name="location2"> -->
             </div>
           </div>
         </div>

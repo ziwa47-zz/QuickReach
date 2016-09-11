@@ -366,8 +366,12 @@ public class COrderFactory extends COrders {
 		String strsql = "SELECT distinct g.guestFirstName, g.guestLastName, g.guestAccount, g.email, g.tel1, g.tel2"
 				+ ", g.mobile, g.birthday, g.company, g.address, g.country, g.postcode, g.gender"
 				+ ", r.recieverFirstName, r.recieverLastName, r.tel1, r.tel2, r.address, r.country, r.postcode"
-				+ ", d.sku, d.productName, d.invoiceName, d.price, d.invoicePrice, d.qty, d.warehouse, d.comment"
-				+ ", m.QR_id"
+				
+				+ ", m.outsideCode, m.orderStatus, m.order_id, m.QR_id, m.company, m.platform, m.eBayAccount, "
+				+ " m.orderDate, m.payDate, m.logisticsId, m.logistics, m.paypal_id, m.payment,"
+				+ " m.shippingDate, m.shippingFees, m.refundFees, m.otherFees, m.ebayFees, m.paypalFees,"
+				+ " m.insurance, m.insurancePrice, m.insuranceTotal, m.currency, m.weight, m.totalWeight,"
+				+ " m.FedexService, m.staffName, m.size, m.totalPrice"
 				+ " from  orders_master as m inner join  orders_detail as d using (QR_id)"
 				+ " inner join  orders_guestinfo as g using (QR_id) "
 				+ " inner join  order_recieverinfo as r using (QR_id)" + " where QR_id = ?";
@@ -402,16 +406,36 @@ public class COrderFactory extends COrders {
 			orderInfo.COrderReciever.setCountry(rs.getString(19));
 			orderInfo.COrderReciever.setPostCode(rs.getString(20));
 
-			orderInfo.COrderDetailSingle.setSKU(rs.getString(21));
-			orderInfo.COrderDetailSingle.setProductName(rs.getString(22));
-			orderInfo.COrderDetailSingle.setInvoiceName(rs.getString(23));
-			orderInfo.COrderDetailSingle.setPrice(rs.getDouble(24));
-			orderInfo.COrderDetailSingle.setInvoicePrice(rs.getDouble(25));
-			orderInfo.COrderDetailSingle.setQty(rs.getInt(26));
-			orderInfo.COrderDetailSingle.setWarehouse(rs.getString(27));
-			orderInfo.COrderDetailSingle.setComment(rs.getString(28));
+			orderInfo.COrderMaster.setOutsideCode(rs.getString(21));
+			orderInfo.COrderMaster.setOrderStatus(rs.getString(22));
+			orderInfo.COrderMaster.setOrder_id(rs.getString(23));
+			orderInfo.COrderMaster.setQR_id(rs.getString(24));
+			orderInfo.COrderMaster.setCompany(rs.getString(25));
+			orderInfo.COrderMaster.setPlatform(rs.getString(26));
+			orderInfo.COrderMaster.setEbayAccount(rs.getString(27));
+			orderInfo.COrderMaster.setOrderDate(rs.getDate(28));
+			orderInfo.COrderMaster.setPayDate(rs.getDate(29));
+			orderInfo.COrderMaster.setLogisticsID(rs.getString(30));
+			orderInfo.COrderMaster.setLogistics(rs.getString(31));
+			orderInfo.COrderMaster.setPaypalId(rs.getString(32));
+			orderInfo.COrderMaster.setPayment(rs.getInt(33));
+			orderInfo.COrderMaster.setShippingDate(rs.getDate(34));
+			orderInfo.COrderMaster.setShippingFees(rs.getDouble(35));
+			orderInfo.COrderMaster.setRefundFees(rs.getDouble(36));
+			orderInfo.COrderMaster.setOtherFees(rs.getDouble(37));
+			orderInfo.COrderMaster.setEbayFees(rs.getDouble(38));
+			orderInfo.COrderMaster.setPaypalFees(rs.getDouble(39));
+			orderInfo.COrderMaster.setInsurance(rs.getBoolean(40));
+			orderInfo.COrderMaster.setInsurancePrice(rs.getDouble(41));
+			orderInfo.COrderMaster.setInsuranceTotal(rs.getDouble(42));
+			orderInfo.COrderMaster.setCurrency(rs.getString(43));
+			orderInfo.COrderMaster.setWeight(rs.getDouble(44));
+			orderInfo.COrderMaster.setTotalWeight(rs.getDouble(45));
+			orderInfo.COrderMaster.setFedexService(rs.getString(46));
+			orderInfo.COrderMaster.setStaffName(rs.getString(47));
+			orderInfo.COrderMaster.setSize(rs.getString(48));
+			orderInfo.COrderMaster.setTotalPrice(rs.getDouble(49));
 			
-			orderInfo.COrderMaster.setQR_id(rs.getString(29));
 		}
 
 		return orderInfo;

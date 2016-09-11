@@ -8,8 +8,10 @@
   
 <head>
 
+
 <script src="../js/jquery-1.12.4.min.js"></script>
 <!-- jqueryAutoComplete 不可以在../js/jquery-1.12.4.min.js 之前 -->
+
 
 <script type="text/javascript">
 function invalidate() {
@@ -228,7 +230,11 @@ conn.close();
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>建檔日</h4></div>
+<<<<<<< HEAD
+                  <div class="col-md-8 well-sm"><input class="form-control  yymmdd" type="text"name="cdate" value="${resultDetail.getCreateDate()}" readonly></div>
+=======
                   <div class="col-md-8 well-sm"><input class="form-control yymmdd" type="text"name="cdate" value="${resultDetail.getCreateDate()}" readonly></div>
+>>>>>>> refs/remotes/origin/master
               </div>
           
               </div>
