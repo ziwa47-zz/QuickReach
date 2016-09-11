@@ -1,5 +1,8 @@
+<%@page import="tw.iii.qr.DataBaseConn"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<jsp:useBean id="competence1" class= "tw.iii.qr.QRAccountFactory" scope="page"/>
+<%@ page  import=" tw.iii.qr.QRAccount,java.util.*,tw.iii.qr.DataBaseConn,tw.iii.qr.Competence"%>
 <!doctype html>
 <html>
 <head>
@@ -39,6 +42,14 @@
 </head>
 
 <body><%@ include file="/href/navbar.jsp" %>
+<%
+
+
+LinkedList<Competence> list= competence1.get權限();
+session.setAttribute("getCompetenceLv", list);
+
+
+%>
   <div class="nav">
   	<div class="container">
     	<div class="navbar-left" style="background-color:#BCF1E5;" >
@@ -101,10 +112,15 @@
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>權限等級</h4></div>
                       <div class="col-md-5 well-sm">
-						<select class="form-control" name="competenceLV">
-						    <option value="A">A</option>
-						    <option value="B">B</option>
-						    <option value="C">C</option>
+						<select class="form-control" name="CompetenceLv" >
+						
+							<c:forEach var="i" varStatus="check" items="${getCompetenceLv}" begin="0"
+								step="1">
+								
+									<option  value="${i.getCompetenceLv()}">${i.getCompetenceLv()}</option>
+							
+							
+							</c:forEach>
 						</select>
 					  </div>
                   </div>
