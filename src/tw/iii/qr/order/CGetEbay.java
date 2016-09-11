@@ -278,5 +278,3 @@ public class CGetEbay {
 		return outsideCode;
 	}
 }
-
-
