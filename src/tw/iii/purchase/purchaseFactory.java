@@ -241,7 +241,7 @@ public class purchaseFactory {
 		}
 
 		if (!isNullorEmpty(purchaseId)) {
-			sqlstr1 += " and a.purchaseId  like'%" + purchaseId + "%'";
+			sqlstr1 += " and a.purchaseId  ='"+purchaseId+"'" ;
 			System.out.println(purchaseId);
 		}
 
