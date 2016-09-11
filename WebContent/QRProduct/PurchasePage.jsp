@@ -537,7 +537,7 @@ display: block;
             	<div class="col-md-8 form-group ">
                   <div class="row">
                     <div class="col-md-2"><h5><label for="focusedInput " >櫃位：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo" name="warehousePositionTwo1" type="text"></div>
+                    <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne1" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo1" name="warehousePositionTwo1" type="text"></div>
                   </div>
                 </div>
                 
@@ -571,7 +571,7 @@ display: block;
 		</form>
 	</div>
 
-	<%@ include file="/href/footer.jsp"%>
+	<%@ include file="../href/footer.jsp"%>
 
 </body>
 </html>
