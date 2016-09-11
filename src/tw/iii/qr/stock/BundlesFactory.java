@@ -28,7 +28,7 @@ public class BundlesFactory {
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
 
-		String sqlstr = "SELECT sku,P_name,brand,subBrand FROM product where sku like 'B00%' ";
+		String sqlstr = "SELECT sku,P_name,brand,subBrand FROM product where sku like 'B01%' ";
 
 		
 		if (brand != null && !brand.equals("select")){
