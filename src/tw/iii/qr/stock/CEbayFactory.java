@@ -50,14 +50,15 @@ public class CEbayFactory extends CEbay {
 		
 		Connection conn = dbc.getConn();
 		
-		String strsql = "SELECT  *  FROM   ebayaccount where ebayId = '" + ebayId +"'";
+		String strsql = "SELECT  *  FROM   ebayaccount where ebayId = ?";
 
 		/*PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
 		ps.setString(1, ebayId);*/
 		
-		state = conn.createStatement();
-		ResultSet rs =state.executeQuery(strsql);		
+		PreparedStatement ps = conn.prepareStatement(strsql);
+		ps.setString(1, ebayId);
+		ResultSet rs =ps.executeQuery(strsql);		
 		
 		CEbay ebayaccount = new CEbay();
 	
