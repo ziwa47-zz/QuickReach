@@ -436,7 +436,7 @@ public class purchaseFactory {
 		LinkedList<Cpurchase_detail> list = new LinkedList<>();
 		Cpurchase_detail d = new Cpurchase_detail();
 		String strsql = "select m.purchaseId,m.stockStatus,qty,date,m.warehouse from purchaselog_master as m inner join purchaselog_detail  where 1 = 1 "
-				+ " and sku = ?";
+				+ " and m.sku = ?";
 		// if(check1=="on" ){
 		// strsql += " and stockStatus = 1";
 		// }

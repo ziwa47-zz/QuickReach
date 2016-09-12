@@ -73,7 +73,7 @@ public class LoginServlet extends HttpServlet {
 			//Login false
 			System.out.println("NO");
 			response.setContentType("text/html;charset=UTF-8");
-			response.sendRedirect("/Login.jsp");
+			response.sendRedirect("/Login.jsp?p=0");
 		}
 	
 	}

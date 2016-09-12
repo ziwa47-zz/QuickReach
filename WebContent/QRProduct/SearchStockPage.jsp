@@ -186,7 +186,7 @@
       <form name="searchform" method="post" action="#" style="font-size: 100%; vertical-align: baseline; padding: 15px;" class="form-inline container">
         <table class="table table-bordered table-hover table-condensed pull-left" style="margin: 0 0 0 -15px">
           <tr class="ListTitle2">
-            <th>選取</th>
+         
             <th>編輯</th>
             <th>SKU</th>
             <th>廠牌</th>
@@ -197,7 +197,6 @@
           </tr>
           <c:forEach var="i" items="${storageall}" begin="0" step="1" varStatus="check">
             <tr>
-              <td rowspan="1" style="vertical-align: middle"><input type="checkbox" name="check"></td>
               <td><a href="StockDetail.jsp?sku=${i.getSKU()}"><img src="../img/compose-4.png"></a></td>
               <td>${i.getSKU()}</td>
               <td>${i.getBrand()}</td>
