@@ -16,7 +16,7 @@ session.setAttribute("getCompetenceLv", list);
 %>
 <div class="nav">
   <div class="container">
-    <div class="navbar-left" style="background-color:#AC7ED3;" >
+    <div class="navbar-left" style="background-color:#C7AAE4;" >
       <ul class="nav nav-tabs">
         <li><a href="./accountManage.jsp" style="color:#fff">員工帳號管理</a></li>
       </ul>

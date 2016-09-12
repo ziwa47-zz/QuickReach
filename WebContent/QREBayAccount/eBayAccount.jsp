@@ -24,16 +24,16 @@ conn1.close();
 %>
 <div class="nav">
   <div class="container">
-    <div class="navbar-left" style="background-color:#AC7ED3;" >
+    <div class="navbar-left" style="background-color:#C7AAE4;" >
       <ul class="nav nav-tabs">
-        <li><a href="./eBayAccount.jsp">eBay帳號管理</a></li>
+        <li><a href="./eBayAccount.jsp" style="color:#fff">eBay帳號管理</a></li>
       </ul>
     </div>
   </div>
   <div class="container">
     <div class="nav" style="background-color:#984AC0;" >
       <ul class="nav nav-tabs">
-        <li ><a href="./eBayAccount.jsp">帳號列表</a></li>
+        <li ><a href="./eBayAccount.jsp" style="color:#fff">帳號列表</a></li>
         <!--               <li style="background-color:#1CAF9A"><a href="purchasePage.jsp" style="color:#FFFFFF">進貨</a></li> -->
         <li><a href="./addAccount.jsp">新增eBay帳號</a></li>
       </ul>

@@ -1,4 +1,4 @@
-package tw.iii.qr.order;
+﻿package tw.iii.qr.order;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -66,19 +66,19 @@ public class COrderFactory extends COrders {
 
 		String eBayAccount = request.getParameter("eBayAccount");
 		if (!isNullorEmpty(eBayAccount)) {
-			strSql += " and eBayAccount = ? ";
+			strSql += " and m.eBayAccount = ? ";
 		}
 		String ebayNO = request.getParameter("ebayNO");
 		if (!isNullorEmpty(ebayNO)) {
-			strSql += " and eBayAccount like ? ";
+			strSql += " and m.eBayAccount like ? ";
 		}
 		String paypal_id = request.getParameter("paypal_id");
 		if (!isNullorEmpty(paypal_id)) {
-			strSql += " and paypal_id like ? ";
+			strSql += " and m.paypal_id like ? ";
 		}
 		String QR_id = request.getParameter("QR_id");
 		if (!isNullorEmpty(QR_id)) {
-			strSql += " and QR_id like ? ";
+			strSql += " and m.QR_id like ? ";
 		}
 		String guestAccount = request.getParameter("guestAccount");
 		if (!isNullorEmpty(guestAccount)) {
@@ -86,35 +86,35 @@ public class COrderFactory extends COrders {
 		}
 		String trackingCode = request.getParameter("trackingCode");
 		if (!isNullorEmpty(trackingCode)) {
-			strSql += " and trackingCode like ? ";
+			strSql += " and m.trackingCode like ? ";
 		}
 		String guestLastName = request.getParameter("guestLastName");
 		if (!isNullorEmpty(guestLastName)) {
-			strSql += " and guestLastName like ? ";
+			strSql += " and g.guestLastName like ? ";
 		}
 		String SKU = request.getParameter("SKU");
 		if (!isNullorEmpty(SKU)) {
-			strSql += " and SKU like ? ";
+			strSql += " and d.SKU like ? ";
 		}
 		String payDateMin = request.getParameter("payDateMin");
 		if (!isNullorEmpty(payDateMin)) {
-			strSql += " and payDate >= ? ";
+			strSql += " and m.payDate >= ? ";
 		}
 		String payDateMax = request.getParameter("payDateMax");
 		if (!isNullorEmpty(payDateMax)) {
-			strSql += " and payDate <= ? ";
+			strSql += " and m.payDate <= ? ";
 		}
 		String productName = request.getParameter("productName");
 		if (!isNullorEmpty(productName)) {
-			strSql += " and productName like ? ";
+			strSql += " and d.productName like ? ";
 		}
 		String shippingDateMin = request.getParameter("shippingDateMin");
 		if (!isNullorEmpty(shippingDateMin)) {
-			strSql += " and payDate >= ? ";
+			strSql += " and m.shippingDate >= ? ";
 		}
 		String shippingDateMax = request.getParameter("shippingDateMax");
 		if (!isNullorEmpty(shippingDateMax)) {
-			strSql += " and payDate <= ? ";
+			strSql += " and m.shippingDate <= ? ";
 		}
 
 		String waitProcess = request.getParameter("waitProcess");
@@ -134,28 +134,28 @@ public class COrderFactory extends COrders {
 		}
 
 		if (!isNullorEmpty(waitProcess)) {
-			strSql += " or orderStatus = '待處理' ";
+			strSql += " or orderStatus = N'待處理' ";
 		}
 		if (!isNullorEmpty(processing)) {
-			strSql += " or orderStatus = '處理中' ";
+			strSql += " or orderStatus = N'處理中' ";
 		}
 		if (!isNullorEmpty(pickup)) {
-			strSql += " or orderStatus = '揀貨中' ";
+			strSql += " or orderStatus = N'揀貨中' ";
 		}
 		if (!isNullorEmpty(shipped)) {
-			strSql += " or orderStatus = '已出貨' ";
+			strSql += " or orderStatus = N'已出貨' ";
 		}
 		if (!isNullorEmpty(finished)) {
-			strSql += " or orderStatus = '已完成' ";
+			strSql += " or orderStatus = N'已完成' ";
 		}
 		if (!isNullorEmpty(refund)) {
-			strSql += " or orderStatus = '退款' ";
+			strSql += " or orderStatus = N'退款' ";
 		}
 		if (!isNullorEmpty(others)) {
-			strSql += " or orderStatus = '其他' ";
+			strSql += " or orderStatus = N'其他' ";
 		}
 		if (!isNullorEmpty(deducted)) {
-			strSql += " or orderStatus = '退貨中' ";
+			strSql += " or orderStatus = N'退貨中' ";
 		}
 
 		String DHL = request.getParameter("DHL");
@@ -468,7 +468,10 @@ public class COrderFactory extends COrders {
 			detail.setQty(rs.getInt(6));
 			detail.setWarehouse(rs.getString(7));
 			detail.setComment(rs.getString(8));
+
 			detail.setItem(Integer.valueOf(rs.getString(9)));
+			System.out.println(Integer.valueOf(rs.getString(9)));
+
 			detail.setQR_id(rs.getString(10));
 			detailList.add(detail);
 		}
@@ -478,8 +481,8 @@ public class COrderFactory extends COrders {
 
 
 	public void updateOrderDetail(HttpServletRequest request, Connection conn) throws SQLException {
-		
-		String[] itemList = request.getParameterValues("item");
+		System.out.println(request.getParameter("item1"));		
+		String[] itemList = request.getParameterValues("item1");
 		String[] SKUList = request.getParameterValues("SKU");
 		String[] invoiceNameList = request.getParameterValues("invoiceName");
 		String[] priceList = request.getParameterValues("price");
@@ -746,51 +749,51 @@ public class COrderFactory extends COrders {
 
 		String eBayAccount = request.getParameter("eBayAccount");
 		if (!isNullorEmpty(eBayAccount)) {
-			strSql += " and eBayAccount = ? ";
+			strSql += " and m.eBayAccount = ? ";
 		};
 		String type = request.getParameter("type");
 		if (!isNullorEmpty(type)) {
-			strSql += " and type like ? ";
+			strSql += " and s.type like ? ";
 		};
 		String owner = request.getParameter("owner");
 		if (!isNullorEmpty(owner)) {
-			strSql += " and owner like ? ";
+			strSql += " and d.owner like ? ";
 		};
 		String QR_id = request.getParameter("QR_id");
 		if (!isNullorEmpty(QR_id)) {
-			strSql += " and QR_id like ? ";
+			strSql += " and m.QR_id like ? ";
 		};
 		String country = request.getParameter("country");
 		if (!isNullorEmpty(country)) {
-			strSql += " and country like ? ";
+			strSql += " and r.country like ? ";
 		};
 		String SKU = request.getParameter("SKU");
 		if (!isNullorEmpty(SKU)) {
-			strSql += " and SKU like ? ";
+			strSql += " and d.SKU like ? ";
 		};
 		String productName = request.getParameter("productName");
 		if (!isNullorEmpty(productName)) {
-			strSql += " and productName like ? ";
+			strSql += " and d.productName like ? ";
 		};
 		String warehouse = request.getParameter("warehouse");
 		if (!isNullorEmpty(warehouse)) {
-			strSql += " and warehouse like ? ";
+			strSql += " and d.warehouse like ? ";
 		};
 		String staffName = request.getParameter("staffName");
 		if (!isNullorEmpty(staffName)) {
-			strSql += " and staffName like ? ";
+			strSql += " and m.staffName like ? ";
 		};
 		String comment = request.getParameter("comment");
 		if (!isNullorEmpty(comment)) {
-			strSql += " and comment like ? ";
+			strSql += " and m.comment like ? ";
 		};
 		String shippingDateMin = request.getParameter("shippingDateMin");
 		if (!isNullorEmpty(shippingDateMin)) {
-			strSql += " and payDate >= ? ";
+			strSql += " and m.shippingDate >= ? ";
 		}
 		String shippingDateMax = request.getParameter("shippingDateMax");
 		if (!isNullorEmpty(shippingDateMax)) {
-			strSql += " and payDate <= ? ";
+			strSql += " and m.shippingDate <= ? ";
 		}
 		
 		LinkedList<ShipmentRecord> shipmentRecord = new LinkedList<ShipmentRecord>();
@@ -870,4 +873,52 @@ public class COrderFactory extends COrders {
 		}
 		return shipmentRecord;
 	}
+	
+	public LinkedList<String> getGuestAccounts (Connection conn) throws Exception {
+		
+		LinkedList<String> guestAccounts = new LinkedList<String>();
+		String strSql = "select guestaccount,count(*)"
+				+ " from orders_master"
+				+ " group by guestaccount"
+				+ " having count(*) > 1";
+		
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		ResultSet rs = ps.executeQuery();
+		
+		while(rs.next()){
+			guestAccounts.add(rs.getString(1));
+		}
+		return guestAccounts;
+	}
+	
+	public LinkedList<COrders> getSimilarOrders (HttpServletRequest request, Connection conn) throws Exception {
+		
+		LinkedList<String> guestAccounts = getGuestAccounts(conn);
+		LinkedList<COrders> SimilarOrders = new LinkedList<COrders>();
+		for(int i=0; i<guestAccounts.size();i++){
+			String strSql = "select QR_id, platform, eBayAccount, guestAccount, payDate, orderStatus, totalPrice"
+					+ " from orders_master"
+					+ " where guestAccount = ?";
+			
+			PreparedStatement ps = conn.prepareStatement(strSql);
+			ps.setString(1, guestAccounts.get(i));
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()){
+				COrders order = new COrders();
+				order.COrderMaster.setQR_id(rs.getString(1));
+				order.COrderMaster.setPlatform(rs.getString(2));
+				order.COrderMaster.setEbayAccount(rs.getString(3));
+				order.COrderMaster.setGuestAccount(rs.getString(4));
+				order.COrderMaster.setPayDate(rs.getDate(5));
+				order.COrderMaster.setOrderStatus(rs.getString(6));
+				order.COrderMaster.setTotalPrice(rs.getDouble(7));
+				SimilarOrders.add(order);
+			}
+		}
+		return SimilarOrders;
+	}
+	
+	
+	
 }
