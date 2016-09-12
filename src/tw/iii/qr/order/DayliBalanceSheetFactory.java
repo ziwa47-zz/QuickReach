@@ -42,10 +42,10 @@ public class DayliBalanceSheetFactory extends COrders {
 				+ " m.paypalNet, m.shippingDate, m.ebayFees, m.order_id,"
 				+ " d.sku, d.productName, d.qty, d.owner, d.price"
 				+ " FROM  orders_master as m inner join"
-				+ "  order_recieverinfo as r using (QR_id) inner join"
-				+ "  orders_detail as d using (QR_id)"
-				+ " where m.orderstatus = '待處理' order by m.QR_id";
-
+				+ "  orders_detail as d  on m.QR_id = d.QR_id left join"
+				+ "  order_recieverinfo as r on m.QR_id = r.QR_id"
+				+ " where m.orderstatus = N'待處理' order by m.QR_id";
+		System.out.println(strSql);
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ResultSet rs = ps.executeQuery();
 		LinkedList<COrders> orderList = new LinkedList<COrders>();

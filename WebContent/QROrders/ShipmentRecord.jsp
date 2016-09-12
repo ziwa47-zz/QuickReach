@@ -35,13 +35,13 @@
   <div class="container">
     <div class="nav" style="background-color:#A45A21;" >
       <ul class="nav nav-tabs">
-        <li><a href="SearchOrder.jsp?begin=0&end=10" style="color:#fff">查詢訂單</a></li>
+        <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
         <li><a href="OrderProcessingPage.jsp?begin=0&end=10">處理中</a></li>
         <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
         <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
-        <li><a href="ShipmentRecord.jsp?begin=0&end=10" >訂單出貨記錄</a></li>
+        <li><a href="ShipmentRecord.jsp?begin=0&end=10" style="color:#fff">訂單出貨記錄</a></li>
       </ul>
     </div>
   </div>
@@ -268,8 +268,7 @@
                 <th>出貨編號</th>
                 <th>類型</th>
                 <th>Ebay Account</th>
-                <th>SKU</th>
-                <th>品名</th>
+                <th>Tracking Code</th>
                 <th>數量</th>
                 <th>寄送國家</th>
                 <th>Owner</th>
@@ -287,14 +286,16 @@
                       <td>${i.getQR_id()}</td>
                       <td>${i.getType()}</td>
                       <td>${i.getEbayAccount()}</td>
-                      <td>${i.getSKU()}</td>
-                      <td>${i.getProductName()}</td>
+                      <td>${i.getTrackingCode()}</td>
                       <td>${i.getQty()}</td>
                       <td>${i.getCountry()}</td>
                       <td>${i.getOwner()}</td>
                       <td>${i.getWarehouse()}</td>
                       <td>${i.getStaffName()}</td>
                       <td>${i.getComment()}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="5"><b>${i.getSKU()}</b>${i.getProductName()}</td>
                     </tr>
                   </c:when>
                   <c:otherwise>
@@ -303,14 +304,16 @@
                       <td>${i.getQR_id()}</td>
                       <td>${i.getType()}</td>
                       <td>${i.getEbayAccount()}</td>
-                      <td>${i.getSKU()}</td>
-                      <td>${i.getProductName()}</td>
+                      <td>${i.getTrackingCode()}</td>
                       <td>${i.getQty()}</td>
                       <td>${i.getCountry()}</td>
                       <td>${i.getOwner()}</td>
                       <td>${i.getWarehouse()}</td>
                       <td>${i.getStaffName()}</td>
                       <td>${i.getComment()}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="5"><b>${i.getSKU()}</b>${i.getProductName()}</td>
                     </tr>
                   </c:otherwise>
                 </c:choose>
@@ -370,8 +373,7 @@
                 <th>出貨編號</th>
                 <th>類型</th>
                 <th>Ebay Account</th>
-                <th>SKU</th>
-                <th>品名</th>
+                <th>TrackingCode</th>
                 <th>數量</th>
                 <th>寄送國家</th>
                 <th>Owner</th>
@@ -389,14 +391,16 @@
                       <td>${i.getQR_id()}</td>
                       <td>${i.getType()}</td>
                       <td>${i.getEbayAccount()}</td>
-                      <td>${i.getSKU()}</td>
-                      <td>${i.getProductName()}</td>
+                      <td>${i.getTrackingCode()}</td>
                       <td>${i.getQty()}</td>
                       <td>${i.getCountry()}</td>
                       <td>${i.getOwner()}</td>
                       <td>${i.getWarehouse()}</td>
                       <td>${i.getStaffName()}</td>
                       <td>${i.getComment()}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="5"><b>${i.getSKU()}</b>${i.getProductName()}</td>
                     </tr>
                   </c:when>
                   <c:otherwise>
@@ -405,14 +409,16 @@
                       <td>${i.getQR_id()}</td>
                       <td>${i.getType()}</td>
                       <td>${i.getEbayAccount()}</td>
-                      <td>${i.getSKU()}</td>
-                      <td>${i.getProductName()}</td>
+                      <td>${i.getTrackingCode()}</td>
                       <td>${i.getQty()}</td>
                       <td>${i.getCountry()}</td>
                       <td>${i.getOwner()}</td>
                       <td>${i.getWarehouse()}</td>
                       <td>${i.getStaffName()}</td>
                       <td>${i.getComment()}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="5"><b>${i.getSKU()}</b>${i.getProductName()}</td>
                     </tr>
                   </c:otherwise>
                 </c:choose>
