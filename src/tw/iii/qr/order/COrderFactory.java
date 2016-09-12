@@ -134,28 +134,28 @@ public class COrderFactory extends COrders {
 		}
 
 		if (!isNullorEmpty(waitProcess)) {
-			strSql += " or orderStatus = '待處理' ";
+			strSql += " or orderStatus = N'待處理' ";
 		}
 		if (!isNullorEmpty(processing)) {
-			strSql += " or orderStatus = '處理中' ";
+			strSql += " or orderStatus = N'處理中' ";
 		}
 		if (!isNullorEmpty(pickup)) {
-			strSql += " or orderStatus = '揀貨中' ";
+			strSql += " or orderStatus = N'揀貨中' ";
 		}
 		if (!isNullorEmpty(shipped)) {
-			strSql += " or orderStatus = '已出貨' ";
+			strSql += " or orderStatus = N'已出貨' ";
 		}
 		if (!isNullorEmpty(finished)) {
-			strSql += " or orderStatus = '已完成' ";
+			strSql += " or orderStatus = N'已完成' ";
 		}
 		if (!isNullorEmpty(refund)) {
-			strSql += " or orderStatus = '退款' ";
+			strSql += " or orderStatus = N'退款' ";
 		}
 		if (!isNullorEmpty(others)) {
-			strSql += " or orderStatus = '其他' ";
+			strSql += " or orderStatus = N'其他' ";
 		}
 		if (!isNullorEmpty(deducted)) {
-			strSql += " or orderStatus = '退貨中' ";
+			strSql += " or orderStatus = N'退貨中' ";
 		}
 
 		String DHL = request.getParameter("DHL");
@@ -468,7 +468,7 @@ public class COrderFactory extends COrders {
 			detail.setQty(rs.getInt(6));
 			detail.setWarehouse(rs.getString(7));
 			detail.setComment(rs.getString(8));
-			detail.setItem(Integer.valueOf(rs.getString(9)));
+			detail.setItem(rs.getInt(9));
 			detail.setQR_id(rs.getString(10));
 			detailList.add(detail);
 		}
@@ -871,19 +871,51 @@ public class COrderFactory extends COrders {
 		return shipmentRecord;
 	}
 	
-	public LinkedList<COrders> getSimilarOrders (HttpServletRequest request, Connection conn) throws Exception {
+	public LinkedList<String> getGuestAccounts (Connection conn) throws Exception {
 		
-		String strSql = "select "
-				+ " where ";
+		LinkedList<String> guestAccounts = new LinkedList<String>();
+		String strSql = "select guestaccount,count(*)"
+				+ " from orders_master"
+				+ " group by guestaccount"
+				+ " having count(*) > 1";
 		
 		PreparedStatement ps = conn.prepareStatement(strSql);
-
 		ResultSet rs = ps.executeQuery();
 		
 		while(rs.next()){
-			
+			guestAccounts.add(rs.getString(1));
 		}
-		return null;
-		
+		return guestAccounts;
 	}
+	
+	public LinkedList<COrders> getSimilarOrders (HttpServletRequest request, Connection conn) throws Exception {
+		
+		LinkedList<String> guestAccounts = getGuestAccounts(conn);
+		LinkedList<COrders> SimilarOrders = new LinkedList<COrders>();
+		for(int i=0; i<guestAccounts.size();i++){
+			String strSql = "select QR_id, platform, eBayAccount, guestAccount, payDate, orderStatus, totalPrice"
+					+ " from orders_master"
+					+ " where guestAccount = ?";
+			
+			PreparedStatement ps = conn.prepareStatement(strSql);
+			ps.setString(1, guestAccounts.get(i));
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()){
+				COrders order = new COrders();
+				order.COrderMaster.setQR_id(rs.getString(1));
+				order.COrderMaster.setPlatform(rs.getString(2));
+				order.COrderMaster.setEbayAccount(rs.getString(3));
+				order.COrderMaster.setGuestAccount(rs.getString(4));
+				order.COrderMaster.setPayDate(rs.getDate(5));
+				order.COrderMaster.setOrderStatus(rs.getString(6));
+				order.COrderMaster.setTotalPrice(rs.getDouble(7));
+				SimilarOrders.add(order);
+			}
+		}
+		return SimilarOrders;
+	}
+	
+	
+	
 }
