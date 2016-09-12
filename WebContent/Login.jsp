@@ -6,6 +6,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Login Page</title>
 
+<% 
+if(session.getAttribute("account")!=null){
+
+session.invalidate();
+
+}
+%>
 </head>
 
 <body>
