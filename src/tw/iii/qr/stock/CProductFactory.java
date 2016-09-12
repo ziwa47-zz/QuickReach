@@ -22,33 +22,30 @@ public class CProductFactory extends CProduct {
 
 		PreparedStatement ps = null;
 		if (!isNullorEmpty(request.getParameter("pname"))) {
-			strsql += " and p_name like ? ";
+			strsql += " and p.p_name like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("brand"))) {
-			strsql += " and brand like ? ";
+			strsql += " and p.brand like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("subbrand"))) {
-			strsql += " and subbrand like ? ";
+			strsql += " and p.subbrand like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("sku"))) {
-			strsql += " and sku like ? ";
+			strsql += " and p.sku like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("spec"))) {
-			strsql += " and spec like ? ";
+			strsql += " and p.spec like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("color"))) {
-			strsql += " and color like ? ";
+			strsql += " and p.color like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("date1"))) {
-			strsql += " and createDate  >= ? ";
+			strsql += " and p.createDate  >= ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("date2"))) {
-			strsql += " and createDate  <= ? ";
+			strsql += " and p.createDate  <= ? ";
 		}
-		if (!isNullorEmpty(request.getParameter("location1")) && !isNullorEmpty(request.getParameter("location2"))) {
-			strsql += " and warehouseposition  <= ? ";
-			strsql += " and warehouseposition  >= ? ";
-		}
+
 		System.out.println(strsql);
 		ps = conn.prepareStatement(strsql);
 		if (!isNullorEmpty(request.getParameter("pname"))) {
@@ -84,12 +81,7 @@ public class CProductFactory extends CProduct {
 			ps.setString(param, request.getParameter("date2"));
 			param++;
 		}
-		if (!isNullorEmpty(request.getParameter("location1")) && !isNullorEmpty(request.getParameter("location2"))) {
-			ps.setString(param, request.getParameter("location1"));
-			param++;
-			ps.setString(param, request.getParameter("location2"));
-			param++;
-		}
+
 		ResultSet rs = ps.executeQuery();
 		LinkedList<CProduct> productall = new LinkedList<CProduct>();
 		CProduct product = new CProduct();
