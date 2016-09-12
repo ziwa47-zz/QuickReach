@@ -42,11 +42,10 @@ public class OrdersServlet extends HttpServlet {
 	}
 
 	private void processSearchOrders(HttpServletRequest request, HttpServletResponse response) throws Exception {
-	
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
-		
+		System.out.println(request.getParameter("item1"));
 		Connection conn = new DataBaseConn().getConn();
 		COrderFactory OFactory = new COrderFactory();
 		LinkedList<COrders> orderProcessingPageSearch = OFactory.orderProcessingPageSearch(request, conn);
@@ -54,6 +53,8 @@ public class OrdersServlet extends HttpServlet {
 		session.setAttribute(sessionRecord.getOrdersResult(), orderProcessingPageSearch);
 		//conn.close();
 		String submit = request.getParameter("submit");
+		System.out.println(request.getParameter("submit"));
+		System.out.println(request.getParameter("platform"));
 		
 				switch(submit){
 				case "orderSearch":
@@ -78,6 +79,7 @@ public class OrdersServlet extends HttpServlet {
 					break;
 				case "updateOrder":
 					//OFactory.updateOrderDetail(request, conn);
+					System.out.println((String[])request.getParameterValues("item1"));
 					OFactory.updateOrderDetail(request, conn);
 					conn.close();
 					response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + request.getParameter("QR_id"));
