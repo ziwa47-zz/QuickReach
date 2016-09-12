@@ -86,22 +86,21 @@ LinkedList<CProduct> list =  new LinkedList<CProduct>();
 list = blf.getTotalBundles();
 request.setAttribute("bundlesMaster",list);    
 %>    
-<div class="panel-group" id="accordion">  
   <c:forEach var="i" varStatus="check" items="${bundlesMaster}" begin="0" step="1">
+<div class="panel-group" id="accordion">  
+
 	  <div class="panel panel-default">
 	          <div class="panel-heading">
 	            <h4 class="panel-title">
-	              <div class="col-md-3 text-right well-sm label-tag">
 	              	<a data-toggle="collapse" data-parent="#accordion" href="#${i.getSKU()}">
 	              		<input type="hidden" name="${i.getSKU()}${'sku'}" value="${i.getSKU()}">${i.getSKU()}	
 	              	</a>
-	              </div>
-				  <div class="col-md-3 text-right well-sm label-tag"><input type="hidden" name="${i.getSKU()}${'name'}" value="${i.getP_name()}">${i.getP_name()}</div>
-				  <div class="col-md-3 text-right well-sm label-tag"><input type="hidden" name="${i.getSKU()}${'comment'}" value="${i.getComment()}">${i.getComment()}</div>
-				  <div class="col-md-3 text-right well-sm label-tag"><button value="${i.getSKU()}" type="submit" name="smt">查看</button></div>
+				  <input type="hidden" name="${i.getSKU()}${'name'}" value="${i.getP_name()}">${i.getP_name()}
+				  <input type="hidden" name="${i.getSKU()}${'comment'}" value="${i.getComment()}">${i.getComment()}
+				  <button class="pull-right" value="${i.getSKU()}" type="submit" name="smt">查看</button>
 	            </h4>
 	          </div>
-	     <div id="${i.getSKU()}" class="panel-collapse collapse in">
+	     <div id="${i.getSKU()}" class="panel-collapse collapse">
 	         <div class="panel-body">
 		    	<div class="container-fluid form-horizontal">
 <c:set var="msku" scope="session" value="${i.getSKU()}"/>		    	
@@ -116,18 +115,18 @@ request.setAttribute("bundlesDetail",(LinkedList<String[]>)blf.bundlesList);
 %>	    	
 					<c:forEach var="i" varStatus="check" items="${bundlesDetail}" begin="0" step="1">
 			    		<div class="row">
-				    		<div class="col-md-3 text-right well-sm label-tag">${i[0]}</div>
-				    		<div class="col-md-3 text-right well-sm label-tag">${i[1]}</div>
-				    		<div class="col-md-3 text-right well-sm label-tag">${i[2]}</div>
+				    		<div class="col-md-3">${i[0]}</div>
+				    		<div class="col-md-8">${i[1]}</div>
+				    		<div class="col-md-1">${i[2]}</div>
 			 			</div>
 		    		</c:forEach> 
 		  		</div>
 	  		</div>
 	  	</div>
 	  </div>
-  </c:forEach>
+
 </div>
-  
+    </c:forEach>
   
 	  </fieldset>
     </form>

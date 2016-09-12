@@ -62,15 +62,16 @@ conn.close();
 </div>
 
   <div class="container table-responsive" style="background: #D9A56B; border-radius:20px;">
-  	<form name="searchform" method="post" action="../OrdersServlet" class="form-inline container" 
+  	<form name="searchform" method="post" action="/OrdersServlet" class="form-inline container" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
+  	
   	<div class="row">
       <label for="inputPassword" class="col-md-2 control-label text-left">編輯模式</label>
       <div class="col-md-4">
         <label class="radio-inline"><input type="radio" name="optionsRadios" id="optionsRadios1">開啟</label>
         <label class="radio-inline"><input type="radio" name="optionsRadios" id="optionsRadios2">關閉</label>
     	<label class="radio-inline">
-    	<button type="submit" name="submit" value="updateOrder" class="btn-lg btn-success">更新商品資料</button>
+    	 <button type="submit" name="submit" value="updateOrder" class="btn-lg btn-success">更新訂單資料</button>
       	</label>
       </div>
     </div>
@@ -197,7 +198,7 @@ conn.close();
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>訂單編號</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getQR_id()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="QR_id" value="${result.getCOrderMaster().getQR_id()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>公司</h4></div>
@@ -205,7 +206,7 @@ conn.close();
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>平台</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getPlatform()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="platform" value="${result.getCOrderMaster().getPlatform()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>ebay 帳號</h4></div>
@@ -335,16 +336,18 @@ conn.close();
 		            <td><input class="" type="text" name="invoicePrice" value="${i.getInvoicePrice()}"></td>
 		            <td><input class="" type="text" name="qty" value="${i.getQty()}"></td>
 		            <td>備註:<input class="" type="text" name="comment" value="${i.getComment()}">
-		            <input type="hidden" name="item" value="${i.getItem()}">
+		            <input type="hidden" name="item1" value="${i.getItem()}">
+		            <p>${i.getItem()}</p>
 		            </td>
 		          </tr>
 		        </tbody>
 		        </c:forEach>
-		        <input type="hidden" name="QR_id" value="${result.getCOrderMaster().getQR_id()}">
+		        
 		      </table>
             </div>
           </div>
         </div>
+       
       </div>
     </fieldset>
     </form>
