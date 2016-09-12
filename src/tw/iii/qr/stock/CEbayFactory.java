@@ -33,7 +33,7 @@ public class CEbayFactory extends CEbay {
 		ps.setString(1, request.getParameter("ebayId"));	//1st
 		ps.setString(2, request.getParameter("ebayToken"));
 		ps.setString(3, request.getParameter("endToken"));
-		ps.setString(4, request.getParameter("paypalAcconut"));
+		ps.setString(4, request.getParameter("paypalAccount"));
 		ps.setString(5, request.getParameter("correspondCompany"));
 		ps.setString(6, request.getParameter("startTime")); //6th
 		ps.setString(7, request.getParameter("lastFixTime")); 
@@ -81,39 +81,42 @@ public class CEbayFactory extends CEbay {
 	}
 	
 	public void updateEbayAccount (HttpServletRequest request, Connection conn) throws SQLException{
-		String strsql = "UPDATE quickreach.ebayaccount SET"	
-			 + "ebayToken = ?," + "endToken = ?," + "paypalAccount = ?,"
-			 + "correspondCompany = ?," + "startTime = ?," + "lastFixTime = ?,"	
-			 + "status = ?," + "comment = ?," + "systemFeedback = ?,"
-			 + "where ebayId = ?"; //(10個)
+		String strsql = "UPDATE quickreach.ebayaccount SET "	
+			 + " ebayToken = ?," + "endToken = ?," + "paypalAccount = ?," 
+			 + " correspondCompany = ?," + "startTime = ?," + "lastFixTime = ?,"	
+			 + " status = ?," + "comment = ?," + "systemFeedback = ?"  
+			 + " where ebayId = ?"; //(10個)
 	
 		PreparedStatement ps = null;
 		System.out.print(strsql); 
 		ps = conn.prepareStatement(strsql);
 		
-		ps.setString(1, "ebayToken");	//1st
-		ps.setString(2, "endToken");	
-		ps.setString(3, "paypalAccount");	
-		ps.setString(4, "correspondCompany");	
-		ps.setString(5, "startTime");	
-		ps.setString(6, "lastFixTime");//6th
-		ps.setString(7, "status");
-		ps.setString(8, "comment");
-		ps.setString(9, "systemFeedback");	
-		ps.setString(10, "ebayId");	//10th
-		
-//		ps.setString(1, request.getParameter("ebayToken")); //1st
-//		ps.setString(2, request.getParameter("endToken"));
-//		ps.setString(3, request.getParameter("paypalAcconut"));
-//		ps.setString(4, request.getParameter("correspondCompany"));
-//		ps.setString(5, request.getParameter("startTime"));
-//		ps.setString(6, request.getParameter("lastFixTime"));  //6th
-//		ps.setString(7, request.getParameter("status"));
-//		ps.setString(8, request.getParameter("comment"));
-//		ps.setString(9, request.getParameter("systemFeedback"));
-//		ps.setString(10, request.getParameter("ebayId")); //10th
+		ps.setString(1, request.getParameter("ebayToken")); //1st
+		ps.setString(2, request.getParameter("endToken"));
+		ps.setString(3, request.getParameter("paypalAccount"));
+		ps.setString(4, request.getParameter("correspondCompany"));
+		ps.setString(5, request.getParameter("startTime"));
+		ps.setString(6, request.getParameter("lastFixTime"));  //6th
+		ps.setString(7, request.getParameter("status"));
+		ps.setString(8, request.getParameter("comment"));
+		ps.setString(9, request.getParameter("systemFeedback"));
+		ps.setString(10, request.getParameter("ebayId")); //10th
 		
 		int i =ps.executeUpdate();
+		
+//		ps.setString(1, "ebayToken");	//1st
+//		ps.setString(2, "endToken");	
+//		ps.setString(3, "paypalAccount");	
+//		ps.setString(4, "correspondCompany");	
+//		ps.setString(5, "startTime");	
+//		ps.setString(6, "lastFixTime");//6th
+//		ps.setString(7, "status");
+//		ps.setString(8, "comment");
+//		ps.setString(9, "systemFeedback");	
+//		ps.setString(10, "ebayId");	//10th
+					
+		
+		
 		
 	}
 	
