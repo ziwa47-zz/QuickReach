@@ -54,15 +54,15 @@ session.setAttribute("getCompetenceLv", list);
   	<div class="container">
     	<div class="navbar-left" style="background-color:#BCF1E5;" >
         	<ul class="nav nav-tabs">
-              <li class="" style="background-color:#1CAF9A"><a href="Account.jsp" style="color:#FFFFFF">帳號管理</a></li>
+              <li class="" style="background-color: #1CAF9A"><a href="./accountManage.jsp" style="color:#fff">員工帳號管理</a></li>
             </ul>
         </div>
     </div>
     <div class="container">
    	  <div class="nav" style="background-color:#1CAF9A;" >
         	<ul class="nav nav-tabs">
-              <li class="" style="background-color:#1CAF9A"><a href="Account.jsp" style="color:#FFFFFF">新增帳號</a></li>
-              <li><a href="accountManage.jsp" style="color:#000000">修改帳號資料</a></li>
+        	  <li ><a href="./accountManage.jsp">員工帳號管理</a></li>
+              <li  class="" style="background-color: #1CAF9A"><a href="./Account.jsp"  style="color: #fff">新增員工帳號</a></li>
             </ul>
         </div>
     </div>
@@ -71,13 +71,11 @@ session.setAttribute("getCompetenceLv", list);
   
   <div class="container container-fluid breadcrumbBox">
     <ol class="breadcrumb" >
-          <li><a href="../QRMain/HomePage.jsp" >首頁</a></li>
-          <li class="active" style="display:"><a href="accountManage.jsp">員工管理</a></li>
-          <li><a href="Account.jsp">新增帳號</a></li>
+          <li><a href="/QRMain/HomePage.jsp" >首頁</a></li>
+          <li class="active" style="display:"><a href="./accountManage.jsp">員工帳號管理</a></li>
+          <li><a href="./Account.jsp">新增員工帳號</a></li>
       </ol>
-      <h3>新增帳號</h3>
-      <hr/>
-  </div>
+      </div>
   
   <div class="container" >
   	<form name="searchform" method="post" action="QRAccountServlet.do" style="font-size: 100%; vertical-align: baseline;" class=" form-group container">

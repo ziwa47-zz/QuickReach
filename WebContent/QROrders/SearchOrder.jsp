@@ -331,7 +331,7 @@
                   <tr style="background-color:#D4F4D8">
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td nowrap>${i.getCOrderMaster().getOrder_id()}
+                    <td nowrap>${i.getCOrderMaster().getQR_id()}
                     <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
@@ -357,7 +357,7 @@
                   <tr>
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td nowrap>${i.getCOrderMaster().getOrder_id()}
+                    <td nowrap>${i.getCOrderMaster().getQR_id()}
                     <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
@@ -449,7 +449,7 @@
                   <tr style="background-color:#D4F4D8">
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td nowrap>${i.getCOrderMaster().getOrder_id()}
+                    <td nowrap>${i.getCOrderMaster().getQR_id()}
                     <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
@@ -475,8 +475,7 @@
                   <tr>
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td nowrap>${i.getCOrderMaster().getOrder_id()}
-                      <input type="hidden" name="orderId" value="${i.getCOrderMaster().getOrder_id()}"></td>
+                    <td nowrap>${i.getCOrderMaster().getQR_id()}
                     <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
