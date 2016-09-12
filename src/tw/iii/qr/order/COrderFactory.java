@@ -870,4 +870,20 @@ public class COrderFactory extends COrders {
 		}
 		return shipmentRecord;
 	}
+	
+	public LinkedList<COrders> getSimilarOrders (HttpServletRequest request, Connection conn) throws Exception {
+		
+		String strSql = "select "
+				+ " where ";
+		
+		PreparedStatement ps = conn.prepareStatement(strSql);
+
+		ResultSet rs = ps.executeQuery();
+		
+		while(rs.next()){
+			
+		}
+		return null;
+		
+	}
 }
