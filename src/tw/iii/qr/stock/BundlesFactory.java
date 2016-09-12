@@ -1,4 +1,4 @@
-package tw.iii.qr.stock;
+﻿package tw.iii.qr.stock;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -176,13 +176,11 @@ public class BundlesFactory {
 		return lcp;
 	}
 	
-	public LinkedList<String[]> getBundlesInfo(){
-		return bundlesList;
+	public LinkedList<String[]> getBundlesInfo(){		
+		return bundlesList;	
 	}
 	
-	public void detailSetNULL(){
-		bundlesList = new LinkedList<String[]>();
-	}
+
 	
 	public void addItem(String[] a){
 		

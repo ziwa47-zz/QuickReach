@@ -34,14 +34,14 @@ public class CompetenceInsert extends HttpServlet {
 		a = request.getParameter("CompetenceLv");
 		if(submit.equals("insert")){
 			processInsert(request, response);
-			response.sendRedirect("CompetenceInsert.jsp");
+			//response.sendRedirect("CompetenceInsert.jsp");
 		}if(submit.equals("delete")){
 			processDelete(request, response);
-			response.sendRedirect("Competence.jsp");
+			//response.sendRedirect("Competence.jsp");
 		}else{			
 			processDelete(request, response);
 			processInsert(request, response);
-			response.sendRedirect("Competence.jsp");
+			//response.sendRedirect("Competence.jsp");
 		}
 	}
 
@@ -52,6 +52,7 @@ public class CompetenceInsert extends HttpServlet {
 				
 		try {
 			cs.competenceDelete(a);
+			response.sendRedirect("Competence.jsp");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -149,7 +150,7 @@ public class CompetenceInsert extends HttpServlet {
 
 				cs.insetCompetence(ct);
 				//out.write("新增成功");
-				
+				response.sendRedirect("Competence.jsp");
 				//response.sendRedirect("CompetenceInsert.jsp");
 				
 			} else {
