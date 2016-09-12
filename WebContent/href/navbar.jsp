@@ -107,18 +107,19 @@
 </script>
 </head>
 <body>
+
 <%
- String ac =(String)session.getAttribute("account");
- if(ac==null || "".equals(ac)){
- 	if("0".equals(request.getParameter("p"))){
-		
- 	}else{
- 		response.sendRedirect("/Login.jsp?p=0");
- 	}
-	
- }
+
+if(!"0".equals(request.getParameter("p"))){
+	if (session.getAttribute("account")==null){
+		response.sendRedirect("/Login.jsp?p=0");
+	}
+}
+
 
 %>
+
+
 
 	<nav class="navbar" style="background-color: #000000">
 	<div class="container-fluid">
@@ -131,17 +132,17 @@
 				<li><a href="/QRProduct/SearchStockPage.jsp">商品/庫存 </a></li>
 				<li><a href="/QROrders/SearchOrder.jsp">訂單資訊</a></li>
 				<li><a href="/QREBayAccount/eBayAccount.jsp">Ebay帳號管理</a></li>
-				<li><a href="/QREmployee/Account.jsp">員工管理</a></li>
+				<li><a href="/QREmployee/accountManage.jsp">員工管理</a></li>
 				<li><a href="/QRAccess/Competence.jsp">權限管理</a></li>
 			</ul>
 
 			<ul class="nav navbar-right">
 				<c:if test="${account != null}">
-					<li><a href="/Login.jsp">${staffName}${'('}${account}${')'}<span
+					<li><a href="/Login.jsp?p=0" >${staffName}${'('}${account}${')'}<span
 							class="glyphicon glyphicon-log-in"></span> Logout</a></li>
 				</c:if>	
 				<c:if test="${account == null}">
-					<li><a href="/Login.jsp"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+					<li><a href="/Login.jsp?p=0" ><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 				</c:if>	
 			</ul>
 		</div>

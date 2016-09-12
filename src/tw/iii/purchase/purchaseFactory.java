@@ -435,8 +435,8 @@ public class purchaseFactory {
 	public LinkedList<Cpurchase_detail> details(String sku, Connection conn) {
 		LinkedList<Cpurchase_detail> list = new LinkedList<>();
 		Cpurchase_detail d = new Cpurchase_detail();
-		String strsql = "select m.purchaseId,m.stockStatus,qty,date,m.warehouse from purchaselog_master as m inner join purchaselog_detail  where 1 = 1 "
-				+ " and sku = ?";
+		String strsql = "select m.purchaseId,m.stockStatus,qty,date,m.warehouse,d.warehousePosition1,d.warehousePosition2 from purchaselog_master as m inner join purchaselog_detail as d  on m.purchaseId=d.purchaseId where 1 = 1 "+
+		" and sku = ? ";
 		// if(check1=="on" ){
 		// strsql += " and stockStatus = 1";
 		// }
@@ -455,10 +455,15 @@ public class purchaseFactory {
 					d.setStockStatus("進貨");
 				} else if ("2".equals(rs.getString(2))) {
 					d.setStockStatus("出貨");
+				}else if ("4".equals(rs.getString(2))) {
+					d.setStockStatus("轉倉");
 				}
 				d.setQty(rs.getInt(3));
 				d.setDate(rs.getDate(4));
 				d.setWarehouse(rs.getString(5));
+				d.setWarehousePosition(rs.getString(6));
+				d.setWarehousePosition2(rs.getString(7));
+			
 				list.add(d);
 			}
 		} catch (SQLException e) {

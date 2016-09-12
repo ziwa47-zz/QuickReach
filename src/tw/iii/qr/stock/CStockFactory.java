@@ -77,28 +77,28 @@ public class CStockFactory extends CStock {
 
 		PreparedStatement ps = null;
 		if (!isNullorEmpty(request.getParameter("pname"))) {
-			strsql += " and p_name like ? ";
+			strsql += " and p.p_name like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("brand"))) {
-			strsql += " and brand like ? ";
+			strsql += " and p.brand like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("subbrand"))) {
-			strsql += " and subbrand like ? ";
+			strsql += " and p.subbrand like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("sku"))) {
-			strsql += " and sku like ? ";
+			strsql += " and p.sku like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("spec"))) {
-			strsql += " and spec like ? ";
+			strsql += " and p.spec like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("color"))) {
-			strsql += " and color like ? ";
+			strsql += " and p.color like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("date1"))) {
-			strsql += " and createDate  >= ? ";
+			strsql += " and p.createDate  >= ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("date2"))) {
-			strsql += " and createDate  <= ? ";
+			strsql += " and p.createDate  <= ? ";
 		}
 //		if (!isNullorEmpty(request.getParameter("location1")) && !isNullorEmpty(request.getParameter("location2"))) {
 //			strsql += " and warehouseposition  <= ? ";

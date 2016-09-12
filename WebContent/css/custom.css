@@ -66,3 +66,8 @@
 	border-color: black;
 	border-style: solid;
 }
+
+.form-inline.required .control-label:after {
+	  content:"*";
+	  color:red;
+	}
