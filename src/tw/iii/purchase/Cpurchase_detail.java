@@ -8,6 +8,9 @@ public class Cpurchase_detail  extends Cpurchase_master{
 	private String P_name;
 	private String warehousePosition;
 	private String warehousePosition2;
+	
+	private String newWarehousePosition;
+	private String newWarehousePosition2;
 	private int qty;
 	private double price ;
 	private String comment;
@@ -44,6 +47,22 @@ public class Cpurchase_detail  extends Cpurchase_master{
 	public void setWarehousePosition2(String warehousePosition2) {
 		this.warehousePosition2 = warehousePosition2;
 	}
+	
+	
+	
+	public String getNewWarehousePosition() {
+		return newWarehousePosition;
+	}
+	public void setNewWarehousePosition(String newWarehousePosition) {
+		this.newWarehousePosition = newWarehousePosition;
+	}
+	public String getNewWarehousePosition2() {
+		return newWarehousePosition2;
+	}
+	public void setNewWarehousePosition2(String newWarehousePosition2) {
+		this.newWarehousePosition2 = newWarehousePosition2;
+	}
+	
 	public int getQty() {
 		return qty;
 	}

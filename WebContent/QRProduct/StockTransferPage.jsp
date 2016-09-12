@@ -36,8 +36,8 @@ function warehouseChange() {
 		success: function(response){
 			
 			var date = $("#selectDate").val();
-		        realPurchaseId = date+response.warehousePurchaseId
-				$("#purchaseId").val(realPurchaseId);	
+		        realPurchaseId = date+response.stockTransferId
+				$("#stockTransferId").val(realPurchaseId);	
 		        
 		},
 	})
@@ -85,7 +85,7 @@ function test() {
      
 
 	$(function() {		
-				//進場先檢查purchaseId
+				//進場先檢查stockTransferId
 		warehouseChange()
 		//聽說是自動驗證
 		$("#listForm").validate({
@@ -245,8 +245,15 @@ function test() {
 	                        +'           <div class="row">'
 	                        +'         	<div class="col-md-8 form-group ">'
 	                        +'             <div class="row">'
-	                        +'              <div class="col-md-2"><h5><label for="focusedInput " >櫃位：</label></h5></div>'
+	                        +'              <div class="col-md-2"><h5><label for="focusedInput " >原櫃位：</label></h5></div>'
 	                        +'              <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text"></div>'
+	                        +'            </div>'
+	                        +'                </div>'
+	                        
+	                        +'         	<div class="col-md-8 form-group ">'
+	                        +'             <div class="row">'
+	                        +'              <div class="col-md-2"><h5><label for="focusedInput " >新櫃位：</label></h5></div>'
+	                        +'              <div class="col-md-8"><input class="form-control" style="width:89px;"id="newWarehousePositionOne'+dynamicId+'" name="newWarehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:89px;" id="newWarehousePositionTwo'+dynamicId+'" name="newWarehousePositionTwo'+dynamicId+'" type="text"></div>'
 	                        +'            </div>'
 	                        +'                </div>'
 	                                    
@@ -357,7 +364,7 @@ display: block;
 			
 			%>
 			<fieldset class="container-fluid" style="padding: 0 30 0 0;">
-				<legend>進貨頁面</legend>
+				<legend>轉倉頁面</legend>
 				<input type="hidden">
 
 				<div class="row">
@@ -374,7 +381,7 @@ display: block;
 						</div>
 					</div>
 <!-- 					style="display:none" -->
-					<div  class="col-md-4 form-group " style="display:none">
+					<div  class="col-md-4 form-group ">
 						<div class="row">
 							<div class="col-md-4">
 								<h5>
@@ -382,7 +389,7 @@ display: block;
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" name="purchaseId" id="purchaseId" type="text" value="${purchaseId}" readonly>
+								<input class="form-control" name="stockTransferId" id="stockTransferId" type="text" value="" readonly>
 							</div>
 						</div>
 					</div>
@@ -439,7 +446,7 @@ display: block;
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >新倉別：</label></h5></div>
                     <div class="col-md-8">
-                      <select class="form-control" name="warehouse" id="warehouse"  onchange="warehouseChange()">
+                      <select class="form-control" name="newWarehouse" id="newWarehouse"  onchange="warehouseChange()">
                     
                     <c:forEach var = "i" begin="0" step="1" items="${warehouseList}">
                     
@@ -555,8 +562,15 @@ display: block;
             <div class="row">
             	<div class="col-md-8 form-group ">
                   <div class="row">
-                    <div class="col-md-2"><h5><label for="focusedInput " >櫃位：</label></h5></div>
+                    <div class="col-md-2"><h5><label for="focusedInput " >原櫃位：</label></h5></div>
                     <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne1" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo1" name="warehousePositionTwo1" type="text"></div>
+                  </div>
+                </div>
+                
+                <div class="col-md-8 form-group ">
+                  <div class="row">
+                    <div class="col-md-2"><h5><label for="focusedInput " >新櫃位：</label></h5></div>
+                    <div class="col-md-8"><input class="form-control" style="width:89px;"id="newWarehousePositionOne1" name="newWarehousePositionOne1" type="text"> - <input class="form-control" style="width:89px;" id="newWarehousePositionTwo1" name="newWarehousePositionTwo1" type="text"></div>
                   </div>
                 </div>
                 
@@ -583,7 +597,7 @@ display: block;
 					<br />
 
 					<div class="row text-center" id="formSubmit">
-						<button type="submit" id="submitButton" name="submitButton" class="btn-lg btn-success" >送出</button>
+						<button type="submit" id="submitButton" name="submitButton" class="btn-lg btn-success" value="stockTransfer">送出</button>
 					</div>
 				</div>
 			</fieldset>
