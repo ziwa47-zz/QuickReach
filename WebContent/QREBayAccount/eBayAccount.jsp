@@ -11,30 +11,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>eBayAccount</title>
-
-<!-- Bootstrap -->
-	<link href="./css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="./css/smoothness/jquery-ui.css">
-
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="./js/bootstrap.js"></script>
-
-    
-    <script src="./js/jquery-1.12.4.min.js"></script>
-    <script src="./js/jquery-ui.min.js"></script>
-    <script src="./js/jquery.ui.datepicker-zh-TW.js"></script>
-    
-
-<script type="text/javascript">
-
-</script>
-
 </head>
 
 
 <body>
 <%@include file="../href/navbar.jsp"%>
-
 <%
 Connection conn1 = new DataBaseConn().getConn();
 LinkedList<CEbay> ebay1 = getebay.searchEbayAc(request,conn1);
@@ -43,16 +24,16 @@ conn1.close();
 %>
 <div class="nav">
   <div class="container">
-    <div class="navbar-left" style="background-color:#E48EB9;" >
+    <div class="navbar-left" style="background-color:#C7AAE4;" >
       <ul class="nav nav-tabs">
-        <li><a href="./eBayAccount.jsp">eBay帳號管理</a></li>
+        <li><a href="./eBayAccount.jsp" style="color:#fff">eBay帳號管理</a></li>
       </ul>
     </div>
   </div>
   <div class="container">
     <div class="nav" style="background-color:#984AC0;" >
       <ul class="nav nav-tabs">
-        <li ><a href="./eBayAccount.jsp">帳號列表</a></li>
+        <li ><a href="./eBayAccount.jsp" style="color:#fff">帳號列表</a></li>
         <!--               <li style="background-color:#1CAF9A"><a href="purchasePage.jsp" style="color:#FFFFFF">進貨</a></li> -->
         <li><a href="./addAccount.jsp">新增eBay帳號</a></li>
       </ul>
