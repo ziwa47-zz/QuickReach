@@ -37,16 +37,22 @@
 <script type="text/javascript">
 	$(function() {
 		//日期選擇器
-		$(".yymmdd").datepicker({
-			dateFormat : 'yymmdd',
+	 	$(".yymmdd").datepicker({
+			dateFormat : 'yy-mm-dd',
 			
-		});
+		}); 
 		
+		$("input[name=checkupdate]").datepicker({
+			dateFormat : 'yy-mm-dd',
+		});
+		$("input[name=cdate]").datepicker({
+			dateFormat : 'yy-mm-dd',
+		});
 		$("input[name=dateMin]").datepicker({
-			dateFormat : 'yymmdd',
+			dateFormat : 'yy-mm-dd',
 		});
 		$("input[name=dateMax]").datepicker({
-			dateFormat : 'yymmdd',
+			dateFormat : 'yy-mm-dd',
 
 		});
 		 $("input[name=date1]").datepicker({dateFormat : 'yy/mm/dd'});
@@ -92,22 +98,25 @@
 };
 	$(function () {
 	$("button[name=send]").click(function() {
-		confirm("確認是否送出訂單");
+		bool = confirm("確認是否送出訂單");
+		if(!bool){
+			window.location = './';
+		}
 	});
 });
 </script>
 </head>
 <body>
 <%
-// String ac =(String)session.getAttribute("account");
-// if(ac==null || "".equals(ac)){
-// 	if("0".equals(request.getParameter("p"))){
+ String ac =(String)session.getAttribute("account");
+ if(ac==null || "".equals(ac)){
+ 	if("0".equals(request.getParameter("p"))){
 		
-// 	}else{
-// 		response.sendRedirect("/Login.jsp?p=0");
-// 	}
+ 	}else{
+ 		response.sendRedirect("/Login.jsp?p=0");
+ 	}
 	
-// }
+ }
 
 %>
 
