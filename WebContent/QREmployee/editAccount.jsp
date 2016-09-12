@@ -10,55 +10,9 @@
 <head>
 <meta charset="utf-8">
 <title>修改員工帳號</title>
-
-    
-    <style type="text/css">
-            .label-tag {
-                background-color:#BFE9B2;
-            }
-            .pressed {
-                border-width: 5px;
-                border-color: black;
-                border-style: solid;
-            }
-        </style>
-    
 </head>
-
-<body><%@ include file="/href/navbar.jsp" %>
-<div class="nav">
-  	<div class="container">
-    	<div class="navbar-left" style="background-color:#BCF1E5;" >
-        	<ul class="nav nav-tabs">
-              <li class="" style="background-color: #1CAF9A"><a href="./accountManage.jsp" style="color:#fff">員工帳號管理</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="container">
-   	  <div class="nav" style="background-color:#1CAF9A;" >
-        	<ul class="nav nav-tabs">
-        	  <li ><a href="./accountManage.jsp" style="color: #fff">員工帳號管理</a></li>
-              <li  ><a href="./Account.jsp"  >新增員工帳號</a></li>
-            </ul>
-        </div>
-    </div>
-  
-  </div>
-  
-  <div class="container container-fluid breadcrumbBox">
-    <ol class="breadcrumb" >
-          <li><a href="/QRMain/HomePage.jsp" >首頁</a></li>
-          <li class="active" style="display:"><a href="./accountManage.jsp">員工帳號管理</a></li>
-          <li><a href="./editAccount.jsp?p=${accountinfo.getAccount()}">員工帳號管理</a></li>
-      </ol>
-      </div>
-      <h3>帳號修改</h3>
-      <hr/>
-
-  
-  <div class="container" >
-  	<form name="searchform" method="post" action="QRAccountServlet.do" style="font-size: 100%; vertical-align: baseline;" class=" form-group container">
-      
+<body>
+<%@ include file="/href/navbar.jsp" %>
 <%
 request.setCharacterEncoding("UTF-8");
 String account1 = request.getParameter("p");
@@ -71,13 +25,42 @@ Connection conn = new DataBaseConn().getConn();
 QRAccount accountinfo  = getaccount.searchDetail(account1);
 session.setAttribute("accountinfo", accountinfo);
 System.out.println(accountinfo.getAccount());
-
-
-
 }
-
-
 %>  
+<div class="nav">
+  <div class="container">
+    <div class="navbar-left" style="background-color:#AC7ED3;" >
+      <ul class="nav nav-tabs">
+        <li><a href="./accountManage.jsp" style="color:#fff">員工帳號管理</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container">
+    <div class="nav" style="background-color:#AC7ED3;" >
+      <ul class="nav nav-tabs">
+        <li><a href="./accountManage.jsp" style="color: #fff">員工帳號管理</a></li>
+        <li><a href="./Account.jsp">新增員工帳號</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+  
+<div class="container container-fluid breadcrumbBox">
+  <ol class="breadcrumb" >
+    <li><a href="/QRMain/HomePage.jsp" >首頁</a></li>
+    <li class="active"><a href="./accountManage.jsp">員工帳號管理</a></li>
+    <li><a href="./Account.jsp">新增員工帳號</a></li>
+  </ol>
+</div>
+
+      <h3>帳號修改</h3>
+      <hr/>
+
+  
+  <div class="container" >
+  	<form name="searchform" method="post" action="QRAccountServlet.do" style="font-size: 100%; vertical-align: baseline;" class=" form-group container">
+      
+
       
       
       
