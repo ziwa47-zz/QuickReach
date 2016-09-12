@@ -57,15 +57,18 @@
       	           	       
           </div>
 <%
-
-String ebayId = request.getParameter("ebayId");
 request.setCharacterEncoding("UTF-8");
-//out.print(ebayId);        		
-if(ebayId != null || ebayId.equals("")){
-//Connection conn = new DataBaseConn().getConn();
+String ebayId = request.getParameter("p");
+
+//out.print(ebayId);  
+System.out.println(ebayId);   
+System.out.println(request.getParameter("p"));
+if(!"".equals(ebayId) || ebayId != null){
+Connection conn = new DataBaseConn().getConn();
 
 CEbay eBayAccount = getebay.searchDetail(ebayId);
 session.setAttribute("eBayAccount", eBayAccount);
+System.out.println(eBayAccount.getebayId());
 }
 
 %>

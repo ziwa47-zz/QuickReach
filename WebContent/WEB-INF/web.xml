@@ -12,7 +12,7 @@
     <servlet-name>ProductDo</servlet-name>
     <url-pattern>/SearchProduct.do</url-pattern>
   </servlet-mapping>
-   <servlet>
+  <servlet>
     <servlet-name>LoginDo</servlet-name>
     <servlet-class>tw.iii.qr.LoginServlet</servlet-class>
   </servlet>
