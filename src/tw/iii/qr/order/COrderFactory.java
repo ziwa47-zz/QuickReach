@@ -59,9 +59,10 @@ public class COrderFactory extends COrders {
 			throws SQLException {
 
 		String strSql = "SELECT distinct m.order_id, platform, m.guestAccount, orderDate, shippingDate,"
-				+ " logistics, orderstatus, totalPrice, staffName, m.comment, m.eBayAccount, m.payDate," + " QR_id "
-				+ " FROM  orders_master as m inner join  orders_detail as d using (QR_id)"
-				+ " inner join  orders_guestinfo as g using (QR_id)" + " where '1' = '1' ";
+				+ " logistics, orderstatus, totalPrice, staffName, m.comment, m.eBayAccount, m.payDate,"
+				+ " m.QR_id "
+				+ " FROM  orders_master as m inner join  orders_detail as d on m.QR_id = d.QR_id"
+				+ " left join  orders_guestinfo as g on m.QR_id = g.QR_id" + " where '1' = '1' ";
 
 		String eBayAccount = request.getParameter("eBayAccount");
 		if (!isNullorEmpty(eBayAccount)) {
@@ -372,9 +373,9 @@ public class COrderFactory extends COrders {
 				+ " m.shippingDate, m.shippingFees, m.refundFees, m.otherFees, m.ebayFees, m.paypalFees,"
 				+ " m.insurance, m.insurancePrice, m.insuranceTotal, m.currency, m.weight, m.totalWeight,"
 				+ " m.FedexService, m.staffName, m.size, m.totalPrice"
-				+ " from  orders_master as m inner join  orders_detail as d using (QR_id)"
-				+ " inner join  orders_guestinfo as g using (QR_id) "
-				+ " inner join  order_recieverinfo as r using (QR_id)" + " where QR_id = ?";
+				+ " from  orders_master as m inner join  orders_detail as d on m.QR_id = d.QR_id"
+				+ " left join  orders_guestinfo as g on m.QR_id = g.QR_id "
+				+ " inner join  order_recieverinfo as r on m.QR_id = r.QR_id" + " where m.QR_id = ?";
 
 		PreparedStatement ps = conn.prepareStatement(strsql);
 		ps.setString(1, QR_id);
@@ -446,9 +447,9 @@ public class COrderFactory extends COrders {
 
 		String strsql = "SELECT distinct"
 				+ " d.sku, d.productName, d.invoiceName, d.price, d.invoicePrice, d.qty, d.warehouse, d.comment, d.Item, d.QR_id"
-				+ " from  orders_master as m inner join  orders_detail as d using (QR_id)"
-				+ " inner join  orders_guestinfo as g using (QR_id) "
-				+ " inner join  order_recieverinfo as r using (QR_id)" + " where QR_id = ?";
+				+ " from  orders_master as m inner join  orders_detail as d on m.QR_id = d.QR_id"
+				+ " left join  orders_guestinfo as g on m.QR_id = g.QR_id "
+				+ " inner join  order_recieverinfo as r  on m.QR_id = r.QR_id" + " where m.QR_id = ?";
 
 		PreparedStatement ps = conn.prepareStatement(strsql);
 		ps.setString(1, QR_id);
@@ -541,7 +542,7 @@ public class COrderFactory extends COrders {
 			System.out.println(iterator2.next());
 		}
 		for (int i = 0; i < QR_ids.size(); i++) {
-			String strSql = "update  orders_master" + " set orderStatus = '處理中', logistics= ? "
+			String strSql = "update  orders_master" + " set orderStatus = N'處理中', logistics= ? "
 					+ " where QR_id = ? ";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ps.setString(1, Logistics.get(i));
@@ -562,7 +563,7 @@ public class COrderFactory extends COrders {
 			System.out.println(iterator.next());
 		}
 		for (int i = 0; i < QR_ids.size(); i++) {
-			String strSql = "update  orders_master" + " set orderStatus = '揀貨中' " + " where QR_id = ? ";
+			String strSql = "update  orders_master" + " set orderStatus = N'揀貨中' " + " where QR_id = ? ";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ps.setString(1, QR_ids.get(i));
 			ps.executeUpdate();
@@ -581,7 +582,7 @@ public class COrderFactory extends COrders {
 			System.out.println(iterator.next());
 		}
 		for (int i = 0; i < QR_ids.size(); i++) {
-			String strSql = "update  orders_master" + " set orderStatus = '已出貨' " + " where QR_id = ? ";
+			String strSql = "update  orders_master" + " set orderStatus = N'已出貨' " + " where QR_id = ? ";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ps.setString(1, QR_ids.get(i));
 			ps.executeUpdate();
@@ -589,7 +590,7 @@ public class COrderFactory extends COrders {
 	}
 	
 	public void updateToFinished(HttpServletRequest request, Connection conn) throws Exception {
-		String strSql = "update  orders_master" + " set orderStatus = '已完成' " + " where QR_id = ? ";
+		String strSql = "update  orders_master" + " set orderStatus = N'已完成' " + " where QR_id = ? ";
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ps.setString(1, request.getParameter("QR_id"));
 		ps.executeUpdate();
@@ -625,7 +626,7 @@ public class COrderFactory extends COrders {
 		
 		LinkedList<ShipmentRecord> ShippingLog = new LinkedList<ShipmentRecord>();
 			String strSql = "insert into  shippinglog (QR_id, date, trackingCode, staffName)"
-					+ " values( ?, now(), ?, ?)";
+					+ " values( ?, getdate(), ?, ?)";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ps.setString(1, request.getParameter("QR_id"));
 			ps.setString(2, request.getParameter("trackingCode"));
@@ -657,7 +658,7 @@ public class COrderFactory extends COrders {
 		for (int i = 0; i < condition.size(); i++) {
 			String strSql = "select distinct s.SKU, s.qty, d.qty, s.warehouse, s.item"
 					+ " from  storage as s inner join  orders_detail as d"
-					+ " using (SKU) where QR_id = ? and sku = ? and s.warehouse = ?";
+					+ "  on s.SKU = d.SKU where d.QR_id = ? and s.sku = ? and s.warehouse = ?";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 
 			ps.setString(1, request.getParameter("QR_id"));
@@ -681,7 +682,7 @@ public class COrderFactory extends COrders {
 
 		String strSql = "select SKU, warehouse"
 				+ " from  orders_master as m inner join  orders_detail as d"
-				+ " using (QR_id) where QR_id = ?";
+				+ "  on m.QR_id = d.QR_id where m.QR_id = ?";
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ps.setString(1, request.getParameter("QR_id"));
 		ResultSet rs = ps.executeQuery();
@@ -737,10 +738,10 @@ public class COrderFactory extends COrders {
 	public LinkedList<ShipmentRecord> searchShipmentRecord (HttpServletRequest request, Connection conn) throws Exception {
 		
 		String strSql = "select s.date, s.QR_id, s.type, m.eBayAccount, d.SKU, d.productName, d.qty,"
-				+ " r.country, d.owner, d.warehouse, m.staffName, s.comment"
-				+ " from orders_master as m inner join shippinglog as s using (QR_id)"
-				+ " inner join order_recieverinfo as r using (QR_id)"
-				+ " inner join orders_detail as d using (QR_id)"
+				+ " r.country, d.owner, d.warehouse, m.staffName, s.comment, s.trackingCode"
+				+ " from orders_master as m inner join shippinglog as s on m.QR_id = s.QR_id"
+				+ " inner join order_recieverinfo as r on m.QR_id = r.QR_id"
+				+ " inner join orders_detail as d on m.QR_id = d.QR_id"
 				+ " where '1' = '1' ";
 
 		String eBayAccount = request.getParameter("eBayAccount");
@@ -864,6 +865,7 @@ public class COrderFactory extends COrders {
 			record.setWarehouse(rs.getString(10));
 			record.setStaffName(rs.getString(11));
 			record.setComment(rs.getString(12));
+			record.setTrackingCode(rs.getString(13));
 			shipmentRecord.add(record);
 		}
 		return shipmentRecord;

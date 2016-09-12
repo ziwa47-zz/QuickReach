@@ -33,7 +33,11 @@ import tw.iii.autoInsertData.autoInsertData;
 import tw.iii.qr.DataBaseConn;
 
 public class CGetEbay {
-	public CGetEbay() {
+	public static void main(String[] args) {
+		CGetEbay1();
+	}
+	
+	public static void CGetEbay1() {
 		// TODO Auto-generated constructor stub
 	
 	
@@ -91,9 +95,6 @@ public class CGetEbay {
 		  System.out.println(order.getCheckoutStatus().getStatus().toString());
 		  if("COMPLETE".equals(order.getCheckoutStatus().getStatus().toString())){
 		  
-			  if(checkExistedOrNot(conn).equals(order.getExtendedOrderID())){
-				  continue;
-			  }
 		  ShippingServiceOptionsType sso = order.getShippingServiceSelected();
 		  String QR_id = autoInsertData.generateQR_Id();
 		  
@@ -115,7 +116,7 @@ public class CGetEbay {
 		  ps.setTimestamp(9, (new java.sql.Timestamp(order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentTime().getTimeInMillis()))); //payDate
 		  ps.setString(10, "logisticsId");
 		  ps.setString(11, sso.getShippingService().toString());
-		  ps.setString(12, order.getOrderStatus().toString());
+		  ps.setString(12, "待處理"); //order.getOrderStatus().toString()
 		  ps.setString(13, order.getMonetaryDetails().getPayments().getPayment()[0].getPayer().getValue());
 		  ps.setDouble(14, order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentAmount().getValue());
 		  ps.setDouble(15, order.getMonetaryDetails().getPayments().getPayment()[0].getFeeOrCreditAmount().getValue());
@@ -259,6 +260,7 @@ public class CGetEbay {
 	        input = "https://api.ebay.com/wsapi";
 	        //https://api.sandbox.ebay.com/wsapi
 	        apiContext.setApiServerUrl(input);
+			return apiContext;
 
 	        
 	}
