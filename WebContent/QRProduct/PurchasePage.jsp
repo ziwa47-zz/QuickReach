@@ -105,15 +105,7 @@ function test() {
 
 	});
 	
-// 	function jqueryAutoCompleteSKU1() {
-// 		$("#sku1").autocomplete({source:"../JQueryAutoCompleteSKUData",minLength:1});
-		
-// 		if ($("#sku1").val().length == 15 || $("#sku1").val().length == 8) {
-// 			autoComplete(1)
-			
-// 		}
-		
-// 	}
+
 	
 	function jqueryAutoCompleteSKU(id) {
 		
@@ -348,8 +340,6 @@ display: block;
 			request.setAttribute("companyList", companyList);
 			String srno;
 			String srnoDate = checkno.getDay();
-// 			srno = checkno.processStorageRecord("01");//進貨單代碼 01
-// 			request.setAttribute("purchaseId", srno);
 			request.setAttribute("srnoDate", srnoDate);
 			
 			%>
