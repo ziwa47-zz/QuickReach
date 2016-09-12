@@ -180,13 +180,6 @@ public class BundlesFactory {
 		return bundlesList;	
 	}
 	
-	public void detailSetNULL(){
-		bundlesList = new LinkedList<String[]>();
-	}
-	
-	public void detailSetNULL(){
-		bundlesList = new LinkedList<String[]>();
-	}
 	
 	public void addItem(String[] a){
 		
