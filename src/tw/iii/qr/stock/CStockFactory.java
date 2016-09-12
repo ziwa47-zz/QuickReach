@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 public class CStockFactory extends CStock {
 	public CStockFactory() {
 	}
-	public LinkedList<CStock> searchDetailStock(String sku,Connection conn) throws SQLException {
+	public LinkedList<CStock> searchDetailStock2(String sku,Connection conn) throws SQLException {
 
 	String strsql = "select warehouse,warehousePosition1,warehousePosition2,qty,3,qty-3,purchaseDate,comment from  storage where sku = ? ";
 	//	String strsql = "select warehouse,warehousePosition,qty,3,qty-3,purchaseDate,comment from  storage where sku = ? ";
@@ -41,15 +41,16 @@ public class CStockFactory extends CStock {
 		return stockmaster;
 
 	}
-	public LinkedList<CStock> searchDetailStock2(String sku,Connection conn) throws SQLException {
+	public LinkedList<CStock> searchDetailStock(String sku,Connection conn) throws SQLException {
 
-		String strsql = "select warehouse,warehousePosition1,warehousePosition2,qty,3,qty-3,purchaseDate,comment from  storage where sku = ? ";
+		String strsql = "select warehouse,warehousePosition1,warehousePosition2,qty,(select isnull(sum(qty),0) as 待處理量  from orders_detail as d inner join orders_master as m on d.Qr_id = m.Qr_id  where sku = ? and (m.orderStatus = N'待處理' or m.orderStatus = N'處理中' or m.orderStatus = N'揀貨中')),purchaseDate,comment from  storage where sku = ? ";
 		//	String strsql = "select warehouse,warehousePosition,qty,3,qty-3,purchaseDate,comment from  storage where sku = ? ";
 			PreparedStatement ps = null;
 
 			ps = conn.prepareStatement(strsql);
 
 			ps.setString(1, sku);
+			ps.setString(2, sku);
 
 			ResultSet rs = ps.executeQuery();
 
@@ -63,9 +64,7 @@ public class CStockFactory extends CStock {
 				stockDetail.setPosition2(rs.getString(3)); // warehousePosition
 				stockDetail.setQty(rs.getInt(4)); // qty
 				stockDetail.setQtysold(rs.getInt(5)); // sould be 待處理庫存
-				stockDetail.setQtyremain(rs.getInt(6)); // qty
-				stockDetail.setLastpurchasedate(rs.getDate(7)); // purchasedate
-				stockDetail.setComment(rs.getString(8)); // comment
+				stockDetail.setLastpurchasedate(rs.getDate(6)); // purchasedate
 				stockmaster.add(stockDetail);
 			}
 			return stockmaster;

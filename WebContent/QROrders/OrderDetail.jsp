@@ -197,7 +197,7 @@ conn.close();
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>訂單編號</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getQR_id()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="QR_id" value="${result.getCOrderMaster().getQR_id()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>公司</h4></div>
@@ -333,14 +333,21 @@ conn.close();
 		            </td>
 		            <td><input class="" type="text" name="price" value="${i.getPrice()}"></td>
 		            <td><input class="" type="text" name="invoicePrice" value="${i.getInvoicePrice()}"></td>
-		            <td><input class="" type="text" name="qty" value="${i.getQty()}"></td>
+		            <td>
+		              <input class="" type="text" name="qty" value="${i.getQty()}">
+		             	 倉別:${i.getWarehouse()}<br/>
+		              <select name="warehouse">
+                        <option></option>
+                        <option value="KH">KH</option>
+                        <option value="US">US</option>
+                      </select>
+		            </td>
 		            <td>備註:<input class="" type="text" name="comment" value="${i.getComment()}">
 		            <input type="hidden" name="item" value="${i.getItem()}">
 		            </td>
 		          </tr>
 		        </tbody>
 		        </c:forEach>
-		        <input type="hidden" name="QR_id" value="${result.getCOrderMaster().getQR_id()}">
 		      </table>
             </div>
           </div>
