@@ -10,3 +10,17 @@ hs_err_pid*
 
 src/tw/iii/qr/DataBaseConn.java
 src/tw/iii/qr/DataBaseConn.java
+<<<<<<< HEAD
+src/tw/iii/qr/DataBaseConn.java
+=======
+
+src/tw/iii/qr/DataBaseConn.java
+
+WebContent/WEB-INF/.DS_Store
+
+WebContent/.DS_Store
+
+WebContent/.DS_Store
+
+WebContent/WEB-INF/lib/.DS_Store
+>>>>>>> testziwa
