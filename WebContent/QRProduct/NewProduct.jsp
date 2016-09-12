@@ -6,32 +6,28 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<script src="../js/jquery-1.12.4.min.js"></script>
+<!-- jqueryAutoComplete 不可以在../js/jquery-1.12.4.min.js 之前 -->
 
 
 <script type="text/javascript">
-$(function () {
+function invalidate() {
+	$("#collapse2").addClass("in");
+	$("#collapse3").addClass("in");
 
-	
+};
+$(function() {
+
 	$("#listForm").validate({
 		//debug:true,
-		ignore:[],
-			
-// 		submitHandler: function (form)
-// 	    {
-// 	        $('#addProductSubmit').attr('disabled', 'disabled');
-// 	       alert("ok!!!~!!")
-// 	        form.submit();
-	       
-// 	    },
-	   
-		
-		
-	});
+		ignore : [],
+		invalidHandler : function(form) {
+			invalidate();
 
-	
-	
+		}
+	});
 });
+
 
 </script>
 
@@ -52,11 +48,12 @@ display: block;
 
 <%
 String today = checkno.getDay();
+System.out.print(today);
 session.setAttribute("today", today);
 
 %>
 
-  <%@ include file ="../href/navbar.jsp" %> 
+  <%@ include file ="/href/navbar.jsp" %> 
 
 
   
@@ -165,6 +162,7 @@ session.setAttribute("today", today);
           </div>
           <div id="collapse2" class="panel-collapse collapse">
             <div class="panel-body">
+             <div class="container-fluid form-horizontal">
             
              
               <div class="row">
@@ -203,6 +201,7 @@ session.setAttribute("today", today);
                 <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>重量</h4></div>
                   <div class="col-md-8  well-sm"><input class="form-control number "   title="請輸入正確重量  ex:8.7" type="text" name="weight" value="" ></div>
+              </div>
               </div>
 
             </div>

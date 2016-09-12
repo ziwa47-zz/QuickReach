@@ -27,7 +27,9 @@ public class BundlesFactory {
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
-		String sqlstr = "SELECT sku,P_name,brand,subBrand FROM quickreach.product where (productType is null or productType !='組合包') ";
+
+		String sqlstr = "SELECT sku,P_name,brand,subBrand FROM product where sku like 'B01%' ";
+
 		
 		if (brand != null && !brand.equals("select")){
 			sqlstr += " and brand='" + brand + "'";
@@ -68,7 +70,10 @@ public class BundlesFactory {
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
-		String sqlstr = "SELECT distinct brand FROM quickreach.product where brand is not null";
+
+		String sqlstr = "SELECT distinct brand FROM   product where brand is not null";
+
+
 		ResultSet rs = state.executeQuery(sqlstr);
 		lcp = new LinkedList<CProduct>();
 		CProduct cp ;
@@ -95,9 +100,11 @@ public class BundlesFactory {
 		state = conn.createStatement();
 		String sqlstr = "";
 		if (b==null || b.equals("select")){
-			sqlstr = "SELECT distinct subbrand FROM quickreach.product where subbrand is not null";
+
+			sqlstr = "SELECT distinct subbrand FROM product where subbrand is not null";
 		}else if (!b.equals("select")){
-			sqlstr = "SELECT distinct subbrand FROM quickreach.product where subbrand is not null and brand = '"+b+"'";
+			sqlstr = "SELECT distinct subbrand FROM product where subbrand is not null and brand = '"+b+"'";
+
 		}
 		ResultSet rs = state.executeQuery(sqlstr);
 		lcp = new LinkedList<CProduct>();
@@ -122,7 +129,9 @@ public class BundlesFactory {
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
-		String sqlstr = "SELECT SKU FROM quickreach.product";
+
+		String sqlstr = "SELECT SKU FROM product";
+
 		ResultSet rs = state.executeQuery(sqlstr);
 		lcp = new LinkedList<CProduct>();
 		CProduct cp ;
@@ -146,8 +155,9 @@ public class BundlesFactory {
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
-		String sqlstr = "SELECT sku,P_name,comment FROM quickreach.product where  productType = '組合包'";
-	
+
+		String sqlstr = "SELECT sku,P_name,comment FROM product where  productType = '組合商品'";
+
 		ResultSet rs = state.executeQuery(sqlstr);
 		lcp = new LinkedList<CProduct>();
 		CProduct cp ;
@@ -168,6 +178,10 @@ public class BundlesFactory {
 	
 	public LinkedList<String[]> getBundlesInfo(){
 		return bundlesList;
+	}
+	
+	public void detailSetNULL(){
+		bundlesList = new LinkedList<String[]>();
 	}
 	
 	public void addItem(String[] a){
@@ -203,7 +217,7 @@ public class BundlesFactory {
 	public void bundlesToProduct(String sku, String pname ,String ps) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
 		DataBaseConn dbc = new DataBaseConn();
 		Connection conn = dbc.getConn() ;
-		String sqlstr = "insert into product(SKu,productType,P_name,comment) values(?,'組合包',?,?)";
+		String sqlstr = "insert into product(SKu,productType,P_name,comment) values(?,'組合商品',?,?)";
 		PreparedStatement preparedState = conn.prepareStatement(sqlstr);
 		
 		preparedState.setString(1, sku);		
@@ -223,7 +237,9 @@ public class BundlesFactory {
 			DataBaseConn dbc = new DataBaseConn();
 			Connection conn = dbc.getConn() ;
 			
-			String sqlstr = "INSERT INTO `quickreach`.`bundles` (`m_SKU`, `p_SKU`, `qty`) VALUES (?, ?, ?);";
+
+			String sqlstr = "INSERT INTO bundles (m_SKU, p_SKU, qty) VALUES (?, ?, ?);";
+
 			PreparedStatement preparedState = conn.prepareStatement(sqlstr);		
 	
 			preparedState.setString(1, sku);
@@ -245,7 +261,9 @@ public class BundlesFactory {
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
-		String sqlstr = "SELECT b.p_SKU,p.P_name,b.qty FROM quickreach.bundles as b inner join quickreach.product as p on b.p_SKU=p.SKU  where m_SKU = '" + bdsku + "'";
+
+		String sqlstr = "SELECT b.p_SKU,p.P_name,b.qty FROM bundles as b inner join product as p on b.p_SKU=p.SKU  where m_SKU = '" + bdsku + "'";
+
 	
 		ResultSet rs = state.executeQuery(sqlstr);
 		bundlesList = new LinkedList<String[]>();
@@ -270,7 +288,9 @@ public class BundlesFactory {
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
 		
-		String sqlstr = "DELETE FROM `quickreach`.`product` WHERE `SKU`='"+sku+"';";
+
+		String sqlstr = "DELETE FROM product WHERE SKU='"+sku+"';";
+
 		
 		state.executeUpdate(sqlstr);
 		state.close();
@@ -283,7 +303,7 @@ public void bundlesDeleteFormBundles(String sku) throws IllegalAccessException, 
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
 		
-		String sqlstr = "DELETE FROM bundles WHERE `m_SKU`='"+sku+"';";
+		String sqlstr = "DELETE FROM bundles WHERE m_SKU='"+sku+"';";
 		
 		state.executeUpdate(sqlstr);
 		state.close();

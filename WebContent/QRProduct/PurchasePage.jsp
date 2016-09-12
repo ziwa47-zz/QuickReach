@@ -1,13 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
 <%@page import="org.json.JSONObject"%>
+<%@page import="tw.iii.qr.DataBaseConn"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page
+	import="java.sql.Connection,java.sql.ResultSet,java.util.LinkedList,java.util.*,javax.servlet.http.HttpServletRequest"%>
+
 <jsp:useBean id="checkno" class="tw.iii.purchase.purchaseFactory" scope="page"/>
 <!DOCTYPE>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>進貨</title>
+<script src="../js/jquery-1.12.4.min.js"></script><!-- jqueryAutoComplete 不可以在../js/jquery-1.12.4.min.js 之前 -->
 
 
 <script type="text/javascript">
@@ -24,7 +29,7 @@ function warehouseChange() {
 	$.ajax({
 		
 		type:"GET",
-		url:"../ProcessMasterWarehouse",
+		url:"../AjaxProcessMasterWarehouse",
 		data:$("#listForm").serialize(),
 		dataType:"json",
 		
@@ -60,7 +65,7 @@ function test() {
 	$.ajax({
 		
 		type:"GET",                  
-	    url: "../AutoCompleteServlet",        
+	    url: "../AjaxProcessAutoComplete",        
 	    data: $("#listForm").serialize(), 
         dataType: "json", 
 
@@ -69,7 +74,9 @@ function test() {
             	 $("#pName"+setValueId).val(response.pName);
                  $("#spec"+setValueId).val(response.spec);
                  $("#color"+setValueId).val(response.color);
-                 $("#warehousePosition"+setValueId).val(response.warehousePosition);        
+                 
+                 $("#warehousePositionOne"+setValueId).val(response.warehousePosition);
+                 $("#warehousePositionTwo"+setValueId).val(response.warehousePosition2);   
 
         },        
 	})
@@ -82,7 +89,7 @@ function test() {
 		warehouseChange()
 		//聽說是自動驗證
 		$("#listForm").validate({
-			onfocusout:true,
+			onfocusout:false,
 			delay:500,
 			submitHandler: function (form)
 		    {
@@ -97,7 +104,7 @@ function test() {
 			})
  				
 		//日期選擇器  
-		$("input[name=date]").datepicker({
+		$("input[name=purchaseDate]").datepicker({
 			dateFormat : 'yymmdd',
 			
 			
@@ -112,7 +119,7 @@ function test() {
 		
 			$("#sku"+id).autocomplete({
 				source:"../JQueryAutoCompleteSKUData",
-				minLength:1,
+				minLength:3,
 				select:function(event,ui){
 					autoComplete(id)
 				}
@@ -239,7 +246,7 @@ function test() {
 	                        +'         	<div class="col-md-8 form-group ">'
 	                        +'             <div class="row">'
 	                        +'              <div class="col-md-2"><h5><label for="focusedInput " >櫃位：</label></h5></div>'
-	                        +'              <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo" name="warehousePositionTwo1" type="text"></div>'
+	                        +'              <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text"></div>'
 	                        +'            </div>'
 	                        +'                </div>'
 	                                    
@@ -329,18 +336,21 @@ display: block;
 
 	<div class="container" style="background: #9DDCD1; border-radius: 20px">
 		<form id="listForm" name="listForm" method="post"
-			action="../TestJdbcMvcServlet"
+			action="../InsertPurchaseServlet.do"
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
 			class="form-inline container">
 			<%
 			
-			LinkedList<LinkedList<String>> warehouseList = checkno.warehouseSelectOption();
-			LinkedList<LinkedList<String>> companyList = checkno.companySelectOption();
+			Connection conn = new DataBaseConn().getConn();
+			
+			LinkedList<LinkedList<String>> warehouseList = checkno.warehouseSelectOption(conn);
+			LinkedList<LinkedList<String>> companyList = checkno.companySelectOption(conn);
 			request.setAttribute("warehouseList", warehouseList);
 			request.setAttribute("companyList", companyList);
 			String srno;
-			String srnoDate = checkno.getDay();
+			String srnoDate = checkno.purchaseGetDay();
 			request.setAttribute("srnoDate", srnoDate);
+			conn.close();
 			
 			%>
 			<fieldset class="container-fluid" style="padding: 0 30 0 0;">
@@ -356,12 +366,12 @@ display: block;
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" type="text" id="selectDate" name="date" value="${srnoDate}" onchange="warehouseChange()" readonly>
+								<input class="form-control" type="text" id="selectDate" name="purchaseDate" value="${srnoDate}" onchange="warehouseChange()" readonly>
 							</div>
 						</div>
 					</div>
 <!-- 					style="display:none" -->
-					<div  class="col-md-4 form-group ">
+					<div  class="col-md-4 form-group " style="display:none">
 						<div class="row">
 							<div class="col-md-4">
 								<h5>
@@ -377,7 +387,7 @@ display: block;
 						<div class="row">
 							<div class="col-md-4">
 								<h5>
-									<label for="focusedInput ">廠商：</label>
+									<label for="focusedInput ">供應商：</label>
 								</h5>
 							</div>
 							<div class="col-md-8">
@@ -397,11 +407,11 @@ display: block;
 						<div class="row">
 							<div class="col-md-4">
 								<h5>
-									<label for="focusedInput ">員工編號：</label>
+									<label for="focusedInput ">員工姓名：</label>
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control required digits"  name="staffId" type="text" value="${staffName}">
+								<input class="form-control required "  name="staffId" type="text" value="${staffName}">
 							</div>
 						</div>
 					</div>
@@ -527,7 +537,7 @@ display: block;
             	<div class="col-md-8 form-group ">
                   <div class="row">
                     <div class="col-md-2"><h5><label for="focusedInput " >櫃位：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo" name="warehousePositionTwo1" type="text"></div>
+                    <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne1" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo1" name="warehousePositionTwo1" type="text"></div>
                   </div>
                 </div>
                 
