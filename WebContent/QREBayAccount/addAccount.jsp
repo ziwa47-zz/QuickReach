@@ -16,7 +16,7 @@
 <%@include file="../href/navbar.jsp"%>
 <div class="nav">
   <div class="container">
-    <div class="navbar-left" style="background-color: #AC7ED3;">
+    <div class="navbar-left" style="background-color: #C7AAE4;">
       <ul class="nav nav-tabs">
         <li><a href="eBayAccount.jsp">eBay帳號管理</a></li>
       </ul>
