@@ -39,15 +39,15 @@ public class CompetenceSql {
 		preparedState.setInt(14, ct.productProfitView);
 		preparedState.setInt(15, ct.reportView); 
 		preparedState.setInt(16, ct.productCostView); 
-		preparedState.setInt(17, ct.accountInfoEdit); 
-		preparedState.setInt(18, ct.paramSettingEdit); 
-		preparedState.setInt(19, ct.ebayPaypalAccountEdit); 
+		preparedState.setInt(17, ct.accountInfoEdit); 		
+		preparedState.setInt(18, ct.ebayPaypalAccountEdit); 
+		preparedState.setInt(19, ct.paramSettingEdit); 
 		preparedState.setInt(20, ct.inventoryCostView); 
 		
 		
 		preparedState.execute();
 		preparedState.close();
-		dbc.connclose(conn);
+		conn.close();
 	}
 	
 	public void print1 () throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
