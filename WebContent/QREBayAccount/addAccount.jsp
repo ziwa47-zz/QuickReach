@@ -16,14 +16,14 @@
 <%@include file="../href/navbar.jsp"%>
 <div class="nav">
   <div class="container">
-    <div class="navbar-left" style="background-color: #BCF1E5;">
+    <div class="navbar-left" style="background-color: #E48EB9;">
       <ul class="nav nav-tabs">
         <li><a href="eBayAccount.jsp">eBay帳號管理</a></li>
       </ul>
     </div>
   </div>
   <div class="container">
-    <div class="nav" style="background-color: #1CAF9A;">
+    <div class="nav" style="background-color: #984AC0;">
       <ul class="nav nav-tabs">
         <li><a href="eBayAccount.jsp">帳號列表</a></li>
         <!--               <li class="" style="background-color:#1CAF9A"><a href="purchasePage.jsp" style="color:#FFFFFF">進貨</a></li> -->
@@ -39,7 +39,7 @@
     <li><a href="eBayAccount.jsp">新增eBay帳號</a></li>
   </ol>
 </div>
-<div class="container" style="background: #D0F0E1; border-radius:20px;">
+<div class="container" style="background: #E9C2D0; border-radius:20px;">
   <form name="searchform" method="post" action="../EbayAccountDo" class="form-inline container required" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;">
