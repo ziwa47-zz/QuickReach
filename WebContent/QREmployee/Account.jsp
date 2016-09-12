@@ -1,5 +1,8 @@
+<%@page import="tw.iii.qr.DataBaseConn"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<jsp:useBean id="competence1" class= "tw.iii.qr.QRAccountFactory" scope="page"/>
+<%@ page  import=" tw.iii.qr.QRAccount,java.util.*,tw.iii.qr.DataBaseConn,tw.iii.qr.Competence"%>
 <!doctype html>
 <html>
 <head>
@@ -39,19 +42,27 @@
 </head>
 
 <body><%@ include file="/href/navbar.jsp" %>
+<%
+
+
+LinkedList<Competence> list= competence1.get權限();
+session.setAttribute("getCompetenceLv", list);
+
+
+%>
   <div class="nav">
   	<div class="container">
     	<div class="navbar-left" style="background-color:#BCF1E5;" >
         	<ul class="nav nav-tabs">
-              <li class="" style="background-color:#1CAF9A"><a href="Account.jsp" style="color:#FFFFFF">帳號管理</a></li>
+              <li class="" style="background-color: #1CAF9A"><a href="./accountManage.jsp" style="color:#fff">員工帳號管理</a></li>
             </ul>
         </div>
     </div>
     <div class="container">
    	  <div class="nav" style="background-color:#1CAF9A;" >
         	<ul class="nav nav-tabs">
-              <li class="" style="background-color:#1CAF9A"><a href="Account.jsp" style="color:#FFFFFF">新增帳號</a></li>
-              <li><a href="accountManage.jsp" style="color:#000000">修改帳號資料</a></li>
+        	  <li ><a href="./accountManage.jsp">員工帳號管理</a></li>
+              <li  class="" style="background-color: #1CAF9A"><a href="./Account.jsp"  style="color: #fff">新增員工帳號</a></li>
             </ul>
         </div>
     </div>
@@ -60,13 +71,11 @@
   
   <div class="container container-fluid breadcrumbBox">
     <ol class="breadcrumb" >
-          <li><a href="../QRMain/HomePage.jsp" >首頁</a></li>
-          <li class="active" style="display:"><a href="accountManage.jsp">員工管理</a></li>
-          <li><a href="Account.jsp">新增帳號</a></li>
+          <li><a href="/QRMain/HomePage.jsp" >首頁</a></li>
+          <li class="active" style="display:"><a href="./accountManage.jsp">員工帳號管理</a></li>
+          <li><a href="./Account.jsp">新增員工帳號</a></li>
       </ol>
-      <h3>新增帳號</h3>
-      <hr/>
-  </div>
+      </div>
   
   <div class="container" >
   	<form name="searchform" method="post" action="QRAccountServlet.do" style="font-size: 100%; vertical-align: baseline;" class=" form-group container">
@@ -101,10 +110,15 @@
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>權限等級</h4></div>
                       <div class="col-md-5 well-sm">
-						<select class="form-control" name="competenceLV">
-						    <option value="A">A</option>
-						    <option value="B">B</option>
-						    <option value="C">C</option>
+						<select class="form-control" name="CompetenceLv" >
+						
+							<c:forEach var="i" varStatus="check" items="${getCompetenceLv}" begin="0"
+								step="1">
+								
+									<option  value="${i.getCompetenceLv()}">${i.getCompetenceLv()}</option>
+							
+							
+							</c:forEach>
 						</select>
 					  </div>
                   </div>

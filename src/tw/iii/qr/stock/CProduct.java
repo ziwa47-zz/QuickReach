@@ -25,6 +25,7 @@ public class CProduct {
 	private double vilumetricWeight;
 	private Date createDate;
 	private String picturePath;
+	private String volume;
 	public String getItem() {
 		return item;
 	}
@@ -152,6 +153,12 @@ public class CProduct {
 	}
 	public void setPicturePath(String picturePath) {
 		this.picturePath = picturePath;
+	}
+	public String getVolume() {
+		return volume;
+	}
+	public void setVolume(String volume) {
+		this.volume = volume;
 	}
 }
 	

@@ -10,25 +10,7 @@
 <head>
 <meta charset="utf-8">
 <title>修改員工帳號</title>
-<!-- Bootstrap -->
-	<link href="/css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/css/smoothness/jquery-ui.css">
 
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/js/bootstrap.js"></script>
-
-    
-    <script src="/js/jquery-1.12.4.min.js"></script>
-    <script src="/js/jquery-ui.min.js"></script>
-    <script src="/js/jquery.ui.datepicker-zh-TW.js"></script>
-    
-    <script type="text/javascript">        
-        $(function () {
-            //日期選擇器
-            $("input[name=date]").datepicker({ dateFormat: 'yy/mm/dd', showOn: "both" });
-            
-           });
-	</script>   
     
     <style type="text/css">
             .label-tag {
@@ -44,19 +26,19 @@
 </head>
 
 <body><%@ include file="/href/navbar.jsp" %>
-  <div class="nav">
+<div class="nav">
   	<div class="container">
     	<div class="navbar-left" style="background-color:#BCF1E5;" >
         	<ul class="nav nav-tabs">
-              <li class="" style="background-color:#1CAF9A"><a href="Account.jsp" style="color:#FFFFFF">帳號管理</a></li>
+              <li class="" style="background-color: #1CAF9A"><a href="./accountManage.jsp" style="color:#fff">員工帳號管理</a></li>
             </ul>
         </div>
     </div>
     <div class="container">
    	  <div class="nav" style="background-color:#1CAF9A;" >
         	<ul class="nav nav-tabs">
-              <li class="" style="background-color:#1CAF9A"><a href="Account.jsp" style="color:#FFFFFF">新增帳號</a></li>
-              <li><a href="#" style="color:#000000">修改帳號資料</a></li>
+        	  <li ><a href="./accountManage.jsp" style="color: #fff">員工帳號管理</a></li>
+              <li  ><a href="./Account.jsp"  >新增員工帳號</a></li>
             </ul>
         </div>
     </div>
@@ -65,13 +47,14 @@
   
   <div class="container container-fluid breadcrumbBox">
     <ol class="breadcrumb" >
-          <li><a href="../QRMain/HomePage.jsp" >首頁</a></li>
-          <li class="active" style="display:"><a href="Account.jsp">員工管理</a></li>
-          <li><a href="Account.jsp">新增帳號</a></li>
+          <li><a href="/QRMain/HomePage.jsp" >首頁</a></li>
+          <li class="active" style="display:"><a href="./accountManage.jsp">員工帳號管理</a></li>
+          <li><a href="./editAccount.jsp?p=${accountinfo.getAccount()}">員工帳號管理</a></li>
       </ol>
+      </div>
       <h3>帳號修改</h3>
       <hr/>
-  </div>
+
   
   <div class="container" >
   	<form name="searchform" method="post" action="QRAccountServlet.do" style="font-size: 100%; vertical-align: baseline;" class=" form-group container">
@@ -110,7 +93,7 @@ System.out.println(accountinfo.getAccount());
                  
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>密碼</h4></div>
-                      <div class="col-md-5 well-sm"><input class="form-control" name="password" type="text" value="${accountinfo.getPassword()}"></div>
+                      <div class="col-md-5 well-sm"><input class="form-control" name="password" type="password" value="${accountinfo.getPassword()}"></div>
                   </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>姓氏</h4></div>

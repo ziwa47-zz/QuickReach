@@ -75,6 +75,10 @@ conn1.close();
 
       <input type="hidden">
       <div class="container-fluid form-horizontal">
+       <div class="row">
+          <div class="col-md-3 text-right well-sm label-tag"  ><h4>品名</h4></div>
+          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="P_name" value="${product.getP_name()}" ></div>
+        </div>
         <div class="row">
           <div class="col-md-3 text-right well-sm label-tag"  ><h4>SKU</h4></div>
           <div class="col-md-5 well-sm"><input class="form-control" type="text" name="sku" value="${product.getSKU()}" ></div>

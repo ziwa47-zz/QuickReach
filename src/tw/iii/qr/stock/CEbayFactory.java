@@ -23,7 +23,7 @@ public class CEbayFactory extends CEbay {
 
 	
 	public void InsertNewEbayAccount (HttpServletRequest request, Connection conn) throws SQLException{
-		String strsql = "INSERT INTO quickreach.ebayaccount(ebayId,ebayToken,endToken,paypalAccount,correspondCompany,startTime,lastFixTime,status ,comment,systemFeedback)"
+		String strsql = "INSERT INTO  ebayaccount(ebayId,ebayToken,endToken,paypalAccount,correspondCompany,startTime,lastFixTime,status ,comment,systemFeedback)"
 					  + " VALUES (?,?,?,?,?,?,?,?,?,?)"; //(10個)
 	
 		PreparedStatement ps = null;
@@ -50,14 +50,15 @@ public class CEbayFactory extends CEbay {
 		
 		Connection conn = dbc.getConn();
 		
-		String strsql = "SELECT  *  FROM  QuickReach.ebayaccount where ebayId = '" + ebayId +"'";
+		String strsql = "SELECT  *  FROM   ebayaccount where ebayId = ?";
 
 		/*PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
 		ps.setString(1, ebayId);*/
 		
-		state = conn.createStatement();
-		ResultSet rs =state.executeQuery(strsql);		
+		PreparedStatement ps = conn.prepareStatement(strsql);
+		ps.setString(1, ebayId);
+		ResultSet rs =ps.executeQuery(strsql);		
 		
 		CEbay ebayaccount = new CEbay();
 	
@@ -81,11 +82,13 @@ public class CEbayFactory extends CEbay {
 	}
 	
 	public void updateEbayAccount (HttpServletRequest request, Connection conn) throws SQLException{
-		String strsql = "UPDATE quickreach.ebayaccount SET "	
-			 + " ebayToken = ?," + "endToken = ?," + "paypalAccount = ?," 
-			 + " correspondCompany = ?," + "startTime = ?," + "lastFixTime = ?,"	
-			 + " status = ?," + "comment = ?," + "systemFeedback = ?"  
-			 + " where ebayId = ?"; //(10個)
+
+		String strsql = "UPDATE  ebayaccount SET "	
+			 + "ebayToken = ?," + "endToken = ?," + "paypalAccount = ?,"
+			 + "correspondCompany = ?," + "startTime = ?," + "lastFixTime = ?,"	
+			 + "status = ?," + "comment = ?," + "systemFeedback = ?,"
+			 + "where ebayId = ?"; //(10個)
+
 	
 		PreparedStatement ps = null;
 		System.out.print(strsql); 
