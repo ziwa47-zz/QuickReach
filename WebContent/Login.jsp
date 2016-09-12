@@ -6,11 +6,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Login Page</title>
 
+
+<%
+session.removeAttribute("account");
+%>
+
 </head>
 
 <body>
-<%@include file ="/href/navbar.jsp" %>
-	<form action="/LoginController.do" method="post" >
+<%@ include file="/href/navbar.jsp"%>
+
+	<form action="LoginServlet.do" method="post" >
 	<div align="center">
 		<p align="center">
 		<input type="text" name="account" placeholder="請輸入帳號" /><br /> 
