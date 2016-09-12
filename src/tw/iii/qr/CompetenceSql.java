@@ -47,7 +47,7 @@ public class CompetenceSql {
 		
 		preparedState.execute();
 		preparedState.close();
-		dbc.connclose(conn);
+		conn.close();
 	}
 	
 	public void print1 () throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{

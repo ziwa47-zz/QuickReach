@@ -131,7 +131,7 @@
 				<li><a href="/QRProduct/SearchStockPage.jsp">商品/庫存 </a></li>
 				<li><a href="/QROrders/SearchOrder.jsp">訂單資訊</a></li>
 				<li><a href="/QREBayAccount/eBayAccount.jsp">Ebay帳號管理</a></li>
-				<li><a href="/QREmployee/Account.jsp">員工管理</a></li>
+				<li><a href="/QREmployee/accountManage.jsp">員工管理</a></li>
 				<li><a href="/QRAccess/Competence.jsp">權限管理</a></li>
 			</ul>
 
