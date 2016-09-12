@@ -52,6 +52,7 @@
           <input class="form-control" type="text" name="ebayId" value="" required>
         </div>
       </div>
+      
       <div class="row">
         <div class="col-md-3 well-sm">
           <h4>ebay Token</h4>
@@ -60,6 +61,7 @@
           <textarea class="form-control" name="ebayToken"  rows="5"	cols="85"  required></textarea>
         </div>
       </div>
+      
       <div class="row">
         <div class="col-md-3 well-sm">
           <h4>paypal 帳號(E-mail)</h4>
@@ -98,6 +100,7 @@
           <textarea class="form-control" name="systemFeedback"  rows="5" cols="85"></textarea>
         </div>
       </div>
+      
       <div class="row">
         <div class="col-md-3 well-sm">
           <h4>ebay Token</h4>
@@ -106,10 +109,12 @@
           <textarea class="form-control" name="ebayToken" rows="25" cols="95" required></textarea>
         </div>
       </div>
+      
       <div class="" align="center">
         <input type="submit" name="submit" value="newAccount" class="btn-lg btn-success">
         <input type="button" value="取消" class="btn-lg btn-success">
       </div>
+      
     </fieldset>
   </form>
 </div>
