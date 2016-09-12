@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Account</title>
+<title>員工帳號管理</title>
 
 
     
@@ -26,15 +26,15 @@
   	<div class="container">
     	<div class="navbar-left" style="background-color:#BCF1E5;" >
         	<ul class="nav nav-tabs">
-              <li><a href="./accountManage.jsp" style="color:#000000">員工帳號管理</a></li>
+              <li class="" style="background-color: #1CAF9A"><a href="./accountManage.jsp" style="color:#fff">員工帳號管理</a></li>
             </ul>
         </div>
     </div>
     <div class="container">
    	  <div class="nav" style="background-color:#1CAF9A;" >
         	<ul class="nav nav-tabs">
-              <li ><a href="./accountManage.jsp" style="color:#000000">帳號列表</a></li>
-              <li><a href="./Account.jsp" style="color:#000000">新增員工帳號</a></li>
+        	  <li class="" style="background-color: #1CAF9A"><a href="./accountManage.jsp" style="color: #fff">員工帳號管理</a></li>
+              <li  ><a href="./Account.jsp"  >新增員工帳號</a></li>
             </ul>
         </div>
     </div>
@@ -43,10 +43,12 @@
   
   <div class="container container-fluid breadcrumbBox">
     <ol class="breadcrumb" >
-          <li><a href="../QRMain/HomePage.jsp" >首頁</a></li>
+          <li><a href="/QRMain/HomePage.jsp" >首頁</a></li>
           <li class="active" style="display:"><a href="./accountManage.jsp">員工帳號管理</a></li>
-          <li><a href="./accountManage.jsp">帳號列表</a></li>
+          <li><a href="./accountManage.jsp">員工帳號管理</a></li>
       </ol>
+      </div>
+  
 	<form id="listForm" name="listForm" method="post" action="" >
 
 <h2>員工帳號管理</h2><br/>
@@ -108,7 +110,7 @@ conn1.close();
 		</div>
 
 	</form>
-	</div>
+
 	<hr/>
 <%@include file="/href/footer.jsp" %>
 </body>
