@@ -119,7 +119,7 @@ public class CProductFactory extends CProduct {
 		String strsql = "SELECT  SKU ,  owner ,  productType ,  brand ,  subBrand ,"
 				+ "  EAN ,  productCode ,  P_name ,  spec ,  color ,"
 				+ "  securedQty ,  cost ,  comment ,  checkupdate ,  added , "
-				+ "  weight , packageMatrial,  vilumetricWeight ,  createDate  FROM   product "
+				+ "  weight , packageMatrial,  vilumetricWeight ,  createDate, volume  FROM   product "
 				+ " where 1 = 1 and sku = ? ";
 
 		PreparedStatement ps = null;
@@ -150,6 +150,7 @@ public class CProductFactory extends CProduct {
 			product.setPackageMatrial(rs.getString(17));// 包材
 			product.setVilumetricWeight(rs.getDouble(18));// 材積重
 			product.setCreateDate(rs.getDate(19));// 建檔日
+			product.setVolume(rs.getString(20));// 材積
 		}
 
 		return product;
@@ -161,9 +162,9 @@ public class CProductFactory extends CProduct {
 				+ "owner  = ?," + "productType  = ?," + "brand  = ?,"
 				+ "subBrand  = ?," + "EAN  = ?," + "productCode  = ?," + "P_name  = ?," + "spec  = ?," + "color  = ?,"
 				+ "cost  = ?," + "comment  = ?," + "checkupdate  = ?," + "added  = ?," + "weight  = ?,"
-				+ "packageMatrial  = ?," + "vilumetricWeight  = ? " + " WHERE  sku  = ? ";
+				+ "packageMatrial  = ?," + "vilumetricWeight  = ? ,"+" volume = ? " + " WHERE  sku  = ? ";
 		CProduct cp = new CProduct();
-		cp.setSKU(request.getParameter("sku"));
+		
 		cp.setOwner(request.getParameter("owner"));
 		cp.setProductType(request.getParameter("producttype"));
 		cp.setBrand(request.getParameter("brand"));
@@ -180,9 +181,10 @@ public class CProductFactory extends CProduct {
 		cp.setWeight(Double.valueOf(request.getParameter("weight")));
 		cp.setPackageMatrial(request.getParameter("package"));
 		cp.setVilumetricWeight(Double.valueOf(request.getParameter("vilu")));
+		cp.setVolume(request.getParameter("volume"));
+		cp.setSKU(request.getParameter("sku"));
 		
 		PreparedStatement ps = null;
-		System.out.print("rq"+request.getParameter("checkupdate"));
 		ps = conn.prepareStatement(strsql);
 
 		ps.setString(1, cp.getOwner()); //owner
@@ -201,15 +203,16 @@ public class CProductFactory extends CProduct {
 		ps.setDouble(14, cp.getWeight()); //weight
 		ps.setString(15, cp.getPackageMatrial()); //package
 		ps.setDouble(16, cp.getVilumetricWeight()); // vilu
-		ps.setString(17,cp.getSKU());
+		ps.setString(17, cp.getVolume()); // Volume
+		ps.setString(18,cp.getSKU());
 		int i = ps.executeUpdate();
 		
 	}
 	
 	public void InsertNewProduct (HttpServletRequest request, Connection conn) throws SQLException{
 		String strsql = "INSERT INTO product(SKU,owner,productType,brand,subbrand,ean,productCode,p_name,spec"
-				+ ",color,securedQty,cost,comment,checkupdate,added,weight,packageMatrial,vilumetricWeight,createDate,picturePath) "+
-			 " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; //(20個)，還未加入barCode
+				+ ",color,securedQty,cost,comment,checkupdate,added,weight,packageMatrial,vilumetricWeight,createDate,picturePath,volume) "+
+			 " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; //(20個)，還未加入barCode
 	
 		PreparedStatement ps = null;
 		//System.out.print(strsql); 
@@ -236,7 +239,7 @@ public class CProductFactory extends CProduct {
 		ps.setDouble(18, Double.valueOf(request.getParameter("vilumetricWeight")));
 		ps.setDate(19, Date.valueOf(request.getParameter("createDate")));
 		ps.setString(20, request.getParameter("picturePath")); //picturePath(20)
-		
+		ps.setString(21, request.getParameter("volume"));
 		int i =ps.executeUpdate();
 	}
 
