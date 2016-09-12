@@ -36,6 +36,30 @@ public class purchaseFactory {
 		return false;
 	}
 
+	//staffName<select>
+	public LinkedList<LinkedList<String>> accountSelectOption() throws ClassNotFoundException, SQLException, Exception {
+
+		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
+		LinkedList<String> account = new LinkedList<>();
+
+		Connection conn = new DataBaseConn().getConn();
+		String strsql = "SELECT account FROM  accountinfo";
+		PreparedStatement ps = null;
+		ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+
+		while (rs.next()) {
+			account = new LinkedList<>();
+			account.add(rs.getString(1));
+
+			Alllist.add(account);
+		}
+		rs.close();
+		ps.close();
+		conn.close();
+
+		return Alllist;
+	}
 	// company<select>
 	public LinkedList<LinkedList<String>> companySelectOption() throws ClassNotFoundException, SQLException, Exception {
 
@@ -157,6 +181,8 @@ public class purchaseFactory {
 		java.sql.Statement stmt = null;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		System.out.println("I need stockRecord status:" + purchaseRecord + "," + outRecord);
+		
+		//
 		if(purchaseRecord==null && outRecord==null){
 			return null;
 		}
@@ -176,37 +202,32 @@ public class purchaseFactory {
 
 			while (rs.next()) {
 				list = new LinkedList<>();
-				System.out.println(dateFormat.format(rs.getDate(11)));
 
 				
 
-				if ("1".equals(rs.getString(15))) {
+				if ("1".equals(rs.getString(14))) {
 					list.add("進貨");
 
-				} else if ("2".equals(rs.getString(15))){
+				} else if ("2".equals(rs.getString(14))){
 					list.add("出貨");
 
-				}
-
-				list.add(rs.getString(1));
-				list.add(rs.getString(2));
-				list.add(rs.getString(3));
-				list.add(rs.getString(4));
-				list.add(rs.getString(5));
-				list.add(rs.getString(6));
+				}//進貨or出貨
 				
-
-				list.add(rs.getString(7));
-				list.add(rs.getString(8)+"-"+ rs.getString(9));
-				list.add(rs.getString(10));
-				list.add(dateFormat.format(rs.getDate(11)));//date
+				list.add(rs.getString(1));//a.purchaseId
+				list.add(rs.getString(2));//a.SKU
+				list.add(rs.getString(3));// c.P_name
+				list.add(rs.getString(4));//a.qty
+				list.add(rs.getString(6));//a.warehouse
 				
-		
+				list.add(rs.getString(7)+"-"+ rs.getString(8));//a.warehousePosition1+a.warehousePosition2
+				list.add(rs.getString(9));//c.owner
+				list.add(dateFormat.format(rs.getDate(10)));//date
+				list.add(rs.getString(11));//b.companyName
+				list.add(rs.getString(12));//b.staffName
 				
-				list.add(rs.getString(12));
-				list.add(rs.getString(13));
-
-				list.add(rs.getString(14));
+				list.add(rs.getString(13));//a.comment
+				
+				list.add(rs.getString(5));//a.price
 				
 			
 				
@@ -232,6 +253,91 @@ public class purchaseFactory {
 		}
 		return Alllist;
 
+	}
+	
+	public String searchCondition(String purchaseRecord, String outRecord,String purchaseId, String date1, String date2, String pname,
+			String sku, String companyName, String owner, String wareHouse, String warehousePositionOne,
+			String warehousePositionTwo, String qty, String price) {
+		String sqlstr1 = "select distinct a.purchaseId,a.SKU,c.P_name,"
+				+ " a.qty,a.price,a.warehouse,a.warehousePosition1,a.warehousePosition2,c.owner,"
+				+ " b.date,b.companyName,b.staffName,a.comment,a.stockStatus"
+				+ " from  purchaselog_detail as a inner join  purchaselog_master as b inner join  product as c where a.purchaseId =b.purchaseId and a.SKU = c.SKU  ";
+		System.out.println(sku);
+
+		if (!isNullorEmpty(purchaseRecord) && !isNullorEmpty(outRecord)) {
+			sqlstr1 += "and (a.stockStatus = 1 or a.stockStatus = 2)";
+			System.out.println("both:" + purchaseRecord + outRecord);
+		} else {
+
+			if (!isNullorEmpty(purchaseRecord)) {
+				sqlstr1 += "and a.stockStatus = 1";
+				System.out.println("進貨:" + purchaseRecord);
+			}
+
+			if (!isNullorEmpty(outRecord)) {
+				sqlstr1 += "and a.stockStatus = 2";
+				System.out.println("出貨:" + outRecord);
+			}
+
+		}
+		
+		if (!isNullorEmpty(purchaseId)) {
+			sqlstr1 += " and a.purchaseId  like'%" + purchaseId + "%'";
+			System.out.println(purchaseId);
+		}
+
+		if (!isNullorEmpty(date1)) {
+			sqlstr1 += " and b.date  >= '" + date1 + "'";
+			System.out.println(date1);
+		}
+		if (!isNullorEmpty(date2)) {
+			sqlstr1 += " and b.date  <= '" + date2 + "'";
+			System.out.println(date2);
+		}
+
+		if (!isNullorEmpty(pname)) {
+			sqlstr1 += " and a.P_name like '%" + pname + "%'";
+			System.out.println(pname);
+		}
+		if (!isNullorEmpty(sku)) {
+			sqlstr1 += " and a.SKU like '%" + sku + "%'";
+			System.out.println(sku);
+		}
+
+		if (!isNullorEmpty(companyName)) {
+			sqlstr1 += " and b.companyName like '%" + companyName + "%'";
+			System.out.println(companyName);
+		}
+		if (!isNullorEmpty(wareHouse)) {
+			sqlstr1 += " and a.warehouse like '%" + wareHouse + "%'";
+			System.out.println(wareHouse);
+		}
+		if (!isNullorEmpty(owner)) {
+			sqlstr1 += " and b.staffName like '%" + owner + "%'";
+			System.out.println(owner);
+		}
+		if (!isNullorEmpty(warehousePositionOne)) {
+			sqlstr1 += " and a.warehousePosition1 like '%" + warehousePositionOne + "%'";
+			System.out.println(warehousePositionOne);
+		}
+
+		if (!isNullorEmpty(warehousePositionTwo)) {
+			sqlstr1 += " and a.warehousePosition2 like '%" + warehousePositionTwo + "%'";
+			System.out.println(warehousePositionTwo);
+		}
+
+		if (!isNullorEmpty(qty)) {
+			sqlstr1 += " and a.qty like '%" + qty + "%'";
+			System.out.println(qty);
+		}
+
+		if (!isNullorEmpty(price)) {
+			sqlstr1 += " and a.price like '%" + price + "%'";
+			System.out.println(price);
+		}
+		
+		sqlstr1 += " order by 1";
+		return sqlstr1;
 	}
 
 	public LinkedList<LinkedList<String>> SearchOutRecord(Connection conn, String date1, String date2, String outRecord,
@@ -354,90 +460,7 @@ public class purchaseFactory {
 		return sqlOutRecord;
 	}
 
-	public String searchCondition(String purchaseRecord, String outRecord,String purchaseId, String date1, String date2, String pname,
-			String sku, String companyName, String owner, String wareHouse, String warehousePositionOne,
-			String warehousePositionTwo, String qty, String price) {
-		String sqlstr1 = "select distinct a.purchaseId,c.productType,a.SKU,c.P_name,"
-				+ " a.qty,a.price,a.warehouse,a.warehousePosition1,a.warehousePosition2,c.owner,"
-				+ " b.date,b.companyName,b.staffName,a.comment,a.stockStatus"//add cost!!
-				+ " from  purchaselog_detail as a inner join  purchaselog_master as b inner join  product as c where a.purchaseId =b.purchaseId and a.SKU = c.SKU  ";
-		System.out.println(sku);
-
-		if (!isNullorEmpty(purchaseRecord) && !isNullorEmpty(outRecord)) {
-			sqlstr1 += "and (a.stockStatus = 1 or a.stockStatus = 2)";
-			System.out.println("both:" + purchaseRecord + outRecord);
-		} else {
-
-			if (!isNullorEmpty(purchaseRecord)) {
-				sqlstr1 += "and a.stockStatus = 1";
-				System.out.println("進貨:" + purchaseRecord);
-			}
-
-			if (!isNullorEmpty(outRecord)) {
-				sqlstr1 += "and a.stockStatus = 2";
-				System.out.println("出貨:" + outRecord);
-			}
-
-		}
-		
-		if (!isNullorEmpty(purchaseId)) {
-			sqlstr1 += " and a.purchaseId  like'%" + purchaseId + "%'";
-			System.out.println(purchaseId);
-		}
-
-		if (!isNullorEmpty(date1)) {
-			sqlstr1 += " and b.date  >= '" + date1 + "'";
-			System.out.println(date1);
-		}
-		if (!isNullorEmpty(date2)) {
-			sqlstr1 += " and b.date  <= '" + date2 + "'";
-			System.out.println(date2);
-		}
-
-		if (!isNullorEmpty(pname)) {
-			sqlstr1 += " and a.P_name like '%" + pname + "%'";
-			System.out.println(pname);
-		}
-		if (!isNullorEmpty(sku)) {
-			sqlstr1 += " and a.SKU like '%" + sku + "%'";
-			System.out.println(sku);
-		}
-
-		if (!isNullorEmpty(companyName)) {
-			sqlstr1 += " and b.companyName like '%" + companyName + "%'";
-			System.out.println(companyName);
-		}
-		if (!isNullorEmpty(wareHouse)) {
-			sqlstr1 += " and a.warehouse like '%" + wareHouse + "%'";
-			System.out.println(wareHouse);
-		}
-		if (!isNullorEmpty(owner)) {
-			sqlstr1 += " and b.staffName like '%" + owner + "%'";
-			System.out.println(owner);
-		}
-		if (!isNullorEmpty(warehousePositionOne)) {
-			sqlstr1 += " and a.warehousePosition1 like '%" + warehousePositionOne + "%'";
-			System.out.println(warehousePositionOne);
-		}
-
-		if (!isNullorEmpty(warehousePositionTwo)) {
-			sqlstr1 += " and a.warehousePosition2 like '%" + warehousePositionTwo + "%'";
-			System.out.println(warehousePositionTwo);
-		}
-
-		if (!isNullorEmpty(qty)) {
-			sqlstr1 += " and a.qty like '%" + qty + "%'";
-			System.out.println(qty);
-		}
-
-		if (!isNullorEmpty(price)) {
-			sqlstr1 += " and a.price like '%" + price + "%'";
-			System.out.println(price);
-		}
-		
-		sqlstr1 += " order by 1";
-		return sqlstr1;
-	}
+	
 
 	public LinkedList<LinkedList<String>> checkvalue(HttpServletRequest request) {
 		LinkedList<String> values = new LinkedList<String>();

@@ -49,7 +49,7 @@ public class EbayAccountDo extends HttpServlet {
 					processaddAccount(request,response); // new a Account
 					break;
 				case "updateEbayAccount":
-					processaddAccount(request,response); // update Account
+					processupdateAccount(request,response); // update Account
 					break;
 				default:
 					break;
@@ -80,11 +80,11 @@ public class EbayAccountDo extends HttpServlet {
 					response.setContentType("text/html;charset=UTF-8");
 					conn = new DataBaseConn().getConn();
 					CEbayFactory cef = new CEbayFactory();
-					System.out.println(request.getParameter("ebayId"));
-					cef.InsertNewEbayAccount(request, conn);
+					System.out.println(request.getParameter("ebayId")+"ttttt");
+					cef.updateEbayAccount(request, conn);
 					
 					conn.close();
-					response.sendRedirect("QREBayAccount/updateAccount.jsp");
+					response.sendRedirect("QREBayAccount/eBayAccount.jsp");
 				}
 		
 		

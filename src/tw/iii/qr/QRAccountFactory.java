@@ -76,21 +76,22 @@ public class QRAccountFactory extends QRAccount{
 	public void editQRAccount (QRAccount qra) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
 		
 		Connection conn = new DataBaseConn().getConn();
-		String sqlstr = "UPDATE quickreach.accountinfo set"
-				+ "account = ?," + "password = ?," + "lastname = ?,"
-				+ "firstname = ?," + "email = ?," + "ename = ?,"
-				+ "signatureImage = ?," + "competenceLV =?," + "status = ?"; //9個
+		String sqlstr = "UPDATE quickreach.accountinfo set " 
+			    + " password = ?," + " lastname = ?," 
+				+ " firstname = ?," + " email = ?," + " enName = ?," 
+				+ " signatureImage = ?," + " competenceLV =?," + "status = ?,"
+				+ " where account = ?"; //9個
 		PreparedStatement preparedState = conn.prepareStatement(sqlstr);
-		
-		preparedState.setString(1, qra.getAccount());  // 1st
-		preparedState.setString(2, qra.getPassword());
-		preparedState.setString(3, qra.getLastName());
-		preparedState.setString(4, qra.getFirstName());
-		preparedState.setString(5, qra.getEmail());
-		preparedState.setString(6, qra.getEnName());  //6th
-		preparedState.setString(7, qra.getSignatureImage()); //簽名檔先不做
-		preparedState.setString(8, qra.getCompetenceLV());
-		preparedState.setInt(9, qra.getStatus());
+			 
+		preparedState.setString(1, qra.getPassword());
+		preparedState.setString(2, qra.getLastName());
+		preparedState.setString(3, qra.getFirstName());
+		preparedState.setString(4, qra.getEmail());
+		preparedState.setString(5, qra.getEnName());  //6th
+		preparedState.setString(6, qra.getSignatureImage()); //簽名檔先不做
+		preparedState.setString(7, qra.getCompetenceLV());
+		preparedState.setInt(8, qra.getStatus());
+		preparedState.setString(9, qra.getAccount()); 
 		
 		preparedState.execute();
 		preparedState.close();

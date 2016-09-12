@@ -19,7 +19,7 @@ public class CompetenceInsert extends HttpServlet {
 	private PrintWriter out;
 	CompetenceSql cs = new CompetenceSql();
 	HttpSession session;
-	
+	String a = "";
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		processInsert(request, response);
@@ -30,10 +30,30 @@ public class CompetenceInsert extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		String submit = request.getParameter("smt");
+		
+		a = request.getParameter("CompetenceLv");
 		if(submit.equals("insert")){
-		processInsert(request, response);
-		}else{
-			
+			processInsert(request, response);
+			response.sendRedirect("CompetenceInsert.jsp");
+		}if(submit.equals("delete")){
+			processDelete(request, response);
+			response.sendRedirect("Competence.jsp");
+		}else{			
+			processDelete(request, response);
+			processInsert(request, response);
+			response.sendRedirect("Competence.jsp");
+		}
+	}
+
+	private void processDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		CompetenceSql cs = new CompetenceSql();
+				
+		try {
+			cs.competenceDelete(a);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -46,7 +66,7 @@ public class CompetenceInsert extends HttpServlet {
 		Competence ct = new Competence();
 
 		try {
-			String a = request.getParameter("CompetenceLv");
+//			String a = request.getParameter("CompetenceLv");
 			ct.setCompetenceLv(a);
 			if (a != null && !a.equals("")) {
 				String b = request.getParameter("ProductManage");
@@ -130,10 +150,12 @@ public class CompetenceInsert extends HttpServlet {
 				cs.insetCompetence(ct);
 				//out.write("新增成功");
 				
-				response.sendRedirect("CompetenceInsert.jsp");
+				//response.sendRedirect("CompetenceInsert.jsp");
 				
 			} else {
-				out.write("請輸入LV名稱");
+				out.write(a);
+				System.out.println("a"+a);
+				//out.write("請輸入LV名稱");
 			}
 			// LinkedList<Competence> llct = cs.getCompetenceLv();
 			//
