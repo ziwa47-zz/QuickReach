@@ -93,7 +93,7 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
                   <td>${i.getCOrderMaster().getPaypalNet()}</td>
                 </tr>
                 <tr>
-                  <td><c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1">
+                  <td colspan="4"><c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1">
                   <b>${j.getSKU()}</b>${j.getProductName()}<br/>
 						</c:forEach>
                   </td>
