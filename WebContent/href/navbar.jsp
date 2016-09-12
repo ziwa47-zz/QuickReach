@@ -107,18 +107,19 @@
 </script>
 </head>
 <body>
+
 <%
- String ac =(String)session.getAttribute("account");
- if(ac==null || "".equals(ac)){
- 	if("0".equals(request.getParameter("p"))){
-		
- 	}else{
- 		response.sendRedirect("/Login.jsp?p=0");
- 	}
-	
- }
+
+if(!"0".equals(request.getParameter("p"))){
+	if (session.getAttribute("account")==null){
+		response.sendRedirect("/Login.jsp?p=0");
+	}
+}
+
 
 %>
+
+
 
 	<nav class="navbar" style="background-color: #000000">
 	<div class="container-fluid">
@@ -137,11 +138,11 @@
 
 			<ul class="nav navbar-right">
 				<c:if test="${account != null}">
-					<li><a href="/Login.jsp">${staffName}${'('}${account}${')'}<span
+					<li><a href="/Login.jsp?p=0" >${staffName}${'('}${account}${')'}<span
 							class="glyphicon glyphicon-log-in"></span> Logout</a></li>
 				</c:if>	
 				<c:if test="${account == null}">
-					<li><a href="/Login.jsp"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+					<li><a href="/Login.jsp?p=0" ><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 				</c:if>	
 			</ul>
 		</div>
