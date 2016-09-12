@@ -184,9 +184,7 @@ public class BundlesFactory {
 		bundlesList = new LinkedList<String[]>();
 	}
 	
-	public void detailSetNULL(){
-		bundlesList = new LinkedList<String[]>();
-	}
+
 	
 	public void addItem(String[] a){
 		

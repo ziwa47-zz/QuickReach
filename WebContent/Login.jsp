@@ -8,9 +8,7 @@
 
 <% 
 if(session.getAttribute("account")!=null){
-
 session.invalidate();
-
 }
 %>
 </head>
