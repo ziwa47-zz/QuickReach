@@ -91,7 +91,7 @@ conn.close();
 					<li ><a
 						href="NewProduct.jsp" style="color: #000">新增單項商品</a></li>
 					<li ><a
-						href="ProductAddPage.jsp" style="color: #000">新增組合商品</a></li>
+						href="BundlesAdd.jsp" style="color: #000">新增組合商品</a></li>
 					
 				</ul>
 			</div>
@@ -119,7 +119,7 @@ conn.close();
         <label for="inputPassword" class="col-md-2 control-label text-left">編輯模式</label>
           <div class="col-md-4">
             <label class="radio-inline">
-              <input type="checkbox" name="optionsRadios" id="optionsRadios1"  onchange="optionsonchange(this)">開啟</label>
+              <input type="checkbox" name= "optionsRadios" id="optionsRadios1"  onchange="optionsonchange(this)">開啟</label>
       	   
       	    <button type="submit" name="submit" value="updateProduct"
 						class="btn-lg btn-success" id = "optionsRadiosButton" disabled>更新產品資料</button></label>

@@ -28,15 +28,15 @@ public class BundlesFactory {
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
 
-		String sqlstr = "SELECT sku,P_name,brand,subBrand FROM product where sku not like 'B00% '";
+		String sqlstr = "SELECT sku,P_name,brand,subBrand FROM product where sku not like 'B00%'";
 
 		
 		if (brand != null && !brand.equals("select")){
-			sqlstr += " and brand='" + brand + "'";
+			sqlstr += " and brand=N'" + brand + "'";
 
 		}
 		if (subBrand != null && !subBrand.equals("select")){
-			sqlstr += " and subBrand='" + subBrand + "'";
+			sqlstr += " and subBrand=N'" + subBrand + "'";
 		}
 //		if (SKU != null && !SKU.equals("select")){
 //			sqlstr += " and SKU='" + SKU + "'";
@@ -103,7 +103,7 @@ public class BundlesFactory {
 
 			sqlstr = "SELECT distinct subbrand FROM product where subbrand is not null";
 		}else if (!b.equals("select")){
-			sqlstr = "SELECT distinct subbrand FROM product where subbrand is not null and brand = '"+b+"'";
+			sqlstr = "SELECT distinct subbrand FROM product where subbrand is not null and brand = N'"+b+"'";
 
 		}
 		ResultSet rs = state.executeQuery(sqlstr);
@@ -124,31 +124,6 @@ public class BundlesFactory {
 		return lcp;
 	}
 	
-	public LinkedList<CProduct> getSKU() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
-		
-		DataBaseConn dbc = new DataBaseConn();		
-		Connection conn = dbc.getConn() ;
-		state = conn.createStatement();
-
-		String sqlstr = "SELECT SKU FROM product";
-
-		ResultSet rs = state.executeQuery(sqlstr);
-		lcp = new LinkedList<CProduct>();
-		CProduct cp ;
-		
-		while (rs.next()) {
-			cp=new CProduct();
-			
-			cp.setSKU(rs.getString(1));
-			
-			lcp.add(cp);			
-		}
-		
-		rs.close();
-		state.close();	
-		dbc.connclose(conn);
-		return lcp;
-	}
 	
 	public LinkedList<CProduct> getTotalBundles() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
 		//查看所有複合商品
@@ -156,7 +131,7 @@ public class BundlesFactory {
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
 
-		String sqlstr = "SELECT sku,P_name,comment FROM product where  productType = '組合商品'";
+		String sqlstr = "SELECT sku,P_name,comment FROM product where  sku like 'B00%'";
 
 		ResultSet rs = state.executeQuery(sqlstr);
 		lcp = new LinkedList<CProduct>();
@@ -187,7 +162,9 @@ public class BundlesFactory {
 		for(String[] x: bundlesList){
 			if(x[0].equals(a[0])){
 				a[2] = Integer.toString(Integer.parseInt(x[2])+Integer.parseInt(a[2]));
+				bundlesList.add(a);
 				bundlesList.remove(x);
+				return;
 			}
 		}
 		
@@ -215,7 +192,7 @@ public class BundlesFactory {
 	public void bundlesToProduct(String sku, String pname ,String ps) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
 		DataBaseConn dbc = new DataBaseConn();
 		Connection conn = dbc.getConn() ;
-		String sqlstr = "insert into product(SKu,productType,P_name,comment) values(?,'組合商品',?,?)";
+		String sqlstr = "insert into product(SKu,productType,P_name,comment) values(?,N'組合商品',?,?)";
 		PreparedStatement preparedState = conn.prepareStatement(sqlstr);
 		
 		preparedState.setString(1, sku);		
