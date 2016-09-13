@@ -46,9 +46,9 @@ public class SendTrackingCodeServlet extends HttpServlet {
 		COrderFactory OFactory = new COrderFactory();
 		if (!OFactory.checkOrderIdOrderStatus(request, conn) == false){
 			System.out.println("checked true");
-			OFactory.updateToFinished(request, conn);
-			OFactory.deductStock(request, conn);
-			OFactory.insertIntoShippingLog(request, conn);
+		//	OFactory.updateToFinished(request, conn);
+		//	OFactory.deductStock(request, conn);
+		//	OFactory.insertIntoShippingLog(request, conn);
 			OFactory.insertIntoPurchaseLogFromOrders(request, conn);
 			response.sendRedirect("QROrders/OrderFinished.jsp");
 		} else {
