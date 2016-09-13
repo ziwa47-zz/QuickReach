@@ -42,12 +42,11 @@ public class SupplyCompanyServlet extends HttpServlet {
 			case "addAccount":
 				processInsert(request,response); // new a SupplyCompany name
 				break;
-//			case "editAccount":
-//				processEdit(request,response); // update a SupplyCompany name
-//				break;
-			default:
+			case "editAccount":
+				processEdit(request,response); // update a SupplyCompany name
 				break;
-				
+			default:
+				break;			
 			}
 		
 		} catch (Exception e) {
@@ -70,6 +69,7 @@ private void processInsert(HttpServletRequest request, HttpServletResponse respo
 		csc.setFax(request.getParameter("fax"));
 		csc.setAddress(request.getParameter("address"));
 		csc.setComment(request.getParameter("comment"));  //6th	
+		
 		try {
 			scf.insertSCompanyId(csc);
 			response.sendRedirect("addSCName.jsp");
@@ -79,7 +79,31 @@ private void processInsert(HttpServletRequest request, HttpServletResponse respo
 		}
 	}	
 	
+private void processEdit(HttpServletRequest request, HttpServletResponse response) throws IOException {
 	
+	request.setCharacterEncoding("UTF-8");
+	response.setContentType("text/html;charset=UTF-8");
+	out = response.getWriter();
+	
+	CSupplyCompany csc = new CSupplyCompany();
+	
+	csc.setCompanyId(Integer.parseInt(request.getParameter("companyId")));  //1st
+	csc.setCompanyName(request.getParameter("companyName"));
+	csc.setTel(request.getParameter("tel"));
+	csc.setFax(request.getParameter("fax"));
+	csc.setAddress(request.getParameter("address"));
+	csc.setComment(request.getParameter("comment"));  //6th	
+	
+	try {
+		scf.insertSCompanyId(csc);
+		response.sendRedirect("addSCName.jsp");
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+}
+
 	
 }
 

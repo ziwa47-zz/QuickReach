@@ -61,7 +61,6 @@ public class DayliBalanceSheetFactory extends COrders {
 
 			PreparedStatement ps2 = conn.prepareStatement(strSql2);
 			ps2.setString(1, rs.getString(2));
-			System.out.println(strSql2);
 			ResultSet rs2 = ps2.executeQuery();
 			orderDetails = new LinkedList<>();
 			while(rs2.next()){
@@ -105,10 +104,8 @@ public class DayliBalanceSheetFactory extends COrders {
 			order.COrderDetailSingle.setOwner(rs.getString(26));
 			order.COrderDetailSingle.setPrice(rs.getDouble(27));
 
-			System.out.println(order);
 			orderList.add(order);
 		}
-		System.out.println(orderList);
 		rs.close();
 		ps.close();
 		conn.close();

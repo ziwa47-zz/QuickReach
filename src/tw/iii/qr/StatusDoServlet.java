@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import com.mysql.fabric.xmlrpc.base.Data;
 
 import tw.iii.qr.DataBaseConn;
+import tw.iii.qr.order.COrderDetail;
 import tw.iii.qr.order.COrderFactory;
 
 
@@ -85,6 +86,18 @@ public class StatusDoServlet extends HttpServlet {
 			}
 			break;
 		case "processing":
+//			LinkedList<String> warehouses = OFactory.getWarehouse(request);
+//			
+//			for(int i=0; i<warehouses.size(); i++){
+//				System.out.println("warehouse:" + warehouses.get(i));
+//				if(OFactory.isNullorEmpty(warehouses.get(i))){
+//					out.write("<script type='text/javascript'>");
+//					out.write("alert('訂單尚未選擇倉別，請再次操作');");
+//					out.write("window.location = 'QROrders/OrderProcessingPage.jsp?begin=0&end=10';");
+//					out.write("</script>");
+//					conn.close();
+//				}
+//			}
 			OFactory.updateToPickUp(request, conn);
 			response.sendRedirect("QROrders/OrderPickupPage.jsp?begin=0&end=10");
 			conn.close();
@@ -100,7 +113,7 @@ public class StatusDoServlet extends HttpServlet {
 				OFactory.updateToFinished(request, conn);
 				OFactory.deductStock(request, conn);
 				OFactory.insertIntoShippingLog(request, conn);
-				
+				OFactory.insertIntoPurchaseLogFromOrders(request, conn);
 				response.sendRedirect("QROrders/OrderFinished.jsp?begin=0&end=10");
 				conn.close();
 			} else {

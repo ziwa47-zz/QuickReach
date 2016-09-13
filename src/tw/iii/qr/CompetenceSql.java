@@ -133,7 +133,7 @@ public class CompetenceSql {
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
 		
-		String sqlstr = "DELETE FROM competencelv WHERE competenceLV='"+cv+"';";
+		String sqlstr = "DELETE FROM competencelv WHERE competenceLV=N'"+cv+"';";
 		
 		state.executeUpdate(sqlstr);
 		state.close();

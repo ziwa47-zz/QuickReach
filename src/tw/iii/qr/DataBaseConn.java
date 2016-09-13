@@ -20,7 +20,7 @@ public class DataBaseConn {
 		
 		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
-
+		
 
 
 		conn = DriverManager.getConnection(urlstr);
