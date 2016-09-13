@@ -19,6 +19,7 @@
 Connection conn = new DataBaseConn().getConn();
 LinkedList<COrders> similarOrders = COrderFactory.getSimilarOrders(request, conn);
 request.setAttribute("list", similarOrders);
+
 %>
 <div class="nav">
   <div class="container">
@@ -52,14 +53,15 @@ request.setAttribute("list", similarOrders);
 </div>
 
 <div class="nav">
-  <div class="container table-responsive bg-warning" style="background: #D9A56B; border-radius:20px;">
+  <div class="container table-responsive bg-warning" style="border-radius:20px;">
     <form name="searchform" method="post" action="../OrdersServlet" class="form-inline container"
     style="font-size: 100%; vertical-align: baseline; padding: 15px;">
       <fieldset class="font-weight" style="padding:0 30px 0 0;">
-        <legend>合併訂單</legend>
+        <legend style="color:#000">待合併訂單</legend>
         <table class="table table-bordered table-hover table-condensed pull-left">
           <thead>
             <tr class="ListTitle">
+              <th>選取</th>
               <th>訂單編號</th>
               <th>平台</th>
               <th>Ebay Account</th>
@@ -72,6 +74,7 @@ request.setAttribute("list", similarOrders);
           <tbody>
           <c:forEach var="i" items="${list}" begin="0" step="1" varStatus="check">
             <tr>
+              <td><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
               <td>${i.getCOrderMaster().getQR_id()}</td>
               <td>${i.getCOrderMaster().getPlatform()}</td>
               <td>${i.getCOrderMaster().getEbayAccount()}</td>
@@ -83,8 +86,47 @@ request.setAttribute("list", similarOrders);
           </c:forEach>
           </tbody>
         </table>
-        
-        
+        <div class="row text-center" >
+      <button type="submit" name="send" value="" class="btn-lg btn-primary"
+       >送出</button>
+    </div>
+      </fieldset>
+    </form>
+  </div>
+  
+  <div class="container table-responsive bg-warning" style="border-radius:20px;">
+    <form name="searchform" method="post" action="../OrdersServlet" class="form-inline container"
+    style="font-size: 100%; vertical-align: baseline; padding: 15px;">
+      <fieldset class="font-weight" style="padding:0 30px 0 0;">
+        <legend style="color:#000">已合併訂單</legend>
+        <table class="table table-bordered table-hover table-condensed pull-left">
+          <thead>
+            <tr class="ListTitle">
+              <th>選取</th>
+              <th>訂單編號</th>
+              <th>平台</th>
+              <th>Ebay Account</th>
+              <th>E/B帳號</th>
+              <th>付款日期</th>
+              <th>訂單狀態</th>
+              <th>總價</th>
+            </tr>
+          </thead>
+          <tbody>
+          <c:forEach var="i" items="${list2}" begin="0" step="1" varStatus="check">
+            <tr>
+              <td><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
+              <td>${i.getCOrderMaster().getQR_id()}</td>
+              <td>${i.getCOrderMaster().getPlatform()}</td>
+              <td>${i.getCOrderMaster().getEbayAccount()}</td>
+              <td>${i.getCOrderMaster().getGuestAccount()}</td>
+              <td>${i.getCOrderMaster().getPayDate()}</td>
+              <td>${i.getCOrderMaster().getOrderStatus()}</td>
+              <td>${i.getCOrderMaster().getTotalPrice()}</td>
+            </tr>
+          </c:forEach>
+          </tbody>
+        </table>
       </fieldset>
     </form>
   </div>

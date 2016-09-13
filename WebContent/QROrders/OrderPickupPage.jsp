@@ -26,7 +26,7 @@
   <div class="container">
     <div class="navbar-left" style="background-color:#F3CE9A;" >
       <ul class="nav nav-tabs">
-        <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp" style="color:#FFFFFF">訂單管理</a></li>
+        <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp?begin=0&end=10" style="color:#FFFFFF">訂單管理</a></li>
         <li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
       </ul>
     </div>
@@ -236,8 +236,9 @@
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
         <form name="searchform" method="post" action="../StatusDo" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
-          <button type="submit" name="" class="btn-sm btn-info">選擇全部</button>
-          <button type="submit" name="" class="btn-sm btn-info">清除勾選</button>
+          <label class="btn btn-sm btn-info">
+		    <input type="checkbox" autocomplete="off" onchange="selectAllOrders(this)"> 選擇全部
+		  </label>
           <button type="submit" name="" class="btn-sm btn-info">列印撿貨/出貨單</button>
           <button type="submit" name="" class="btn-sm btn-info">列印EMS</button>
           <button type="submit" name="" class="btn-sm btn-info">列印Invoice</button>
@@ -313,9 +314,10 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
-                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}
-                        (SKU/productName)</c:forEach></td>
-                    <td colspan="3"></td>
+                  <c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                    <td colspan="9"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}(SKU/品名)<br/></td>
+                    <td colspan="3"><input name="warehouse" type="hidden" value="${i.getWarehouse()}"><b>${i.getWarehouse()}</b>(倉別)<br/></td>
+                  </c:forEach>
                   </tr>
                   <tr style="background-color:#D4F4D8">
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
@@ -340,9 +342,10 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr>
-                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}<br/>
-                      </c:forEach></td>
-                    <td colspan="3"></td>
+                  <c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                    <td colspan="9"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}(SKU/品名)<br/></td>
+                    <td colspan="3"><input name="warehouse" type="hidden" value="${i.getWarehouse()}"><b>${i.getWarehouse()}</b>(倉別)<br/></td>
+                  </c:forEach>
                   </tr>
                   <tr>
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
@@ -361,8 +364,9 @@
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
         <form name="searchform" method="post" action="../StatusDo" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
-          <button type="submit" name="" class="btn-sm btn-info">選擇全部</button>
-          <button type="submit" name="" class="btn-sm btn-info">清除勾選</button>
+          <label class="btn btn-sm btn-info">
+		    <input type="checkbox" autocomplete="off" onchange="selectAllOrders(this)"> 選擇全部
+		  </label>
           <button type="submit" name="" class="btn-sm btn-info">列印撿貨/出貨單</button>
           <button type="submit" name="" class="btn-sm btn-info">列印EMS</button>
           <button type="submit" name="" class="btn-sm btn-info">列印Invoice</button>
@@ -438,9 +442,10 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
-                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}
-                        (SKU/productName)</c:forEach></td>
-                    <td colspan="3"></td>
+                  <c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                    <td colspan="9"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}(SKU/品名)<br/></td>
+                    <td colspan="3"><input name="warehouse" type="hidden" value="${i.getWarehouse()}"><b>${i.getWarehouse()}</b>(倉別)<br/></td>
+                  </c:forEach>
                   </tr>
                   <tr style="background-color:#D4F4D8">
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
@@ -465,9 +470,10 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr>
-                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}<br/>
-                      </c:forEach></td>
-                    <td colspan="3"></td>
+                  <c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                    <td colspan="9"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}(SKU/品名)<br/></td>
+                    <td colspan="3"><input name="warehouse" type="hidden" value="${i.getWarehouse()}"><b>${i.getWarehouse()}</b>(倉別)<br/></td>
+                  </c:forEach>
                   </tr>
                   <tr>
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
@@ -484,7 +490,18 @@
     </c:otherwise>
   </c:choose>
 </div>
+
 <%@ include file="../href/footer.jsp" %>
+<script type="text/javascript">
+function selectAllOrders(ele) {
+	//select all
+	if (ele.checked) {
+		$("input[name=QR_id]").prop("checked", true);
+    } else {
+    	$("input[name=QR_id]").prop("checked", false);
+    }
+};
+</script>
 </body>
   
 </html>

@@ -100,6 +100,7 @@ textarea {
 	        $("input[name=deducted]").prop("checked", false);
 	    }
 };
+
 	$(function () {
 	$("button[name=send]").click(function() {
 		bool = confirm("確認是否送出訂單");
