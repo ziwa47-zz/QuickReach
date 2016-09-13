@@ -26,7 +26,7 @@
   <div class="container">
     <div class="navbar-left" style="background-color:#F3CE9A;" >
       <ul class="nav nav-tabs">
-        <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp" style="color:#FFFFFF">訂單管理</a></li>
+        <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp?begin=0&end=10" style="color:#FFFFFF">訂單管理</a></li>
         <li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
       </ul>
     </div>
@@ -127,7 +127,7 @@
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id"
                      value="${i.getCOrderMaster().getQR_id()}" onchange="preventDoubleOrder(this)"></td>
                     <td><a href="OrderDetailUnchangable.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td nowrap>${i.getCOrderMaster().getOrder_id()}
+                    <td nowrap>${i.getCOrderMaster().getQR_id()}
                     <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
@@ -154,7 +154,7 @@
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id"
                      value="${i.getCOrderMaster().getQR_id()}" onchange="preventDoubleOrder(this)"></td>
                     <td><a href="OrderDetailUnchangable.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td nowrap>${i.getCOrderMaster().getOrder_id()}
+                    <td nowrap>${i.getCOrderMaster().getQR_id()}
                     <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
