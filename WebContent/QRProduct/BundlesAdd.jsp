@@ -18,7 +18,7 @@
     <meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>新增複合商品</title>
+    <title>新增組合商品</title>
     <!-- Bootstrap -->
 	<link href="css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui.css">
@@ -75,9 +75,9 @@
    	  <div class="nav" style="background-color:#1CAF9A;" >
         	<ul class="nav nav-tabs">
               <li><a href="SearchProductPage.jsp" style="color: #000">查詢商品</a></li>
-			  <li><a href="TotalBundles.jsp" style="color: #000000">查詢複合商品</a></li>
+			  <li><a href="TotalBundles.jsp" style="color: #000000">查詢組合商品</a></li>
 			  <li><a href="NewProduct.jsp" style="color: #000000">新增單項商品</a></li>
-			  <li class="" style="background-color: #1CAF9A"><a href="BundlesAdd.jsp" style="color: #fff">新增複合商品</a></li>
+			  <li class="" style="background-color: #1CAF9A"><a href="BundlesAdd.jsp" style="color: #fff">新增組合商品</a></li>
             </ul>
         </div>
     </div>
@@ -89,7 +89,7 @@
           <li><a href="../QRMain/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchProductPage.jsp">庫存/商品管理</a></li>
-			<li><a href="BundlesAdd.jsp">新增複合商品</a></li>
+			<li><a href="BundlesAdd.jsp">新增組合商品</a></li>
       </ol>
         </div>
   
@@ -137,7 +137,7 @@ request.setAttribute("listSubBrand",listSubBrand);
 
 %>
 
-      <fieldset class="container-fluid" style="padding:0 30 0 0;"><legend>新增複合商品</legend>
+      <fieldset class="container-fluid" style="padding:0 30 0 0;"><legend>新增組合商品</legend>
     	<input type="hidden">
   
         <div class="row">
