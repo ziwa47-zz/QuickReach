@@ -220,7 +220,11 @@ conn.close();
             <div class="panel-body">
               <input type="hidden">
               <div class="container-fluid form-horizontal">
-                    <div class="row">
+               <div class="row">
+                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>材積</h4></div>
+                  <div class="col-md-8 well-sm"><input class="form-control" style="width:700px" type="text" name="volume" value="${resultDetail.getVolume()}" ></div>
+              </div>
+              <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>包裝材質</h4></div>
                   <div class="col-md-8 well-sm"><input class="form-control" style="width:700px" type="text" name="package" value="${resultDetail.getPackageMatrial()}" ></div>
               </div>
@@ -230,11 +234,9 @@ conn.close();
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>建檔日</h4></div>
-<<<<<<< HEAD
+
                   <div class="col-md-8 well-sm"><input class="form-control  yymmdd" type="text"name="cdate" value="${resultDetail.getCreateDate()}" readonly></div>
-=======
-                  <div class="col-md-8 well-sm"><input class="form-control yymmdd" type="text"name="cdate" value="${resultDetail.getCreateDate()}" readonly></div>
->>>>>>> refs/remotes/origin/master
+
               </div>
           
               </div>

@@ -10,26 +10,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>addAccount</title>
-<!-- Bootstrap -->
-<link href="./css/bootstrap.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css"
-	href="./css/smoothness/jquery-ui.css">
-
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="./js/bootstrap.js"></script>
-
-
-<script src="./js/jquery-1.12.4.min.js"></script>
-<script src="./js/jquery-ui.min.js"></script>
-<script src="./js/jquery.ui.datepicker-zh-TW.js"></script>
-
 </head>
 <body>
 	<%@include file="../href/navbar.jsp"%>
 	
 	<div class="nav">
 		<div class="container">
-			<div class="navbar-left" style="background-color: #BCF1E5;">
+			<div class="navbar-left" style="background-color: #AC7ED3;">
 				<ul class="nav nav-tabs">
 					<li><a href="eBayAccount.jsp" style="color: #000000">eBay帳號管理</a></li>
 				</ul>
@@ -70,15 +57,18 @@
       	           	       
           </div>
 <%
-
-String ebayId = request.getParameter("ebayId");
 request.setCharacterEncoding("UTF-8");
-//out.print(ebayId);        		
-if(ebayId != null || ebayId.equals("")){
-//Connection conn = new DataBaseConn().getConn();
+String ebayId = request.getParameter("p");
+
+//out.print(ebayId);  
+System.out.println(ebayId);   
+System.out.println(request.getParameter("p"));
+if(!"".equals(ebayId) || ebayId != null){
+Connection conn = new DataBaseConn().getConn();
 
 CEbay eBayAccount = getebay.searchDetail(ebayId);
 session.setAttribute("eBayAccount", eBayAccount);
+System.out.println(eBayAccount.getebayId());
 }
 
 %>

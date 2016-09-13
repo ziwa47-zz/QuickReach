@@ -11,6 +11,7 @@ public class Cpurchase_master {
 	private String comment;
 	private String stockStatus;
 	private String warehouse;
+	private String warehouse2;
 	
 	
 	public String getPurchaseId() {
@@ -60,5 +61,12 @@ public class Cpurchase_master {
 	}
 	public void setWarehouse(String warehouse) {
 		this.warehouse = warehouse;
+	}
+	public String getWarehouse2() {
+		return warehouse2;
+	}
+	public void setWarehouse2(String warehouse2) {
+		this.warehouse2 = warehouse2;
+		
 	}
 }
