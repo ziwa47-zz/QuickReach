@@ -42,8 +42,8 @@ conn.close();
     <div class="nav" style="background-color:#A45A21;" >
       <ul class="nav nav-tabs">
         <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
-        <li><a href="OrderProcessingPage.jsp?begin=0&end=10" style="color:#fff">處理中</a></li>
-        <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
+        <li><a href="OrderProcessingPage.jsp?begin=0&end=10">處理中</a></li>
+        <li><a href="OrderPickupPage.jsp?begin=0&end=10" style="color:#fff">揀貨中</a></li>
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
         <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
@@ -311,7 +311,15 @@ conn.close();
 		            </td>
 		            <td><input class="" type="text" name="price" value="${i.getPrice()}"></td>
 		            <td><input class="" type="text" name="invoicePrice" value="${i.getInvoicePrice()}"></td>
-		            <td><input class="" type="text" name="qty" value="${i.getQty()}"></td>
+					<td>
+		              <input class="" type="text" name="qty" value="${i.getQty()}">
+		             	 倉別:${i.getWarehouse()}<br/>
+		              <select name="warehouse">
+                        <option></option>
+                        <option value="KH">KH</option>
+                        <option value="US">US</option>
+                      </select>
+		            </td>
 		            <td>備註:<input class="" type="text" name="comment" value="${i.getComment()}">
 		            <input type="hidden" name="item" value="${i.getItem()}">
 		            </td>
