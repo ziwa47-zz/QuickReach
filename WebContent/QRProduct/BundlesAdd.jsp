@@ -102,11 +102,31 @@
 
 request.setCharacterEncoding("UTF-8");
 response.setContentType("text/html;charset=UTF-8");
+String bd = null;
+String subbd = null;
+String sku = null;
+String pname = null;
+if (request.getParameter("brand") != null) {
+	bd = new String(request.getParameter("brand").getBytes("8859_1"), "UTF-8");
+	System.out.print(bd);
+	request.setAttribute("parambrand", bd);
+}
+if (request.getParameter("subBrand") != null) {
+	subbd = new String(request.getParameter("subBrand").getBytes("8859_1"), "UTF-8");
+	System.out.print(subbd);
+	request.setAttribute("paramsubBrand", subbd);
+}
+if (request.getParameter("productSKU") != null) {
+	sku = new String(request.getParameter("productSKU").getBytes("8859_1"), "UTF-8");
+	System.out.print(sku);
+	request.setAttribute("paramproductSKU", sku);
+}
+if (request.getParameter("P_name") != null) {
+	pname = new String(request.getParameter("P_name").getBytes("8859_1"), "UTF-8");
+	System.out.print(pname);
+	request.setAttribute("paramP_name", pname);
+}
 
-String bd = request.getParameter("brand");
-String subbd = request.getParameter("subBrand");
-String sku = request.getParameter("productSKU");
-String pname = request.getParameter("P_name");
 
 LinkedList<CProduct> list =  new LinkedList<CProduct>();
 list = blf.getProductInfo(bd,subbd,sku,pname);
@@ -149,7 +169,7 @@ request.setAttribute("listSKU",listSKU);
               <div class="col-md-2"><h5><label for="focusedInput " >商品名稱：</label></h5></div>
               <div class="col-md-10">
               	<c:if test="${param.bdname == null }">
-              		<input class="form-control" name="bdname" type="text" value="${bdName}">
+              		<input class="form-control" name="bdname" type="text" value="${bdname}">
               	</c:if>
               	<c:if test="${param.bdname != null }">
               		<input class="form-control" name="bdname" type="text" value="${param.bdname}">
@@ -162,10 +182,10 @@ request.setAttribute("listSKU",listSKU);
               <div class="col-md-2"><h5><label for="focusedInput " >備註：</label></h5></div>
               <div class="col-md-8">
               	<c:if test="${param.comment == null }">
-              		<textarea rows="2"  class="form-control" name="comment" >${bdComment}</textarea>
+              		<textarea style="width:178px;height:55px;"  class="form-control" name="comment" >${bdcomment}</textarea>
              	</c:if>
              	<c:if test="${param.comment != null }">
-              		<textarea rows="2"  class="form-control" name="comment" >${param.comment}</textarea>
+              		<textarea style="width:177px;height:55px;"  class="form-control" name="comment" >${param.comment}</textarea>
              	</c:if>
               </div>
             </div>
@@ -180,8 +200,7 @@ request.setAttribute("listSKU",listSKU);
               <th width="100px">副廠牌</th>
               <th width="25%">商品編號</th>
               <th>商品名稱</th>
-              <th width="50px">數量	</th>
-              
+     
             </tr>
           </thead>
           <tbody>
@@ -194,10 +213,10 @@ request.setAttribute("listSKU",listSKU);
    						<option value="select"></option>
               
               		<c:forEach var="i" varStatus="check" items="${listBrand}" begin="0" step="1" >
-						<c:if test="${param.brand == i.getBrand() }">
+						<c:if test="${parambrand == i.getBrand() }">
 							<option selected="selected" value="${i.getBrand()}">${i.getBrand()}</option>
 						</c:if>
-						<c:if test="${param.brand != i.getBrand() }">
+						<c:if test="${parambrand != i.getBrand() }">
 							<option value="${i.getBrand()}">${i.getBrand()}</option>
 						</c:if>
               		</c:forEach>
@@ -209,10 +228,10 @@ request.setAttribute("listSKU",listSKU);
               			<option value="select">==請選擇==</option>
 
               		<c:forEach var="i" varStatus="check" items="${listSubBrand}" begin="0" step="1" >
-						<c:if test="${param.subBrand == i.getSubBrand()}">
+						<c:if test="${paramsubBrand == i.getSubBrand()}">
 							<option selected="selected" value="${i.getSubBrand()}">${i.getSubBrand()}</option>
               			</c:if>
-              			<c:if test="${param.subBrand != i.getSubBrand()}">
+              			<c:if test="${paramsubBrand != i.getSubBrand()}">
 							<option value="${i.getSubBrand()}">${i.getSubBrand()}</option>
               			</c:if>
               		</c:forEach>
@@ -222,19 +241,19 @@ request.setAttribute("listSKU",listSKU);
 	              <select name="productSKU" id="productSKU" onChange="getSelectPSKU()">
 	              	<option value="select">==請選擇==</option>
 						<c:forEach var="i" varStatus="check" items="${list}" begin="0" step="1" >
-	            			<c:if test="${param.productSKU ne 'select'}">
-		            			<c:if test="${param.productSKU == i.getSKU()}">
+	            			<c:if test="${paramproductSKU ne 'select'}">
+		            			<c:if test="${paramproductSKU == i.getSKU()}">
 		            				<option selected="selected" value="${i.getSKU()}">${i.getSKU()}</option>
 		            			</c:if>
-		            			<c:if test="${param.productSKU != i.getSKU()}">
+		            			<c:if test="${paramproductSKU != i.getSKU()}">
 		            				<option value="${i.getSKU()}">${i.getSKU()}</option>
 		            			</c:if>
 	            			</c:if>
-	            			<c:if test="${param.productSKU eq 'select'}">
-		            			<c:if test="${param.P_name == i.getP_name()}">
+	            			<c:if test="${paramproductSKU eq 'select'}">
+		            			<c:if test="${paramP_name == i.getP_name()}">
 			            			<option selected="selected" value="${i.getSKU()}">${i.getSKU()}</option>
 			            		</c:if>
-			            		<c:if test="${param.P_name != i.getP_name()}">
+			            		<c:if test="${paramP_name != i.getP_name()}">
 			            			<option value="${i.getSKU()}">${i.getSKU()}</option>
 			            		</c:if>	
 	            			</c:if>
@@ -245,28 +264,27 @@ request.setAttribute("listSKU",listSKU);
               	<select name="P_name" id="P_name" onChange="getSelectPname()">
 	            	<option value="select">==請選擇==</option>
 		            	<c:forEach var="i" varStatus="check" items="${list}" begin="0" step="1" >
-		            		<c:if test="${param.P_name ne 'select'}">
-		            			<c:if test="${param.P_name == i.getP_name()}">
+		            		<c:if test="${paramP_name ne 'select'}">
+		            			<c:if test="${paramP_name == i.getP_name()}">
 		            				<option selected="selected" value="${i.getP_name()}">${i.getP_name()}</option>
 		            			</c:if>
-		            			<c:if test="${param.productSKU != i.getSKU()}">
+		            			<c:if test="${paramproductSKU != i.getSKU()}">
 		            				<option value="${i.getP_name()}">${i.getP_name()}</option>
 		            			</c:if>
 	            			</c:if>
-	            			<c:if test="${param.P_name eq 'select'}">
-		            			<c:if test="${param.productSKU == i.getSKU()}">
+	            			<c:if test="${paramP_name eq 'select'}">
+		            			<c:if test="${paramproductSKU == i.getSKU()}">
 			            			<option selected="selected" value="${i.getP_name()}">${i.getP_name()}</option>
 			            		</c:if>
-			            		<c:if test="${param.productSKU != i.getSKU()}">
+			            		<c:if test="${paramproductSKU != i.getSKU()}">
 			            			<option value="${i.getP_name()}">${i.getP_name()}</option>
 			            		</c:if>	
 			            	</c:if>      		
 		            	</c:forEach>
 	            </select>
               </td>
-              <td><input type="number" name="qty"></td>
-              
             </tr> 
+            <tr> <th>數量:<input type="number" name="qty"></th></tr>
             <tr>
             	<td ><button type="submit" name="smt" value="add" >加入</button></td>
             </tr>           
@@ -285,7 +303,7 @@ request.setAttribute("listSKU",listSKU);
 				<th></th>							
 			</tr>
 
-		<c:forEach var="i" varStatus="check" items="${getBundlesDetail}" begin="0" step="1">
+		<c:forEach var="i" varStatus="check" items="${getBundlesAddDetail}" begin="0" step="1">
 			<tr>
 				<td>${i[0]}</td>
 				<td>${i[1]}</td>
