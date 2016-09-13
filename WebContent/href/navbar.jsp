@@ -30,9 +30,13 @@
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.min.js"></script>
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.js"></script>
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.min.js"></script>
-  
- 
 
+<style type="text/css">
+textarea {
+    resize: none;
+}
+</style>  
+ 
 
 <script type="text/javascript">
 	$(function() {
@@ -96,6 +100,7 @@
 	        $("input[name=deducted]").prop("checked", false);
 	    }
 };
+
 	$(function () {
 	$("button[name=send]").click(function() {
 		bool = confirm("確認是否送出訂單");
