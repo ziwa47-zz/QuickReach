@@ -61,7 +61,7 @@ public class COrderFactory extends COrders {
 
 		String strSql = "SELECT distinct m.order_id, platform, m.guestAccount, orderDate, shippingDate,"
 				+ " logistics, orderstatus, totalPrice, staffName, m.comment, m.eBayAccount, m.payDate,"
-				+ " m.QR_id "
+				+ " m.QR_id"
 				+ " FROM  orders_master as m inner join  orders_detail as d on m.QR_id = d.QR_id"
 				+ " left join  orders_guestinfo as g on m.QR_id = g.QR_id" + " where '1' = '1' ";
 
@@ -285,7 +285,7 @@ public class COrderFactory extends COrders {
 			order.COrderMaster.setTotalPrice(rs.getDouble(8));
 			order.COrderMaster.setStaffName(rs.getString(9));
 
-			String strSql2 = "SELECT SKU, productName" + " FROM  orders_detail" + " where QR_id = ?";
+			String strSql2 = "SELECT SKU, productName, warehouse" + " FROM  orders_detail" + " where QR_id = ?";
 
 			PreparedStatement ps2 = conn.prepareStatement(strSql2);
 			ps2.setString(1, rs.getString(13));
@@ -296,6 +296,7 @@ public class COrderFactory extends COrders {
 				COrderDetail COrderDetail = new COrderDetail();
 				COrderDetail.setSKU(rs2.getString(1));
 				COrderDetail.setProductName(rs2.getString(2));
+				COrderDetail.setWarehouse(rs2.getString(3));
 				orderDetails.add(COrderDetail);
 			}
 
@@ -338,17 +339,17 @@ public class COrderFactory extends COrders {
 			order.COrderMaster.setTotalPrice(rs.getDouble(8));
 			order.COrderMaster.setStaffName(rs.getString(9));
 
-			String strSql2 = "SELECT SKU, productName" + " FROM  orders_detail" + " where QR_id = ?";
+			String strSql2 = "SELECT SKU, productName, warehouse" + " FROM  orders_detail" + " where QR_id = ?";
 
 			PreparedStatement ps2 = conn.prepareStatement(strSql2);
 			ps2.setString(1, rs.getString(13));
-			//System.out.println(strSql2);
 			ResultSet rs2 = ps2.executeQuery();
 			orderDetails = new LinkedList<>();
 			while (rs2.next()) {
 				COrderDetail COrderDetail = new COrderDetail();
 				COrderDetail.setSKU(rs2.getString(1));
 				COrderDetail.setProductName(rs2.getString(2));
+				COrderDetail.setWarehouse(rs2.getString(3));
 				orderDetails.add(COrderDetail);
 			}
 
@@ -741,7 +742,16 @@ public class COrderFactory extends COrders {
 		}
 	}
 	
-	
+	public LinkedList<String> getWarehouse (HttpServletRequest request) {
+		
+		String[] strWarehouse = request.getParameterValues("warehouse");
+		// convert array to LinkedList
+		LinkedList<String> Warehouses = new LinkedList<String>(Arrays.asList(strWarehouse));
+		// iterate over each element in LinkedList and show what is in the list.
+		Iterator<String> iterator = Warehouses.iterator();	
+		
+		return Warehouses;
+	}
 	
 	public void checkUrlToRemoveSession(HttpServletRequest request, HttpSession session) {
 		String referer = request.getHeader("Referer");
@@ -961,5 +971,37 @@ public class COrderFactory extends COrders {
 		return SimilarOrders;
 	}
 	
+	public void createCombinedOrders(HttpServletRequest request, Connection conn) throws Exception {
+		
+		String[] QR_ids = request.getParameterValues("QR_id");
+		
+	}
 	
+	public LinkedList<COrders> getCombinedOrders (HttpServletRequest request, Connection conn) throws Exception {
+		
+		LinkedList<String> guestAccounts = getGuestAccounts(conn);
+		LinkedList<COrders> SimilarOrders = new LinkedList<COrders>();
+		for(int i=0; i<guestAccounts.size();i++){
+			String strSql = "select QR_id, platform, eBayAccount, guestAccount, payDate, orderStatus, totalPrice"
+					+ " from orders_master"
+					+ " where guestAccount = ?";
+			
+			PreparedStatement ps = conn.prepareStatement(strSql);
+			ps.setString(1, guestAccounts.get(i));
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()){
+				COrders order = new COrders();
+				order.COrderMaster.setQR_id(rs.getString(1));
+				order.COrderMaster.setPlatform(rs.getString(2));
+				order.COrderMaster.setEbayAccount(rs.getString(3));
+				order.COrderMaster.setGuestAccount(rs.getString(4));
+				order.COrderMaster.setPayDate(rs.getDate(5));
+				order.COrderMaster.setOrderStatus(rs.getString(6));
+				order.COrderMaster.setTotalPrice(rs.getDouble(7));
+				SimilarOrders.add(order);
+			}
+		}
+		return SimilarOrders;
+	}
 }
