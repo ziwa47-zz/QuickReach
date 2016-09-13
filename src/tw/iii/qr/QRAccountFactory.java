@@ -135,7 +135,7 @@ public class QRAccountFactory extends QRAccount{
 		LinkedList<Competence> list= new LinkedList<>();
 		try {
 			Connection conn = new DataBaseConn().getConn();
-			String strsql="select competenceLV   from  accountinfo";
+			String strsql="select competenceLV   from  competencelv";
 			PreparedStatement ps = conn.prepareStatement(strsql);
 		
 	
