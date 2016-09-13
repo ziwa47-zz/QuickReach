@@ -743,14 +743,15 @@ public class COrderFactory extends COrders {
 	}
 	
 	public LinkedList<String> getWarehouse (HttpServletRequest request) {
-		
+		if(request.getParameterValues("warehouse")!=null){
 		String[] strWarehouse = request.getParameterValues("warehouse");
 		// convert array to LinkedList
 		LinkedList<String> Warehouses = new LinkedList<String>(Arrays.asList(strWarehouse));
 		// iterate over each element in LinkedList and show what is in the list.
 		Iterator<String> iterator = Warehouses.iterator();	
-		
 		return Warehouses;
+		}
+		return null;
 	}
 	
 	public void checkUrlToRemoveSession(HttpServletRequest request, HttpSession session) {
