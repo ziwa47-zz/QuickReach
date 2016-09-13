@@ -16,14 +16,14 @@
 <%@include file="../href/navbar.jsp"%>
 <div class="nav">
   <div class="container">
-    <div class="navbar-left" style="background-color: #BCF1E5;">
+    <div class="navbar-left" style="background-color: #C7AAE4;">
       <ul class="nav nav-tabs">
         <li><a href="eBayAccount.jsp">eBay帳號管理</a></li>
       </ul>
     </div>
   </div>
   <div class="container">
-    <div class="nav" style="background-color: #1CAF9A;">
+    <div class="nav" style="background-color: #984AC0;">
       <ul class="nav nav-tabs">
         <li><a href="eBayAccount.jsp">帳號列表</a></li>
         <!--               <li class="" style="background-color:#1CAF9A"><a href="purchasePage.jsp" style="color:#FFFFFF">進貨</a></li> -->
@@ -39,7 +39,7 @@
     <li><a href="eBayAccount.jsp">新增eBay帳號</a></li>
   </ol>
 </div>
-<div class="container" style="background: #D0F0E1; border-radius:20px;">
+<div class="container" style="background: #E9C2D0; border-radius:20px;">
   <form name="searchform" method="post" action="../EbayAccountDo" class="form-inline container required" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;">
@@ -52,6 +52,7 @@
           <input class="form-control" type="text" name="ebayId" value="" required>
         </div>
       </div>
+      
       <div class="row">
         <div class="col-md-3 well-sm">
           <h4>ebay Token</h4>
@@ -60,6 +61,7 @@
           <textarea class="form-control" name="ebayToken"  rows="5"	cols="85"  required></textarea>
         </div>
       </div>
+      
       <div class="row">
         <div class="col-md-3 well-sm">
           <h4>paypal 帳號(E-mail)</h4>
@@ -98,6 +100,7 @@
           <textarea class="form-control" name="systemFeedback"  rows="5" cols="85"></textarea>
         </div>
       </div>
+      
       <div class="row">
         <div class="col-md-3 well-sm">
           <h4>ebay Token</h4>
@@ -106,10 +109,12 @@
           <textarea class="form-control" name="ebayToken" rows="25" cols="95" required></textarea>
         </div>
       </div>
+      
       <div class="" align="center">
         <input type="submit" name="submit" value="newAccount" class="btn-lg btn-success">
         <input type="button" value="取消" class="btn-lg btn-success">
       </div>
+      
     </fieldset>
   </form>
 </div>
