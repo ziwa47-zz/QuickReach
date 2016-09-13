@@ -80,7 +80,7 @@ public class QRAccountFactory extends QRAccount{
 		String sqlstr = "UPDATE accountinfo set " 
 			    + " password = ?," + " lastName = ?," 
 				+ " firstName = ?," + " Email = ?," + " enName = ?," 
-				+  " competenceLV =?," + "status = ?"
+				+ " competenceLV =?," + "status = ?"
 				+ " where account = ?"; //8個
 
 		PreparedStatement preparedState = conn.prepareStatement(sqlstr);
