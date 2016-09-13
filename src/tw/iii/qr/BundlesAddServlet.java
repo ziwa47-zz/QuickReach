@@ -52,10 +52,10 @@ public class BundlesAddServlet extends HttpServlet {
 		String dPName = request.getParameter("P_name");
 		String dQty = request.getParameter("qty");
 		
-		if(session.getAttribute("getBundlesDetail") != null){
-			bdf.bundlesList = (LinkedList<String[]>)session.getAttribute("getBundlesDetail");
-			
-		}
+//		if(session.getAttribute("getBundlesDetail") != null){
+//			bdf.bundlesList = (LinkedList<String[]>)session.getAttribute("getBundlesAddDetail");
+//			
+//		}
 //		if(session.getAttribute("getBundlesDetail") == null){
 //			System.out.println("NO");
 //		}else{
@@ -71,10 +71,10 @@ public class BundlesAddServlet extends HttpServlet {
 		bdf.processBundles(submit);
 		
 		
-		session.setAttribute("getBundlesDetail", bdf.bundlesList);
+		session.setAttribute("getBundlesAddDetail", bdf.bundlesList);
 		session.setAttribute("bdSKU", bdsku );
-		session.setAttribute("bdName", bdName );
-		session.setAttribute("bdComment", bdComment );		
+		session.setAttribute("bdname", bdName );
+		session.setAttribute("bdcomment", bdComment );		
 		response.sendRedirect("BundlesAdd.jsp");
 		
 	}	
@@ -87,13 +87,13 @@ public class BundlesAddServlet extends HttpServlet {
 		String bdname = request.getParameter("bdname");
 		String ps = request.getParameter("comment");
 	
-		bdf.bundlesList = (LinkedList<String[]>)session.getAttribute("getBundlesDetail");
+		bdf.bundlesList = (LinkedList<String[]>)session.getAttribute("getBundlesAddDetail");
 		
 		try {
 			
 			bdf.bundlesToProduct(bdsku,bdname,ps);
 			bdf.bundlesToDetail(bdsku);
-			session.removeAttribute("getBundlesDetail");
+			session.removeAttribute("getBundlesAddDetail");
 			session.removeAttribute("bdSKU");
 			session.removeAttribute("bdName");
 			session.removeAttribute("bdComment");
