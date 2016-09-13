@@ -14,6 +14,19 @@
 
 
 <script type="text/javascript">
+function optionsonchange(ele){
+	if(ele.checked){
+		$("#optionsRadiosButton").prop("disabled", false);
+	} else{
+		$("#optionsRadiosButton").prop("disabled", true);
+	}
+	
+};
+
+	
+	
+
+
 function invalidate() {
 	$("#collapse2").addClass("in");
 	$("#collapse3").addClass("in");
@@ -106,15 +119,14 @@ conn.close();
         <label for="inputPassword" class="col-md-2 control-label text-left">編輯模式</label>
           <div class="col-md-4">
             <label class="radio-inline">
-              <input type="radio" name="optionsRadios" id="optionsRadios1">開啟</label>
-      	    <label class="radio-inline">
-      	      <input type="radio" name="optionsRadios" id="optionsRadios2">關閉</label>
-      	       <label class="radio-inline"><button type="submit" name="submit" value="updateProduct"
-						class="btn-lg btn-success">更新產品資料</button></label>
+              <input type="checkbox" name="optionsRadios" id="optionsRadios1"  onchange="optionsonchange(this)">開啟</label>
+      	   
+      	    <button type="submit" name="submit" value="updateProduct"
+						class="btn-lg btn-success" id = "optionsRadiosButton" disabled>更新產品資料</button></label>
       	       
           </div>
       </div>
-    <fieldset id="myfields" class="container-fluid" style="padding:0 30px 0 0;" disabled><legend>產品明細</legend>
+    <w id="myfields" class="container-fluid" style="padding:0 30px 0 0;" disabled><legend>產品明細</legend>
       <input type="hidden">
       <div class="panel-group" id="accordion">
         <div class="panel panel-default">
