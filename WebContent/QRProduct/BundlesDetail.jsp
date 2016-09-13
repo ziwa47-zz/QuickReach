@@ -75,9 +75,9 @@
    	  <div class="nav" style="background-color:#1CAF9A;" >
         	<ul class="nav nav-tabs">
               <li ><a href="SearchProductPage.jsp" style="color:#000">查詢商品</a></li>
-              <li ><a href="BundlesAdd.jsp" style="color:#000">新增複合商品</a></li>
-              <li ><a href="ProductEditPage.jsp" style="color:#000000">修改商品</a></li>
               <li class="" style="background-color:#1CAF9A"><a href="TotalBundles.jsp" style="color:#fff">查詢複合商品</a></li>
+              <li ><a href="NewProduct.jsp" style="color:#000000">新增單項商品</a></li>
+              <li ><a href="BundlesAdd.jsp" style="color:#000">新增複合商品</a></li>
             </ul>
         </div>
     </div>
@@ -107,22 +107,18 @@ String sku = null;
 String pname = null;
 if (request.getParameter("brand") != null) {
 	bd = new String(request.getParameter("brand").getBytes("8859_1"), "UTF-8");
-	System.out.print(bd);
 	request.setAttribute("parambrand", bd);
 }
 if (request.getParameter("subBrand") != null) {
 	subbd = new String(request.getParameter("subBrand").getBytes("8859_1"), "UTF-8");
-	System.out.print(subbd);
 	request.setAttribute("paramsubBrand", subbd);
 }
 if (request.getParameter("productSKU") != null) {
 	sku = new String(request.getParameter("productSKU").getBytes("8859_1"), "UTF-8");
-	System.out.print(sku);
 	request.setAttribute("paramproductSKU", sku);
 }
 if (request.getParameter("P_name") != null) {
 	pname = new String(request.getParameter("P_name").getBytes("8859_1"), "UTF-8");
-	System.out.print(pname);
 	request.setAttribute("paramP_name", pname);
 }
 
@@ -138,11 +134,6 @@ request.setAttribute("listBrand",listBrand);
 LinkedList<CProduct> listSubBrand =  new LinkedList<CProduct>();
 listSubBrand = blf.getSubBrand(bd);
 request.setAttribute("listSubBrand",listSubBrand);
-
-LinkedList<CProduct> listSKU =  new LinkedList<CProduct>();
-listSKU = blf.getSKU();
-request.setAttribute("listSKU",listSKU);
-
 
 %>
         	

@@ -124,31 +124,6 @@ public class BundlesFactory {
 		return lcp;
 	}
 	
-	public LinkedList<CProduct> getSKU() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
-		
-		DataBaseConn dbc = new DataBaseConn();		
-		Connection conn = dbc.getConn() ;
-		state = conn.createStatement();
-
-		String sqlstr = "SELECT SKU FROM product";
-
-		ResultSet rs = state.executeQuery(sqlstr);
-		lcp = new LinkedList<CProduct>();
-		CProduct cp ;
-		
-		while (rs.next()) {
-			cp=new CProduct();
-			
-			cp.setSKU(rs.getString(1));
-			
-			lcp.add(cp);			
-		}
-		
-		rs.close();
-		state.close();	
-		dbc.connclose(conn);
-		return lcp;
-	}
 	
 	public LinkedList<CProduct> getTotalBundles() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
 		//查看所有複合商品
@@ -187,7 +162,9 @@ public class BundlesFactory {
 		for(String[] x: bundlesList){
 			if(x[0].equals(a[0])){
 				a[2] = Integer.toString(Integer.parseInt(x[2])+Integer.parseInt(a[2]));
+				bundlesList.add(a);
 				bundlesList.remove(x);
+				return;
 			}
 		}
 		
