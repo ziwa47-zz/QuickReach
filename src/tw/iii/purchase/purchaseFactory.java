@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import javax.servlet.http.HttpServletRequest;
 
-
 public class purchaseFactory {
 
 	public purchaseFactory() {
@@ -99,10 +98,6 @@ public class purchaseFactory {
 		return Alllist;
 	}
 
-	
-	
-	
-
 	public String getDay() {
 		Date date = new Date();
 
@@ -112,8 +107,6 @@ public class purchaseFactory {
 		System.out.println(dateFormat.format(date));
 		return time;
 	}
-
-
 
 	public String purchaseGetDay() {
 		Date date = new Date();
@@ -125,21 +118,20 @@ public class purchaseFactory {
 		return time;
 	}
 
-	
-	public LinkedList<LinkedList<String>> searchPurchase(Connection conn,HttpServletRequest request) {
-		
+	public LinkedList<LinkedList<String>> searchPurchase(Connection conn, HttpServletRequest request) {
+
 		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
 		LinkedList<String> list = new LinkedList<>();
 		ResultSet rs = null;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		
+
 		String purchaseRecord = request.getParameter("purchaseRecord");
 		String outRecord = request.getParameter("outRecord");
-		  
+
 		String purchaseId = request.getParameter("purchaseId");
 
 		String date1 = request.getParameter("dateMin");
-		String date2= request.getParameter("dateMax");
+		String date2 = request.getParameter("dateMax");
 
 		String sku = request.getParameter("sku");
 		String pname = request.getParameter("pName");
@@ -153,7 +145,6 @@ public class purchaseFactory {
 		String qty = request.getParameter("qty");
 		String price = request.getParameter("price");
 
-		
 		System.out.println("I need stockRecord status:" + purchaseRecord + "," + outRecord);
 
 		//
@@ -241,7 +232,7 @@ public class purchaseFactory {
 		}
 
 		if (!isNullorEmpty(purchaseId)) {
-			sqlstr1 += " and a.purchaseId  ='"+purchaseId+"'" ;
+			sqlstr1 += " and a.purchaseId  ='" + purchaseId + "'";
 			System.out.println(purchaseId);
 		}
 
@@ -299,30 +290,28 @@ public class purchaseFactory {
 		return sqlstr1;
 	}
 
-
 	public void insertIntoPurchaseTest(HttpServletRequest request, Connection conn) throws SQLException {
 
 		String purchaseId = request.getParameter("purchaseId");
 		Cpurchase_master preparePurchaseMaster = preparePurchaseMaster(request);
 
 		System.out.println("Tell me who you are?:" + purchaseId);
-
+		PreparedStatement ps = null;
 		String sqlstr1 = "Insert Into purchaselog_master(purchaseId,date,companyId,companyName,staffName,warehouse,comment,stockStatus) Values(?,getdate(),?,(select C_name from company where C_id=?),?,?,?,1)";
-		PreparedStatement ps = conn.prepareStatement(sqlstr1);
+		ps = conn.prepareStatement(sqlstr1);
 		ps.setString(1, purchaseId);
 		ps.setString(2, preparePurchaseMaster.getCompanyId()); // companyId
-		ps.setString(3, preparePurchaseMaster.getCompanyId()); // select C_name from
-												// quickreach.company where
-												// C_id=?
+		ps.setString(3, preparePurchaseMaster.getCompanyId()); // select C_name
+																// from
+		// quickreach.company where
+		// C_id=?
 		ps.setString(4, preparePurchaseMaster.getStaffId()); // staffId
 		ps.setString(5, preparePurchaseMaster.getWarehouse()); // warehouse
 		ps.setString(6, preparePurchaseMaster.getComment()); // purchaseMasterComment
 
 		ps.executeUpdate();
-		
-		
 
-		LinkedList<Cpurchase_detail> preparePurchaseDetail = preparePurchaseDetail(request) ;
+		LinkedList<Cpurchase_detail> preparePurchaseDetail = preparePurchaseDetail(request);
 
 		// purchaseLog_Detail
 		System.out.println("-------------purchaseDeatail資料筆數:" + preparePurchaseDetail.size());
@@ -351,37 +340,42 @@ public class purchaseFactory {
 			ps.executeUpdate();
 
 			// 更新庫存
-			
-			String sqlsql = "select * from storage where sku = ? and warehouse = ?";
+			System.out.println("PRE storage");
+			String sqlsql = "select count(sku) from storage where sku = ? and warehouse = ?";
 			ps = conn.prepareStatement(sqlsql);
 			ps.setString(1, preparePurchaseDetail.get(i).getSKU());
 			ps.setString(2, preparePurchaseDetail.get(i).getWarehouse());
-
+			
 			ResultSet rs = ps.executeQuery();
-			if (rs.wasNull()){
-				String sqlstr3 = "Insert into storage values(?,?,?,?,?,?,getdate())";
-				ps = conn.prepareStatement(sqlstr3);
-				ps.setString(1,preparePurchaseDetail.get(i).getSKU());
-				ps.setString(2, preparePurchaseDetail.get(i).getWarehouse());
-				ps.setString(3, preparePurchaseDetail.get(i).getWarehousePosition());
-				ps.setString(4, preparePurchaseDetail.get(i).getWarehousePosition2());
-				ps.setInt(5, preparePurchaseDetail.get(i).getQty());
-				ps.setString(6, preparePurchaseDetail.get(i).getComment());
-			
-				ps.executeUpdate();
-			}else{
-			
-			String sqlstr6 = "Update  storage set qty=qty+? where SKU=? and warehouse =?";
-			ps = conn.prepareStatement(sqlstr6);
-			ps.setInt(1, Integer.valueOf(preparePurchaseDetail.get(i).getQty()));
-			ps.setString(2, preparePurchaseDetail.get(i).getSKU());
-			ps.setString(3, preparePurchaseDetail.get(i).getWarehouse());
+			while (rs.next()) {
+				ps = null;
+				int count = rs.getInt(1);
+				if (count == 0) {
+					String sqlstr3 = "Insert into storage values(?,?,?,?,?,?,getdate())";
+					ps = conn.prepareStatement(sqlstr3);
+					ps.setString(1, preparePurchaseDetail.get(i).getSKU());
+					ps.setString(2, preparePurchaseDetail.get(i).getWarehouse());
+					ps.setString(3, preparePurchaseDetail.get(i).getWarehousePosition());
+					ps.setString(4, preparePurchaseDetail.get(i).getWarehousePosition2());
+					ps.setInt(5, preparePurchaseDetail.get(i).getQty());
+					ps.setString(6, preparePurchaseDetail.get(i).getComment());
 
-			ps.executeUpdate();
+					ps.executeUpdate();
+				} else {
+					String sqlstryes = "Update  storage set qty=qty+? where SKU=? and warehouse =?";
+					
+					ps = conn.prepareStatement(sqlstryes);
+					ps.setInt(1, Integer.valueOf(preparePurchaseDetail.get(i).getQty()));
+					ps.setString(2, preparePurchaseDetail.get(i).getSKU());
+					ps.setString(3, preparePurchaseDetail.get(i).getWarehouse());
 
+					ps.executeUpdate();
+				}
 			}
+			rs.close();
 		}
 		ps.close();
+		
 	}
 
 	public LinkedList<Cpurchase_detail> preparePurchaseDetail(HttpServletRequest request) {
@@ -409,7 +403,7 @@ public class purchaseFactory {
 			detail.setWarehouse(request.getParameter("warehouse"));
 
 			list.add(detail);
-			System.out.println("newMethod:"+list);
+			System.out.println("newMethod:" + list);
 		}
 		return list;
 
@@ -424,19 +418,17 @@ public class purchaseFactory {
 		purchaseMaster.setWarehouse(request.getParameter("warehouse"));
 		purchaseMaster.setComment(request.getParameter("purchaseMasterComment"));
 
-		System.out.println("newMethod:"+purchaseMaster);
+		System.out.println("newMethod:" + purchaseMaster);
 		return purchaseMaster;
 
 	}
 
-
-	
 	// 輝哥
 	public LinkedList<Cpurchase_detail> details(String sku, Connection conn) {
 		LinkedList<Cpurchase_detail> list = new LinkedList<>();
 		Cpurchase_detail d = new Cpurchase_detail();
-		String strsql = "select m.purchaseId,m.stockStatus,qty,date,m.warehouse,d.warehousePosition1,d.warehousePosition2 from purchaselog_master as m inner join purchaselog_detail as d  on m.purchaseId=d.purchaseId where 1 = 1 "+
-		" and sku = ? ";
+		String strsql = "select m.purchaseId,m.stockStatus,qty,date,m.warehouse,d.warehousePosition1,d.warehousePosition2 from purchaselog_master as m inner join purchaselog_detail as d  on m.purchaseId=d.purchaseId where 1 = 1 "
+				+ " and sku = ? ";
 		// if(check1=="on" ){
 		// strsql += " and stockStatus = 1";
 		// }
@@ -455,7 +447,7 @@ public class purchaseFactory {
 					d.setStockStatus("進貨");
 				} else if ("2".equals(rs.getString(2))) {
 					d.setStockStatus("出貨");
-				}else if ("4".equals(rs.getString(2))) {
+				} else if ("4".equals(rs.getString(2))) {
 					d.setStockStatus("轉倉");
 				}
 				d.setQty(rs.getInt(3));
@@ -463,7 +455,7 @@ public class purchaseFactory {
 				d.setWarehouse(rs.getString(5));
 				d.setWarehousePosition(rs.getString(6));
 				d.setWarehousePosition2(rs.getString(7));
-			
+
 				list.add(d);
 			}
 		} catch (SQLException e) {
