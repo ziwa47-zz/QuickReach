@@ -86,16 +86,18 @@ public class StatusDoServlet extends HttpServlet {
 			}
 			break;
 		case "processing":
-			LinkedList<String> warehouses = OFactory.getWarehouse(request);
-			for(int i=0; i<warehouses.size(); i++){
-				if(OFactory.isNullorEmpty(warehouses.get(i))){
-					conn.close();
-					out.write("<script type='text/javascript'>");
-					out.write("alert('訂單尚未選擇倉別，請再次操作');");
-					out.write("window.location = 'QROrders/OrderProcessingPage.jsp?begin=0&end=10';");
-					out.write("</script>");
-				}
-			}
+//			LinkedList<String> warehouses = OFactory.getWarehouse(request);
+//			
+//			for(int i=0; i<warehouses.size(); i++){
+//				System.out.println("warehouse:" + warehouses.get(i));
+//				if(OFactory.isNullorEmpty(warehouses.get(i))){
+//					out.write("<script type='text/javascript'>");
+//					out.write("alert('訂單尚未選擇倉別，請再次操作');");
+//					out.write("window.location = 'QROrders/OrderProcessingPage.jsp?begin=0&end=10';");
+//					out.write("</script>");
+//					conn.close();
+//				}
+//			}
 			OFactory.updateToPickUp(request, conn);
 			response.sendRedirect("QROrders/OrderPickupPage.jsp?begin=0&end=10");
 			conn.close();
