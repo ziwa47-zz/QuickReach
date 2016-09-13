@@ -710,33 +710,35 @@ public class COrderFactory extends COrders {
 	public void insertIntoPurchaseLogFromOrders(HttpServletRequest request, Connection conn) throws SQLException {
 		
 		COrders orderInfo = getOrderAllInfo(request.getParameter("QR_id"), conn);
+		LinkedList<COrderDetail> orderDetailInfo = getOrderDetails(request.getParameter("QR_id"), conn);
 		System.out.println(orderInfo.getCOrderMaster().getQR_id());
 		System.out.println(orderInfo.getCOrderDetailSingle().getSKU());
 		
 		LinkedList<Cpurchase_detail> PurchaseLog = new LinkedList<Cpurchase_detail>();
-		String strSql = "insert into purchaselog_master (purchaseId, date, SKU, staffName, comment, stockStatus, warehouse)"
-				+ " values( ?, getdate(), ?, ?, ?, ?, ?)";
+		String strSql = "insert into purchaselog_master (purchaseId, date, staffName, comment, stockStatus, warehouse)"
+				+ " values( ?, getdate(), ?, ?, ?, ?)";
 		System.out.println(strSql);
 		PreparedStatement ps = conn.prepareStatement(strSql);
-		ps.setString(1, orderInfo.getCOrderMaster().getQR_id());
-		ps.setString(2, orderInfo.getCOrderDetailSingle().getSKU());
-		ps.setString(3, orderInfo.getCOrderMaster().getStaffName());
-		ps.setString(4, orderInfo.getCOrderMaster().getComment());
-		ps.setString(5, "2");
-		ps.setString(6, orderInfo.getCOrderDetailSingle().getWarehouse());
-		int x =ps.executeUpdate();
-		
+		for(int i=0; i<orderDetailInfo.size(); i++){
+			ps.setString(1, orderInfo.getCOrderMaster().getQR_id());
+			ps.setString(2, orderInfo.getCOrderMaster().getStaffName());
+			ps.setString(3, orderInfo.getCOrderMaster().getComment());
+			ps.setString(4, "2");
+			ps.setString(5, orderDetailInfo.get(i).getWarehouse());
+			int x =ps.executeUpdate();
+		}
 		String strSql2 = "insert into purchaselog_detail (purchaseId, SKU, warehouse, qty, price, stockStatus)"
 				+ " values( ?, ?, ?, ?, ?, ?)";
 		PreparedStatement ps2 = conn.prepareStatement(strSql2);
-		ps2.setString(1, orderInfo.getCOrderMaster().getQR_id());
-		ps2.setString(2, orderInfo.getCOrderDetailSingle().getSKU());
-		ps2.setString(3, orderInfo.getCOrderDetailSingle().getWarehouse());
-		ps2.setInt(4, orderInfo.getCOrderDetailSingle().getQty());
-		ps2.setDouble(5, orderInfo.getCOrderMaster().getTotalPrice());
-		ps2.setString(6, "2");
-		int y =ps2.executeUpdate();
-		
+		for(int i=0; i<orderDetailInfo.size(); i++){
+			ps2.setString(1, orderInfo.getCOrderMaster().getQR_id());
+			ps2.setString(2, orderDetailInfo.get(i).getSKU());
+			ps2.setString(3, orderDetailInfo.get(i).getWarehouse());
+			ps2.setInt(4, orderDetailInfo.get(i).getQty());
+			ps2.setDouble(5, orderInfo.getCOrderMaster().getTotalPrice());
+			ps2.setString(6, "2");
+			int y =ps2.executeUpdate();
+		}
 	}
 	
 	
