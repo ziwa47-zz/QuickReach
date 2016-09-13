@@ -30,7 +30,7 @@
 					<li ><a
 						href="NewProduct.jsp" style="color: #000">新增單項商品</a></li>
 					<li ><a
-						href="ProductAddPage.jsp" style="color: #000">新增組合商品</a></li>
+						href="BundlesAdd.jsp" style="color: #000">新增組合商品</a></li>
 					
 				</ul>
 			</div>
