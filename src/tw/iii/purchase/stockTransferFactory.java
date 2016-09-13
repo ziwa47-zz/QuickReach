@@ -24,11 +24,11 @@ public class stockTransferFactory {
 	
 	public Cpurchase_master prepareTransferMaster(HttpServletRequest request) {
 		Cpurchase_master purchaseMaster = new Cpurchase_master();
-
+		purchaseMaster.setStaffId(request.getParameter("stockTransferId"));
 		purchaseMaster.setStaffId(request.getParameter("staffId"));
-		purchaseMaster.setWarehouse(request.getParameter("oldWarehouse"));
-		purchaseMaster.setWarehouse2(request.getParameter("NewWarehouse"));
-		purchaseMaster.setComment(request.getParameter("purchaseMasterComment"));
+		purchaseMaster.setWarehouse(request.getParameter("warehouse"));
+		purchaseMaster.setWarehouse2(request.getParameter("newWarehouse"));
+		purchaseMaster.setComment(request.getParameter("transferMasterComment"));
 
 		return purchaseMaster;
 
@@ -51,11 +51,14 @@ public class stockTransferFactory {
 			detail = new Cpurchase_detail();
 
 			detail.setSKU(request.getParameter(("sku" + i)));
+			
 			detail.setQty(Integer.valueOf(request.getParameter(("qtyTwo" + i))));
 			detail.setWarehousePosition(request.getParameter(("warehousePositionOne" + i)));
 			detail.setWarehousePosition2(request.getParameter(("warehousePositionTwo" + i)));
+			detail.setNewWarehousePosition(request.getParameter(("newWarehousePositionOne" + i)));
+			detail.setNewWarehousePosition2(request.getParameter(("newWarehousePositionTwo" + i)));
 			detail.setComment(request.getParameter(("comment" + i)));
-			detail.setWarehouse(request.getParameter("warehouse"));
+		
 
 			list.add(detail);
 		}
@@ -88,62 +91,93 @@ public class stockTransferFactory {
 
 		LinkedList<Cpurchase_detail> prepareTransferDetail = prepareTransferDetail(request) ;
 
-		// purchaseLog_Detail
+		// stockTransferLog_Detail
 		System.out.println("-------------stockTransferDeatail資料筆數:" + prepareTransferDetail.size());
 
 		for (int i = 0; i < prepareTransferDetail.size(); i++) {
-			String sqlstr2 = "Insert Into stockTransferlog_detail(purchaseId,SKU,qty,price,warehousePosition1,warehousePosition2,comment,stockStatus,warehouse)"
-					+ "Values(?,?,?,?,?,?,?,1,?)";
+			String sqlstr2 = "Insert Into stockTransferlog_detail("
+					+ "stockTransferId,SKU,qty,"//3
+					+ "oldWarehouse,oldWarehousePosition1,oldWarehousePosition2,"//3
+					+ "newWarehouse,newWarehousePosition1,newWarehousePosition2,"//3
+					+ "comment,stockStatus)"//2
+					+ "Values(?,?,?,?,?,?,?,?,?,?,3)";
 
 			ps = conn.prepareStatement(sqlstr2);
 			ps.setString(1, stockTransferId);
 			ps.setString(2, prepareTransferDetail.get(i).getSKU());
 			ps.setInt(3, prepareTransferDetail.get(i).getQty());
-			ps.setDouble(4, prepareTransferDetail.get(i).getPrice());
+			
+			ps.setString(4, prepareTransferMaster.getWarehouse());
 			ps.setString(5, prepareTransferDetail.get(i).getWarehousePosition());
 			ps.setString(6, prepareTransferDetail.get(i).getWarehousePosition2());
-			ps.setString(7, prepareTransferDetail.get(i).getComment());
-			ps.setString(8, prepareTransferDetail.get(i).getWarehouse());
+			
+
+			ps.setString(7, prepareTransferMaster.getWarehouse2());
+			ps.setString(8, prepareTransferDetail.get(i).getNewWarehousePosition());
+			ps.setString(9, prepareTransferDetail.get(i).getNewWarehousePosition2());
+			
+			ps.setString(10, prepareTransferDetail.get(i).getComment());
+		
 
 			ps.executeUpdate();
-			// 更新product資料表 該品項之成本
-
-			String sqlstr5 = "Update product set cost=? where SKU=?";
-			ps = conn.prepareStatement(sqlstr5);
-			ps.setDouble(1, prepareTransferDetail.get(i).getPrice());
-			ps.setString(2, prepareTransferDetail.get(i).getSKU());
-			ps.executeUpdate();
-
-			// 更新庫存
 			
-			String sqlsql = "select * from storage where sku = ? and warehouse = ?";
-			ps = conn.prepareStatement(sqlsql);
-			ps.setString(1, prepareTransferDetail.get(i).getSKU());
-			ps.setString(2, prepareTransferDetail.get(i).getWarehouse());
-
-			ResultSet rs = ps.executeQuery();
-			if (rs.wasNull()){
-				String sqlstr3 = "Insert into storage values(?,?,?,?,?,?,getdate())";
-				ps = conn.prepareStatement(sqlstr3);
-				ps.setString(1,prepareTransferDetail.get(i).getSKU());
-				ps.setString(2, prepareTransferDetail.get(i).getWarehouse());
-				ps.setString(3, prepareTransferDetail.get(i).getWarehousePosition());
-				ps.setString(4, prepareTransferDetail.get(i).getWarehousePosition2());
-				ps.setInt(5, prepareTransferDetail.get(i).getQty());
-				ps.setString(6, prepareTransferDetail.get(i).getComment());
 			
-				ps.executeUpdate();
-			}else{
-			
-			String sqlstr6 = "Update  storage set qty=qty+? where SKU=? and warehouse =?";
-			ps = conn.prepareStatement(sqlstr6);
+			// 更新庫存 扣該品項原有庫存
+			String sqlstr3 = "Update  storage set qty=qty-? where SKU= ? and warehouse = ?";
+			ps = conn.prepareStatement(sqlstr3);
 			ps.setInt(1, Integer.valueOf(prepareTransferDetail.get(i).getQty()));
 			ps.setString(2, prepareTransferDetail.get(i).getSKU());
 			ps.setString(3, prepareTransferDetail.get(i).getWarehouse());
 
+			
 			ps.executeUpdate();
+			
+			
+			//判別將轉入之庫別有無此商品庫存記錄
+			System.out.println("PRE storage");
+			String sqlsql = "select count(sku) from storage where sku = ? and warehouse = ?";
+			ps = conn.prepareStatement(sqlsql);
+			ps.setString(1, prepareTransferDetail.get(i).getSKU());
+			ps.setString(2, prepareTransferMaster.getWarehouse2());
+			
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				ps = null;
+				int count = rs.getInt(1);
+				if (count == 0) {
+					String sqlstr5 = "Insert into storage values(?,?,?,?,?,?,getdate())";
+					ps = conn.prepareStatement(sqlstr5);
+					ps.setString(1, prepareTransferDetail.get(i).getSKU());
+					ps.setString(2, prepareTransferMaster.getWarehouse2());
+					ps.setString(3, prepareTransferDetail.get(i).getNewWarehousePosition());
+					ps.setString(4, prepareTransferDetail.get(i).getNewWarehousePosition2());
+					ps.setInt(5, prepareTransferDetail.get(i).getQty());
+					ps.setString(6, prepareTransferDetail.get(i).getComment());
 
+					ps.executeUpdate();
+				} else {
+				
+					//增加該品項轉倉庫存
+					
+					String sqlstr5 = "Update  storage set qty=qty+? where SKU= ? and warehouse = ?";
+					ps = conn.prepareStatement(sqlstr5);
+					ps.setInt(1, Integer.valueOf(prepareTransferDetail.get(i).getQty()));
+					ps.setString(2, prepareTransferDetail.get(i).getSKU());
+					ps.setString(3, prepareTransferDetail.get(i).getWarehouse2());
+					
+					ps.executeUpdate();
+				}
 			}
+			
+		
+			
+		
+			
+			System.out.println("qty:"+Integer.valueOf(prepareTransferDetail.get(i).getQty()) );
+			System.out.println("sku:"+prepareTransferDetail.get(i).getSKU() );
+			System.out.println("newWarehouse:"+prepareTransferDetail.get(i).getWarehouse2());
+			
+			
 		}
 		ps.close();
 	}
