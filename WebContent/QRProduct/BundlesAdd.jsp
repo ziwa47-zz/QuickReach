@@ -18,7 +18,7 @@
     <meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>檢視複合商品</title>
+    <title>新增複合商品</title>
     <!-- Bootstrap -->
 	<link href="css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui.css">
@@ -32,7 +32,7 @@
     <script src="js/jquery.ui.datepicker-zh-TW.js"></script>
     <script type="text/javascript">
     function getSelect(){
-    	listForm.action = "BundlesDetail.jsp"
+    	listForm.action = "BundlesAdd.jsp"
 	    listForm.submit()
 	    	
     }
@@ -41,19 +41,19 @@
 	    document.getElementById('subBrand').value='select';
     	document.getElementById('productSKU').value='select';
     	document.getElementById('P_name').value='select';
-    	listForm.action = "BundlesDetail.jsp"
+    	listForm.action = "BundlesAdd.jsp"
 	    listForm.submit()	    	
 	}
     
     function getSelectPname(){
     	document.getElementById('productSKU').value='select';
-    	listForm.action = "BundlesDetail.jsp"
+    	listForm.action = "BundlesAdd.jsp"
     	listForm.submit()	    	    	    	
 	}
     
     function getSelectPSKU(){
     	document.getElementById('P_name').value='select';
-    	listForm.action = "BundlesDetail.jsp"
+    	listForm.action = "BundlesAdd.jsp"
     	listForm.submit()	    	    	    	
 	}
     
@@ -74,10 +74,11 @@
     <div class="container">
    	  <div class="nav" style="background-color:#1CAF9A;" >
         	<ul class="nav nav-tabs">
-              <li ><a href="SearchProductPage.jsp" style="color:#000">查詢商品</a></li>
-              <li ><a href="BundlesAdd.jsp" style="color:#000">新增複合商品</a></li>
-              <li ><a href="ProductEditPage.jsp" style="color:#000000">修改商品</a></li>
-              <li class="" style="background-color:#1CAF9A"><a href="TotalBundles.jsp" style="color:#fff">查詢複合商品</a></li>
+              <li><a href="SearchProductPage.jsp" style="color: #000">查詢商品</a></li>
+					<li class="" style="background-color: #1CAF9A"><a
+						href="BundlesAdd.jsp" style="color: #fff">新增複合商品</a></li>
+					<li><a href="ProductEditPage.jsp" style="color: #000000">修改商品</a></li>
+					<li><a href="TotalBundles.jsp" style="color: #000000">查詢複合商品</a></li>
             </ul>
         </div>
     </div>
@@ -86,15 +87,15 @@
   
   <div class="container container-fluid breadcrumbBox">
     <ol class="breadcrumb" >
-          <li><a href="../QRMain/HomePage.jsp" >首頁</a></li>
-          <li class="active" style="display:"><a href="SearchProductPage.jsp">庫存/商品管理</a></li>
-          <li><a href="TotalBundles.jsp">查詢複合商品</a></li>
-          <li><a href="TotalBundles.jsp">檢視複合商品</a></li>
+          <li><a href="../QRMain/HomePage.jsp">首頁</a></li>
+			<li class="active" style="display:"><a
+				href="SearchProductPage.jsp">庫存/商品管理</a></li>
+			<li><a href="BundlesAdd.jsp">新增複合商品</a></li>
       </ol>
         </div>
   
   <div class="container table-responsive bg-warning" style="background: #9DDCD1; border-radius:20px">
-  	<form id="listForm" name="listForm" method="post" action="bundles.do" style="font-size: 100%; vertical-align: baseline; 
+  	<form id="listForm" name="listForm" method="post" action="bundlesAdd.do" style="font-size: 100%; vertical-align: baseline; 
     padding: 15px; " class="form-inline container">
 
 <%
@@ -115,8 +116,6 @@ LinkedList<CProduct> listBrand =  new LinkedList<CProduct>();
 listBrand = blf.getBrand();
 request.setAttribute("listBrand",listBrand);
 
-
-
 LinkedList<CProduct> listSubBrand =  new LinkedList<CProduct>();
 listSubBrand = blf.getSubBrand(bd);
 request.setAttribute("listSubBrand",listSubBrand);
@@ -125,28 +124,50 @@ LinkedList<CProduct> listSKU =  new LinkedList<CProduct>();
 listSKU = blf.getSKU();
 request.setAttribute("listSKU",listSKU);
 
+
 %>
 
-      <fieldset class="container-fluid" style="padding:0 30 0 0;"><legend>檢視複合商品</legend>
+      <fieldset class="container-fluid" style="padding:0 30 0 0;"><legend>新增複合商品</legend>
     	<input type="hidden">
   
         <div class="row">
 		  <div class="col-md-8 form-group ">
             <div class="row">
               <div class="col-md-2"><h5><label for="focusedInput " >SKU：</label></h5></div>
-              <div class="col-md-8"><input class="form-control" type="text" name="bdsku" value="${bdsku}"></div>
+              <div class="col-md-8">
+              	<c:if test="${param.bdsku == null }">            	
+              		<input class="form-control" type="text" name="bdsku" value="${bdSKU}">
+				</c:if>	
+				<c:if test="${param.bdsku != null }">            	
+              		<input class="form-control" type="text" name="bdsku" value="${param.bdsku}">
+				</c:if>	  
+              </div>
             </div>
           </div>
 		  <div class="col-md-8 form-group ">
             <div class="row">
               <div class="col-md-2"><h5><label for="focusedInput " >商品名稱：</label></h5></div>
-              <div class="col-md-10"><input class="form-control" name="bdname" type="text" value="${bdName}"></div>
+              <div class="col-md-10">
+              	<c:if test="${param.bdname == null }">
+              		<input class="form-control" name="bdname" type="text" value="${bdName}">
+              	</c:if>
+              	<c:if test="${param.bdname != null }">
+              		<input class="form-control" name="bdname" type="text" value="${param.bdname}">
+              	</c:if>
+              </div>
             </div>
           </div>
 		  <div class="col-md-8 form-group ">
             <div class="row">
               <div class="col-md-2"><h5><label for="focusedInput " >備註：</label></h5></div>
-              <div class="col-md-8"><textarea rows="2"  class="form-control" name="comment" >${bdComment}</textarea></div>
+              <div class="col-md-8">
+              	<c:if test="${param.comment == null }">
+              		<textarea rows="2"  class="form-control" name="comment" >${bdComment}</textarea>
+             	</c:if>
+             	<c:if test="${param.comment != null }">
+              		<textarea rows="2"  class="form-control" name="comment" >${param.comment}</textarea>
+             	</c:if>
+              </div>
             </div>
           </div>
 		</div>
@@ -274,7 +295,7 @@ request.setAttribute("listSKU",listSKU);
 		</c:forEach>    
 	</table>	
 </div>
-	<center><button type="submit" name="smt" value="update" >修改</button></center>
+	<center><button type="submit" name="smt" value="insert" >新增</button></center>
 </form>
 
     

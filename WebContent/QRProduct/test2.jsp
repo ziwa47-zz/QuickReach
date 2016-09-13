@@ -39,8 +39,6 @@
     	searchform.submit();
     }
    
-    
-    
     </script>
     
     
@@ -86,25 +84,50 @@
 session.removeAttribute("getBundlesDetail");
 LinkedList<CProduct> list =  new LinkedList<CProduct>();
 list = blf.getTotalBundles();
-request.setAttribute("list",list);    
+request.setAttribute("bundlesMaster",list);    
 %>    
-    
-    	<table class="table table-bordered table-hover table-condensed pull-left" style="margin: 0 0 0 -15px">
-			<tr class="ListTitle2">
-				<th>SKU</th>
-				<th>品名</th>
-				<th>備註</th>
-				<th></th>							
-			</tr>
-			<c:forEach var="i" varStatus="check" items="${list}" begin="0" step="1">
-	    		<tr>
-	    			<td><input type="hidden" name="${i.getSKU()}${'sku'}" value="${i.getSKU()}">${i.getSKU()}</td>
-	    			<td><input type="hidden" name="${i.getSKU()}${'name'}" value="${i.getP_name()}">${i.getP_name()}</td>
-	    			<td><input type="hidden" name="${i.getSKU()}${'comment'}" value="${i.getComment()}">${i.getComment()}</td>
-	    			<td><button value="${i.getSKU()}" type="submit" name="smt">查看</button></td>
-	 			</tr>   	
-    		</c:forEach> 
-    	</table>
+  <c:forEach var="i" varStatus="check" items="${bundlesMaster}" begin="0" step="1">
+<div class="panel-group" id="accordion">  
+
+	  <div class="panel panel-default">
+	          <div class="panel-heading">
+	            <h4 class="panel-title">
+	              	<a data-toggle="collapse" data-parent="#accordion" href="#${i.getSKU()}">
+	              		<input type="hidden" name="${i.getSKU()}${'sku'}" value="${i.getSKU()}">${i.getSKU()}	
+	              	</a>
+				  <input type="hidden" name="${i.getSKU()}${'name'}" value="${i.getP_name()}">${i.getP_name()}
+				  <input type="hidden" name="${i.getSKU()}${'comment'}" value="${i.getComment()}">${i.getComment()}
+				  <button class="pull-right" value="${i.getSKU()}" type="submit" name="smt">查看</button>
+	            </h4>
+	          </div>
+	     <div id="${i.getSKU()}" class="panel-collapse collapse">
+	         <div class="panel-body">
+		    	<div class="container-fluid form-horizontal">
+<c:set var="msku" scope="session" value="${i.getSKU()}"/>		    	
+<%
+
+String msku = (String)session.getAttribute("msku");
+
+blf.showBundlesDetail(msku);
+
+request.setAttribute("bundlesDetail",(LinkedList<String[]>)blf.bundlesList);    
+
+%>	    	
+					<c:forEach var="i" varStatus="check" items="${bundlesDetail}" begin="0" step="1">
+			    		<div class="row">
+				    		<div class="col-md-3">${i[0]}</div>
+				    		<div class="col-md-8">${i[1]}</div>
+				    		<div class="col-md-1">${i[2]}</div>
+			 			</div>
+		    		</c:forEach> 
+		  		</div>
+	  		</div>
+	  	</div>
+	  </div>
+
+</div>
+    </c:forEach>
+  
 	  </fieldset>
     </form>
 </div>

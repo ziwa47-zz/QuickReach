@@ -1,4 +1,4 @@
-package tw.iii.qr.stock;
+﻿package tw.iii.qr.stock;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,7 +28,7 @@ public class BundlesFactory {
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
 
-		String sqlstr = "SELECT sku,P_name,brand,subBrand FROM product where sku like 'B01%' ";
+		String sqlstr = "SELECT sku,P_name,brand,subBrand FROM product where sku not like 'B00% '";
 
 		
 		if (brand != null && !brand.equals("select")){
@@ -176,13 +176,11 @@ public class BundlesFactory {
 		return lcp;
 	}
 	
-	public LinkedList<String[]> getBundlesInfo(){
-		return bundlesList;
+	public LinkedList<String[]> getBundlesInfo(){		
+		return bundlesList;	
 	}
 	
-	public void detailSetNULL(){
-		bundlesList = new LinkedList<String[]>();
-	}
+
 	
 	public void addItem(String[] a){
 		

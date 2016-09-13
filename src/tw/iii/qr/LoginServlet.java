@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SQLInputImpl;
 
-@WebServlet("/LoginController.do")
+@WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Statement state;
@@ -30,7 +30,13 @@ public class LoginServlet extends HttpServlet {
 	HttpSession session;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+		try {
+			processLogin(request,response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("NONO");
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -62,12 +68,12 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("password", password);
 			session.setAttribute("staffName",staffName);
 			competenceSession(request,competencelv);
-			request.getRequestDispatcher("/HomePage.jsp").forward(request, response);
+			response.sendRedirect("/HomePage.jsp");
 		}else{
 			//Login false
 			System.out.println("NO");
 			response.setContentType("text/html;charset=UTF-8");
-			response.sendRedirect("/Login.jsp");
+			response.sendRedirect("/Login.jsp?p=0");
 		}
 	
 	}

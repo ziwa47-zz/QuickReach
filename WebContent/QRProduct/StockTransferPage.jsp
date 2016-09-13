@@ -36,8 +36,8 @@ function warehouseChange() {
 		success: function(response){
 			
 			var date = $("#selectDate").val();
-		        realPurchaseId = date+response.warehousePurchaseId
-				$("#purchaseId").val(realPurchaseId);	
+		        realPurchaseId = date+response.stockTransferId
+				$("#stockTransferId").val(realPurchaseId);	
 		        
 		},
 	})
@@ -85,7 +85,7 @@ function test() {
      
 
 	$(function() {		
-				//進場先檢查purchaseId
+				//進場先檢查stockTransferId
 		warehouseChange()
 		//聽說是自動驗證
 		$("#listForm").validate({
@@ -198,13 +198,13 @@ function test() {
 	                    +'    	 <div class="col-md-4 form-group ">'
 	                    +'        <div class="row">'
 	                    +'         <div class="col-md-4"><h5><label for="focusedInput " >品名：</label></h5></div>'
-	                    +'        <div class="col-md-8"><input class="form-control" id="pName'+dynamicId+'" name="pName'+dynamicId+'" type="text" value="" readonly></div>'
+	                    +'        <div class="col-md-8"><input class="form-control" id="pName'+dynamicId+'" name="pName'+dynamicId+'" type="text" value=""></div>'
 	                    +'      </div>'
 	                    +'     </div>'
 	                    +'    	<div class="col-md-4 form-group ">'
 						+'         <div class="row">'
 						+'          <div class="col-md-4"><h5><label for="focusedInput " >規格：</label></h5></div>'
-						+'         <div class="col-md-8"><input class="form-control" type="text" id="spec'+dynamicId+'" name="spec'+dynamicId+'" readonly></div>'
+						+'         <div class="col-md-8"><input class="form-control" type="text" id="spec'+dynamicId+'" name="spec'+dynamicId+'"></div>'
 						+'      </div>'
 						+'     </div>'
 	            	
@@ -219,20 +219,20 @@ function test() {
 	                    +'           	<div class="col-md-4 form-group ">'
 						+'         <div class="row">'
 						+'          <div class="col-md-4"><h5><label for="focusedInput " >顏色：</label></h5></div>'
-						+'         <div class="col-md-8"><input class="form-control" type="text" id="color'+dynamicId+'" name="color'+dynamicId+'" readonly></div>'
+						+'         <div class="col-md-8"><input class="form-control" type="text" id="color'+dynamicId+'" name="color'+dynamicId+'"></div>'
 						+'      </div>'
 						+'     </div>'
 						 +'<div class="col-md-4 form-group ">'
                         +'                <div class="row">'
                   +'                  <div class="col-md-4"><h5><label for="focusedInput " >數量：</label></h5></div>'
-                  +'                 <div class="col-md-8"><input class="form-control digits required" name="qty'+dynamicId+'" title="數量必須大於0" type="text"></div>'
+                  +'                 <div class="col-md-8"><input class="form-control digits required" id="qtyOne'+dynamicId+'" name="qty'+dynamicId+'" title="數量必須大於0" type="text"></div>'
                   +'                </div>'
                   +'               </div>'
                   
                  +' <div class="col-md-4 form-group ">'
                   +'                <div class="row">'
-            +'                  <div class="col-md-4"><h5><label for="focusedInput " >價格：</label></h5></div>'
-            +'                 <div class="col-md-8"><input class="form-control number required" name="price'+dynamicId+'" title="價格必須大於0" type="text"></div>'
+            +'                  <div class="col-md-4"><h5><label for="focusedInput " >數量：</label></h5></div>'
+            +'                 <div class="col-md-8"><input class="form-control number required" id="qtyTwo'+dynamicId+'" name="qtyTwo'+dynamicId+'" title="價格必須大於0" type="text"></div>'
             +'                </div>'
             +'               </div>'
 	                
@@ -245,8 +245,15 @@ function test() {
 	                        +'           <div class="row">'
 	                        +'         	<div class="col-md-8 form-group ">'
 	                        +'             <div class="row">'
-	                        +'              <div class="col-md-2"><h5><label for="focusedInput " >櫃位：</label></h5></div>'
+	                        +'              <div class="col-md-2"><h5><label for="focusedInput " >原櫃位：</label></h5></div>'
 	                        +'              <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text"></div>'
+	                        +'            </div>'
+	                        +'                </div>'
+	                        
+	                        +'         	<div class="col-md-8 form-group ">'
+	                        +'             <div class="row">'
+	                        +'              <div class="col-md-2"><h5><label for="focusedInput " >新櫃位：</label></h5></div>'
+	                        +'              <div class="col-md-8"><input class="form-control" style="width:89px;"id="newWarehousePositionOne'+dynamicId+'" name="newWarehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:89px;" id="newWarehousePositionTwo'+dynamicId+'" name="newWarehousePositionTwo'+dynamicId+'" type="text"></div>'
 	                        +'            </div>'
 	                        +'                </div>'
 	                                    
@@ -317,9 +324,11 @@ display: block;
 			<div class="nav" style="background-color: #1CAF9A;">
 				<ul class="nav nav-tabs">
 					<li><a href="SearchStockPage.jsp" style="color: #000">查詢庫存</a></li>
-					<li class="" style="background-color: #1CAF9A"><a href="PurchasePage.jsp" style="color: #fff">進貨</a></li>
+					<li class="" style="background-color: #1CAF9A"><a href="PurchasePage.jsp" style="color: #000">進貨</a></li>
 					<li ><a
 						href="PurchaseRecordPage.jsp" style="color: #000">進/出貨紀錄</a></li>
+						<li ><a
+						href="PurchaseRecordPage.jsp" style="color: #fff">轉倉</a></li>
 				</ul>
 			</div>
 		</div>
@@ -330,11 +339,12 @@ display: block;
 			<li><a href="/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchStockPage.jsp">庫存/商品管理</a></li>
-			<li><a href="PurchasePage.jsp">進貨</a></li>
+			<li><a href="StockTransferPage.jsp">轉倉</a></li>
 		</ol>
 	</div>
 
 	<div class="container" style="background: #9DDCD1; border-radius: 20px">
+		
 		<form id="listForm" name="listForm" method="post"
 			action="../InsertPurchaseServlet.do"
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
@@ -354,7 +364,7 @@ display: block;
 			
 			%>
 			<fieldset class="container-fluid" style="padding: 0 30 0 0;">
-				<legend>進貨頁面</legend>
+				<legend>轉倉頁面</legend>
 				<input type="hidden">
 
 				<div class="row">
@@ -371,7 +381,7 @@ display: block;
 						</div>
 					</div>
 <!-- 					style="display:none" -->
-					<div  class="col-md-4 form-group " style="display:none">
+					<div  class="col-md-4 form-group ">
 						<div class="row">
 							<div class="col-md-4">
 								<h5>
@@ -379,7 +389,7 @@ display: block;
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" name="purchaseId" id="purchaseId" type="text" value="${purchaseId}" readonly>
+								<input class="form-control" name="stockTransferId" id="stockTransferId" type="text" value="" readonly>
 							</div>
 						</div>
 					</div>
@@ -411,16 +421,32 @@ display: block;
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control required "  name="staffId" type="text" value="${staffName}" readonly>
+								<input class="form-control required "  name="staffId" type="text" value="${staffName}">
 							</div>
 						</div>
 					</div>
 					
 					  <div class="col-md-4 form-group ">
                   <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >倉別：</label></h5></div>
+                    <div class="col-md-4"><h5><label for="focusedInput " >原倉別：</label></h5></div>
                     <div class="col-md-8">
                       <select class="form-control" name="warehouse" id="warehouse"  onchange="warehouseChange()">
+                    
+                    <c:forEach var = "i" begin="0" step="1" items="${warehouseList}">
+                    
+                      <option value="${i.get(0)}">${i.get(1)}</option>
+                     
+                    </c:forEach>     
+                                 
+                      </select></div>
+                    </div>
+                  </div>
+					
+					  <div class="col-md-4 form-group ">
+                  <div class="row">
+                    <div class="col-md-4"><h5><label for="focusedInput " >新倉別：</label></h5></div>
+                    <div class="col-md-8">
+                      <select class="form-control" name="newWarehouse" id="newWarehouse"  onchange="warehouseChange()">
                     
                     <c:forEach var = "i" begin="0" step="1" items="${warehouseList}">
                     
@@ -488,21 +514,21 @@ display: block;
             	<div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >SKU：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control  required" id="sku1" name="sku1" type="text" onfocus="jqueryAutoCompleteSKU(1)"   value="" ></div>
+                    <div class="col-md-8"><input class="form-control  required" id="sku1" name="sku1" type="text" onfocus="jqueryAutoCompleteSKU(1)"   value=""></div>
                   </div>                                                                                    <!--  onchange="autoComplete(1)" -->                                     
                 </div>
             	
             	 <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >品名：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" id="pName1" name="pName1" type="text" value="" readonly></div>
+                    <div class="col-md-8"><input class="form-control" id="pName1" name="pName1" type="text" value=""></div>
                   </div>
                 </div>
                 
                 <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >規格：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" id="spec1" type="text" name="spec1" readonly></div>
+                    <div class="col-md-8"><input class="form-control" id="spec1" type="text" name="spec1"></div>
                   </div>
                 </div>
                 
@@ -512,22 +538,22 @@ display: block;
                 <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >顏色：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" id="color1" type="text" name="color1" readonly></div>
+                    <div class="col-md-8"><input class="form-control" id="color1" type="text" name="color1"></div>
                   </div>
                 </div>
                 
                   <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >數量：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control digits required" title="數量必須大於0" name="qty1" type="text"></div>
+                    <div class="col-md-8"><input class="form-control digits required" title="數量必須大於0" id="qtyOne1" name="qtyOne1" type="text" placeholder="高雄"></div>
                   </div>
                 </div>
                 
                 
                 <div class="col-md-4 form-group ">
                   <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >價格：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control number required" title="價格必須大於0" name="price1" type="text"></div>
+                    <div class="col-md-4"><h5><label for="focusedInput " >數量：</label></h5></div>
+                    <div class="col-md-8"><input class="form-control number required" title="數量必須大於0" id="qtyTwo1" name="qtyTwo1" type="text" placeholder="美國"></div>
                   </div>
                 </div>
               
@@ -536,8 +562,15 @@ display: block;
             <div class="row">
             	<div class="col-md-8 form-group ">
                   <div class="row">
-                    <div class="col-md-2"><h5><label for="focusedInput " >櫃位：</label></h5></div>
+                    <div class="col-md-2"><h5><label for="focusedInput " >原櫃位：</label></h5></div>
                     <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne1" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo1" name="warehousePositionTwo1" type="text"></div>
+                  </div>
+                </div>
+                
+                <div class="col-md-8 form-group ">
+                  <div class="row">
+                    <div class="col-md-2"><h5><label for="focusedInput " >新櫃位：</label></h5></div>
+                    <div class="col-md-8"><input class="form-control" style="width:89px;"id="newWarehousePositionOne1" name="newWarehousePositionOne1" type="text"> - <input class="form-control" style="width:89px;" id="newWarehousePositionTwo1" name="newWarehousePositionTwo1" type="text"></div>
                   </div>
                 </div>
                 
@@ -564,7 +597,7 @@ display: block;
 					<br />
 
 					<div class="row text-center" id="formSubmit">
-						<button type="submit" id="submitButton" name="submitButton" class="btn-lg btn-success" >送出</button>
+						<button type="submit" id="submitButton" name="submitButton" class="btn-lg btn-success" value="stockTransfer">送出</button>
 					</div>
 				</div>
 			</fieldset>

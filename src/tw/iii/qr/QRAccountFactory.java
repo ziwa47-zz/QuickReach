@@ -77,10 +77,10 @@ public class QRAccountFactory extends QRAccount{
 		
 		Connection conn = new DataBaseConn().getConn();
 
-		String sqlstr = "UPDATE quickreach.accountinfo set " 
+		String sqlstr = "UPDATE accountinfo set " 
 			    + " password = ?," + " lastName = ?," 
 				+ " firstName = ?," + " Email = ?," + " enName = ?," 
-				+  " competenceLV =?," + "status = ?"
+				+ " competenceLV =?," + "status = ?"
 				+ " where account = ?"; //8個
 
 		PreparedStatement preparedState = conn.prepareStatement(sqlstr);
@@ -131,7 +131,27 @@ public class QRAccountFactory extends QRAccount{
 	
 		return employeeall;
 	}
+	public  LinkedList<Competence> get權限(){
+		LinkedList<Competence> list= new LinkedList<>();
+		try {
+			Connection conn = new DataBaseConn().getConn();
+			String strsql="select competenceLV   from  accountinfo";
+			PreparedStatement ps = conn.prepareStatement(strsql);
+		
 	
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				Competence c = new Competence();
+				c.setCompetenceLv(rs.getString(1));
+				list.add(c);
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
 	public boolean isNullorEmpty(String s){
 		if (s.length() == 0 || s == null)
 		return true;

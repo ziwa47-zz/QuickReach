@@ -14,29 +14,7 @@
 <head>
 <meta charset="utf-8">
 <title>檢視權限</title>
-<!-- Bootstrap -->
-<link href="/css/bootstrap.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css"
-	href="/css/smoothness/jquery-ui.css">
 
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="/js/bootstrap.js"></script>
-
-
-<script src="/js/jquery-1.12.4.min.js"></script>
-<script src="/js/jquery-ui.min.js"></script>
-<script src="/js/jquery.ui.datepicker-zh-TW.js"></script>
-
-<script type="text/javascript">
-	$(function() {
-		//日期選擇器
-		$("input[name=date]").datepicker({
-			dateFormat : 'yy/mm/dd',
-			showOn : "both"
-		});
-
-	});
-</script>
 <script type="text/javascript">
 	function goct() {
 		searchform.action = "Competence.jsp"
@@ -46,52 +24,34 @@
 	}
 </script>
 
-<style type="text/css">
-.label-tag {
-	background-color: #BFE9B2;
-}
-
-.pressed {
-	border-width: 5px;
-	border-color: black;
-	border-style: solid;
-}
-</style>
 
 </head>
 
 <body><%@ include file="/href/navbar.jsp"%>
-	<div class="nav">
-		<div class="container">
-			<div class="navbar-left" style="background-color: #BCF1E5;">
-				<ul class="nav nav-tabs">
-					<li class="" style="background-color: #1CAF9A"><a
-						href="Competence.jsp" style="color: #FFFFFF">權限管理</a></li>
-				</ul>
-			</div>
-		</div>
-		<div class="container">
-			<div class="nav" style="background-color: #1CAF9A;">
-				<ul class="nav nav-tabs">
-					<li class="" style="background-color: #1CAF9A"><a
-						href="Competence.jsp" style="color: #FFFFFF">檢視權限</a></li>
-					<li class=""><a href="CompetenceInsert.jsp"
-						style="color: #000000">新增權限</a></li>
-				</ul>
-			</div>
-		</div>
-
-	</div>
-
-	<div class="container container-fluid breadcrumbBox">
-		<ol class="breadcrumb">
-			<li><a href="../QRMain/HomePag.jsp">首頁</a></li>
-			<li class="active" style="display:"><a href="Competence.jsp">權限管理</a></li>
-			<li><a href="Competence.jsp">檢視權限</a></li>
-		</ol>
-		<h3>檢視權限</h3>
-		<hr />
-	</div>
+<div class="nav">
+  <div class="container">
+    <div class="navbar-left" style="background-color: #C7AAE4;">
+      <ul class="nav nav-tabs">
+        <li><a href="Competence.jsp" style="color: #FFF">權限管理</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container">
+    <div class="nav" style="background-color: #984AC0;">
+      <ul class="nav nav-tabs">
+        <li><a href="Competence.jsp" style="color: #FFF">檢視權限</a></li>
+        <li><a href="CompetenceInsert.jsp">新增權限</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="container container-fluid breadcrumbBox">
+  <ol class="breadcrumb">
+    <li><a href="../QRMain/HomePag.jsp">首頁</a></li>
+    <li class="active" style="display:"><a href="Competence.jsp">權限管理</a></li>
+    <li><a href="Competence.jsp">檢視權限</a></li>
+  </ol>
+</div>
 
 	<div class="container">
 		<form name="searchform" method="post" action="CompetenceInsert.do"

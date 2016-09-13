@@ -49,7 +49,7 @@ public class SendTrackingCodeServlet extends HttpServlet {
 			OFactory.updateToFinished(request, conn);
 			OFactory.deductStock(request, conn);
 			OFactory.insertIntoShippingLog(request, conn);
-			
+			OFactory.insertIntoPurchaseLogFromOrders(request, conn);
 			response.sendRedirect("QROrders/OrderFinished.jsp");
 		} else {
 			System.out.println("checked false");

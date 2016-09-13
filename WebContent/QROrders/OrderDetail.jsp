@@ -189,39 +189,35 @@ conn.close();
               <div class="container-fluid form-horizontal">
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>外部訂單編號</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getOutsideCode()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>訂單狀態</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getOrderStatus()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>訂單編號</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
-		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>表單確認編碼</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="QR_id" value="${result.getCOrderMaster().getQR_id()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>公司</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getCompany()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>平台</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getPlatform()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>ebay 帳號</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getEbayAccount()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>購買日期</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getOrderDate()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>付款日期</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getPayDate()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>付款方式</h4></div>
@@ -229,15 +225,15 @@ conn.close();
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>paypal 交易序號</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getPaypalId()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>出貨日期</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getShippingDate()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>物流配送方式</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getLogistics()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>提早出貨</h4></div>
@@ -249,7 +245,7 @@ conn.close();
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>運費</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getShippingFees()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>退運費</h4></div>
@@ -257,7 +253,7 @@ conn.close();
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>其它費用</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getOtherFees()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>其它費用備註</h4></div>
@@ -273,23 +269,15 @@ conn.close();
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>ebay成交費</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getEbayFees()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>計算保價</h4></div>
 		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
 		        </div>
 		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>保價</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
-		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>保價金額</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
-		        </div>
-		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>paypal費用</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getPaypalFees()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>淨重(公克)</h4></div>
@@ -309,11 +297,11 @@ conn.close();
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>備註</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getComment()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>總計</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getTotalPrice()}"></div>
 		        </div>
 		      </div>
             </div>
@@ -345,14 +333,21 @@ conn.close();
 		            </td>
 		            <td><input class="" type="text" name="price" value="${i.getPrice()}"></td>
 		            <td><input class="" type="text" name="invoicePrice" value="${i.getInvoicePrice()}"></td>
-		            <td><input class="" type="text" name="qty" value="${i.getQty()}"></td>
+		            <td>
+		              <input class="" type="text" name="qty" value="${i.getQty()}">
+		             	 倉別:${i.getWarehouse()}<br/>
+		              <select name="warehouse">
+                        <option></option>
+                        <option value="KH">KH</option>
+                        <option value="US">US</option>
+                      </select>
+		            </td>
 		            <td>備註:<input class="" type="text" name="comment" value="${i.getComment()}">
 		            <input type="hidden" name="item" value="${i.getItem()}">
 		            </td>
 		          </tr>
 		        </tbody>
 		        </c:forEach>
-		        <input type="hidden" name="QR_id" value="${result.getCOrderMaster().getQR_id()}">
 		      </table>
             </div>
           </div>
