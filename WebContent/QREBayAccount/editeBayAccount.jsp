@@ -16,7 +16,7 @@
 	
 	<div class="nav">
 		<div class="container">
-			<div class="navbar-left" style="background-color: #BCF1E5;">
+			<div class="navbar-left" style="background-color: #AC7ED3;">
 				<ul class="nav nav-tabs">
 					<li><a href="eBayAccount.jsp" style="color: #000000">eBay帳號管理</a></li>
 				</ul>
