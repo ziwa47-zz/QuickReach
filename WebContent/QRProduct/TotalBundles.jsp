@@ -18,7 +18,7 @@
     <meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>查詢複合商品</title>
+    <title>查詢組合商品</title>
     <!-- Bootstrap -->
 	<link href="css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui.css">
@@ -60,14 +60,11 @@
     <div class="container">
    	  <div class="nav" style="background-color:#1CAF9A;" >
         	<ul class="nav nav-tabs">
-					<li><a href="SearchProductPage.jsp" style="color: #000">查詢商品</a></li>
-					<li class="" style="background-color: #1CAF9A"><a href="TotalBundles.jsp" style="color: #fff">查詢組合商品</a></li>
-					<li ><a
-						href="NewProduct.jsp" style="color: #000">新增單項商品</a></li>
-					<li ><a
-						href="BundlesAdd.jsp" style="color: #000">新增組合商品</a></li>
-					
-				</ul>
+              <li ><a href="SearchProductPage.jsp" style="color:#000">查詢商品</a></li>
+              <li class="" style="background-color:#1CAF9A"><a href="TotalBundles.jsp" style="color:#fff">查詢組合商品</a></li>
+              <li ><a href="NewProduct.jsp" style="color:#000000">新增單項商品</a></li>
+              <li ><a href="BundlesAdd.jsp" style="color:#000">新增組合商品</a></li>
+            </ul>
         </div>
     </div>
   
@@ -77,14 +74,14 @@
     <ol class="breadcrumb" >
           <li><a href="../QRMain/HomePage.jsp" >首頁</a></li>
           <li class="active" style="display:"><a href="SearchProductPage.jsp">庫存/商品管理</a></li>
-          <li><a href="TotalBundles.jsp">查詢複合商品</a></li>
+          <li><a href="TotalBundles.jsp">查詢組合商品</a></li>
       </ol>
         </div>
   
   <div class="container" style="background: #9DDCD1; border-radius:20px">
   	<form name="searchform" method="post" action="totalBundles.do" style="font-size: 100%; vertical-align: baseline; 
     padding: 15px; " class="form-inline container">
-      <fieldset><legend>查詢複合商品</legend>
+      <fieldset><legend>查詢組合商品</legend>
 <% 
 session.removeAttribute("getBundlesDetail");
 LinkedList<CProduct> list =  new LinkedList<CProduct>();
