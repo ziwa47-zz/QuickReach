@@ -36,6 +36,7 @@ session.setAttribute("order", order);
 conn1.close();
 }
 
+
 %>
 	<div class="nav">
 		<div class="container">
@@ -165,7 +166,8 @@ conn1.close();
           <th>數量</th>
           <th>日期</th>
           <th>倉別</th>
-         
+          <th>儲位</th>
+        
         </tr>
       </thead>
       <c:forEach var="d" items="${order}" begin="0" step="1" >
@@ -178,7 +180,7 @@ conn1.close();
           <td>${d.getQty()}</td>
           <td>${d.getDate()}</td>
           <td>${d.getWarehouse()}</td>
-       
+         <td>${d.getWarehousePosition()}-${d.getWarehousePosition2()}</td>
         </tr>
       </tbody>
      </c:forEach>
