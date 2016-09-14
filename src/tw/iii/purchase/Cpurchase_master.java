@@ -12,7 +12,15 @@ public class Cpurchase_master {
 	private String stockStatus;
 	private String warehouse;
 	private String warehouse2;
+	private String stockTransferId;
 	
+	
+	public String getStockTransferId() {
+		return stockTransferId;
+	}
+	public void setStockTransferId(String stockTransferId) {
+		this.stockTransferId = stockTransferId;
+	}
 	
 	public String getPurchaseId() {
 		return purchaseId;

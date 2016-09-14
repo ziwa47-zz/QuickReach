@@ -1,7 +1,7 @@
 package tw.iii.purchase;
 
 import java.io.IOException;
-
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import tw.iii.qr.DataBaseConn;
 
@@ -26,12 +27,34 @@ public class InsertPurchaseServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// processJdbcAction(request,response);
+		try {
+			processStockTransfer(request,response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void processStockTransfer(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		HttpSession session = request.getSession();
+		
+		
+		
+		DataBaseConn jdbc = new DataBaseConn();
+		conn = jdbc.getConn();
+		
+		stockTransferFactory stf = new stockTransferFactory();
+		LinkedList<Cpurchase> list = stf.searchStockTransfer(conn, request); 
+		session.setAttribute("logList", list);
+		conn.close();
+		response.sendRedirect("QRProduct/SearchStockTransfer.jsp");
+		
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// processJdbcAction(request,response);
 		try {
 			processInsert(request, response);
 		} catch (SQLException e) {
