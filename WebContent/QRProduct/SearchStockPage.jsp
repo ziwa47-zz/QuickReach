@@ -40,6 +40,8 @@
 					<li ><a href="PurchasePage.jsp" style="color: #000">進貨</a></li>
 					<li ><a
 						href="PurchaseRecordPage.jsp" style="color: #000">進/出貨紀錄</a></li>
+						<li ><a	href="StockTransferPage.jsp" style="color: #000">轉倉</a></li>
+						<li ><a	href="SearchStockTransfer.jsp" style="color: #000">轉倉紀錄</a></li>
 				</ul>
 			</div>
 		</div>
