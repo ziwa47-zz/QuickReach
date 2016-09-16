@@ -28,7 +28,7 @@ System.out.println(accountinfo.getAccount());
 }
 %>  
 <div class="container" style="background: #E9C2D0; border-radius:20px;">
-  <form name="searchform" method="post" action="../EbayAccountDo" class="form-inline container required" 
+  <form name="searchform" method="post" action="QRAccountServlet.do" class="form-inline container required" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;">
       <legend>帳號修改</legend>

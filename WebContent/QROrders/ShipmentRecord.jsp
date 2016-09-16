@@ -294,8 +294,9 @@
                       <td>${i.getStaffName()}</td>
                       <td>${i.getComment()}</td>
                     </tr>
-                    <tr>
+                    <tr style="background-color:#D4F4D8">
                       <td colspan="5"><b>${i.getSKU()}</b>${i.getProductName()}</td>
+                      <td colspan="6"></td>
                     </tr>
                   </c:when>
                   <c:otherwise>
@@ -314,6 +315,7 @@
                     </tr>
                     <tr>
                       <td colspan="5"><b>${i.getSKU()}</b>${i.getProductName()}</td>
+                      <td colspan="6"></td>
                     </tr>
                   </c:otherwise>
                 </c:choose>
@@ -399,8 +401,9 @@
                       <td>${i.getStaffName()}</td>
                       <td>${i.getComment()}</td>
                     </tr>
-                    <tr>
+                    <tr style="background-color:#D4F4D8">
                       <td colspan="5"><b>${i.getSKU()}</b>${i.getProductName()}</td>
+                      <td colspan="6"></td>
                     </tr>
                   </c:when>
                   <c:otherwise>
@@ -419,6 +422,7 @@
                     </tr>
                     <tr>
                       <td colspan="5"><b>${i.getSKU()}</b>${i.getProductName()}</td>
+                      <td colspan="6"></td>
                     </tr>
                   </c:otherwise>
                 </c:choose>

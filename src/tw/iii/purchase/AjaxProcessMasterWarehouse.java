@@ -56,6 +56,8 @@ public class AjaxProcessMasterWarehouse extends HttpServlet {
 		isStockTransfer = request.getParameter("newWarehouse");
 		autoWarehouse = request.getParameter("warehouse");
 		date = Integer.valueOf(request.getParameter("purchaseDate"));
+		
+//		System.out.println("newWarehouse?  ----->"+isStockTransfer);
 
 		try {
 
@@ -85,7 +87,7 @@ public class AjaxProcessMasterWarehouse extends HttpServlet {
 
 		HashMap<String, String> hm = new HashMap<String, String>();
 		String checkPurchaseId = date + "01" + autoWarehouse;
-		System.out.println(checkPurchaseId + "%");
+//		System.out.println(checkPurchaseId + "%");
 
 		int count = 0;
 		DecimalFormat df = new DecimalFormat("000");
@@ -105,16 +107,16 @@ public class AjaxProcessMasterWarehouse extends HttpServlet {
 				hm.put("warehousePurchaseId", "01" + autoWarehouse + df.format(count + 1));
 			}
 			
-			System.out.println("warehouse:\n" + autoWarehouse);
-			System.out.println("count:\n" + count);
-			System.out.println("fffffinally" + autoWarehouse + df.format(count + 1));
-			System.out.println("HashMap:\n" + hm);
+//			System.out.println("warehouse:\n" + autoWarehouse);
+//			System.out.println("count:\n" + count);
+//			System.out.println("fffffinally" + autoWarehouse + df.format(count + 1));
+//			System.out.println("HashMap:\n" + hm);
 			JSONObject responseJSONObject = new JSONObject(hm);
 			PrintWriter out = response.getWriter();
-			System.out.println("strSql:\n" + strSql);
+//			System.out.println("strSql:\n" + strSql);
 
 			out.println(responseJSONObject);
-			System.out.println("JSONObject:\n" + responseJSONObject);
+//			System.out.println("JSONObject:\n" + responseJSONObject);
 
 			rs.close();
 			ps.close();
@@ -133,7 +135,7 @@ public class AjaxProcessMasterWarehouse extends HttpServlet {
 	
 		try {
 
-			String strSql = " select count(*) from  purchaselog_master where purchaseId like ? ";
+			String strSql = " select count(*) from  stockTransferlog_master where stockTransferId like ? ";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 
 			ps.setString(1, checkPurchaseId + "%");
@@ -146,16 +148,16 @@ public class AjaxProcessMasterWarehouse extends HttpServlet {
 				hm.put("stockTransferId", "03" + autoWarehouse + df.format(count + 1));
 			}
 			
-			System.out.println("warehouse:\n" + autoWarehouse);
-			System.out.println("count:\n" + count);
-			System.out.println("fffffinally" + autoWarehouse + df.format(count + 1));
-			System.out.println("HashMap:\n" + hm);
+//			System.out.println("warehouse:\n" + autoWarehouse);
+//			System.out.println("count:\n" + count);
+//			System.out.println("fffffinally" + autoWarehouse + df.format(count + 1));
+//			System.out.println("HashMap:\n" + hm);
 			JSONObject responseJSONObject = new JSONObject(hm);
 			PrintWriter out = response.getWriter();
-			System.out.println("strSql:\n" + strSql);
+//			System.out.println("strSql:\n" + strSql);
 
 			out.println(responseJSONObject);
-			System.out.println("JSONObject:\n" + responseJSONObject);
+//			System.out.println("JSONObject:\n" + responseJSONObject);
 
 			rs.close();
 			ps.close();

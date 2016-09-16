@@ -312,7 +312,7 @@
                   <tr style="background-color:#D4F4D8">
                   <c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
                     <td colspan="9"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}(SKU/品名)<br/></td>
-                    <td colspan="3"><input name="warehouse" type="hidden" value="${i.getWarehouse()}"><b>${i.getWarehouse()}</b>(倉別)<br/></td>
+                    <td colspan="3"><b>${i.getWarehouse()}</b>(倉別)<br/></td>
                   </c:forEach>
                   </tr>
                   <tr style="background-color:#D4F4D8">
@@ -340,7 +340,7 @@
                   <tr>
                   <c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
                     <td colspan="9"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}(SKU/品名)<br/></td>
-                    <td colspan="3"><input name="warehouse" type="hidden" value="${i.getWarehouse()}"><b>${i.getWarehouse()}</b>(倉別)<br/></td>
+                    <td colspan="3"><b>${i.getWarehouse()}</b>(倉別)<br/></td>
                   </c:forEach>
                   </tr>
                   <tr>
@@ -437,7 +437,7 @@
                   <tr style="background-color:#D4F4D8">
                   <c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
                     <td colspan="9"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}(SKU/品名)<br/></td>
-                    <td colspan="3"><input name="warehouse" type="hidden" value="${i.getWarehouse()}"><b>${i.getWarehouse()}</b>(倉別)<br/></td>
+                    <td colspan="3"><b>${i.getWarehouse()}</b>(倉別)<br/></td>
                   </c:forEach>
                   </tr>
                   <tr>
@@ -463,7 +463,7 @@
                   <tr>
                   <c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
                     <td colspan="9"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}(SKU/品名)<br/></td>
-                    <td colspan="3"><input name="warehouse" type="hidden" value="${i.getWarehouse()}"><b>${i.getWarehouse()}</b>(倉別)<br/></td>
+                    <td colspan="3"><b>${i.getWarehouse()}</b>(倉別)<br/></td>
                   </c:forEach>
                   </tr>
                   <tr>
