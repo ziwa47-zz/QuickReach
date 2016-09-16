@@ -314,10 +314,16 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
-                  <c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                    <td colspan="9"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}(SKU/品名)<br/></td>
-                    <td colspan="3"><input name="warehouse" type="hidden" value="${i.getWarehouse()}"><b>${i.getWarehouse()}</b>(倉別)<br/></td>
-                  </c:forEach>
+					<td colspan="9">
+                    <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                    </c:forEach>
+                    </td>
+                    <td colspan="3">
+                    <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                    </c:forEach>
+                    </td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
@@ -342,10 +348,16 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr>
-                  <c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                    <td colspan="9"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}(SKU/品名)<br/></td>
-                    <td colspan="3"><input name="warehouse" type="hidden" value="${i.getWarehouse()}"><b>${i.getWarehouse()}</b>(倉別)<br/></td>
-                  </c:forEach>
+					<td colspan="9">
+                    <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                    </c:forEach>
+                    </td>
+                    <td colspan="3">
+                    <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                    </c:forEach>
+                    </td>
                   </tr>
                   <tr>
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
@@ -442,10 +454,16 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
-                  <c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                    <td colspan="9"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}(SKU/品名)<br/></td>
-                    <td colspan="3"><input name="warehouse" type="hidden" value="${i.getWarehouse()}"><b>${i.getWarehouse()}</b>(倉別)<br/></td>
-                  </c:forEach>
+					<td colspan="9">
+                    <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                    </c:forEach>
+                    </td>
+                    <td colspan="3">
+                    <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                    </c:forEach>
+                    </td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
@@ -470,10 +488,16 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr>
-                  <c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                    <td colspan="9"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}(SKU/品名)<br/></td>
-                    <td colspan="3"><input name="warehouse" type="hidden" value="${i.getWarehouse()}"><b>${i.getWarehouse()}</b>(倉別)<br/></td>
-                  </c:forEach>
+					<td colspan="9">
+                    <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                    </c:forEach>
+                    </td>
+                    <td colspan="3">
+                    <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                    </c:forEach>
+                    </td>
                   </tr>
                   <tr>
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
