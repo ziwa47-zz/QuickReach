@@ -82,6 +82,12 @@ public class OrdersServlet extends HttpServlet {
 					conn.close();
 					response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + request.getParameter("QR_id"));
 					break;
+				case "toGetProducts":
+					response.sendRedirect("QROrders/selectProduct.jsp?QR_id=" + request.getParameter("QR_id"));
+					break;
+				case "insertSKU":
+					response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + request.getParameter("QR_id"));
+					break;
 				default:
 					conn.close();
 					response.sendRedirect("QROrders/SearchOrder.jsp?begin=0&end=10");

@@ -532,7 +532,31 @@ public class COrderFactory extends COrders {
 			int x = ps.executeUpdate();
 		}
 	}
-
+	
+	public void insertOrderDetail(HttpServletRequest request, Connection conn, String QR_id) throws SQLException {
+		
+		String[] strSKUArray = request.getParameterValues("QR_id");
+		LinkedList<String> SKUs = new LinkedList<String>(Arrays.asList(strSKUArray));
+		String[] strProductName = request.getParameterValues("productName");
+		LinkedList<String> productNames = new LinkedList<String>(Arrays.asList(strProductName));
+		
+		for(int i=0; i<SKUs.size(); i++){
+			String strSql = "insert into orders_detail"
+					+ " (QR_id, SKU, productName, invoiceName, price, invoicePrice, qty)"
+					+ " values( ?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement ps = conn.prepareStatement(strSql);
+			
+			ps.setString(1, QR_id);
+			ps.setString(2, SKUs.get(i));
+			ps.setString(3, productNames.get(i));
+			ps.setString(4, productNames.get(i));
+			ps.setDouble(5, 0.0);
+			ps.setDouble(6, 0.0);
+			ps.setInt(7, 0);
+			int x =ps.executeUpdate();			
+		}
+	}
+	
 	public void updateToProcessing(HttpServletRequest request, Connection conn) throws SQLException {
 		
 		String[] strQR_idArray = request.getParameterValues("QR_id");
@@ -1005,4 +1029,5 @@ public class COrderFactory extends COrders {
 		}
 		return SimilarOrders;
 	}
+	
 }
