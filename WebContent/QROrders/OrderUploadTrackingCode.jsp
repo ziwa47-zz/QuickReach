@@ -141,7 +141,8 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
-                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}
+                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                    <b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}
                         (SKU/productName)</c:forEach></td>
                     <td colspan="3"></td>
                   </tr>

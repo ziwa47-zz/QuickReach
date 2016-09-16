@@ -344,11 +344,13 @@ conn.close();
 		            </td>
 		            <td>備註:<input class="" type="text" name="comment" value="${i.getComment()}">
 		            <input type="hidden" name="item" value="${i.getItem()}">
+	          		<button type="submit" name="submit" value="deleteDetail" class="btn btn-sm btn-danger">移除此商品	
 		            </td>
 		          </tr>
 		        </tbody>
 		        </c:forEach>
 		      </table>
+	          <button type="submit" name="submit" value="toGetProducts" class="btn btn-sm btn-success">新增商品
             </div>
           </div>
         </div>
@@ -357,4 +359,4 @@ conn.close();
     </form>
   </div>
 </body>
-</html>
+</html>	
