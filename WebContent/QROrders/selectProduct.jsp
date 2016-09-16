@@ -159,7 +159,7 @@
           <c:forEach var="i" items="${productall}" begin="0" step="1" varStatus="check">
             <tr>
               <td><input type="checkbox" name="SKU" value="${i.getSKU()}" onchange="enableProductName(this)"></td>
-              <td><a href="ProductDetail.jsp?sku=${i.getSKU()}"><img src="../img/compose-4.png"></a></td>
+              <td><a href="../QRProduct/StockDetail.jsp?sku=${i.getSKU()}"><img src="../img/compose-4.png"></a></td>
               <td>${i.getSKU()}</td>
               <td>${i.getBrand()}</td>
               <td>${i.getSubBrand()}</td>
@@ -170,6 +170,7 @@
           </c:forEach>
         </table>
         <div class="row text-center">
+          <input type="hidden" name="QR_id" value="${QR_id}">
           <button type="submit" name="submit" value="insertSKU" class="btn btn-bg btn-success">新增商品</button>
         </div>
       </form>
