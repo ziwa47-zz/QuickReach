@@ -83,26 +83,58 @@ function test() {
 
 }
      
+$(function() {		
+	//進場先檢查purchaseId
+warehouseChange()
+//聽說是自動驗證
+$("#listForm").validate({
+debug:true,
+onfocusout:false,
+delay:500,
+submitHandler: function (form)
+{
+    
+    
+    var arr = new Array;
+    var value;
+    arr[0] = $("#sku1").val();
+    for(var i =1;i < dynamicId; i++){
+    	 value = $("#sku"+(i+1)).val();
+    		arr[i] = value;
+    	
+    }
+    	
+    function isRepeat(arr){
+    	var hash = {};
+    	for(var i in arr) {
+    	if(hash[arr[i]])
+    	return true;
+    	hash[arr[i]] = true;
+    	}
+    	return false;
+    	}
+         
+    if(isRepeat(arr)){
+    	alert("請確認SKU是否重複");
+    	
+    } else {
+    	$('#submitButton').attr('disabled', 'disabled');
+        warehouseChange();
+        alert("此進貨單單號:"+realPurchaseId)
+        form.submit();
+        
+    }
+    
+   
+  
+   
+},
 
-	$(function() {		
-				//進場先檢查purchaseId
-		warehouseChange()
-		//聽說是自動驗證
-		$("#listForm").validate({
-			onfocusout:false,
-			delay:500,
-			submitHandler: function (form)
-		    {
-		        $('#submitButton').attr('disabled', 'disabled');
-		        warehouseChange();
-		        alert("此進貨單單號:"+realPurchaseId)
-		        form.submit();
-		       
-		    },
-		   
-			
-			})
- 				
+
+})
+
+
+
 		//日期選擇器  
 		$("input[name=purchaseDate]").datepicker({
 			dateFormat : 'yymmdd',
@@ -318,8 +350,9 @@ display: block;
 				<ul class="nav nav-tabs">
 					<li><a href="SearchStockPage.jsp" style="color: #000">查詢庫存</a></li>
 					<li class="" style="background-color: #1CAF9A"><a href="PurchasePage.jsp" style="color: #fff">進貨</a></li>
-					<li ><a
-						href="PurchaseRecordPage.jsp" style="color: #000">進/出貨紀錄</a></li>
+					<li ><a	href="PurchaseRecordPage.jsp" style="color: #000">進/出貨紀錄</a></li>
+					<li ><a	href="StockTransferPage.jsp" style="color: #000">轉倉</a></li>
+						
 				</ul>
 			</div>
 		</div>
@@ -540,8 +573,6 @@ display: block;
                     <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne1" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo1" name="warehousePositionTwo1" type="text"></div>
                   </div>
                 </div>
-                
-             
                 
                 
                 <div class="col-md-4 form-group ">

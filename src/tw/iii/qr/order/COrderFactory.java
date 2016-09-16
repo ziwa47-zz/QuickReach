@@ -470,10 +470,7 @@ public class COrderFactory extends COrders {
 			detail.setQty(rs.getInt(6));
 			detail.setWarehouse(rs.getString(7));
 			detail.setComment(rs.getString(8));
-
-			detail.setItem(Integer.valueOf(rs.getString(9)));
-			System.out.println(Integer.valueOf(rs.getString(9)));
-
+			detail.setItem(rs.getInt(9));
 			detail.setQR_id(rs.getString(10));
 			detailList.add(detail);
 		}
@@ -532,7 +529,41 @@ public class COrderFactory extends COrders {
 			int x = ps.executeUpdate();
 		}
 	}
-
+	
+	public void insertOrderDetail(HttpServletRequest request, Connection conn, String QR_id) throws SQLException {
+		
+		String[] strSKUArray = request.getParameterValues("SKU");
+		LinkedList<String> SKUs = new LinkedList<String>(Arrays.asList(strSKUArray));
+		String[] strProductName = request.getParameterValues("productName");
+		LinkedList<String> productNames = new LinkedList<String>(Arrays.asList(strProductName));
+		
+		for(int i=0; i<SKUs.size(); i++){
+			String strSql = "insert into orders_detail"
+					+ " (QR_id, SKU, productName, invoiceName, price, invoicePrice, qty)"
+					+ " values( ?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement ps = conn.prepareStatement(strSql);
+			
+			ps.setString(1, QR_id);
+			ps.setString(2, SKUs.get(i));
+			ps.setString(3, productNames.get(i));
+			ps.setString(4, productNames.get(i));
+			ps.setDouble(5, 0.0);
+			ps.setDouble(6, 0.0);
+			ps.setInt(7, 0);
+			int x =ps.executeUpdate();			
+		}
+	}
+	
+	public void deleteFromOrderDetail (HttpServletRequest request, Connection conn) throws SQLException {
+		
+		String strSql = "delete from orders_detail"
+				+ " where item = ?";
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		
+		ps.setString(1, request.getParameter("item"));
+		int x =ps.executeUpdate();
+	}
+	
 	public void updateToProcessing(HttpServletRequest request, Connection conn) throws SQLException {
 		
 		String[] strQR_idArray = request.getParameterValues("QR_id");
@@ -716,18 +747,16 @@ public class COrderFactory extends COrders {
 		System.out.println(orderInfo.getCOrderDetailSingle().getSKU());
 		
 		LinkedList<Cpurchase_detail> PurchaseLog = new LinkedList<Cpurchase_detail>();
-		String strSql = "insert into purchaselog_master (purchaseId, date, staffName, comment, stockStatus, warehouse)"
-				+ " values( ?, getdate(), ?, ?, ?, ?)";
+		String strSql = "insert into purchaselog_master (purchaseId, date, staffName, comment, stockStatus)"
+				+ " values( ?, getdate(), ?, ?, ?)";
 		System.out.println(strSql);
 		PreparedStatement ps = conn.prepareStatement(strSql);
-		for(int i=0; i<orderDetailInfo.size(); i++){
 			ps.setString(1, orderInfo.getCOrderMaster().getQR_id());
 			ps.setString(2, orderInfo.getCOrderMaster().getStaffName());
 			ps.setString(3, orderInfo.getCOrderMaster().getComment());
 			ps.setString(4, "2");
-			ps.setString(5, orderDetailInfo.get(i).getWarehouse());
 			int x =ps.executeUpdate();
-		}
+
 		String strSql2 = "insert into purchaselog_detail (purchaseId, SKU, warehouse, qty, price, stockStatus)"
 				+ " values( ?, ?, ?, ?, ?, ?)";
 		PreparedStatement ps2 = conn.prepareStatement(strSql2);
@@ -736,7 +765,7 @@ public class COrderFactory extends COrders {
 			ps2.setString(2, orderDetailInfo.get(i).getSKU());
 			ps2.setString(3, orderDetailInfo.get(i).getWarehouse());
 			ps2.setInt(4, orderDetailInfo.get(i).getQty());
-			ps2.setDouble(5, orderInfo.getCOrderMaster().getTotalPrice());
+			ps2.setDouble(5, orderDetailInfo.get(i).getPrice());
 			ps2.setString(6, "2");
 			int y =ps2.executeUpdate();
 		}
@@ -1005,4 +1034,5 @@ public class COrderFactory extends COrders {
 		}
 		return SimilarOrders;
 	}
+	
 }

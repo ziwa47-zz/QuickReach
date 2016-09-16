@@ -24,7 +24,7 @@
 <script type="text/javascript">
 	function jqueryAutoCompletePurchaseId() {
 
-		$("#purchaseId").autocomplete({
+		$("#stockTransferId").autocomplete({
 			source : "../JQueryAutoCompletePurchaseId",
 			minLength : 8,
 			delay : 1000,
@@ -66,17 +66,15 @@
 		Connection conn = new DataBaseConn().getConn();
 
 		LinkedList<LinkedList<String>> warehouseList = searchDetail.warehouseSelectOption(conn);
-		LinkedList<LinkedList<String>> companyList = searchDetail.companySelectOption(conn);
 		LinkedList<LinkedList<String>> accountList = searchDetail.accountSelectOption(conn);
 		request.setAttribute("warehouseList", warehouseList);
-		request.setAttribute("companyList", companyList);
 		request.setAttribute("accountList", accountList);
-
-		LinkedList<LinkedList<String>> allList = searchDetail.searchPurchase(conn, request);
-		request.setAttribute("logList", allList);
-
 		conn.close();
+		
+		
 
+		
+		
 			%>
 
 
@@ -96,10 +94,10 @@
 				<ul class="nav nav-tabs">
 					<li><a href="SearchStockPage.jsp" style="color: #000">查詢庫存</a></li>
 					<li><a href="PurchasePage.jsp" style="color: #000">進貨</a></li>
+					<li><a href="PurchaseRecordPage.jsp" style="color: #000">進/出貨紀錄</a></li>
+					<li><a href="StockTransferPage.jsp" style="color: #000">轉倉</a></li>
 					<li class="" style="background-color: #1CAF9A"><a
-						href="PurchaseRecordPage.jsp" style="color: #fff">進/出貨紀錄</a></li>
-							<li ><a	href="StockTransferPage.jsp" style="color: #000">轉倉</a></li>
-						<li ><a	href="SearchStockTransfer.jsp" style="color: #000">轉倉紀錄</a></li>
+						href="SearchStockTransfer.jsp" style="color: #fff">轉倉紀錄</a></li>
 				</ul>
 			</div>
 		</div>
@@ -110,7 +108,7 @@
 			<li><a href="/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchStockPage.jsp">庫存/商品管理</a></li>
-			<li><a href="PurchaseRecordPage.jsp">進/出貨紀錄</a></li>
+			<li><a href="PurchaseRecordPage.jsp">轉倉紀錄</a></li>
 		</ol>
 	</div>
 
@@ -118,31 +116,14 @@
 
 	<div class="container"
 		style="background: #9DDCD1; border-radius: 20px;">
-		<form name="searchform" method="POST" action="PurchaseRecordPage.jsp"
+		<form name="searchform" method="GET" action="../InsertPurchaseServlet.do"
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
 			class="form-inline container">
 			<fieldset>
-				<legend>進/出貨紀錄查詢</legend>
+				<legend>轉倉紀錄查詢</legend>
 				<input type="hidden">
 
-				<div class="row">
-					<div class="col-md-4 form-group ">
-						<div class="row">
-
-							<div class="col-md-4">
-								<h5>
-									<label for="focusedInput">種類：</label>
-								</h5>
-							</div>
-							<div class="col-md-8">
-								<label class="checkbox-inline" style="margin-top: 7"><input
-									type="checkbox" name="purchaseRecord" value="purchase">進貨紀錄</label>
-								<label class="checkbox-inline" style="margin-top: 7"><input
-									type="checkbox" name="outRecord" value="outRecord">出貨記錄</label>
-							</div>
-						</div>
-					</div>
-				</div>
+				
 
 
 				<div class="row">
@@ -154,8 +135,8 @@
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" type="text" name="purchaseId"
-									id="purchaseId">
+								<input class="form-control" type="text" name="stockTransferId"
+									id="stockTransferId">
 							</div>
 						</div>
 					</div>
@@ -213,30 +194,7 @@
 				</div>
 
 				<div class="row">
-					<div class="col-md-4 form-group ">
-						<div class="row">
-							<div class="col-md-4">
-								<h5>
-									<label for="focusedInput ">廠商：</label>
-								</h5>
-							</div>
-							<div class="col-md-8">
-								<select class="form-control" name="companyName" id="companyName">
-									<option value=""></option>
-
-
-									<c:forEach var="i" begin="0" step="1" items="${companyList}">
-
-										<option value="${i.get(1)}">${i.get(1)}</option>
-
-									</c:forEach>
-
-								</select>
-							</div>
-						</div>
-					</div>
-
-
+					
 					<div class="col-md-4 form-group ">
 						<div class="row">
 							<div class="col-md-4">
@@ -245,7 +203,7 @@
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<select class="form-control" name="owner">
+								<select class="form-control" name="staff">
 									<option value=""></option>
 									<c:forEach var="i" begin="0" step="1" items="${accountList}">
 
@@ -261,11 +219,30 @@
 						<div class="row">
 							<div class="col-md-4">
 								<h5>
-									<label for="focusedInput ">倉別：</label>
+									<label for="focusedInput ">原倉別：</label>
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<select class="form-control" name="wareHouse">
+								<select class="form-control" name="oldWareHouse">
+									<option value=""></option>
+									<c:forEach var="i" begin="0" step="1" items="${warehouseList}">
+
+										<option value="${i.get(0)}">${i.get(1)}</option>
+
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4 form-group ">
+						<div class="row">
+							<div class="col-md-4">
+								<h5>
+									<label for="focusedInput ">新倉別：</label>
+								</h5>
+							</div>
+							<div class="col-md-8">
+								<select class="form-control" name="newWareHouse">
 									<option value=""></option>
 									<c:forEach var="i" begin="0" step="1" items="${warehouseList}">
 
@@ -278,54 +255,10 @@
 					</div>
 				</div>
 
-				<!-- 				<div class="row"> -->
-				<!-- 					<div class="col-md-8 form-group "> -->
-				<!-- 						<div class="row"> -->
-				<!-- 							<div class="col-md-2"> -->
-				<!-- 								<h5> -->
-				<!-- 									<label for="focusedInput ">櫃位：</label> -->
-				<!-- 								</h5> -->
-				<!-- 							</div> -->
-				<!-- 							<div class="col-md-8"> -->
-				<!-- 								<input class="form-control" id="warehousePositionOne" name="warehousePositionOne" type="text">-<input class="form-control" id="warehousePositionTwo" name="warehousePositionTwo" type="text"> -->
-				<!-- 							</div> -->
-				<!-- 						</div> -->
-				<!-- 					</div> -->
-
-				<!-- 					<div class="col-md-4 form-group "> -->
-				<!-- 						<div class="row"> -->
-				<!-- 							<div class="col-md-4"> -->
-				<!-- 								<h5> -->
-				<!-- 									<label for="focusedInput ">數量：</label> -->
-				<!-- 								</h5> -->
-				<!-- 							</div> -->
-				<!-- 							<div class="col-md-8"> -->
-				<!-- 								<input class="form-control" name="qty" type="text"> -->
-				<!-- 							</div> -->
-				<!-- 						</div> -->
-				<!-- 					</div> -->
-
-				<!-- 				</div> -->
-
-				<!-- 				<div class="row"> -->
-				<!-- 				<div class="col-md-4 form-group "> -->
-				<!-- 						<div class="row"> -->
-				<!-- 							<div class="col-md-4"> -->
-				<!-- 								<h5> -->
-				<!-- 									<label for="focusedInput ">價格：</label> -->
-				<!-- 								</h5> -->
-				<!-- 							</div> -->
-				<!-- 							<div class="col-md-8"> -->
-				<!-- 								<input class="form-control" name="price" type="text"> -->
-				<!-- 							</div> -->
-				<!-- 						</div> -->
-				<!-- 					</div> -->
-				<!-- 				</div> -->
-
 
 				<br />
 				<div class="row text-center">
-					<input type="submit" name="Record" value="搜尋"
+					<input type="submit" name="transfer" value="搜尋"
 						class="btn-lg btn-success">
 				</div>
 			</fieldset>
@@ -346,21 +279,18 @@
 					<tr class="ListTitle"
 						style="background-color: #A65758; color: #fff">
 						<th>項目</th>
-						<th>單別</th>
 						<th>單號</th>
 
 						<th>SKU</th>
-						<th>品名</th>
 
+						<th>轉出數量</th>
+						<th>原倉別</th>
+						<th>原櫃位</th>
+						
 
-						<th>數量</th>
-
-						<th>倉別</th>
-
-						<th>櫃位</th>
-						<th>Owner</th>
-						<th>日期</th>
-						<th>供應商</th>
+						<th>新倉別</th>
+						<th>新櫃位</th>
+						
 						<th>經手人</th>
 
 
@@ -371,46 +301,31 @@
 					<c:forEach var="i" begin="0" step="1" items="${logList}"
 						varStatus="nu">
 
-						<c:if test="${'進貨' eq i.get(0)}">
-
+						
 							<tr class="success" style="background-color: #9DDCD1">
-								<td rowspan="2" style="vertical-align: middle"><c:out
-										value="${nu.count}"></c:out></td>
-
-								<c:forEach var="j" begin="0" end="10" step="1">
-									<td><c:out value="${i.get(j)}"></c:out></td>
-
-								</c:forEach>
+								    <td>${nu.count}</td>
+								
+									<td>${i.CPurchase_master.getStockTransferId()}</td>
+									<td>${i.CPurchase_detailsSingle.getSKU()}</td>
+									
+									<td>${i.CPurchase_detailsSingle.getQty()}</td>
+									<td>${i.CPurchase_master.getWarehouse()}</td>
+									
+									<td>${i.CPurchase_detailsSingle.getWarehousePosition()}</td>
+									<td>${i.CPurchase_master.getWarehouse2()}</td>
+									<td>${i.CPurchase_detailsSingle.getNewWarehousePosition()}</td>
+									<td>${i.CPurchase_master.getStaffId()}</td>
+									
+							
 							</tr>
 							<tr class="success" style="background-color: #9DDCD1">
-
-								<c:if test="${PageCompetence.getProductCostView() == 1 }">
-									<th>成本</th>
-									<td><c:out value="${i.get(12)}"></c:out></td>
-
-								</c:if>
-								<td colspan="13"><c:out value="${i.get(11)}"></c:out></td>
+								
+								<td colspan="13">${i.CPurchase_detailsSingle.getComment()}</td>
 							</tr>
 
-						</c:if>
+						
 
-						<c:if test="${'出貨' eq i.get(0)}">
-
-							<tr class="warning" style="background-color: #D4F4D8">
-								<td rowspan="2" style="vertical-align: middle"><c:out
-										value="${nu.count}"></c:out></td>
-
-								<c:forEach var="j" begin="0" end="10" step="1">
-									<td><c:out value="${i.get(j)}"></c:out></td>
-
-								</c:forEach>
-							</tr>
-
-
-							<tr class="warning" style="background-color: #D4F4D8">
-								<td colspan="13"><c:out value="${i.get(11)}"></c:out></td>
-							</tr>
-						</c:if>
+					
 					</c:forEach>
 
 				</table>

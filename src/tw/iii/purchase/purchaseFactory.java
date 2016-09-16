@@ -31,7 +31,7 @@ public class purchaseFactory {
 		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
 		LinkedList<String> account = new LinkedList<>();
 
-		String strsql = "SELECT account FROM  accountinfo";
+		String strsql = "SELECT account,lastName,firstName FROM  accountinfo";
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -39,6 +39,7 @@ public class purchaseFactory {
 		while (rs.next()) {
 			account = new LinkedList<>();
 			account.add(rs.getString(1));
+			account.add(rs.getString(2)+rs.getString(3));
 
 			Alllist.add(account);
 		}
@@ -241,7 +242,7 @@ public class purchaseFactory {
 			System.out.println(date1);
 		}
 		if (!isNullorEmpty(date2)) {
-			sqlstr1 += " and b.date  <= '" + date2 + "'";
+			sqlstr1 += " and b.date  <= '" + (Integer.valueOf(date2)+1)+ "'";
 			System.out.println(date2);
 		}
 
@@ -286,7 +287,7 @@ public class purchaseFactory {
 			System.out.println(price);
 		}
 
-		sqlstr1 += " order by 1";
+		sqlstr1 += " order by 1 desc";
 		return sqlstr1;
 	}
 
