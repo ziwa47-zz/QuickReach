@@ -273,10 +273,7 @@
         <form name="searchform" method="post" action="../SubmitToShipped" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
           <button type="submit" name="" class="btn-sm btn-info">選擇全部</button>
-          <button type="submit" name="" class="btn-sm btn-info">清除勾選</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印撿貨/出貨單</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印EMS</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印Invoice</button>
+		  <button type="button" class="btn btn-md btn-info">orderByQR_id</button>
           <button type="submit" name="" class="btn-sm btn-info">回復</button>
           <ul class="pager pagination">
             <c:choose>
@@ -343,8 +340,7 @@
                     <td>${i.getCOrderMaster().getPayDate()}</td>
                     <td>${i.getCOrderMaster().getShippingDate()}</td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
-                    <td>${i.getCOrderMaster().getOrderStatus()}
-                      <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
+                    <td>${i.getCOrderMaster().getOrderStatus()}</td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
@@ -376,8 +372,7 @@
                     <td>${i.getCOrderMaster().getPayDate()}</td>
                     <td>${i.getCOrderMaster().getShippingDate()}</td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
-                    <td>${i.getCOrderMaster().getOrderStatus()}
-                      <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
+                    <td>${i.getCOrderMaster().getOrderStatus()}</td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
@@ -411,7 +406,7 @@
         <form name="searchform" method="post" action="../SubmitToShipped" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
           <button type="submit" name="" class="btn-sm btn-info">選擇全部</button>
-          <button type="submit" name="" class="btn-sm btn-info">清除勾選</button>
+		  <button type="button" class="btn btn-md btn-info">orderByQR_id</button>
           <button type="submit" name="" class="btn-sm btn-info">回復</button>
           <ul class="pager pagination">
             <c:choose>

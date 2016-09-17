@@ -239,10 +239,12 @@
           <label class="btn btn-sm btn-info">
 		    <input type="checkbox" autocomplete="off" onchange="selectAllOrders(this)"> 選擇全部
 		  </label>
-          <button type="submit" name="" class="btn-sm btn-info">列印撿貨/出貨單</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印EMS</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印Invoice</button>
-          <button type="submit" name="" class="btn-sm btn-info">回復</button>
+          <button type="submit" name="send" value="revertTo" class="btn btn-md btn-info">回復至</button>
+		  <select name="status" class="form-control">
+		    <option></option>
+		    <option>待處理</option>
+		    <option>處理中</option>
+		  </select>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
@@ -379,10 +381,12 @@
           <label class="btn btn-sm btn-info">
 		    <input type="checkbox" autocomplete="off" onchange="selectAllOrders(this)"> 選擇全部
 		  </label>
-          <button type="submit" name="" class="btn-sm btn-info">列印撿貨/出貨單</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印EMS</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印Invoice</button>
-          <button type="submit" name="" class="btn-sm btn-info">回復</button>
+		  <button type="submit" name="send" value="revertTo" class="btn btn-md btn-info">回復至</button>
+		  <select name="status" class="form-control">
+		    <option></option>
+		    <option>待處理</option>
+		    <option>處理中</option>
+		  </select>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">

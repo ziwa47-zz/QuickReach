@@ -623,7 +623,7 @@ public class COrderFactory extends COrders {
 			System.out.println(iterator.next());
 		}
 		for (int i = 0; i < QR_ids.size(); i++) {
-			String strSql = "update  orders_master" + " set orderStatus = N'已出貨' " + " where QR_id = ? ";
+			String strSql = "update orders_master" + " set orderStatus = N'已出貨' " + " where QR_id = ? ";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ps.setString(1, QR_ids.get(i));
 			ps.executeUpdate();
@@ -631,10 +631,23 @@ public class COrderFactory extends COrders {
 	}
 	
 	public void updateToFinished(HttpServletRequest request, Connection conn) throws Exception {
-		String strSql = "update  orders_master" + " set orderStatus = N'已完成' " + " where QR_id = ? ";
+		String strSql = "update orders_master" + " set orderStatus = N'已完成', shippingDate = getdate() " + " where QR_id = ? ";
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ps.setString(1, request.getParameter("QR_id"));
 		ps.executeUpdate();
+	}
+	
+	public void revertTo (HttpServletRequest request, Connection conn) throws Exception {
+		
+		String[] strQR_idArray = request.getParameterValues("QR_id");
+		LinkedList<String> QR_ids = new LinkedList<String>(Arrays.asList(strQR_idArray));
+		String strSql = "update orders_master" + " set orderStatus = ? " + " where QR_id = ? ";
+		for(int i=0; i<QR_ids.size(); i++){
+			PreparedStatement ps = conn.prepareStatement(strSql);
+			ps.setString(1, request.getParameter("status"));
+			ps.setString(2, QR_ids.get(i));
+			ps.executeUpdate();
+		}
 	}
 
 	public boolean checkOrderIdOrderStatus(HttpServletRequest request, Connection conn) throws Exception {

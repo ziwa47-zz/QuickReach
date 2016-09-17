@@ -238,7 +238,11 @@
 		  <label class="btn btn-sm btn-info">
 		    <input type="checkbox" autocomplete="off" onchange="selectAllOrders(this)"> 選擇全部
 		  </label>
-		  <button type="submit" name="" class="btn-sm btn-info">回復</button>
+		  <button type="submit" name="send" value="revertTo" class="btn btn-md btn-info">回復至</button>
+		  <select name="status" class="form-control">
+		    <option></option>
+		    <option>待處理</option>
+		  </select>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
@@ -304,13 +308,11 @@
                     <td>${i.getCOrderMaster().getPayDate()}</td>
                     <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
-                    <td>${i.getCOrderMaster().getOrderStatus()}
-                      <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
+                    <td>${i.getCOrderMaster().getOrderStatus()}</td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
-                  
                     <td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
                       <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
@@ -377,7 +379,11 @@
           <label class="btn btn-sm btn-info">
 		    <input type="checkbox" autocomplete="off" onchange="selectAllOrders(this)"> 選擇全部
 		  </label>
-          <button type="submit" name="" class="btn-sm btn-info">回復</button>
+		  <button type="submit" name="send" value="revertTo" class="btn btn-md btn-info">回復至</button>
+		  <select name="status" class="form-control">
+		    <option></option>
+		    <option>待處理</option>
+		  </select>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">

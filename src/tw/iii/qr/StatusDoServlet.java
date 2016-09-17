@@ -125,6 +125,11 @@ public class StatusDoServlet extends HttpServlet {
 				conn.close();
 			}
 			break;
+		case "revertTo":
+			OFactory.revertTo(request, conn);
+			response.sendRedirect(request.getHeader("Referer"));
+			conn.close();
+		break;
 		}
 		
 		conn.close();
