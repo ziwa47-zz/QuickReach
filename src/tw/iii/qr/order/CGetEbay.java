@@ -89,7 +89,6 @@ public class CGetEbay {
 		int size = orders != null ? orders.length : 0;
 		 System.out.println(size);
 		 for (int i = 0; i < size; i++) {
-		  String strsql = "insert into orders_master values();";
 		  OrderType order = orders[i];
 		  Connection conn = new DataBaseConn().getConn();
 		  System.out.println(order.getCheckoutStatus().getStatus().toString());
@@ -137,8 +136,15 @@ public class CGetEbay {
 		  ps2.setString(4, order.getShippingAddress().getLastName());
 		  ps2.setString(5, order.getShippingAddress().getPhone());
 		  ps2.setString(6, order.getShippingAddress().getPhone2());
-		  ps2.setString(7, order.getShippingAddress().getName());
-		  ps2.setString(8, order.getShippingAddress().getCounty());
+		  ps2.setString(7, order.getShippingAddress().getAddressID()
+				  + order.getShippingAddress().getStreet()
+				  + order.getShippingAddress().getStreet1()
+				  + order.getShippingAddress().getStreet2()
+				  + order.getShippingAddress().getCityName()
+				  + order.getShippingAddress().getStateOrProvince()
+				  + order.getShippingAddress().getCountryName()
+				  + order.getShippingAddress().getPostalCode());
+		  ps2.setString(8, order.getShippingAddress().getCountryName());
 		  ps2.setString(9, order.getShippingAddress().getPostalCode());
 		  
 		  int y =ps2.executeUpdate();
@@ -161,6 +167,28 @@ public class CGetEbay {
 		  ps3.setString(9, order.getBuyerCheckoutMessage());
 		  int z =ps3.executeUpdate();
 		 }
+		 
+			  String strSql4 = "INSERT INTO orders_guestinfo (QR_id, order_id, guestFirstName, guestLastName, guestAccount"
+			  		+ ", email, tel1, tel2, mobile, birthday, company, address, country, postcode )"
+			  		+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			  
+			  PreparedStatement ps4 = conn.prepareStatement(strSql4);
+			  ps4.setString(1, QR_id);
+			  ps4.setString(2, order.getOrderID());
+			  ps4.setString(3, order.getTransactionArray().getTransaction()[0].getBuyer().getUserFirstName());
+			  ps4.setString(4, order.getTransactionArray().getTransaction()[0].getBuyer().getUserLastName());
+			  ps4.setString(5, order.getBuyerUserID());
+			  ps4.setString(6, order.getTransactionArray().getTransaction()[0].getBuyer().getEmail());
+			  ps4.setString(7, null);
+			  ps4.setString(8, null);
+			  ps4.setString(9, null);
+			  ps4.setString(10, null);
+			  ps4.setString(11, null);
+			  ps4.setString(12, null);
+			  ps4.setString(13, null);
+			  ps4.setString(14, null);
+			  int q =ps4.executeUpdate();
+		 
 		  System.out.println("訂單編號:"+order.getOrderID());
 		  
 //		  System.out.println("款項調整:"+order.getAdjustmentAmount().getValue());
