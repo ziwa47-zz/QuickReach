@@ -24,7 +24,7 @@
   <div class="container">
     <div class="navbar-left" style="background-color:#F3CE9A;" >
       <ul class="nav nav-tabs">
-        <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp" style="color:#FFFFFF">訂單管理</a></li>
+        <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp?begin=0&end=10" style="color:#FFFFFF">訂單管理</a></li>
         <li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
       </ul>
     </div>
@@ -335,8 +335,8 @@
                   <tr>
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td nowrap>${i.getCOrderMaster().getOrder_id()}
-                    <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
+                    <td>${i.getCOrderMaster().getQR_id()}
+                    <td><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
@@ -349,9 +349,16 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr>
-                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}
-                        (SKU/productName)</c:forEach></td>
-                    <td colspan="3"></td>
+                    <td colspan="9">
+                    <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                    </c:forEach>
+                    </td>
+                    <td colspan="3">
+                    <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                    </c:forEach>
+                    </td>
                   </tr>
                   <tr>
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
@@ -361,8 +368,8 @@
                   <tr style="background-color:#FFFFFF">
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td nowrap>${i.getCOrderMaster().getOrder_id()}
-                    <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
+                    <td>${i.getCOrderMaster().getQR_id()}
+                    <td><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
@@ -375,9 +382,16 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr style="background-color:#FFFFFF">
-                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}<br/>
-                      </c:forEach></td>
-                    <td colspan="3"></td>
+                    <td colspan="9">
+                    <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                    </c:forEach>
+                    </td>
+                    <td colspan="3">
+                    <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                    </c:forEach>
+                    </td>
                   </tr>
                   <tr style="background-color:#FFFFFF">
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
@@ -398,9 +412,6 @@
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
           <button type="submit" name="" class="btn-sm btn-info">選擇全部</button>
           <button type="submit" name="" class="btn-sm btn-info">清除勾選</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印撿貨/出貨單</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印EMS</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印Invoice</button>
           <button type="submit" name="" class="btn-sm btn-info">回復</button>
           <ul class="pager pagination">
             <c:choose>
@@ -459,8 +470,8 @@
                   <tr style="background-color:#D4F4D8">
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td nowrap>${i.getCOrderMaster().getOrder_id()}
-                    <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
+                    <td>${i.getCOrderMaster().getQR_id()}
+                    <td><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
@@ -473,9 +484,16 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
-                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}
-                        (SKU/productName)</c:forEach></td>
-                    <td colspan="3"></td>
+                    <td colspan="9">
+                    <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                    </c:forEach>
+                    </td>
+                    <td colspan="3">
+                    <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                    </c:forEach>
+                    </td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
@@ -485,8 +503,8 @@
                   <tr>
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td nowrap>${i.getCOrderMaster().getOrder_id()}
-                    <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
+                    <td>${i.getCOrderMaster().getQR_id()}
+                    <td><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
@@ -499,9 +517,16 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr>
-                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}<br/>
-                      </c:forEach></td>
-                    <td colspan="3"></td>
+                    <td colspan="9">
+                    <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                    </c:forEach>
+                    </td>
+                    <td colspan="3">
+                    <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                    </c:forEach>
+                    </td>
                   </tr>
                   <tr>
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>

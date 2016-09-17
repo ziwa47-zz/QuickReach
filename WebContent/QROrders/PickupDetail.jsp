@@ -9,26 +9,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>處理中頁面</title>
+<title>揀貨單</title>
 </head>
 <body>
 <%@ include file = "/href/navbar.jsp"%>
 
 <%
-	COrderFactory.checkUrlToRemoveSession(request, session);
-	Connection conn = new DataBaseConn().getConn();
-	LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"處理中");
-	session.setAttribute("list", orderList);
-    request.setAttribute("begin", request.getParameter("begin"));
-    request.setAttribute("end", request.getParameter("end"));
+  COrderFactory.checkUrlToRemoveSession(request, session);
+  Connection conn = new DataBaseConn().getConn();
+  LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"揀貨中");
+  request.setAttribute("list", orderList);
+  request.setAttribute("begin", request.getParameter("begin"));
+  request.setAttribute("end", request.getParameter("end"));
 %>
-
-
 <div class="nav">
   <div class="container">
     <div class="navbar-left" style="background-color:#F3CE9A;" >
       <ul class="nav nav-tabs">
-        <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp?begin=0&end=10" style="color:#FFFFFF">訂單管理</a></li>
+        <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp" style="color:#FFFFFF">訂單管理</a></li>
         <li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
       </ul>
     </div>
@@ -37,12 +35,12 @@
     <div class="nav" style="background-color:#A45A21;" >
       <ul class="nav nav-tabs">
         <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
-        <li><a href="OrderProcessingPage.jsp?begin=0&end=10" style="color:#fff">處理中</a></li>
-        <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
+        <li><a href="OrderProcessingPage.jsp?begin=0&end=10">處理中</a></li>
+        <li><a href=""  style="color:#fff">揀貨中</a></li>
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
         <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
-        <li><a href="ShipmentRecord.jsp" >訂單出貨記錄</a></li>
+        <li><a href="ShipmentRecord.jsp?begin=0&end=10">訂單出貨記錄</a></li>
       </ul>
     </div>
   </div>
@@ -52,15 +50,17 @@
   <ol class="breadcrumb" >
     <li><a href="/HomePage.jsp" >首頁</a></li>
     <li class="active" style="display:"><a href="SearchOrder.jsp?begin=0&end=10">訂單管理</a></li>
-    <li><a href="OrderProcessingPage.jsp?begin=0&end=10">處理中</a></li>
+    <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
   </ol>
 </div>
+
 <div class="nav">
   <div class="container" style="background: #D9A56B; border-radius:20px;">
     <form name="searchform" method="post" action="../OrdersServlet" class="form-inline container"
     style="font-size: 100%; vertical-align: baseline; padding: 15px;">
       <fieldset class="font-weight" style="padding:0 30px 0 0;">
-        <legend>處理中</legend>
+        <legend>揀貨中</legend>
+        <input type="hidden">
         <div class="row">
           <div class="col-md-4 form-group ">
             <div class="row">
@@ -222,48 +222,51 @@
         </div>
         <br/>
         <div class="row text-center" >
-          <input type="hidden" name="processing"  value="processing"> <!-- 控制搜尋結果在處理中 -->
-          <button class="btn btn-lg btn-primary" type="submit" name="submit" value="processingSearch">搜尋</button>
-          <button class="btn btn-lg btn-primary" type="button" name="" >清空</button>
+          <input type="hidden" name="pickup"  value="pickup"> <!-- 控制搜尋結果在揀貨中 -->
+          <button class="btn-lg btn-primary" type="submit" name="submit" value="pickupSearch">搜尋</button>
+          <button class="btn-lg btn-primary" type="button" name="" >清空</button>
         </div>
       </fieldset>
     </form>
   </div>
   <hr/>
+  
   <c:choose>
     <c:when test="${SearchOrdersResult != null}">
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
         <form name="searchform" method="post" action="../StatusDo" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
-		  <label class="btn btn-sm btn-info">
-		    <input type="checkbox" autocomplete="off" onchange="selectAllOrders(this)"> 選擇全部
-		  </label>
-		  <button type="submit" name="" class="btn-sm btn-info">回復</button>
+          <button type="submit" name="" class="btn-sm btn-info">選擇全部</button>
+          <button type="submit" name="" class="btn-sm btn-info">清除勾選</button>
+          <button type="submit" name="" class="btn-sm btn-info">列印撿貨/出貨單</button>
+          <button type="submit" name="" class="btn-sm btn-info">列印EMS</button>
+          <button type="submit" name="" class="btn-sm btn-info">列印Invoice</button>
+          <button type="submit" name="" class="btn-sm btn-info">回復</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
-                <li><a href="OrderProcessingPage.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
+                <li><a href="OrderPickupPage.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
               </c:when>
               <c:otherwise>
-                <li class="disabled"><a href="OrderProcessingPage.jsp.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
+                <li class="disabled"><a href="OrderPickupPage.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
               </c:otherwise>
             </c:choose>
             <c:forEach begin="0" end="${SearchOrdersResult.size()/10}" step="1" varStatus="check">
               <c:choose>
                 <c:when test="${(check.index*10) != begin}">
-                  <li><a href="OrderProcessingPage.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
+                  <li><a href="OrderPickupPage.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
                 </c:when>
                 <c:otherwise>
-                  <li class="active"><a href="OrderProcessingPage.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
+                  <li class="active"><a href="OrderPickupPage.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
                 </c:otherwise>
               </c:choose>
             </c:forEach>
             <c:choose>
               <c:when test="${end < SearchOrdersResult.size()}">
-                <li><a href="OrderProcessingPage.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
+                <li><a href="OrderPickupPage.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:when>
               <c:otherwise>
-                <li class="disabled"><a href="OrderProcessingPage.jsp.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
+                <li class="disabled"><a href="OrderPickupPage.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:otherwise>
             </c:choose>
             <label>共有:${SearchOrdersResult.size()}筆</label>
@@ -295,9 +298,9 @@
                 <c:when test="${check.index%2 != 0}">
                   <tr style="background-color:#D4F4D8">
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
-                    <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td>${i.getCOrderMaster().getQR_id()}
-                    <td><a href="#"><img src="../img/compose.png" ></a></td>
+                    <td><a href="OrderDetailUnchangable.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
+                    <td nowrap>${i.getCOrderMaster().getOrder_id()}
+                    <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
@@ -310,17 +313,9 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
-                  
-                    <td colspan="9">
-                    <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
-                    </c:forEach>
-                    </td>
-                    <td colspan="3">
-                    <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>(倉別)<br/>
-                    </c:forEach>
-                    </td>
+                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}
+                        (SKU/productName)</c:forEach></td>
+                    <td colspan="3"></td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
@@ -329,10 +324,10 @@
                 <c:otherwise>
                   <tr>
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
-                    <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td>${i.getCOrderMaster().getQR_id()}
+                    <td><a href="OrderDetailUnchangable.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
+                    <td nowrap>${i.getCOrderMaster().getOrder_id()}
                       <input type="hidden" name="orderId" value="${i.getCOrderMaster().getOrder_id()}"></td>
-                    <td><a href="#"><img src="../img/compose.png" ></a></td>
+                    <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
@@ -345,16 +340,9 @@
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr>
-					<td colspan="9">
-                    <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
-                    </c:forEach>
-                    </td>
-                    <td colspan="3">
-                    <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>(倉別)<br/>
-                    </c:forEach>
-                    </td>
+                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}<br/>
+                      </c:forEach></td>
+                    <td colspan="3"></td>
                   </tr>
                   <tr>
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
@@ -364,45 +352,46 @@
             </c:forEach>
           </table>
           <div class="row text-center" >
-            <button type="submit" name="send" value="processing" class="btn btn-lg btn-primary">送出</button>
+            <button type="submit" name="send" value="pickUp" class="btn-lg btn-primary">送出</button>
           </div>
         </form>
       </div>
-      
     </c:when>
     <c:otherwise>
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
         <form name="searchform" method="post" action="../StatusDo" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
-          <label class="btn btn-sm btn-info">
-		    <input type="checkbox" autocomplete="off" onchange="selectAllOrders(this)"> 選擇全部
-		  </label>
+          <button type="submit" name="" class="btn-sm btn-info">選擇全部</button>
+          <button type="submit" name="" class="btn-sm btn-info">清除勾選</button>
+          <button type="submit" name="" class="btn-sm btn-info">列印撿貨/出貨單</button>
+          <button type="submit" name="" class="btn-sm btn-info">列印EMS</button>
+          <button type="submit" name="" class="btn-sm btn-info">列印Invoice</button>
           <button type="submit" name="" class="btn-sm btn-info">回復</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
-                <li><a href="OrderProcessingPage.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
+                <li><a href="OrderPickupPage.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
               </c:when>
               <c:otherwise>
-                <li class="disabled"><a href="OrderProcessingPage.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
+                <li class="disabled"><a href="OrderPickupPage.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
               </c:otherwise>
             </c:choose>
             <c:forEach begin="0" end="${list.size()/10}" step="1" varStatus="check">
               <c:choose>
                 <c:when test="${(check.index*10) != begin}">
-                  <li><a href="OrderProcessingPage.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
+                  <li><a href="OrderPickupPage.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
                 </c:when>
                 <c:otherwise>
-                  <li class="active"><a href="OrderProcessingPage.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
+                  <li class="active"><a href="OrderPickupPage.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
                 </c:otherwise>
               </c:choose>
             </c:forEach>
             <c:choose>
               <c:when test="${end < list.size()}">
-                <li><a href="OrderProcessingPage.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
+                <li><a href="OrderPickupPage.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:when>
               <c:otherwise>
-                <li class="disabled"><a href="OrderProcessingPage.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
+                <li class="disabled"><a href="OrderPickupPage.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:otherwise>
             </c:choose>
             <label>共有:${list.size()}筆</label>
@@ -434,9 +423,9 @@
                 <c:when test="${check.index%2 != 0}">
                   <tr style="background-color:#D4F4D8">
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
-                    <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td>${i.getCOrderMaster().getQR_id()}
-                    <td><a href="#"><img src="../img/compose.png" ></a></td>
+                    <td><a href="OrderDetailUnchangable.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
+                    <td nowrap>${i.getCOrderMaster().getOrder_id()}
+                    <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
@@ -444,31 +433,26 @@
                     <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
+                      <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
-					<td colspan="9">
-                    <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
-                    </c:forEach>
-                    </td>
-                    <td colspan="3">
-                    <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>(倉別)<br/>
-                    </c:forEach>
-                    </td>
+                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}
+                        (SKU/productName)</c:forEach></td>
+                    <td colspan="3"></td>
                   </tr>
-                  <tr>
+                  <tr style="background-color:#D4F4D8">
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
                   </tr>
                 </c:when>
                 <c:otherwise>
                   <tr>
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
-                    <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td>${i.getCOrderMaster().getQR_id()}
-                    <td><a href="#"><img src="../img/compose.png" ></a></td>
+                    <td><a href="OrderDetailUnchangable.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
+                    <td nowrap>${i.getCOrderMaster().getOrder_id()}
+                      <input type="hidden" name="orderId" value="${i.getCOrderMaster().getOrder_id()}"></td>
+                    <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
@@ -476,20 +460,14 @@
                     <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
+                      <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr>
-					<td colspan="9">
-                    <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
-                    </c:forEach>
-                    </td>
-                    <td colspan="3">
-                    <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>(倉別)<br/>
-                    </c:forEach>
-                    </td>
+                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}<br/>
+                      </c:forEach></td>
+                    <td colspan="3"></td>
                   </tr>
                   <tr>
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
@@ -499,25 +477,14 @@
             </c:forEach>
           </table>
           <div class="row text-center" >
-            <button type="submit" name="send" value="processing" class="btn btn-lg btn-primary">送出</button>
+            <button type="submit" name="send" value="pickUp" class="btn-lg btn-primary">送出</button>
           </div>
         </form>
       </div>
     </c:otherwise>
   </c:choose>
 </div>
-
 <%@ include file="../href/footer.jsp" %>
-<script type="text/javascript">
-function selectAllOrders(ele) {
-	//select all
-	if (ele.checked) {
-		$("input[name=QR_id]").prop("checked", true);
-    } else {
-    	$("input[name=QR_id]").prop("checked", false);
-    }
-};
-</script>
 </body>
   
 </html>

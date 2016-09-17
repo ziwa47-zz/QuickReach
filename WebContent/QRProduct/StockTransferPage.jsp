@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>進貨</title>
+<title>轉倉</title>
 <script src="../js/jquery-1.12.4.min.js"></script><!-- jqueryAutoComplete 不可以在../js/jquery-1.12.4.min.js 之前 -->
 
 
@@ -74,6 +74,8 @@ function test() {
             	 $("#pName"+setValueId).val(response.pName);
                  $("#spec"+setValueId).val(response.spec);
                  $("#color"+setValueId).val(response.color);
+                 
+                 $("#qtyOne"+setValueId).val(response.qty);//just for stockTransferPage.jsp
                  
                  $("#warehousePositionOne"+setValueId).val(response.warehousePosition);
                  $("#warehousePositionTwo"+setValueId).val(response.warehousePosition2);   
@@ -324,11 +326,10 @@ display: block;
 			<div class="nav" style="background-color: #1CAF9A;">
 				<ul class="nav nav-tabs">
 					<li><a href="SearchStockPage.jsp" style="color: #000">查詢庫存</a></li>
-					<li class="" style="background-color: #1CAF9A"><a href="PurchasePage.jsp" style="color: #000">進貨</a></li>
-					<li ><a
-						href="PurchaseRecordPage.jsp" style="color: #000">進/出貨紀錄</a></li>
-						<li ><a
-						href="PurchaseRecordPage.jsp" style="color: #fff">轉倉</a></li>
+					<li ><a href="PurchasePage.jsp" style="color: #000">進貨</a></li>
+					<li ><a	href="PurchaseRecordPage.jsp" style="color: #000">進/出貨紀錄</a></li>
+					<li class="" style="background-color: #1CAF9A"><a href="StockTransferPage.jsp" style="color: #fff">轉倉</a></li>
+				    	<li ><a	href="SearchStockTransfer.jsp" style="color: #000">轉倉紀錄</a></li>
 				</ul>
 			</div>
 		</div>
@@ -337,8 +338,7 @@ display: block;
 	<div class="container container-fluid breadcrumbBox">
 		<ol class="breadcrumb">
 			<li><a href="/HomePage.jsp">首頁</a></li>
-			<li class="active" style="display:"><a
-				href="SearchStockPage.jsp">庫存/商品管理</a></li>
+			<li class="active" style="display:"><a href="SearchStockPage.jsp">庫存/商品管理</a></li>
 			<li><a href="StockTransferPage.jsp">轉倉</a></li>
 		</ol>
 	</div>
@@ -393,26 +393,7 @@ display: block;
 							</div>
 						</div>
 					</div>
-					<div class="col-md-4 form-group ">
-						<div class="row">
-							<div class="col-md-4">
-								<h5>
-									<label for="focusedInput ">供應商：</label>
-								</h5>
-							</div>
-							<div class="col-md-8">
-								<select class="form-control" name="companyId" id="companyId"  >
-                    
-                    <c:forEach var = "i" begin="0" step="1" items="${companyList}">
-                    
-                      <option value="${i.get(0)}">${i.get(1)}</option>
-                     
-                    </c:forEach>     
-                                 
-                      </select>
-							</div>
-						</div>
-					</div>
+					
 					<div class="col-md-4 form-group ">
 						<div class="row">
 							<div class="col-md-4">
@@ -446,7 +427,7 @@ display: block;
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >新倉別：</label></h5></div>
                     <div class="col-md-8">
-                      <select class="form-control" name="newWarehouse" id="newWarehouse"  onchange="warehouseChange()">
+                      <select class="form-control" name="newWarehouse" id="newWarehouse"   onchange="warehouseChange()">
                     
                     <c:forEach var = "i" begin="0" step="1" items="${warehouseList}">
                     
@@ -466,7 +447,7 @@ display: block;
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" name="purchaseMasterComment" type="text">
+								<input class="form-control" name="transferMasterComment" type="text">
 							</div>
 						</div>
 					</div>
@@ -544,16 +525,16 @@ display: block;
                 
                   <div class="col-md-4 form-group ">
                   <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >數量：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control digits required" title="數量必須大於0" id="qtyOne1" name="qtyOne1" type="text" placeholder="高雄"></div>
+                    <div class="col-md-4"><h5><label for="focusedInput " >原有數量：</label></h5></div>
+                    <div class="col-md-8"><input class="form-control digits required" title="數量必須大於0" id="qtyOne1" name="qtyOne1" type="text" ></div>
                   </div>
                 </div>
                 
                 
                 <div class="col-md-4 form-group ">
                   <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >數量：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control number required" title="數量必須大於0" id="qtyTwo1" name="qtyTwo1" type="text" placeholder="美國"></div>
+                    <div class="col-md-4"><h5><label for="focusedInput " >轉倉數量：</label></h5></div>
+                    <div class="col-md-8"><input class="form-control number required" title="數量必須大於0" id="qtyTwo1" name="qtyTwo1" type="text" ></div>
                   </div>
                 </div>
               

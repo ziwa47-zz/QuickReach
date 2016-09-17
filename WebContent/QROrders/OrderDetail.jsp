@@ -63,14 +63,14 @@ conn.close();
 
   <div class="container table-responsive" style="background: #D9A56B; border-radius:20px;">
   	<form name="searchform" method="post" action="../OrdersServlet" class="form-inline container" 
-  	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
+  	style="font-size: 100%; vertical-align: baseline; padding: 15px;">
   	<div class="row">
       <label for="inputPassword" class="col-md-2 control-label text-left">編輯模式</label>
       <div class="col-md-4">
         <label class="radio-inline"><input type="radio" name="optionsRadios" id="optionsRadios1">開啟</label>
         <label class="radio-inline"><input type="radio" name="optionsRadios" id="optionsRadios2">關閉</label>
     	<label class="radio-inline">
-    	<button type="submit" name="submit" value="updateOrder" class="btn-lg btn-success">更新商品資料</button>
+    	<button type="submit" name="submit" value="updateOrder" class="btn btn-lg btn-success">更新商品資料</button>
       	</label>
       </div>
     </div>
@@ -197,7 +197,7 @@ conn.close();
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>訂單編號</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getQR_id()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="QR_id" value="${result.getCOrderMaster().getQR_id()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>公司</h4></div>
@@ -327,21 +327,33 @@ conn.close();
 	            <c:forEach var="i" items="${resultDetail}" begin="0" step="1" varStatus="check">
 		        <tbody>
 		          <tr>
-		            <td><input class="" type="text" name="SKU" value="${i.getSKU()}"></td>
+		            <td>
+		              <input class="" type="hidden" name="SKU" value="${i.getSKU()}">
+		              SKU:<br/><a href="../QRProduct/StockDetail.jsp?sku=${i.getSKU()}"><b>${i.getSKU()}</b></a>
+	          		  <button type="submit" name="submit" value="deleteDetail" class="btn btn-sm btn-danger" onClick="myConfirm()">移除此商品
+		            </td>
 		            <td>Product Name:<br/>${i.getProductName()}<br/>
 						Invoice Name:<br/><input class="" type="text" name="invoiceName" value="${i.getInvoiceName()}">
 		            </td>
 		            <td><input class="" type="text" name="price" value="${i.getPrice()}"></td>
 		            <td><input class="" type="text" name="invoicePrice" value="${i.getInvoicePrice()}"></td>
-		            <td><input class="" type="text" name="qty" value="${i.getQty()}"></td>
+		            <td>
+		              <input class="" type="text" name="qty" value="${i.getQty()}">
+		             	 倉別:${i.getWarehouse()}<br/>
+		              <select name="warehouse">
+                        <option></option>
+                        <option value="KH">KH</option>
+                        <option value="US">US</option>
+                      </select>
+		            </td>
 		            <td>備註:<input class="" type="text" name="comment" value="${i.getComment()}">
 		            <input type="hidden" name="item" value="${i.getItem()}">
 		            </td>
 		          </tr>
 		        </tbody>
 		        </c:forEach>
-		        <input type="hidden" name="QR_id" value="${result.getCOrderMaster().getQR_id()}">
 		      </table>
+	          <button type="submit" name="submit" value="toGetProducts" class="btn btn-sm btn-success">新增商品
             </div>
           </div>
         </div>
@@ -349,5 +361,17 @@ conn.close();
     </fieldset>
     </form>
   </div>
+
+<script type="text/javascript">
+ 
+ function myConfirm(){
+	 var bool = confirm("確認刪除商品?");
+	 if (!bool) {
+	     return false;
+	     }
+  };
+  
+</script>  
+
 </body>
-</html>
+</html>	

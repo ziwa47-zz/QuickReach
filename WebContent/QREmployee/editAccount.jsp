@@ -28,7 +28,7 @@ System.out.println(accountinfo.getAccount());
 }
 %>  
 <div class="container" style="background: #E9C2D0; border-radius:20px;">
-  <form name="searchform" method="post" action="../EbayAccountDo" class="form-inline container required" 
+  <form name="searchform" method="post" action="QRAccountServlet.do" class="form-inline container required" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;">
       <legend>帳號修改</legend>
@@ -81,18 +81,20 @@ System.out.println(accountinfo.getAccount());
             <input class="form-control" name="enName" type="text" value="${accountinfo.getEnName()}">
           </div>
         </div>
+        
         <div class="row">
           <div class="col-md-3 text-right well-sm label-tag"  >
             <h4>權限等級</h4>
           </div>
-          <div class="col-md-5 well-sm">
-            <select class="form-control" name="competenceLV" value="${accountinfo.getCompetenceLV()}">
-              <option value="A">A</option>
-              <option value="B">B</option>
-              <option value="C">C</option>
+           <div class="col-md-5 well-sm">
+            <select class="form-control" name="CompetenceLv" >
+              <c:forEach var="i" varStatus="check" items="${getCompetenceLv}" begin="0" step="1">
+                <option  value="${i.getCompetenceLv()}">${i.getCompetenceLv()}</option>
+              </c:forEach>
             </select>
           </div>
         </div>
+        
         <div class="row">
           <div class="col-md-3 text-right well-sm label-tag"  >
             <h4>帳號狀態</h4>
@@ -115,7 +117,6 @@ System.out.println(accountinfo.getAccount());
       </div>
     </fieldset>
   </form>
->>>>>>> refs/remotes/origin/master
 </div>
 <%@ include file="/href/footer.jsp" %>
 </body>

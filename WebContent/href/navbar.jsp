@@ -30,9 +30,13 @@
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.min.js"></script>
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.js"></script>
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.min.js"></script>
-  
- 
 
+<style type="text/css">
+textarea {
+    resize: none;
+}
+</style>  
+ 
 
 <script type="text/javascript">
 	$(function() {
@@ -49,10 +53,10 @@
 			dateFormat : 'yy-mm-dd',
 		});
 		$("input[name=dateMin]").datepicker({
-			dateFormat : 'yy-mm-dd',
+			dateFormat : 'yymmdd',
 		});
 		$("input[name=dateMax]").datepicker({
-			dateFormat : 'yy-mm-dd',
+			dateFormat : 'yymmdd',
 
 		});
 		 $("input[name=date1]").datepicker({dateFormat : 'yy/mm/dd'});
@@ -96,11 +100,12 @@
 	        $("input[name=deducted]").prop("checked", false);
 	    }
 };
+
 	$(function () {
 	$("button[name=send]").click(function() {
 		bool = confirm("確認是否送出訂單");
 		if(!bool){
-			window.location = './';
+			return false;
 		}
 	});
 });
@@ -110,11 +115,11 @@
 
 <%
 
-if(!"0".equals(request.getParameter("p"))){
-	if (session.getAttribute("account")==null){
-		response.sendRedirect("/Login.jsp?p=0");
-	}
-}
+// if(!"0".equals(request.getParameter("p"))){
+// 	if (session.getAttribute("account")==null){
+// 		response.sendRedirect("/Login.jsp?p=0");
+// 	}
+// }
 
 
 %>

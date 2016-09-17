@@ -70,7 +70,7 @@ public class AjaxProcessAutoComplete extends HttpServlet {
 			DataBaseConn jdbc = new DataBaseConn();
 			conn = jdbc.getConn();			
 			
-			String strSql = "SELECT  a.P_name, a.spec, a.color, b.warehousePosition1, b.warehousePosition2 FROM  product as a left join  storage as b on a.SKU = b.SKU where a.SKU = ? ;";
+			String strSql = "SELECT  a.P_name, a.spec, a.color FROM  product as a left join  storage as b on a.SKU = b.SKU where a.SKU = ? ;";
 
 			
 			ps = conn.prepareStatement(strSql);
@@ -84,6 +84,8 @@ public class AjaxProcessAutoComplete extends HttpServlet {
 			hm.put("pName", rs.getString(1));
 			hm.put("spec", rs.getString(2));
 			hm.put("color", rs.getString(3));
+			
+			
 				
 		
 			
@@ -91,29 +93,34 @@ public class AjaxProcessAutoComplete extends HttpServlet {
 			rs.close();
 			
 			
-			String strSql2 = "Select warehousePosition1,warehousePosition2 from storage where SKU = ? and warehouse = ?";
+			String strSql2 = "Select warehousePosition1,warehousePosition2,qty from storage where SKU = ? and warehouse = ?";
 			ps = conn.prepareStatement(strSql2);
 			ps.setString(1, autoCompleteNumber);
 			ps.setString(2, request.getParameter("warehouse"));
-			System.out.println("倉庫:"+request.getParameter("warehouse"));
+//			System.out.println("倉庫:"+request.getParameter("warehouse"));
 			ResultSet rs2 = ps. executeQuery();
 			if(rs2.next()){
 				hm.put("warehousePosition", rs2.getString(1));
 				hm.put("warehousePosition2", rs2.getString(2));	
+				hm.put("qty", rs2.getString(3));
 			}
+			rs2.close();
 			
 			
-			System.out.println("skuName:\n"+autoCompleteNumber);
-			System.out.println("search:\n"+searchSku);
-			System.out.println("HashMap:\n"+hm);
+			
+			
+			
+//			System.out.println("skuName:\n"+autoCompleteNumber);
+//			System.out.println("search:\n"+searchSku);
+//			System.out.println("HashMap:\n"+hm);
 			JSONObject responseJSONObject = new JSONObject(hm);
 			PrintWriter out = response.getWriter();
-			System.out.println("strSql:\n"+strSql);
+//			System.out.println("strSql:\n"+strSql);
 
 			out.println(responseJSONObject);
-			System.out.println("JSONObject:\n"+responseJSONObject);
+//			System.out.println("JSONObject:\n"+responseJSONObject);
 			
-			rs2.close();
+		
 			ps.close();
 			conn.close();
 		} catch (Exception e) {
