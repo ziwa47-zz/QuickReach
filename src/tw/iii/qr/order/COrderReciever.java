@@ -1,6 +1,7 @@
 package tw.iii.qr.order;
 
 public class COrderReciever {
+	private String QR_id;
 	private String order_id;
 	private String recieverFirstName;
 	private String recieverLastName;
@@ -10,6 +11,12 @@ public class COrderReciever {
 	private String country;
 	private String postCode;
 	
+	public String getQR_id() {
+		return QR_id;
+	}
+	public void setQR_id(String qR_id) {
+		QR_id = qR_id;
+	}
 	public String getOrder_id() {
 		return order_id;
 	}

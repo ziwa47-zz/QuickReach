@@ -9,6 +9,8 @@
 
 <%
 session.removeAttribute("account");
+session.removeAttribute("password");
+session.removeAttribute("staffName");
 %>
 
 </head>
