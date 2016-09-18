@@ -61,8 +61,8 @@ textarea {
 		});
 		 $("input[name=date1]").datepicker({dateFormat : 'yy/mm/dd'});
 	        $("input[name=date2]").datepicker({dateFormat : 'yy/mm/dd'});
-	        $("input[name=payDateMin]").datepicker({dateFormat : 'yy/mm/dd'});
-	        $("input[name=payDateMax]").datepicker({dateFormat : 'yy/mm/dd'});
+	        $("input[name=payDateMin]").datepicker({dateFormat : 'yy-mm-dd'});
+	        $("input[name=payDateMax]").datepicker({dateFormat : 'yy-mm-dd'});
 	        $("input[name=shippingDateMin]").datepicker({dateFormat : 'yy/mm/dd'});
 	        $("input[name=shippingDateMax]").datepicker({dateFormat : 'yy/mm/dd'});
 	   });

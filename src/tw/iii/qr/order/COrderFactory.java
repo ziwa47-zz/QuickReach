@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -57,7 +58,7 @@ public class COrderFactory extends COrders {
 	}
 
 	public LinkedList<COrders> orderProcessingPageSearch(HttpServletRequest request, Connection conn)
-			throws SQLException {
+			throws SQLException, ParseException {
 
 		String strSql = "SELECT distinct m.order_id, platform, m.guestAccount, orderDate, shippingDate,"
 				+ " logistics, orderstatus, totalPrice, staffName, m.comment, m.eBayAccount, m.payDate,"
@@ -100,7 +101,7 @@ public class COrderFactory extends COrders {
 			strSql += " and d.SKU like ? ";
 		}
 		String payDateMin = request.getParameter("payDateMin");
-		if (!isNullorEmpty(payDateMin)) {
+		if (!isNullorEmpty(payDateMin.toString())) {
 			strSql += " and m.payDate >= ? ";
 		}
 		String payDateMax = request.getParameter("payDateMax");
@@ -249,12 +250,12 @@ public class COrderFactory extends COrders {
 			ps.setString(param, "%" + SKU + "%");
 			param++;
 		}
-		if (!isNullorEmpty(payDateMin)) {
-			ps.setString(param, "%" + payDateMin + "%");
+		if (!isNullorEmpty(payDateMin.toString())) {
+			ps.setString(param, payDateMin);
 			param++;
 		}
 		if (!isNullorEmpty(payDateMax)) {
-			ps.setString(param, "%" + payDateMax + "%");
+			ps.setString(param, payDateMax);
 			param++;
 		}
 		if (!isNullorEmpty(productName)) {
@@ -262,11 +263,11 @@ public class COrderFactory extends COrders {
 			param++;
 		}
 		if (!isNullorEmpty(shippingDateMin)) {
-			ps.setString(param, "%" + shippingDateMin + "%");
+			ps.setString(param, shippingDateMin);
 			param++;
 		}
 		if (!isNullorEmpty(shippingDateMax)) {
-			ps.setString(param, "%" + shippingDateMax + "%");
+			ps.setString(param, shippingDateMax);
 			param++;
 		}
 
@@ -960,11 +961,11 @@ public class COrderFactory extends COrders {
 			param++;
 		}
 		if (!isNullorEmpty(shippingDateMin)) {
-			ps.setString(param, "%" + shippingDateMin + "%");
+			ps.setString(param, shippingDateMin);
 			param++;
 		}
 		if (!isNullorEmpty(shippingDateMax)) {
-			ps.setString(param, "%" + shippingDateMax + "%");
+			ps.setString(param, shippingDateMax);
 			param++;
 		}
 		
