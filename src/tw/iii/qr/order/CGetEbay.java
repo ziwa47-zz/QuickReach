@@ -100,8 +100,8 @@ public class CGetEbay {
 		  
 		  String strSql = "INSERT INTO orders_master (QR_id, order_id, outsideCode, platform, company,"
 		  		+ " eBayAccount, guestAccount, orderDate, payDate, logisticsId, logistics, orderStatus, paypal_id,"
-		  		+ " payment, ebayFees, paypalFees, totalPrice)"
-		  		+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		  		+ " payment, ebayFees, paypalFees, totalPrice, currency)"
+		  		+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		  
 		  PreparedStatement ps = conn.prepareStatement(strSql);
 		  ps.setString(1, QR_id);
@@ -121,6 +121,7 @@ public class CGetEbay {
 		  ps.setDouble(15, order.getMonetaryDetails().getPayments().getPayment()[0].getFeeOrCreditAmount().getValue());
 		  ps.setDouble(16, order.getExternalTransaction()[0].getFeeOrCreditAmount().getValue());
 		  ps.setDouble(17, order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentAmount().getValue());
+		  ps.setString(18, order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentAmount().getCurrencyID().value());
 		  
 		  int x =ps.executeUpdate();
 		  

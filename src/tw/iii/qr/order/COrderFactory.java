@@ -61,9 +61,11 @@ public class COrderFactory extends COrders {
 
 		String strSql = "SELECT distinct m.order_id, platform, m.guestAccount, orderDate, shippingDate,"
 				+ " logistics, orderstatus, totalPrice, staffName, m.comment, m.eBayAccount, m.payDate,"
-				+ " m.QR_id"
+				+ " m.QR_id, m.currency, r.country"
 				+ " FROM  orders_master as m inner join  orders_detail as d on m.QR_id = d.QR_id"
-				+ " left join  orders_guestinfo as g on m.QR_id = g.QR_id" + " where '1' = '1' ";
+				+ " left join  orders_guestinfo as g on m.QR_id = g.QR_id"
+				+ " inner join  order_recieverinfo as r on m.QR_id = r.QR_id"
+				+ " where '1' = '1' ";
 
 		String eBayAccount = request.getParameter("eBayAccount");
 		if (!isNullorEmpty(eBayAccount)) {
@@ -210,7 +212,7 @@ public class COrderFactory extends COrders {
 		if (!isNullorEmpty(lothers)) {
 			strSql += " or logistics = 'lothers' ";
 		}
-		strSql += ")";
+		strSql += ") order by QR_id desc";
 
 		int param = 1;
 		PreparedStatement ps = conn.prepareStatement(strSql);
@@ -284,6 +286,8 @@ public class COrderFactory extends COrders {
 			order.COrderMaster.setOrderStatus(rs.getString(7));
 			order.COrderMaster.setTotalPrice(rs.getDouble(8));
 			order.COrderMaster.setStaffName(rs.getString(9));
+			order.COrderMaster.setCurrency(rs.getString(14));
+			order.COrderReciever.setCountry(rs.getString(15));
 
 			String strSql2 = "SELECT SKU, productName, warehouse" + " FROM  orders_detail" + " where QR_id = ?";
 
@@ -314,9 +318,14 @@ public class COrderFactory extends COrders {
 
 	public LinkedList<COrders> orders(HttpServletRequest request, Connection conn, String status) throws SQLException {
 
-		String strSql = "SELECT distinct order_id, platform, guestAccount, orderDate, shippingDate,"
-				+ " logistics, orderstatus, totalPrice, staffName, comment, eBayAccount, payDate," + " QR_id "
-				+ " FROM  orders_master " + " where '1' = '1' and orderstatus = ?";
+		String strSql = "SELECT distinct m.order_id, platform, m.guestAccount, orderDate, shippingDate,"
+				+ " logistics, orderstatus, totalPrice, staffName, m.comment, m.eBayAccount, m.payDate,"
+				+ " m.QR_id, m.currency, r.country"
+				+ " FROM  orders_master as m inner join  orders_detail as d on m.QR_id = d.QR_id"
+				+ " left join  orders_guestinfo as g on m.QR_id = g.QR_id"
+				+ " inner join  order_recieverinfo as r on m.QR_id = r.QR_id"
+				+ " where '1' = '1' and orderstatus = ?"
+				+ " order by QR_id desc";
 
 		System.out.println(status);
 		PreparedStatement ps = conn.prepareStatement(strSql);
@@ -338,6 +347,8 @@ public class COrderFactory extends COrders {
 			order.COrderMaster.setOrderStatus(rs.getString(7));
 			order.COrderMaster.setTotalPrice(rs.getDouble(8));
 			order.COrderMaster.setStaffName(rs.getString(9));
+			order.COrderMaster.setCurrency(rs.getString(14));
+			order.COrderReciever.setCountry(rs.getString(15));
 
 			String strSql2 = "SELECT SKU, productName, warehouse" + " FROM  orders_detail" + " where QR_id = ?";
 
@@ -479,7 +490,7 @@ public class COrderFactory extends COrders {
 	}
 
 
-	public void updateOrderDetail(HttpServletRequest request, Connection conn) throws SQLException {
+	public void updateOrderDetail(HttpServletRequest request, Connection conn, String staffName, String QR_id) throws SQLException {
 
 		String[] itemList = request.getParameterValues("item");
 		String[] SKUList = request.getParameterValues("SKU");
@@ -528,6 +539,15 @@ public class COrderFactory extends COrders {
 			
 			int x = ps.executeUpdate();
 		}
+		
+		String strSql2 = "update orders_master"
+				+ " Set staffName = ?"
+				+ " where QR_id = ?";
+		PreparedStatement ps2 = conn.prepareStatement(strSql2);
+		ps2.setString(1, staffName);
+		ps2.setString(2, QR_id);
+		int y = ps2.executeUpdate();
+		
 	}
 	
 	public void insertOrderDetail(HttpServletRequest request, Connection conn, String QR_id) throws SQLException {
@@ -710,9 +730,10 @@ public class COrderFactory extends COrders {
 		LinkedList<COrderDetail> condition = getSkuAndWarehouse(request, conn);
 		LinkedList<COrderDetail> result = new LinkedList<COrderDetail>();
 		for (int i = 0; i < condition.size(); i++) {
-			String strSql = "select distinct s.SKU, s.qty, d.qty, s.warehouse, s.item"
-					+ " from  storage as s inner join  orders_detail as d"
-					+ "  on s.SKU = d.SKU where d.QR_id = ? and s.sku = ? and s.warehouse = ?";
+			String strSql = "select distinct s.SKU, s.qty, d.qty, s.warehouse, s.item, p.productType"
+					+ " from  storage as s inner join  orders_detail as d on s.SKU = d.SKU"
+					+ " inner join product as p on s.SKU = p.SKU"
+					+ " where d.QR_id = ? and s.sku = ? and s.warehouse = ?";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 
 			ps.setString(1, request.getParameter("QR_id"));
@@ -721,12 +742,15 @@ public class COrderFactory extends COrders {
 			System.out.println(strSql);
 			ResultSet rs = ps.executeQuery();
 			COrderDetail detail = new COrderDetail();
+			
 			while (rs.next()) {
+				if(!"調貨類".equals(rs.getString(6))){
 				detail.setSKU(rs.getString(1));
 				detail.setQty(rs.getInt(2) - rs.getInt(3));
 				detail.setWarehouse(rs.getString(4));
 				detail.setItem(Integer.valueOf(rs.getString(5)));
 				result.add(detail);
+				}
 			}
 		}
 		return result;
