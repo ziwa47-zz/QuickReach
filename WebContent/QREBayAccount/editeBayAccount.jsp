@@ -58,19 +58,18 @@
           </div>
 <%
 request.setCharacterEncoding("UTF-8");
-String ebayId = request.getParameter("p");
+String ebayId1 = request.getParameter("p");
 
 //out.print(ebayId);  
-System.out.println(ebayId);   
+System.out.println(ebayId1);   
 System.out.println(request.getParameter("p"));
-if(!"".equals(ebayId) || ebayId != null){
+if(!"".equals(ebayId1) || ebayId1 != null){
 Connection conn = new DataBaseConn().getConn();
 
-CEbay eBayAccount = getebay.searchDetail(ebayId);
+CEbay eBayAccount = getebay.searchDetail(ebayId1);
 session.setAttribute("eBayAccount", eBayAccount);
 System.out.println(eBayAccount.getebayId());
 }
-
 %>
           
       </div>
@@ -86,20 +85,22 @@ System.out.println(eBayAccount.getebayId());
 						<td class=""></td>
 					</tr>
 
-					<tr>
+	<!-- 				<tr>
 						<th class=""><span > * </span>ebay Token</th>
 						<td class=""><textarea id="id_fd-token" rows="5"
-								cols="85" name="ebayToken" value="">${eBayAccount.getebayToken() }</textarea></td>
+								cols="85" name="ebayToken" value="" readonly>${eBayAccount.getebayToken() }</textarea></td>
 						<td class=""></td>
 					</tr>
 
 					<tr>
 						<th class=""><span > * </span>end Token</th>
 						<td class=""><textarea id="id_fd-token" rows="5"
-								cols="85" name="endToken" value="">${eBayAccount.getendToken() }</textarea></td>
+								cols="85" name="endToken" value="" readonly>${eBayAccount.getendToken() }</textarea></td>
 						<td class=""></td>
 					</tr>
-
+    -->
+    
+    
 					<tr>
 						<th class=""><span class="red"> * </span>paypal
 							帳號 </br>(E-mail)</th>
