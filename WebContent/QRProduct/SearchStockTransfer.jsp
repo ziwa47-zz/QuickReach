@@ -51,7 +51,7 @@
 
 		$("#sku").autocomplete({
 			source : "../JQueryAutoCompleteSKUData",
-			minLength : 1,
+			minLength : 3,
 			delay : 1000
 		});
 
