@@ -298,7 +298,7 @@ public class purchaseFactory {
 
 		System.out.println("Tell me who you are?:" + purchaseId);
 		PreparedStatement ps = null;
-		String sqlstr1 = "Insert Into purchaselog_master(purchaseId,date,companyId,companyName,staffName,warehouse,comment,stockStatus) Values(?,getdate(),?,(select C_name from company where C_id=?),?,?,?,1)";
+		String sqlstr1 = "Insert Into purchaselog_master(purchaseId,date,companyId,companyName,staffName,warehouse,comment,stockStatus) Values(?,(select dateadd(hour,8,getdate())),?,(select C_name from company where C_id=?),?,?,?,1)";
 		ps = conn.prepareStatement(sqlstr1);
 		ps.setString(1, purchaseId);
 		ps.setString(2, preparePurchaseMaster.getCompanyId()); // companyId
@@ -352,7 +352,7 @@ public class purchaseFactory {
 				ps = null;
 				int count = rs.getInt(1);
 				if (count == 0) {
-					String sqlstr3 = "Insert into storage values(?,?,?,?,?,?,getdate())";
+					String sqlstr3 = "Insert into storage values(?,?,?,?,?,?,(select dateadd(hour,8,getdate())))";
 					ps = conn.prepareStatement(sqlstr3);
 					ps.setString(1, preparePurchaseDetail.get(i).getSKU());
 					ps.setString(2, preparePurchaseDetail.get(i).getWarehouse());
