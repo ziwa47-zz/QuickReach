@@ -56,7 +56,7 @@
 		</ol>
 	</div>
 <div class="container" style="background: #9DDCD1; border-radius: 20px;">
-  <form name="searchform" method="post" action="../ProductDo" style="font-size: 100%; vertical-align: baseline; padding: 15px;" class="form-inline container">
+  <form name="searchform" method="post" action="../Product.do" style="font-size: 100%; vertical-align: baseline; padding: 15px;" class="form-inline container">
     <fieldset>
       <legend>查詢庫存</legend>
       <input type="hidden">

@@ -115,12 +115,12 @@ textarea {
 
 <%
 
-// if(!"0".equals(request.getParameter("p"))){
-// 	if (session.getAttribute("account")==null){
-// 		response.sendRedirect("/Login.jsp?p=0");
-// 	}
-// }
-
+ if(!"0".equals(request.getParameter("p"))){
+ 	if (session.getAttribute("account")==null){
+ 		response.sendRedirect("/Login.jsp?p=0");
+ 	}
+ }
+ 
 
 %>
 
