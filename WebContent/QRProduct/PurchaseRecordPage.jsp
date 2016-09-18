@@ -249,7 +249,7 @@
 									<option value=""></option>
 									<c:forEach var="i" begin="0" step="1" items="${accountList}">
 
-										<option value="${i.get(0)}">${i.get(1)}</option>
+										<option value="${i.get(1)}">${i.get(1)}</option>
 
 									</c:forEach>
 								</select>
