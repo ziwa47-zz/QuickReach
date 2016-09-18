@@ -84,7 +84,7 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
                   <td>${i.getCOrderMaster().getOrderDate()}</td>
                   <td>${i.getCOrderMaster().getQR_id()}</td>
                   <td>${i.getCOrderMaster().getOrder_id()}</td>
-                  <td>${i.getCOrderGuestInfo().getCountry()}</td>
+                  <td>${i.getCOrderReciever().getCountry()}</td>
                   <td>${i.getCOrderMaster().getEbayPrice()}</td>
                   <td>${i.getCOrderMaster().getEbayTotal()}</td>
                   <td>${i.getCOrderMaster().getEbayFees()}</td>
@@ -156,7 +156,7 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
                   <td>${i.getCOrderMaster().getEbayItemNO()}</td>
                   <td>${i.getCOrderDetailSingle().getQty()}</td><!--qty-->
                   <td>${i.getCOrderMaster().getEbayAccount()}</td>
-                  <td>${i.getCOrderGuestInfo().getCountry()}</td>
+                  <td>${i.getCOrderReciever().getCountry()}</td>
                   <td>${i.getCOrderMaster().getCurrency()}</td>
                   <td>${i.getCOrderMaster().getEbayPrice()}</td>
                   <td>${i.getCOrderMaster().getEbayTotal()}</td>

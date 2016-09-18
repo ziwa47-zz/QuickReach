@@ -213,8 +213,8 @@
         </div>
         <br/>
         <div class="row text-center" >
-          <button class="btn-lg btn-primary" type="submit" name="submit" value="shipmentRecord">搜尋</button>
-          <button class="btn-lg btn-primary" type="button" name="" >清空</button>
+          <button class="btn btn-lg btn-primary" type="submit" name="submit" value="shipmentRecord">搜尋</button>
+          <button class="btn btn-lg btn-primary" type="button" name="" >清空</button>
         </div>
       </fieldset>
     </form>
@@ -429,9 +429,6 @@
               </c:forEach>
             </tbody>
           </table>
-          <div class="row text-center" > 
-            <!--             <button type="submit" name="" class="btn-lg btn-primary">送出</button> --> 
-          </div>
         </form>
       </div>
     </c:otherwise>
