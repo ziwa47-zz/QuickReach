@@ -329,6 +329,7 @@ display: block;
 					<li ><a href="PurchasePage.jsp" style="color: #000">進貨</a></li>
 					<li ><a	href="PurchaseRecordPage.jsp" style="color: #000">進/出貨紀錄</a></li>
 					<li class="" style="background-color: #1CAF9A"><a href="StockTransferPage.jsp" style="color: #fff">轉倉</a></li>
+				    	<li ><a	href="SearchStockTransfer.jsp" style="color: #000">轉倉紀錄</a></li>
 				</ul>
 			</div>
 		</div>
@@ -525,7 +526,7 @@ display: block;
                   <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >原有數量：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control digits required" title="數量必須大於0" id="qtyOne1" name="qtyOne1" type="text" placeholder="高雄"></div>
+                    <div class="col-md-8"><input class="form-control digits required" title="數量必須大於0" id="qtyOne1" name="qtyOne1" type="text" ></div>
                   </div>
                 </div>
                 
@@ -533,7 +534,7 @@ display: block;
                 <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >轉倉數量：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control number required" title="數量必須大於0" id="qtyTwo1" name="qtyTwo1" type="text" placeholder="美國"></div>
+                    <div class="col-md-8"><input class="form-control number required" title="數量必須大於0" id="qtyTwo1" name="qtyTwo1" type="text" ></div>
                   </div>
                 </div>
               

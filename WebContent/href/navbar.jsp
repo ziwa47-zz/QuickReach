@@ -53,10 +53,10 @@ textarea {
 			dateFormat : 'yy-mm-dd',
 		});
 		$("input[name=dateMin]").datepicker({
-			dateFormat : 'yy-mm-dd',
+			dateFormat : 'yymmdd',
 		});
 		$("input[name=dateMax]").datepicker({
-			dateFormat : 'yy-mm-dd',
+			dateFormat : 'yymmdd',
 
 		});
 		 $("input[name=date1]").datepicker({dateFormat : 'yy/mm/dd'});

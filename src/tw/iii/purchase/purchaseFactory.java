@@ -31,7 +31,7 @@ public class purchaseFactory {
 		LinkedList<LinkedList<String>> Alllist = new LinkedList<>();
 		LinkedList<String> account = new LinkedList<>();
 
-		String strsql = "SELECT account FROM  accountinfo";
+		String strsql = "SELECT account,lastName,firstName FROM  accountinfo";
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -39,6 +39,7 @@ public class purchaseFactory {
 		while (rs.next()) {
 			account = new LinkedList<>();
 			account.add(rs.getString(1));
+			account.add(rs.getString(2)+rs.getString(3));
 
 			Alllist.add(account);
 		}
@@ -241,7 +242,7 @@ public class purchaseFactory {
 			System.out.println(date1);
 		}
 		if (!isNullorEmpty(date2)) {
-			sqlstr1 += " and b.date  <= '" + date2 + "'";
+			sqlstr1 += " and b.date  <= '" + (Integer.valueOf(date2)+1)+ "'";
 			System.out.println(date2);
 		}
 
@@ -286,7 +287,7 @@ public class purchaseFactory {
 			System.out.println(price);
 		}
 
-		sqlstr1 += " order by 1";
+		sqlstr1 += " order by 1 desc";
 		return sqlstr1;
 	}
 
@@ -297,7 +298,7 @@ public class purchaseFactory {
 
 		System.out.println("Tell me who you are?:" + purchaseId);
 		PreparedStatement ps = null;
-		String sqlstr1 = "Insert Into purchaselog_master(purchaseId,date,companyId,companyName,staffName,warehouse,comment,stockStatus) Values(?,getdate(),?,(select C_name from company where C_id=?),?,?,?,1)";
+		String sqlstr1 = "Insert Into purchaselog_master(purchaseId,date,companyId,companyName,staffName,warehouse,comment,stockStatus) Values(?,(select dateadd(hour,8,getdate())),?,(select C_name from company where C_id=?),?,?,?,1)";
 		ps = conn.prepareStatement(sqlstr1);
 		ps.setString(1, purchaseId);
 		ps.setString(2, preparePurchaseMaster.getCompanyId()); // companyId
@@ -351,7 +352,7 @@ public class purchaseFactory {
 				ps = null;
 				int count = rs.getInt(1);
 				if (count == 0) {
-					String sqlstr3 = "Insert into storage values(?,?,?,?,?,?,getdate())";
+					String sqlstr3 = "Insert into storage values(?,?,?,?,?,?,(select dateadd(hour,8,getdate())))";
 					ps = conn.prepareStatement(sqlstr3);
 					ps.setString(1, preparePurchaseDetail.get(i).getSKU());
 					ps.setString(2, preparePurchaseDetail.get(i).getWarehouse());
