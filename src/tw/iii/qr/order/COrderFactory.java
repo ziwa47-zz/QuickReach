@@ -101,7 +101,7 @@ public class COrderFactory extends COrders {
 			strSql += " and d.SKU like ? ";
 		}
 		String payDateMin = request.getParameter("payDateMin");
-		if (!isNullorEmpty(payDateMin.toString())) {
+		if (!isNullorEmpty(payDateMin)) {
 			strSql += " and m.payDate >= ? ";
 		}
 		String payDateMax = request.getParameter("payDateMax");
@@ -250,7 +250,7 @@ public class COrderFactory extends COrders {
 			ps.setString(param, "%" + SKU + "%");
 			param++;
 		}
-		if (!isNullorEmpty(payDateMin.toString())) {
+		if (!isNullorEmpty(payDateMin)) {
 			ps.setString(param, payDateMin);
 			param++;
 		}

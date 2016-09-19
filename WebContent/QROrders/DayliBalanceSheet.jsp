@@ -189,7 +189,7 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
     </div>
     </c:forEach>
     <div class="row text-center" >
-      <button type="submit" name="send" value="dayliBalance" class="btn-lg btn-primary"
+      <button type="submit" name="send" value="dayliBalance" class="btn btn-lg btn-primary"
        >送出</button>
     </div>
   </form>
