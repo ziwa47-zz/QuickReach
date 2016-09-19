@@ -125,7 +125,7 @@
               <c:choose>
                 <c:when test="${check.index%2 != 0}">
                   <tr style="background-color:#D4F4D8">
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
+                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}" onchange="preventDoubleOrder(this)"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getCOrderMaster().getQR_id()}
                     <td>${i.getCOrderMaster().getPlatform()}</td>
@@ -158,7 +158,7 @@
                 </c:when>
                 <c:otherwise>
                   <tr>
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
+                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}" onchange="preventDoubleOrder(this)"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getCOrderMaster().getQR_id()}
                     <td>${i.getCOrderMaster().getPlatform()}</td>

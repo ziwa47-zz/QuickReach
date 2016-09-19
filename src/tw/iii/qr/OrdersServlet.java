@@ -54,75 +54,52 @@ public class OrdersServlet extends HttpServlet {
 		session.setAttribute(sessionRecord.getOrdersResult(), orderProcessingPageSearch);
 		//conn.close();
 		String submit = request.getParameter("submit");
-		
-				switch(submit){
-				case "orderSearch":
-					//session.setAttribute(sessionRecord.getSearchOrder(), orderProcessingPageSearch);
-					conn.close();
-					response.sendRedirect("QROrders/SearchOrder.jsp?begin=0&end=10");
-					break;
-				case "processingSearch":
-					//session.setAttribute(sessionRecord.getOrderProcessing(), orderProcessingPageSearch);
-					conn.close();
-					response.sendRedirect("QROrders/OrderProcessingPage.jsp?begin=0&end=10");
-					break;
-				case "pickupSearch":
-					//session.setAttribute(sessionRecord.getOrderPickUp(), orderProcessingPageSearch);
-					conn.close();
-					response.sendRedirect("QROrders/OrderPickupPage.jsp?begin=0&end=10");
-					break;
-				case "finishedSearch":
-					//session.setAttribute(sessionRecord.getOrderFinished(), orderProcessingPageSearch);
-					conn.close();
-					response.sendRedirect("QROrders/OrderFinished.jsp?begin=0&end=10");
-					break;
-				case "updateOrder":
-					//OFactory.updateOrderDetail(request, conn);
-					String staffName = session.getAttribute("account").toString();
-					OFactory.updateOrderDetail(request, conn, staffName, QR_id);
-					conn.close();
-					response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + request.getParameter("QR_id"));
-					break;
-				case "toGetProducts":
-					conn.close();
-					response.sendRedirect("QROrders/selectProduct.jsp?QR_id=" + request.getParameter("QR_id"));
-					break;
-				case "insertSKU":
-					OFactory.insertOrderDetail(request, conn, QR_id);
-					conn.close();
-					response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + QR_id);
-					break;
-				case "deleteDetail":
-					OFactory.deleteFromOrderDetail(request, conn);
-					conn.close();
-					response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + QR_id);
-				default:
-					conn.close();
-					response.sendRedirect("QROrders/SearchOrder.jsp?begin=0&end=10");
-					
-				}
-				
-				
-		
-		
-		
-			
-			
-		
-		
-			
-			
-		
-		
-			
-			
-		
-		
-		
-		
-		
-	}
-	
-	
 
+		switch(submit){
+		case "orderSearch":
+			//session.setAttribute(sessionRecord.getSearchOrder(), orderProcessingPageSearch);
+			conn.close();
+			response.sendRedirect("QROrders/SearchOrder.jsp?begin=0&end=10");
+			break;
+		case "processingSearch":
+			//session.setAttribute(sessionRecord.getOrderProcessing(), orderProcessingPageSearch);
+			conn.close();
+			response.sendRedirect("QROrders/OrderProcessingPage.jsp?begin=0&end=10");
+			break;
+		case "pickupSearch":
+			//session.setAttribute(sessionRecord.getOrderPickUp(), orderProcessingPageSearch);
+			conn.close();
+			response.sendRedirect("QROrders/OrderPickupPage.jsp?begin=0&end=10");
+			break;
+		case "finishedSearch":
+			//session.setAttribute(sessionRecord.getOrderFinished(), orderProcessingPageSearch);
+			conn.close();
+			response.sendRedirect("QROrders/OrderFinished.jsp?begin=0&end=10");
+			break;
+		case "updateOrder":
+			//OFactory.updateOrderDetail(request, conn);
+			String staffName = session.getAttribute("account").toString();
+			OFactory.updateOrderDetail(request, conn, staffName, QR_id);
+			conn.close();
+			response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + request.getParameter("QR_id"));
+			break;
+		case "toGetProducts":
+			conn.close();
+			response.sendRedirect("QROrders/selectProduct.jsp?QR_id=" + request.getParameter("QR_id"));
+			break;
+		case "insertSKU":
+			OFactory.insertOrderDetail(request, conn, QR_id);
+			conn.close();
+			response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + QR_id);
+			break;
+		case "deleteDetail":
+			OFactory.deleteFromOrderDetail(request, conn);
+			conn.close();
+			response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + QR_id);
+		default:
+			conn.close();
+			response.sendRedirect("QROrders/SearchOrder.jsp?begin=0&end=10");
+			
+		}
+	}
 }

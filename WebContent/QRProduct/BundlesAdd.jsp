@@ -57,6 +57,10 @@
     	listForm.submit()	    	    	    	
 	}
     
+    function checkDetailSKUValue(){
+    	
+    }
+    
     </script>
     
   </head>
