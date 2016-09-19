@@ -61,8 +61,8 @@ textarea {
 		});
 		 $("input[name=date1]").datepicker({dateFormat : 'yy/mm/dd'});
 	        $("input[name=date2]").datepicker({dateFormat : 'yy/mm/dd'});
-	        $("input[name=payDateMin]").datepicker({dateFormat : 'yy/mm/dd'});
-	        $("input[name=payDateMax]").datepicker({dateFormat : 'yy/mm/dd'});
+	        $("input[name=payDateMin]").datepicker({dateFormat : 'yy-mm-dd'});
+	        $("input[name=payDateMax]").datepicker({dateFormat : 'yy-mm-dd'});
 	        $("input[name=shippingDateMin]").datepicker({dateFormat : 'yy/mm/dd'});
 	        $("input[name=shippingDateMax]").datepicker({dateFormat : 'yy/mm/dd'});
 	   });
@@ -133,7 +133,6 @@ textarea {
 		</div>
 		<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="nav navbar-nav">
-
 				<li><a href="/QRProduct/SearchStockPage.jsp">商品/庫存 </a></li>
 				<li><a href="/QROrders/SearchOrder.jsp">訂單資訊</a></li>
 				<li><a href="/QREBayAccount/eBayAccount.jsp">Ebay帳號管理</a></li>
