@@ -1,5 +1,7 @@
 <%@page import="tw.iii.qr.DataBaseConn"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"   pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"  
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:useBean id="competence1" class= "tw.iii.qr.QRAccountFactory" scope="page"/>
 <%@ page  import=" tw.iii.qr.QRAccount,java.util.*,tw.iii.qr.DataBaseConn,tw.iii.qr.Competence"%>
 <!doctype html>
@@ -34,7 +36,7 @@ session.setAttribute("getCompetenceLv", list);
   
 <div class="container container-fluid breadcrumbBox">
   <ol class="breadcrumb" >
-    <li><a href="/QRMain/HomePage.jsp" >首頁</a></li>
+    <li><a href="../HomePage.jsp" >首頁</a></li>
     <li class="active"><a href="./accountManage.jsp">員工帳號管理</a></li>
     <li><a href="./Account.jsp">新增員工帳號</a></li>
   </ol>
@@ -119,10 +121,10 @@ session.setAttribute("getCompetenceLv", list);
           </div>
           <div class="col-md-5 well-sm">
             <label class="checkbox-inline">
-              <input type="radio" id="id_fd-is_active_0" value="1" name="status" checked/>
+              <input type="radio" id="id_fd-is_active_0" value="ON" name="status" checked/>
               有效</label>
             <label class="checkbox-inline">
-              <input type="radio" id="id_fd-is_active_1" value="0" name="status" />
+              <input type="radio" id="id_fd-is_active_1" value="OFF" name="status" />
               停用</label>
           </div>
         </div>

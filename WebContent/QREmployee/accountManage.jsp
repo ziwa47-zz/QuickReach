@@ -39,7 +39,7 @@ conn1.close();
   
 <div class="container container-fluid breadcrumbBox">
   <ol class="breadcrumb" >
-    <li><a href="/QRMain/HomePage.jsp" >首頁</a></li>
+    <li><a href="../HomePage.jsp" >首頁</a></li>
     <li class="active"><a href="./accountManage.jsp">員工帳號管理</a></li>
     <li><a href="./Account.jsp">新增員工帳號</a></li>
   </ol>
