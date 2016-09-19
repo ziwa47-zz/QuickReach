@@ -87,8 +87,9 @@ $(function() {
 	//進場先檢查purchaseId
 warehouseChange()
 //聽說是自動驗證
+
 $("#listForm").validate({
-debug:true,
+debug:false,
 onfocusout:false,
 delay:500,
 submitHandler: function (form)
@@ -233,19 +234,19 @@ submitHandler: function (form)
 	                    +'        <div class="col-md-8"><input class="form-control" id="pName'+dynamicId+'" name="pName'+dynamicId+'" type="text" value="" readonly></div>'
 	                    +'      </div>'
 	                    +'     </div>'
+	                    
+	            	
+	                
+	                    +' </div>'
+	            
+	                    +'     <div class="row">'
+	                    
 	                    +'    	<div class="col-md-4 form-group ">'
 						+'         <div class="row">'
 						+'          <div class="col-md-4"><h5><label for="focusedInput " >規格：</label></h5></div>'
 						+'         <div class="col-md-8"><input class="form-control" type="text" id="spec'+dynamicId+'" name="spec'+dynamicId+'" readonly></div>'
 						+'      </div>'
 						+'     </div>'
-	            	
-	                
-	                    +' </div>'
-	            
-	                    +'     <div class="row">'
-	            	
-	                
 	               
 	                               
 	                    +'           	<div class="col-md-4 form-group ">'
@@ -254,20 +255,14 @@ submitHandler: function (form)
 						+'         <div class="col-md-8"><input class="form-control" type="text" id="color'+dynamicId+'" name="color'+dynamicId+'" readonly></div>'
 						+'      </div>'
 						+'     </div>'
-						 +'<div class="col-md-4 form-group ">'
-                        +'                <div class="row">'
-                  +'                  <div class="col-md-4"><h5><label for="focusedInput " >數量：</label></h5></div>'
-                  +'                 <div class="col-md-8"><input class="form-control digits required" name="qty'+dynamicId+'" title="數量必須大於0" type="text"></div>'
-                  +'                </div>'
-                  +'               </div>'
-                  
-                 +' <div class="col-md-4 form-group ">'
-                  +'                <div class="row">'
-            +'                  <div class="col-md-4"><h5><label for="focusedInput " >價格：</label></h5></div>'
-            +'                 <div class="col-md-8"><input class="form-control number required" name="price'+dynamicId+'" title="價格必須大於0" type="text"></div>'
-            +'                </div>'
-            +'               </div>'
-	                
+						
+						  +'         	<div class="col-md-4 form-group ">'
+	                        +'             <div class="row">'
+	                        +'              <div class="col-md-4"><h5><label for="focusedInput " >櫃位：</label></h5></div>'
+	                        +'              <div class="col-md-8"><input class="form-control" style="width:80px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:80px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text"></div>'
+	                        +'            </div>'
+	                        +'                </div>'
+						
 	              
 	                        +'             </div>'
 	                        
@@ -275,12 +270,23 @@ submitHandler: function (form)
 	                        
 	            
 	                        +'           <div class="row">'
-	                        +'         	<div class="col-md-8 form-group ">'
-	                        +'             <div class="row">'
-	                        +'              <div class="col-md-2"><h5><label for="focusedInput " >櫃位：</label></h5></div>'
-	                        +'              <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text"></div>'
-	                        +'            </div>'
-	                        +'                </div>'
+	                        
+	                        +'<div class="col-md-4 form-group ">'
+	                        +'                <div class="row">'
+	                  +'                  <div class="col-md-4"><h5><label for="focusedInput " >數量：</label></h5></div>'
+	                  +'                 <div class="col-md-8"><input class="form-control digits required" name="qty'+dynamicId+'" title="數量必須大於0" type="text"></div>'
+	                  +'                </div>'
+	                  +'               </div>'
+	                  
+	                 +' <div class="col-md-4 form-group ">'
+	                  +'                <div class="row">'
+	            +'                  <div class="col-md-4"><h5><label for="focusedInput " >價格：</label></h5></div>'
+	            +'                 <div class="col-md-8"><input class="form-control number required" name="price'+dynamicId+'" title="價格必須大於0" type="text"></div>'
+	            +'                </div>'
+	            +'               </div>'
+		                
+	                        
+	                      
 	                                    
 	                  +'               <div class="col-md-4 form-group ">'
 	                  +'               <div class="row">'
@@ -352,6 +358,7 @@ display: block;
 					<li class="" style="background-color: #1CAF9A"><a href="PurchasePage.jsp" style="color: #fff">進貨</a></li>
 					<li ><a	href="PurchaseRecordPage.jsp" style="color: #000">進/出貨紀錄</a></li>
 					<li ><a	href="StockTransferPage.jsp" style="color: #000">轉倉</a></li>
+					<li ><a	href="SearchStockTransfer.jsp" style="color: #000">轉倉紀錄</a></li>
 						
 				</ul>
 			</div>
@@ -525,23 +532,25 @@ display: block;
                   </div>                                                                                    <!--  onchange="autoComplete(1)" -->                                     
                 </div>
             	
-            	 <div class="col-md-4 form-group ">
+            	 <div class="col-md-8 form-group ">
                   <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >品名：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" id="pName1" name="pName1" type="text" value="" readonly></div>
+                    <div class="col-md-2"><h5><label for="focusedInput " >品名：</label></h5></div>
+                    <div class="col-md-10 input-group" style="padding:0 50px 0 15px;"><input class="form-control " id="pName1" name="pName1" type="text" value="" readonly></div>
                   </div>
                 </div>
                 
-                <div class="col-md-4 form-group ">
+                
+                
+            </div>
+            
+            <div class="row">
+            <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >規格：</label></h5></div>
                     <div class="col-md-8"><input class="form-control" id="spec1" type="text" name="spec1" readonly></div>
                   </div>
                 </div>
-                
-            </div>
             
-            <div class="row">
                 <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >顏色：</label></h5></div>
@@ -549,7 +558,20 @@ display: block;
                   </div>
                 </div>
                 
-                  <div class="col-md-4 form-group ">
+                	<div class="col-md-4 form-group ">
+                  <div class="row">
+                    <div class="col-md-4"><h5><label for="focusedInput " >櫃位：</label></h5></div>
+                    <div class="col-md-1 form-group"><input class="form-control " id="warehousePositionOne1" name="warehousePositionOne1" type="text"></div>-
+                    <div class="col-md-1 form-group"><input class="form-control" id="warehousePositionTwo1" name="warehousePositionTwo1" type="text"></div>  
+                  </div>
+                </div>
+                  
+              
+                </div>
+            
+            <div class="row">
+            
+            <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >數量：</label></h5></div>
                     <div class="col-md-8"><input class="form-control digits required" title="數量必須大於0" name="qty1" type="text"></div>
@@ -563,16 +585,8 @@ display: block;
                     <div class="col-md-8"><input class="form-control number required" title="價格必須大於0" name="price1" type="text"></div>
                   </div>
                 </div>
-              
-                </div>
             
-            <div class="row">
-            	<div class="col-md-8 form-group ">
-                  <div class="row">
-                    <div class="col-md-2"><h5><label for="focusedInput " >櫃位：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne1" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo1" name="warehousePositionTwo1" type="text"></div>
-                  </div>
-                </div>
+            
                 
                 
                 <div class="col-md-4 form-group ">
