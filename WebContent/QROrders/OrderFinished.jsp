@@ -260,8 +260,8 @@
         </div>
         <br/>
         <div class="row text-center" >
-          <button class="btn-lg btn-primary" type="submit" name="submit" value="finishedSearch">搜尋</button>
-          <button class="btn-lg btn-primary" type="button" name="" >清空</button>
+          <button class="btn btn-lg btn-primary" type="submit" name="submit" value="finishedSearch">搜尋</button>
+          <button class="btn btn-lg btn-primary" type="button" name="" >清空</button>
         </div>
       </fieldset>
     </form>
@@ -273,11 +273,8 @@
         <form name="searchform" method="post" action="../SubmitToShipped" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
           <button type="submit" name="" class="btn-sm btn-info">選擇全部</button>
-          <button type="submit" name="" class="btn-sm btn-info">清除勾選</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印撿貨/出貨單</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印EMS</button>
-          <button type="submit" name="" class="btn-sm btn-info">列印Invoice</button>
-          <button type="submit" name="" class="btn-sm btn-info">回復</button>
+		  <button type="button" class="btn btn-md btn-info">orderByQR_id</button>
+          <button type="submit" name="" class="btn btn-sm btn-info">回復</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
@@ -318,21 +315,22 @@
             <tr class="ListTitle">
               <th>選取</th>
               <th>編輯</th>
-              <th colspan="2">訂單編號</th>
+              <th>訂單編號</th>
               <th>平台</th>
               <th>Ebay Account</th>
               <th>客戶帳號</th>
               <th>購買日期</th>
               <th>出貨日期</th>
               <th>物流</th>
+              <th>國家</th>
               <th>訂單狀態</th>
               <th>總金額</th>
               <th>使用者</th>
             </tr>
-            <c:forEach var="i" items="${SearchFinishedResult}" begin="${begin}" end="${end}" step="1" varStatus="check">
+            <c:forEach var="i" items="${SearchOrdersResult}" begin="${begin}" end="${end}" step="1" varStatus="check">
               <c:choose>
                 <c:when test="${check.index%2 != 0}">
-                  <tr>
+                  <tr style="background-color:#D4F4D8">
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getCOrderMaster().getQR_id()}
@@ -341,14 +339,13 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td>${i.getCOrderMaster().getShippingDate()}</td>
+                    <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
-                    <td>${i.getCOrderMaster().getOrderStatus()}
-                      <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
+                    <td>${i.getCOrderMaster().getOrderStatus()}</td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
-                  <tr>
+                  <tr style="background-color:#D4F4D8">
                     <td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
                       <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
@@ -360,29 +357,30 @@
                     </c:forEach>
                     </td>
                   </tr>
-                  <tr>
+                  <tr style="background-color:#D4F4D8">
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
                   </tr>
                 </c:when>
                 <c:otherwise>
-                  <tr style="background-color:#FFFFFF">
+                  <tr>
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getCOrderMaster().getQR_id()}
+                      <input type="hidden" name="orderId" value="${i.getCOrderMaster().getOrder_id()}"></td>
                     <td><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td>${i.getCOrderMaster().getShippingDate()}</td>
+                    <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
-                  <tr style="background-color:#FFFFFF">
-                    <td colspan="9">
+                  <tr>
+					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
                       <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
                     </c:forEach>
@@ -393,7 +391,7 @@
                     </c:forEach>
                     </td>
                   </tr>
-                  <tr style="background-color:#FFFFFF">
+                  <tr>
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
                   </tr>
                 </c:otherwise>
@@ -410,9 +408,11 @@
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
         <form name="searchform" method="post" action="../SubmitToShipped" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
-          <button type="submit" name="" class="btn-sm btn-info">選擇全部</button>
-          <button type="submit" name="" class="btn-sm btn-info">清除勾選</button>
-          <button type="submit" name="" class="btn-sm btn-info">回復</button>
+		  <label class="btn btn-sm btn-info">
+		    <input type="checkbox" autocomplete="off" onchange="selectAllOrders(this)"> 選擇全部
+		  </label>
+		  <button type="button" class="btn btn-md btn-info">orderByQR_id</button>
+          <button type="submit" name="" class="btn btn-sm btn-info">回復</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
@@ -453,13 +453,14 @@
             <tr class="ListTitle">
               <th>選取</th>
               <th>編輯</th>
-              <th colspan="2">訂單編號</th>
+              <th>訂單編號</th>
               <th>平台</th>
               <th>Ebay Account</th>
               <th>客戶帳號</th>
               <th>購買日期</th>
               <th>出貨日期</th>
               <th>物流</th>
+              <th>國家</th>
               <th>訂單狀態</th>
               <th>總金額</th>
               <th>使用者</th>
@@ -471,22 +472,22 @@
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getCOrderMaster().getQR_id()}
-                    <td><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
-                    <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
+                    <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td>${i.getCOrderMaster().getShippingDate()}</td>
+                    <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
+                    <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
-                    <td>${i.getCOrderMaster().getTotalPrice()}</td>
+                    <td>${i.getCOrderMaster().getTotalPrice()}${i.getCOrderMaster().getCurrency()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
-                    <td colspan="9">
+					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
                     </c:forEach>
                     </td>
                     <td colspan="3">
@@ -495,7 +496,7 @@
                     </c:forEach>
                     </td>
                   </tr>
-                  <tr style="background-color:#D4F4D8">
+                  <tr>
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
                   </tr>
                 </c:when>
@@ -504,22 +505,22 @@
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getCOrderMaster().getQR_id()}
-                    <td><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
-                    <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
+                    <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td>${i.getCOrderMaster().getShippingDate()}</td>
+                    <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
+                    <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
-                    <td>${i.getCOrderMaster().getTotalPrice()}</td>
+                    <td>${i.getCOrderMaster().getTotalPrice()}${i.getCOrderMaster().getCurrency()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr>
-                    <td colspan="9">
+					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
                     </c:forEach>
                     </td>
                     <td colspan="3">
@@ -545,5 +546,15 @@
   
 </div>
 <%@ include file="/href/footer.jsp" %>
+<script type="text/javascript">
+function selectAllOrders(ele) {
+	//select all
+	if (ele.checked) {
+		$("input[name=QR_id]").prop("checked", true);
+    } else {
+    	$("input[name=QR_id]").prop("checked", false);
+    }
+};
+</script>
 </body>
 </html>

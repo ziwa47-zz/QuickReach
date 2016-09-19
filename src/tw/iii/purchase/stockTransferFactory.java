@@ -74,7 +74,7 @@ public class stockTransferFactory {
 
 		System.out.println("stockTransferId:" + stockTransferId);
 
-		String sqlstr1 = "Insert Into stockTransferlog_master(stockTransferId,date,staffName,oldWarehouse,newWarehouse,comment,stockStatus) Values(?,getdate(),?,?,?,?,3)";
+		String sqlstr1 = "Insert Into stockTransferlog_master(stockTransferId,date,staffName,oldWarehouse,newWarehouse,comment,stockStatus) Values(?,(select dateadd(hour,8,getdate())),?,?,?,?,3)"; //getdate(0)
 		PreparedStatement ps = conn.prepareStatement(sqlstr1);
 		ps.setString(1, stockTransferId);
 
@@ -119,9 +119,12 @@ public class stockTransferFactory {
 			ps = conn.prepareStatement(sqlstr3);
 			ps.setInt(1, Integer.valueOf(prepareTransferDetail.get(i).getQty()));
 			ps.setString(2, prepareTransferDetail.get(i).getSKU());
-			ps.setString(3, prepareTransferDetail.get(i).getWarehouse());
+			ps.setString(3, prepareTransferMaster.getWarehouse());
 
 			ps.executeUpdate();
+			
+			System.out.println("原倉"+prepareTransferMaster.getWarehouse());
+			
 
 			// 判別將轉入之庫別有無此商品庫存記錄
 			System.out.println("PRE storage");
@@ -135,7 +138,7 @@ public class stockTransferFactory {
 				ps = null;
 				int count = rs.getInt(1);
 				if (count == 0) {
-					String sqlstr5 = "Insert into storage values(?,?,?,?,?,?,getdate())";
+					String sqlstr5 = "Insert into storage values(?,?,?,?,?,?,(select dateadd(hour,8,getdate())))";
 					ps = conn.prepareStatement(sqlstr5);
 					ps.setString(1, prepareTransferDetail.get(i).getSKU());
 					ps.setString(2, prepareTransferMaster.getWarehouse2());
@@ -161,7 +164,7 @@ public class stockTransferFactory {
 
 			System.out.println("qty:" + Integer.valueOf(prepareTransferDetail.get(i).getQty()));
 			System.out.println("sku:" + prepareTransferDetail.get(i).getSKU());
-			System.out.println("newWarehouse:" + prepareTransferDetail.get(i).getWarehouse2());
+			System.out.println("新倉:" + prepareTransferMaster.getWarehouse2());
 
 		}
 		ps.close();
@@ -250,7 +253,7 @@ public class stockTransferFactory {
 		}
 
 		if (!isNullorEmpty(sku)) {
-			sqlstr1 += " and a.SKU like '%" + sku + "%'";
+			sqlstr1 += " and b.SKU like '%" + sku + "%'";
 			System.out.println(sku);
 		}
 		if (!isNullorEmpty(newWareHouse)) {
