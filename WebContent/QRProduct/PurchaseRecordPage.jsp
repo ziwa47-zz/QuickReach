@@ -167,9 +167,9 @@
 									<label for="focusedInput ">日期：</label>
 								</h5>
 							</div>
-							<div class="col-md-8">
-								<input class="form-control" type="text" name="dateMin"
-									style="width: 89px" readonly> - <input
+							<div class="col-md-8" style="padding-left:22px">
+								<input class="form-control"  type="text" name="dateMin"
+									style="width: 89px ;" readonly> - <input
 									class="form-control" type="text" style="width: 89px"
 									name="dateMax" readonly>
 							</div>
