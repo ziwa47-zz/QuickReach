@@ -91,14 +91,52 @@ function test() {
 		warehouseChange()
 		//聽說是自動驗證
 		$("#listForm").validate({
+			
 			onfocusout:false,
 			delay:500,
 			submitHandler: function (form)
 		    {
-		        $('#submitButton').attr('disabled', 'disabled');
-		        warehouseChange();
-		        alert("此進貨單單號:"+realPurchaseId)
-		        form.submit();
+				
+				 
+			    var arr = new Array;
+			    var value;
+			    arr[0] = $("#sku1").val();
+			    for(var i =1;i < dynamicId; i++){
+			    	 value = $("#sku"+(i+1)).val();
+			    		arr[i] = value;
+			    	
+			    }
+			    	
+			    function isRepeat(arr){
+			    	var hash = {};
+			    	for(var i in arr) {
+			    	if(hash[arr[i]])
+			    	return true;
+			    	hash[arr[i]] = true;
+			    	}
+			    	return false;
+			    	}
+			    
+			    function warehouseRepeat(){//暫時無用
+			    	
+			    	if($("newWarehouse").val() == $("warehouse").val()){
+			    		alert("repeat");
+			    	}
+			    	
+			    }
+			         
+			    if(isRepeat(arr)){
+			    	alert("請確認SKU是否重複");
+			    	
+			    } else {
+			    	
+			        $('#submitButton').attr('disabled', 'disabled');
+			        warehouseChange();
+			        alert("此進貨單單號:"+realPurchaseId)
+			        form.submit();
+			    }
+				
+			
 		       
 		    },
 		   
@@ -172,7 +210,7 @@ function test() {
 							+'	<div class="panel-title row ">'
 							+'			<div class="col-md-11 form-group">'
 							+'			<a data-toggle="collapse" data-parent="#accordion"'
-							+'				href="#collapse'+dynamicId+'">進貨項目'+dynamicId+'</a>'
+							+'				href="#collapse'+dynamicId+'">轉倉項目'+dynamicId+'</a>'
 							+'				<input type="hidden" name="times" value="'+dynamicId+'">'//計算進貨筆數
 											
 							+'		</div>'
@@ -200,13 +238,13 @@ function test() {
 	                    +'    	 <div class="col-md-4 form-group ">'
 	                    +'        <div class="row">'
 	                    +'         <div class="col-md-4"><h5><label for="focusedInput " >品名：</label></h5></div>'
-	                    +'        <div class="col-md-8"><input class="form-control" id="pName'+dynamicId+'" name="pName'+dynamicId+'" type="text" value=""></div>'
+	                    +'        <div class="col-md-8"><input class="form-control" id="pName'+dynamicId+'" name="pName'+dynamicId+'" type="text" value="" readonly></div>'
 	                    +'      </div>'
 	                    +'     </div>'
 	                    +'    	<div class="col-md-4 form-group ">'
 						+'         <div class="row">'
 						+'          <div class="col-md-4"><h5><label for="focusedInput " >規格：</label></h5></div>'
-						+'         <div class="col-md-8"><input class="form-control" type="text" id="spec'+dynamicId+'" name="spec'+dynamicId+'"></div>'
+						+'         <div class="col-md-8"><input class="form-control" type="text" id="spec'+dynamicId+'" name="spec'+dynamicId+'" readonly></div>'
 						+'      </div>'
 						+'     </div>'
 	            	
@@ -221,7 +259,7 @@ function test() {
 	                    +'           	<div class="col-md-4 form-group ">'
 						+'         <div class="row">'
 						+'          <div class="col-md-4"><h5><label for="focusedInput " >顏色：</label></h5></div>'
-						+'         <div class="col-md-8"><input class="form-control" type="text" id="color'+dynamicId+'" name="color'+dynamicId+'"></div>'
+						+'         <div class="col-md-8"><input class="form-control" type="text" id="color'+dynamicId+'" name="color'+dynamicId+'" readonly></div>'
 						+'      </div>'
 						+'     </div>'
 						 +'<div class="col-md-4 form-group ">'
@@ -245,17 +283,17 @@ function test() {
 	                        
 	            
 	                        +'           <div class="row">'
-	                        +'         	<div class="col-md-8 form-group ">'
+	                        +'         	<div class="col-md-4 form-group ">'
 	                        +'             <div class="row">'
-	                        +'              <div class="col-md-2"><h5><label for="focusedInput " >原櫃位：</label></h5></div>'
-	                        +'              <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text"></div>'
+	                        +'              <div class="col-md-4"><h5><label for="focusedInput " >原櫃位：</label></h5></div>'
+	                        +'              <div class="col-md-8"><input class="form-control" style="width:80px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:80px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text"></div>'
 	                        +'            </div>'
 	                        +'                </div>'
 	                        
-	                        +'         	<div class="col-md-8 form-group ">'
+	                        +'         	<div class="col-md-4 form-group ">'
 	                        +'             <div class="row">'
-	                        +'              <div class="col-md-2"><h5><label for="focusedInput " >新櫃位：</label></h5></div>'
-	                        +'              <div class="col-md-8"><input class="form-control" style="width:89px;"id="newWarehousePositionOne'+dynamicId+'" name="newWarehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:89px;" id="newWarehousePositionTwo'+dynamicId+'" name="newWarehousePositionTwo'+dynamicId+'" type="text"></div>'
+	                        +'              <div class="col-md-4"><h5><label for="focusedInput " >新櫃位：</label></h5></div>'
+	                        +'              <div class="col-md-8"><input class="form-control" style="width:80px;"id="newWarehousePositionOne'+dynamicId+'" name="newWarehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:80px;" id="newWarehousePositionTwo'+dynamicId+'" name="newWarehousePositionTwo'+dynamicId+'" type="text"></div>'
 	                        +'            </div>'
 	                        +'                </div>'
 	                                    
@@ -473,7 +511,7 @@ display: block;
 							<div class="panel-title row ">
 								<div class="col-md-11 form-group">
 									<a data-toggle="collapse" data-parent="#accordion"
-										href="#collapse1">進貨項目1</a>
+										href="#collapse1">轉倉項目1</a>
 										<input type="hidden" name="times" value="1">
 										<input type="hidden" id="count" name="count" value="1">
 										<input type="hidden" id = "autoCompleteNumber" name="autoCompleteNumber" value= "1">
@@ -502,14 +540,14 @@ display: block;
             	 <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >品名：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" id="pName1" name="pName1" type="text" value=""></div>
+                    <div class="col-md-8"><input class="form-control" id="pName1" name="pName1" type="text" value="" readonly></div>
                   </div>
                 </div>
                 
                 <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >規格：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" id="spec1" type="text" name="spec1"></div>
+                    <div class="col-md-8"><input class="form-control" id="spec1" type="text" name="spec1" readonly></div>
                   </div>
                 </div>
                 
@@ -519,7 +557,7 @@ display: block;
                 <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >顏色：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" id="color1" type="text" name="color1"></div>
+                    <div class="col-md-8"><input class="form-control" id="color1" type="text" name="color1" readonly></div>
                   </div>
                 </div>
                 
@@ -541,17 +579,17 @@ display: block;
                 </div>
             
             <div class="row">
-            	<div class="col-md-8 form-group ">
+            	<div class="col-md-4 form-group ">
                   <div class="row">
-                    <div class="col-md-2"><h5><label for="focusedInput " >原櫃位：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" style="width:89px;"id="warehousePositionOne1" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:89px;" id="warehousePositionTwo1" name="warehousePositionTwo1" type="text"></div>
+                    <div class="col-md-4"><h5><label for="focusedInput " >原櫃位：</label></h5></div>
+                    <div class="col-md-8"><input class="form-control" style="width:80px;"id="warehousePositionOne1" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:80px;" id="warehousePositionTwo1" name="warehousePositionTwo1" type="text"></div>
                   </div>
                 </div>
                 
-                <div class="col-md-8 form-group ">
+                <div class="col-md-4 form-group ">
                   <div class="row">
-                    <div class="col-md-2"><h5><label for="focusedInput " >新櫃位：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" style="width:89px;"id="newWarehousePositionOne1" name="newWarehousePositionOne1" type="text"> - <input class="form-control" style="width:89px;" id="newWarehousePositionTwo1" name="newWarehousePositionTwo1" type="text"></div>
+                    <div class="col-md-4"><h5><label for="focusedInput " >新櫃位：</label></h5></div>
+                    <div class="col-md-8"><input class="form-control" style="width:80px;"id="newWarehousePositionOne1" name="newWarehousePositionOne1" type="text"> - <input class="form-control" style="width:80px;" id="newWarehousePositionTwo1" name="newWarehousePositionTwo1" type="text"></div>
                   </div>
                 </div>
                 

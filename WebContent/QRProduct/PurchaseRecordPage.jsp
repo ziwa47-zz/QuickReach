@@ -73,7 +73,7 @@
 		request.setAttribute("accountList", accountList);
 
 		LinkedList<LinkedList<String>> allList = searchDetail.searchPurchase(conn, request);
-		request.setAttribute("logList", allList);
+		request.setAttribute("fizzLog", allList);
 
 		conn.close();
 
@@ -249,7 +249,7 @@
 									<option value=""></option>
 									<c:forEach var="i" begin="0" step="1" items="${accountList}">
 
-										<option value="${i.get(1)}">${i.get(1)}</option>
+										<option value="${i.get(0)}">${i.get(0)}</option>
 
 									</c:forEach>
 								</select>
@@ -332,7 +332,7 @@
 		</form>
 	</div>
 	<hr />
-	<c:if test="${logList != null}">
+	<c:if test="${fizzLog != null}">
 		<div class="container table-responsive bg-warning table-hover"
 			style="border-radius: 20px" id="myTable">
 			<form name="searchform" method="post" action="#"
@@ -368,7 +368,7 @@
 					</tr>
 
 
-					<c:forEach var="i" begin="0" step="1" items="${logList}"
+					<c:forEach var="i" begin="0" step="1" items="${fizzLog}"
 						varStatus="nu">
 
 						<c:if test="${'進貨' eq i.get(0)}">
