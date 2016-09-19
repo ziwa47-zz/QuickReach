@@ -92,7 +92,7 @@ public class SCFactory extends CSupplyCompany{
 		conn.close();
 	}
 	
-	public LinkedList<CSupplyCompany> searchQRemployee(HttpServletRequest request,Connection conn) throws SQLException {
+	public LinkedList<CSupplyCompany> searchSCName(HttpServletRequest request,Connection conn) throws SQLException {
 		LinkedList<CSupplyCompany> scnameall = new LinkedList<CSupplyCompany>();
 		CSupplyCompany csupplycompany ;
 		
