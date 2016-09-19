@@ -46,7 +46,7 @@ public class OrdersServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
-		
+		String QR_id = request.getParameter("QR_id");
 		Connection conn = new DataBaseConn().getConn();
 		COrderFactory OFactory = new COrderFactory();
 		LinkedList<COrders> orderProcessingPageSearch = OFactory.orderProcessingPageSearch(request, conn);
@@ -78,10 +78,24 @@ public class OrdersServlet extends HttpServlet {
 					break;
 				case "updateOrder":
 					//OFactory.updateOrderDetail(request, conn);
-					OFactory.updateOrderDetail(request, conn);
+					String staffName = session.getAttribute("account").toString();
+					OFactory.updateOrderDetail(request, conn, staffName, QR_id);
 					conn.close();
 					response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + request.getParameter("QR_id"));
 					break;
+				case "toGetProducts":
+					conn.close();
+					response.sendRedirect("QROrders/selectProduct.jsp?QR_id=" + request.getParameter("QR_id"));
+					break;
+				case "insertSKU":
+					OFactory.insertOrderDetail(request, conn, QR_id);
+					conn.close();
+					response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + QR_id);
+					break;
+				case "deleteDetail":
+					OFactory.deleteFromOrderDetail(request, conn);
+					conn.close();
+					response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + QR_id);
 				default:
 					conn.close();
 					response.sendRedirect("QROrders/SearchOrder.jsp?begin=0&end=10");

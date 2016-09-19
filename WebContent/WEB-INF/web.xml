@@ -10,7 +10,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ProductDo</servlet-name>
-    <url-pattern>/SearchProduct.do</url-pattern>
+    <url-pattern>/Product.do</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>LoginDo</servlet-name>

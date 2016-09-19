@@ -67,7 +67,7 @@
               </div>
             </div>
           </div>
-          <button type="submit" name="send" value="sendTrackingCode" class="btn-lg btn-primary">送出追蹤碼</button>
+          <button type="submit" name="send" value="sendTrackingCode" class="btn btn-lg btn-primary">送出追蹤碼</button>
       
           <ul class="pager pagination">
             <c:choose>
@@ -109,13 +109,14 @@
             <tr class="ListTitle">
               <th>選取</th>
               <th>編輯</th>
-              <th colspan="2">訂單編號</th>
+              <th>訂單編號</th>
               <th>平台</th>
               <th>Ebay Account</th>
               <th>客戶帳號</th>
               <th>購買日期</th>
               <th>出貨日期</th>
               <th>物流</th>
+              <th>國家</th>
               <th>訂單狀態</th>
               <th>總金額</th>
               <th>使用者</th>
@@ -124,53 +125,65 @@
               <c:choose>
                 <c:when test="${check.index%2 != 0}">
                   <tr style="background-color:#D4F4D8">
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id"
-                     value="${i.getCOrderMaster().getQR_id()}" onchange="preventDoubleOrder(this)"></td>
-                    <td><a href="OrderDetailUnchangable.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td nowrap>${i.getCOrderMaster().getQR_id()}
-                    <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
+                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
+                    <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
+                    <td>${i.getCOrderMaster().getQR_id()}
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
-                    <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
+                    <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
                     <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
+                    <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
-                      <input type="hidden" name="staffName" value="${i.getCOrderMaster().getStaffName()}"></td>
-                    <td>${i.getCOrderMaster().getTotalPrice()}</td>
+                      <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
+                    <td>${i.getCOrderMaster().getTotalPrice()}${i.getCOrderMaster().getCurrency()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
-                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}
-                        (SKU/productName)</c:forEach></td>
-                    <td colspan="3"></td>
+					<td colspan="9">
+                    <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                    </c:forEach>
+                    </td>
+                    <td colspan="3">
+                    <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                    </c:forEach>
+                    </td>
                   </tr>
-                  <tr style="background-color:#D4F4D8">
+                  <tr>
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>
                   </tr>
                 </c:when>
                 <c:otherwise>
                   <tr>
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id"
-                     value="${i.getCOrderMaster().getQR_id()}" onchange="preventDoubleOrder(this)"></td>
-                    <td><a href="OrderDetailUnchangable.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td nowrap>${i.getCOrderMaster().getQR_id()}
-                    <td nowrap><a href="#"><img src="../img/compose.png" ></a></td>
+                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
+                    <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
+                    <td>${i.getCOrderMaster().getQR_id()}
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
-                    <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
+                    <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
                     <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
+                    <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
-                      <input type="hidden" name="staffName" value="${i.getCOrderMaster().getStaffName()}"></td>
-                    <td>${i.getCOrderMaster().getTotalPrice()}</td>
+                      <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
+                    <td>${i.getCOrderMaster().getTotalPrice()}${i.getCOrderMaster().getCurrency()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr>
-                    <td colspan="9"><c:forEach var="i" items="${i.COrderDetail}" begin="0" step="1" varStatus="check"><b><a href="#">${i.getSKU()}</a></b>${i.getProductName()}<br/>
-                      </c:forEach></td>
-                    <td colspan="3"></td>
+					<td colspan="9">
+                    <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                    </c:forEach>
+                    </td>
+                    <td colspan="3">
+                    <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                    </c:forEach>
+                    </td>
                   </tr>
                   <tr>
                     <td colspan="12">${i.getCOrderMaster().getComment()}</td>

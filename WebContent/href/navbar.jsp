@@ -105,7 +105,7 @@ textarea {
 	$("button[name=send]").click(function() {
 		bool = confirm("確認是否送出訂單");
 		if(!bool){
-			window.location = './';
+			return false;
 		}
 	});
 });
@@ -115,12 +115,12 @@ textarea {
 
 <%
 
-if(!"0".equals(request.getParameter("p"))){
-	if (session.getAttribute("account")==null){
-		response.sendRedirect("/Login.jsp?p=0");
-	}
-}
-
+ if(!"0".equals(request.getParameter("p"))){
+ 	if (session.getAttribute("account")==null){
+ 		response.sendRedirect("/Login.jsp?p=0");
+ 	}
+ }
+ 
 
 %>
 
