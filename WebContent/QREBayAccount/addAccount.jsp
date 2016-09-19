@@ -11,6 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>addAccount</title>
 
+
 </head>
 <body>
 <%@include file="../href/navbar.jsp"%>
@@ -32,13 +33,15 @@
     </div>
   </div>
 </div>
+
 <div class="container container-fluid breadcrumbBox">
   <ol class="breadcrumb">
-    <li><a href="../QRMain/HomePage.jsp">首頁</a></li>
+    <li><a href="../HomePage.jsp">首頁</a></li>
     <li class="active"><a href="eBayAccount.jsp">eBay帳號管理</a></li>
     <li><a href="eBayAccount.jsp">新增eBay帳號</a></li>
   </ol>
 </div>
+
 <div class="container" style="background: #E9C2D0; border-radius:20px;">
   <form name="searchform" method="post" action="../EbayAccountDo" class="form-inline container required" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
@@ -62,6 +65,17 @@
         </div>
       </div>
       
+ <!--    <div class="row">
+        <div class="col-md-3 well-sm">
+          <h4>ebay endToken</h4>
+        </div>
+        <div class="col-md-5 well-sm control-label">
+          <textarea class="form-control" name="endToken"  rows="5"	cols="85"  required></textarea>
+        </div>
+      </div>
+  -->  
+  
+       
       <div class="row">
         <div class="col-md-3 well-sm">
           <h4>paypal 帳號(E-mail)</h4>
@@ -70,6 +84,7 @@
           <input class="form-control" type="text" name="paypalAccount" value="" required>
         </div>
       </div>
+      
       <div class="row">
         <div class="col-md-3 well-sm">
           <h4>對應公司</h4>
@@ -82,37 +97,59 @@
           </select>
         </div>
       </div>
+      
       <div class="row">
         <div class="col-md-3 well-sm">
           <h4>啟用狀態</h4>
         </div>
         <div class="col-md-5 well-sm">
-          <input type="radio" name="status" class="" checked>
-          啟用
-          <input type="radio" name="status" class="">
-          停用 </div>
-      </div>
-      <div class="row">
-        <div class="col-md-3 well-sm">
-          <h4>回應評價文字</h4>
-        </div>
-        <div class="col-md-5 well-sm">
-          <textarea class="form-control" name="systemFeedback"  rows="5" cols="85"></textarea>
-        </div>
+          <input type="radio" name="status" class="" value="ON" checked> 啟用
+          <input type="radio" name="status" class="" value="OFF"> 停用 </div>
       </div>
       
       <div class="row">
         <div class="col-md-3 well-sm">
-          <h4>ebay Token</h4>
+          <h4>啟用時間</h4>          
+        </div>                   
+        <div class="col-md-5 well-sm ">
+         <input class="form-control" type="text" name="startTime" value="" >     
+        </div>
+      </div>
+      
+           
+       <div class="row" >
+        <div class="col-md-3 well-sm ">
+       
+          <h4>最後修改時間 </h4>
+        </div>
+        <div class="col-md-5 well-sm ">
+          <input class="form-control" type="text" name="lastFixTime" value="" >
+        </div>
+      </div>
+      
+ <!--     <div class="row">
+        <div class="col-md-3 well-sm">
+          <h4>回應評價文字</h4>
+        </div>
+        <div class="col-md-5 well-sm">
+          <textarea class="form-control" name="comment"  rows="5" cols="85"></textarea>
+        </div>
+      </div>
+  -->  
+  
+      
+      <div class="row">
+        <div class="col-md-3 well-sm">
+          <h4>SystemFeedback</h4>
         </div>
         <div class="col-md-5 well-sm control-label">
-          <textarea class="form-control" name="ebayToken" rows="25" cols="95" required></textarea>
+          <textarea class="form-control" name="systemFeedback" rows="25" cols="95" ></textarea>
         </div>
       </div>
       
       <div class="" align="center">
         <input type="submit" name="submit" value="newAccount" class="btn-lg btn-success">
-        <input type="button" value="取消" class="btn-lg btn-success">
+        <a href="eBayAccount.jsp"><button type="button" value="取消" class="btn-lg btn-success">取消 </button></a>
       </div>
       
     </fieldset>

@@ -13,6 +13,32 @@
 </head>
 <body>
 <%@ include file="/href/navbar.jsp" %>
+
+<div class="nav">
+  <div class="container">
+    <div class="navbar-left" style="background-color:#C7AAE4;" >
+      <ul class="nav nav-tabs">
+        <li><a href="./accountManage.jsp" style="color:#fff">員工帳號管理</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container">
+    <div class="nav" style="background-color:#984AC0;" >
+      <ul class="nav nav-tabs">
+        <li><a href="./accountManage.jsp" style="color: #fff">員工帳號管理</a></li>
+        <li><a href="./Account.jsp">新增員工帳號</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+  
+<div class="container container-fluid breadcrumbBox">
+  <ol class="breadcrumb" >
+    <li><a href="../HomePage.jsp" >首頁</a></li>
+    <li class="active"><a href="./accountManage.jsp">員工帳號管理</a></li>
+    <li><a href="./Account.jsp">新增員工帳號</a></li>
+  </ol>
+</div>
 <%
 request.setCharacterEncoding("UTF-8");
 String account1 = request.getParameter("p");
@@ -102,10 +128,10 @@ System.out.println(accountinfo.getAccount());
           </div>
           <div class="col-md-5 well-sm">
             <label class="checkbox-inline">
-              <input type="radio" id="id_fd-is_active_0" value="1" name="status" />
+              <input type="radio" id="id_fd-is_active_0" value="1" name="status" checked/>
               有效</label>
             <label class="checkbox-inline">
-              <input type="radio" id="id_fd-is_active_1" value="0" name="status" checked/>
+              <input type="radio" id="id_fd-is_active_1" value="0" name="status" />
               停用</label>
           </div>
         </div>

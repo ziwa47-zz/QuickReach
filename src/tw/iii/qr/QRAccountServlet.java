@@ -91,7 +91,8 @@ private void processEdit(HttpServletRequest request, HttpServletResponse respons
 			qra.setEmail(request.getParameter("E-mail"));
 			qra.setEnName(request.getParameter("enName"));
 			//qra.setSignatureImage(request.getParameter("signatureImage"));
-			qra.setCompetenceLV(request.getParameter("competenceLV"));
+			qra.setCompetenceLV(request.getParameter("CompetenceLv"));
+			//System.out.print("test"+qra.getCompetenceLV());
 			qra.setStatus(Integer.parseInt(request.getParameter("status")));
 			
 		
