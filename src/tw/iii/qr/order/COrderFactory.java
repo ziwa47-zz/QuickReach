@@ -196,10 +196,10 @@ public class COrderFactory extends COrders {
 			strSql += " or logistics = 'RA' ";
 		}
 		if (!isNullorEmpty(USPS1)) {
-			strSql += " or logistics = 'USPS1' ";
+			strSql += " or logistics = N'USPS(寄倉)' ";
 		}
 		if (!isNullorEmpty(USPS2)) {
-			strSql += " or logistics = 'USPS2' ";
+			strSql += " or logistics = N'USPS(集運)' ";
 		}
 		if (!isNullorEmpty(seven)) {
 			strSql += " or logistics = 'seven' ";

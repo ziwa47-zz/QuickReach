@@ -68,6 +68,17 @@ public class getJSON {
 			JSONObject jo = new JSONObject(hm);
 			ja.put(jo);
 		}
+		conn.close();
 		return ja;
 	}
+	
+	public void updateToFinished(HttpServletRequest request) throws Exception {
+		Connection conn = new DataBaseConn().getConn();
+		String strSql = "update orders_master" + " set orderStatus = N'已完成', shippingDate = getdate() " + " where QR_id = ? ";
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		ps.setString(1, request.getParameter("status"));
+		ps.executeUpdate();
+		
+	}
+	
 }
