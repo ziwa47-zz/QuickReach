@@ -17,33 +17,33 @@ public class CProductFactory extends CProduct {
 	}
 
 	public LinkedList<CProduct> searchProduct(HttpServletRequest request, Connection conn) throws SQLException {
-		String strsql = " select distinct p.sku,p.brand,p.subbrand,p.p_name,p.spec,p.color from  product p left join  storage s on p.sku=s.sku where '1' = '1' ";
+		String strsql = " select distinct sku,brand,subbrand,p_name,spec,color from  product  where '1' = '1' ";
 		int param = 1;
 
 		PreparedStatement ps = null;
 		if (!isNullorEmpty(request.getParameter("pname"))) {
-			strsql += " and p.p_name like ? ";
+			strsql += " and p_name like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("brand"))) {
-			strsql += " and p.brand like ? ";
+			strsql += " and brand like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("subbrand"))) {
-			strsql += " and p.subbrand like ? ";
+			strsql += " and subbrand like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("sku"))) {
-			strsql += " and p.sku like ? ";
+			strsql += " and sku like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("spec"))) {
-			strsql += " and p.spec like ? ";
+			strsql += " and spec like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("color"))) {
-			strsql += " and p.color like ? ";
+			strsql += " and color like ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("date1"))) {
-			strsql += " and p.createDate  >= ? ";
+			strsql += " and createDate  >= ? ";
 		}
 		if (!isNullorEmpty(request.getParameter("date2"))) {
-			strsql += " and p.createDate  <= ? ";
+			strsql += " and createDate  <= ? ";
 		}
 
 		System.out.println(strsql);

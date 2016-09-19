@@ -58,7 +58,6 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
 <div class="container table-responsive" style="background: #D9A56B; border-radius:20px;">
   <form name="searchform" method="post" action="../StatusDo" class="container"
    style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
-    <button type="" name="" class="btn-sm btn-info">選擇全部</button>
     <button type="" name="" class="btn-sm btn-info">清除勾選</button>
     <label>共有:${ndbs.size()}筆</label>
     <c:forEach var="i" items="${ndbs}" begin="0" step="1" varStatus="check">
@@ -66,7 +65,7 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
       <div class="panel panel-default" style="background-color:#E7D29F">
         <div class="panel-heading">
           <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#${check.index}">
-            <table class="table table-condensed" style="margin:0 0 0 -15px">
+            <table class="table table-condensed" >
               <thead>
                 <tr>
                   <th>結標日</th>
@@ -104,7 +103,7 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
         </div>
         <div id="${check.index}" class="panel-collapse collapse">
           <div class="panel-body">
-            <table class="table table-bordered table-hover table-condensed pull-left" style="margin:0 0 0 -15px">
+            <table class="table table-bordered table-hover table-condensed pull-left">
                 <tr class="ListTitle">
                   <th>選取</th>
                   <th>結標日</th>

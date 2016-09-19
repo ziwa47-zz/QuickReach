@@ -78,10 +78,9 @@ public class QRAccountServlet extends HttpServlet {
 	
 	}
 private void processEdit(HttpServletRequest request, HttpServletResponse response) throws IOException {
-			
+			try{
 			request.setCharacterEncoding("UTF-8");
 			response.setContentType("text/html;charset=UTF-8");
-			out = response.getWriter();
 			
 			QRAccount qra = new QRAccount();
 			
@@ -95,9 +94,10 @@ private void processEdit(HttpServletRequest request, HttpServletResponse respons
 			qra.setCompetenceLV(request.getParameter("competenceLV"));
 			qra.setStatus(Integer.parseInt(request.getParameter("status")));
 			
-			try {
-				qraf.editQRAccount(qra);
-				response.sendRedirect("accountManage.jsp");
+		
+			qraf.editQRAccount(qra);
+			
+			response.sendRedirect("accountManage.jsp");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

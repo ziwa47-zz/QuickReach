@@ -80,7 +80,7 @@ public class QRAccountFactory extends QRAccount{
 		String sqlstr = "UPDATE accountinfo set " 
 			    + " password = ?," + " lastName = ?," 
 				+ " firstName = ?," + " Email = ?," + " enName = ?," 
-				+ " competenceLV =?," + "status = ?"
+				+ " competenceLV =?," + "status = ? "
 				+ " where account = ?"; //8個
 
 		PreparedStatement preparedState = conn.prepareStatement(sqlstr);
@@ -91,11 +91,12 @@ public class QRAccountFactory extends QRAccount{
 		preparedState.setString(4, qra.getEmail());
 		preparedState.setString(5, qra.getEnName());  //6th
 		//preparedState.setString(6, qra.getSignatureImage()); //簽名檔先不做
+		System.out.println("Text:"+qra.getCompetenceLV());
 		preparedState.setString(6, qra.getCompetenceLV());
 		preparedState.setInt(7, qra.getStatus());
 		preparedState.setString(8, qra.getAccount()); 
 		
-		preparedState.execute();
+		int x = preparedState.executeUpdate();
 		preparedState.close();
 		
 		conn.close();
@@ -135,7 +136,7 @@ public class QRAccountFactory extends QRAccount{
 		LinkedList<Competence> list= new LinkedList<>();
 		try {
 			Connection conn = new DataBaseConn().getConn();
-			String strsql="select competenceLV   from  accountinfo";
+			String strsql="select competenceLV   from  competencelv";
 			PreparedStatement ps = conn.prepareStatement(strsql);
 		
 	
