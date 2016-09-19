@@ -144,19 +144,34 @@ request.setAttribute("listSubBrand",listSubBrand);
 		  <div class="col-md-8 form-group ">
             <div class="row">
               <div class="col-md-2"><h5><label for="focusedInput " >SKU：</label></h5></div>
-              <div class="col-md-8"><input class="form-control" type="text" name="bdsku" value="${bdsku}"></div>
+              <c:if test="${param.bdsku == null }">
+              	<div class="col-md-8"><input class="form-control" type="text" name="bdsku" value="${bdsku}"></div>
+              </c:if>
+              <c:if test="${param.bdsku != null }">
+              	<div class="col-md-8"><input class="form-control" type="text" name="bdsku" value="${param.bdsku}"></div>
+              </c:if>
             </div>
           </div>
 		  <div class="col-md-8 form-group ">
             <div class="row">
               <div class="col-md-2"><h5><label for="focusedInput " >商品名稱：</label></h5></div>
-              <div class="col-md-10"><input class="form-control" name="bdname" type="text" value="${bdName}"></div>
+              <c:if test="${param.bdname == null }">	
+              	<div class="col-md-10"><input class="form-control" name="bdname" type="text" value="${bdName}"></div>
+              </c:if>
+              <c:if test="${param.bdname != null }">
+              	<div class="col-md-8"><input class="form-control" type="text" name="bdname" value="${param.bdname}"></div>
+              </c:if>
             </div>
           </div>
 		  <div class="col-md-8 form-group ">
             <div class="row">
               <div class="col-md-2"><h5><label for="focusedInput " >備註：</label></h5></div>
-              <div class="col-md-8"><textarea style="width:177px;height:55px;"  class="form-control" name="comment" >${bdComment}</textarea></div>
+              <c:if test="${param.comment == null }">
+             	 <div class="col-md-8"><textarea style="width:177px;height:55px;"  class="form-control" name="comment" >${bdComment}</textarea></div>
+              </c:if>
+              <c:if test="${param.comment != null }">
+             	 <div class="col-md-8"><textarea style="width:177px;height:55px;"  class="form-control" name="comment" >${param.comment}</textarea></div>
+              </c:if>
             </div>
           </div>
 		</div>
