@@ -4,8 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <jsp:useBean id="getJSON" class="tw.iii.qr.order.getJSON"	scope="page" />
-
 <%
-JSONArray pickupResults = getJSON.pickupResults();
+JSONArray pickupResults = getJSON.pickupDetail(request);
 out.print(pickupResults);
 %>
