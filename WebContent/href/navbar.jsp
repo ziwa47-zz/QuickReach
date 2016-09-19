@@ -65,6 +65,8 @@ textarea {
 	        $("input[name=payDateMax]").datepicker({dateFormat : 'yy/mm/dd'});
 	        $("input[name=shippingDateMin]").datepicker({dateFormat : 'yy/mm/dd'});
 	        $("input[name=shippingDateMax]").datepicker({dateFormat : 'yy/mm/dd'});
+	        $("input[name=startTime]").datepicker({dateFormat : 'yy/mm/dd'});
+	        $("input[name=lastFixTime]").datepicker({dateFormat : 'yy/mm/dd'});
 	   });
 	
 

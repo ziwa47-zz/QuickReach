@@ -66,15 +66,15 @@ public class CEbayFactory extends CEbay {
 	
 		while (rs.next()) {
 			ebayaccount.setebayId(rs.getString(1)); // ebayId
-		//	ebayaccount.setebayToken(rs.getString(2)); // ebayToken
-		//	ebayaccount.setendToken(rs.getString(3)); // endToken
-			ebayaccount.setpaypalAccount(rs.getString(2)); // paypalAccount
-			ebayaccount.setcorrespondCompany(rs.getString(3)); // correspondCompany
-			ebayaccount.setstartTime(rs.getString(4)); // startTime
-			ebayaccount.setlastFixTime(rs.getString(5)); // lastFixTime
-			ebayaccount.setstatus(rs.getString(6)); // status
-			ebayaccount.setcomment(rs.getString(7)); // comment
-			ebayaccount.setsystemFeedback(rs.getString(8)); // systemFeedback
+			ebayaccount.setebayToken(rs.getString(2)); // ebayToken
+			ebayaccount.setendToken(rs.getString(3)); // endToken
+			ebayaccount.setpaypalAccount(rs.getString(4)); // paypalAccount
+			ebayaccount.setcorrespondCompany(rs.getString(5)); // correspondCompany
+			ebayaccount.setstartTime(rs.getString(6)); // startTime
+			ebayaccount.setlastFixTime(rs.getString(7)); // lastFixTime
+			ebayaccount.setstatus(rs.getString(8)); // status
+			ebayaccount.setcomment(rs.getString(9)); // comment
+			ebayaccount.setsystemFeedback(rs.getString(10)); // systemFeedback
 			
 			
 		}
@@ -94,7 +94,7 @@ public class CEbayFactory extends CEbay {
 		String strsql = "UPDATE  ebayaccount SET "	
 				 + "paypalAccount = ?,"
 				 + "correspondCompany = ?," + "startTime = ?," + "lastFixTime = ?,"	
-				 + "status = ?," + "comment = ?," + "systemFeedback = ?,"
+				 + "status = ?," + "comment = ?," + "systemFeedback = ? "
 				 + "where ebayId = ?"; //(8個)
 		
 	
