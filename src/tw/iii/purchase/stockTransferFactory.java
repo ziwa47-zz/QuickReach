@@ -151,11 +151,13 @@ public class stockTransferFactory {
 
 					// 增加該品項轉倉庫存
 
-					String sqlstr5 = "Update  storage set qty=qty+? where SKU= ? and warehouse = ?";
+					String sqlstr5 = "Update  storage set qty=qty+?,warehousePosition1 = ?,warehousePosition2 = ? where SKU= ? and warehouse = ?";
 					ps = conn.prepareStatement(sqlstr5);
 					ps.setInt(1, Integer.valueOf(prepareTransferDetail.get(i).getQty()));
-					ps.setString(2, prepareTransferDetail.get(i).getSKU());
-					ps.setString(3, prepareTransferMaster.getWarehouse2());
+					ps.setString(2, prepareTransferDetail.get(i).getNewWarehousePosition());
+					ps.setString(3, prepareTransferDetail.get(i).getNewWarehousePosition2());
+					ps.setString(4, prepareTransferDetail.get(i).getSKU());
+					ps.setString(5, prepareTransferMaster.getWarehouse2());
 
 					ps.executeUpdate();
 				}
@@ -185,21 +187,21 @@ public class stockTransferFactory {
 		String oldwareHouse = request.getParameter("oldWareHouse");
 		String newWareHouse = request.getParameter("newWareHouse");
 
-		String staffId = "";
-		if (!(isNullorEmpty(request.getParameter("staffId")))) {
+		String staffId = request.getParameter("staffId");
+//		if (!(isNullorEmpty(request.getParameter("staffId")))) {
 			System.out.println("-------ld"+request.getParameter("staffId"));
-			try {
-				
-				staffId = new String(request.getParameter("staffId").getBytes("8859_1"), "UTF-8");
-				System.out.println("oooooold"+staffId);
-			
-			} catch (UnsupportedEncodingException e1) {
-				e1.printStackTrace();
-			}
-			
-		}
+//			try {
+//				
+//				staffId = new String(request.getParameter("staffId").getBytes("8859_1"), "UTF-8");
+//				System.out.println("oooooold"+staffId);
+//			
+//			} catch (UnsupportedEncodingException e1) {
+//				e1.printStackTrace();
+//			}
+//			
+//		}
 
-		// String staff = request.getParameter("staff");
+		 
 
 		String sqlstr1 = makeSqlString(stockTransferId, date1, date2, sku, oldwareHouse, newWareHouse, staffId);
 
