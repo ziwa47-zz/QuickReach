@@ -47,20 +47,23 @@
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;">
       <legend>新增eBay帳號</legend>
+     
       <div class="row">
-        <div class="col-md-3 well-sm">
-          <h4>ebay ID</h4>
+        <div class="col-md-3 well-sm">     
+        <h4><div class="control-label">ebay ID</div></h4>           
+   <!-- <h4 class="col-md-5 well-sm control-label">ebay ID</h4>   --> 
         </div>
-        <div class="col-md-5 well-sm control-label">
+        <div class="col-md-5 well-sm">
           <input class="form-control" type="text" name="ebayId" value="" required>
         </div>
       </div>
       
       <div class="row">
         <div class="col-md-3 well-sm">
-          <h4>ebay Token</h4>
+        	<h4><div class="control-label">ebay Token</div></h4>
+       <!-- <h4 class="col-md-5 well-sm control-label">ebayToken</h4> -->
         </div>
-        <div class="col-md-5 well-sm control-label">
+        <div class="col-md-5 well-sm ">
           <textarea class="form-control" name="ebayToken"  rows="5"	cols="85"  required></textarea>
         </div>
       </div>
@@ -78,19 +81,21 @@
        
       <div class="row">
         <div class="col-md-3 well-sm">
-          <h4>paypal 帳號(E-mail)</h4>
+        	<h4><div class="control-label">paypal帳號(E-mail)</div></h4>	
+          <!--  <h4>paypal帳號(E-mail)</h4> -->
         </div>
-        <div class="col-md-5 well-sm control-label">
+        <div class="col-md-5 well-sm ">
           <input class="form-control" type="text" name="paypalAccount" value="" required>
         </div>
       </div>
       
       <div class="row">
         <div class="col-md-3 well-sm">
-          <h4>對應公司</h4>
+        	<h4><div class="control-label">對應公司</div></h4>	
+       <!-- <h4 class="col-md-5 well-sm control-label">對應公司</h4>  -->   
         </div>
-        <div class="col-md-5 well-sm control-label">
-          <select class="form-control" name="correspondCompany">
+        <div class="col-md-5 well-sm ">
+          <select class="form-control" name="correspondCompany" requied>
             <option value="HUANG PO-WEI">HUANG PO-WEI</option>
             <option value="YU CHIN WU">YU CHIN WU</option>
             <option value="WHIRLWIND SPEED LIMITED">WHIRLWIND SPEED LIMITED</option>
@@ -142,7 +147,7 @@
         <div class="col-md-3 well-sm">
           <h4>SystemFeedback</h4>
         </div>
-        <div class="col-md-5 well-sm control-label">
+        <div class="col-md-5 well-sm ">
           <textarea class="form-control" name="systemFeedback" rows="25" cols="95" ></textarea>
         </div>
       </div>
