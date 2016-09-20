@@ -45,11 +45,14 @@ public class getJSON {
 		JSONArray ja = new JSONArray();
 		Connection conn = new DataBaseConn().getConn();
 		
-		String strSql = "select QR_id, d.SKU, brand, subBrand, productName, d.warehouse, warehousePosition1, warehousePosition2, d.qty"
-				+ " from orders_detail as d inner join product as p on d.SKU = p.SKU"
-				+ " inner join storage as s on p.SKU = s.SKU"
-				+ " where d.QR_id = ?";
-
+		String strSql = "select QR_id, d.SKU, brand, subBrand, productName, s.warehouse, warehousePosition1, warehousePosition2, d.qty"
+				+ " from orders_detail as d "
+				+ " inner join storage as s on d.SKU = s.SKU"
+				+ " inner join product as p on d.SKU = p.SKU"
+				+ " where d.QR_id = ? and s.warehouse =  ("
+				+ " select warehouse"
+				+ " from orders_detail"
+				+ " where QR_id = ?)";
 		
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ps.setString(1, request.getParameter("QR_id"));

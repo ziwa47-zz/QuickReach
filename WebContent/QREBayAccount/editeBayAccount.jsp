@@ -65,7 +65,7 @@ System.out.println(ebayaccount.getebayId());
           <h4>ebay ID</h4>
         </div>
         <div class="col-md-5 well-sm control-label">
-          <input class="form-control" type="text" name="ebayId" value="${eBayAccount.getebayId()}" >
+          <input class="form-control" type="text" name="ebayId" value="${eBayAccount.getebayId()}" readonly>
         </div>
       </div>
       
