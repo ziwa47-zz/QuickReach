@@ -44,7 +44,7 @@ public class BundlesFactory {
 //		if (P_name != null && !P_name.equals("select")){
 //			sqlstr += " and P_name='" + P_name + "'";
 //		}
-		
+		sqlstr += "order by SKU";
 		
 		ResultSet rs = state.executeQuery(sqlstr);
 		lcp = new LinkedList<CProduct>();
@@ -131,7 +131,7 @@ public class BundlesFactory {
 		Connection conn = dbc.getConn() ;
 		state = conn.createStatement();
 
-		String sqlstr = "SELECT sku,P_name,comment FROM product where  sku like 'B00%'";
+		String sqlstr = "SELECT sku,P_name,comment FROM product where  sku like 'B00%' order by SKU";
 
 		ResultSet rs = state.executeQuery(sqlstr);
 		lcp = new LinkedList<CProduct>();

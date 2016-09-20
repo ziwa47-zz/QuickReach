@@ -223,8 +223,9 @@
   <c:choose>
     <c:when test="${SearchOrdersResult != null}">
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
-        <form name="searchform" method="post" action="../OrdersServlet" class="form-inline container"
+        <form name="searchform" method="post" action="../toExcelServlet" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
+          <button class="btn btn-md btn-info" type="submit" name="submit" value="toDailyBalanceSheetExcel" >匯出日出貨報表</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
@@ -332,6 +333,7 @@
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
         <form name="searchform" method="post" action="../OrdersServlet" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
+          <button class="btn btn-md btn-info" type="submit" name="submit" value="toDailyBalanceSheetExcel" >匯出日出貨報表</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">

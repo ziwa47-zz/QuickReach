@@ -19,17 +19,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>查詢複合商品</title>
-    <!-- Bootstrap -->
-	<link href="css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui.css">
 
-      <!-- Include all compiled plugins (below), or include individual files as needed -->
-      <script src="js/bootstrap.js"></script>
-
-    
-    <script src="js/jquery-1.12.4.min.js"></script>
-    <script src="js/jquery-ui.min.js"></script>
-    <script src="js/jquery.ui.datepicker-zh-TW.js"></script>
   	<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.js"></script>
     <script type="text/javascript">
     function reload(){
@@ -40,9 +30,6 @@
     }
    
     </script>
-    
-    
-    
   </head>
   <body>
  <%@ include file = "/href/navbar.jsp"%>
@@ -89,15 +76,29 @@ request.setAttribute("bundlesMaster",list);
   <c:forEach var="i" varStatus="check" items="${bundlesMaster}" begin="0" step="1">
 <div class="panel-group" id="accordion">  
 
-	  <div class="panel panel-default">
+	  <div class="panel panel-default"  style="padding: 0 -30px 0 0">
 	          <div class="panel-heading">
 	            <h4 class="panel-title">
 	              	<a data-toggle="collapse" data-parent="#accordion" href="#${i.getSKU()}">
-	              		<input type="hidden" name="${i.getSKU()}${'sku'}" value="${i.getSKU()}">${i.getSKU()}	
-	              	</a>
-				  <input type="hidden" name="${i.getSKU()}${'name'}" value="${i.getP_name()}">${i.getP_name()}
-				  <input type="hidden" name="${i.getSKU()}${'comment'}" value="${i.getComment()}">${i.getComment()}
-				  <button class="pull-right" value="${i.getSKU()}" type="submit" name="smt">查看</button>
+	              	<table class="table table-condensed">
+	              	  <thead>
+		                <tr>
+		                  <th>SKU</th>
+		                  <th>產品名稱</th>
+		                  <th>備註</th>
+		                </tr>
+		              </thead>
+		              <tbody>
+		                <tr>
+		                  <td><input type="hidden" name="${i.getSKU()}${'sku'}" value="${i.getSKU()}">${i.getSKU()}</td>
+		                  <td><input type="hidden" name="${i.getSKU()}${'name'}" value="${i.getP_name()}">${i.getP_name()}</td>
+		                  <td><input type="hidden" name="${i.getSKU()}${'comment'}" value="${i.getComment()}">${i.getComment()}</td>
+		                </tr>
+		              </tbody>
+	              	</table>
+	              	<button class="btn btn-md btn-primary pull-right" value="${i.getSKU()}" type="submit" name="smt">查看</button>
+				  </a>
+				  
 	            </h4>
 	          </div>
 	     <div id="${i.getSKU()}" class="panel-collapse collapse">

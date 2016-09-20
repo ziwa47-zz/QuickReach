@@ -332,14 +332,14 @@
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getCOrderMaster().getQR_id()}
-                    <td><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
-                    <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
+                    <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
                     <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}</td>
+                    <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
@@ -365,13 +365,13 @@
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getCOrderMaster().getQR_id()}
                       <input type="hidden" name="orderId" value="${i.getCOrderMaster().getOrder_id()}"></td>
-                    <td><a href="#"><img src="../img/compose.png" ></a></td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
-                    <td><a href="#">${i.getCOrderMaster().getGuestAccount()}</a></td>
+                    <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
                     <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
+ 					<td>${i.getCOrderReciever().getCountry()}</td>                   
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>

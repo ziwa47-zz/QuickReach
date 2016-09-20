@@ -42,7 +42,7 @@ conn1.close();
 </div>
 <div class="container container-fluid breadcrumbBox">
   <ol class="breadcrumb" >
-    <li><a href="../QRMain/HomePage.jsp" >首頁</a></li>
+    <li><a href="../HomePage.jsp" >首頁</a></li>
     <li class="active" style="display:"><a href="./eBayAccount.jsp">eBay帳號管理</a></li>
     <li><a href="./eBayAccount.jsp">帳號列表</a></li>
   </ol>
@@ -64,7 +64,7 @@ conn1.close();
             <th>啟動時間</th>
             <th>最後修改時間</th>
             <th>狀態</th>
-            <th>Comment</th>
+        <!--    <th>Comment</th>    --> 
             <th>SystemFeedback</th>
           </tr>
         </thead>
@@ -89,7 +89,7 @@ conn1.close();
               <!-- lastFixTime -->
               <td>${i.getstatus()}</td>
               <!-- status -->
-              <td>${i.getcomment()}</td>
+        <!--  <td>${i.getcomment()}</td>   --> 
               <!-- comment -->
               <td>${i.getsystemFeedback()}</td>
               <!-- systemFeedback --> 
