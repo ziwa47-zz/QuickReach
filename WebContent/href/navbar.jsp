@@ -94,15 +94,7 @@ position:absolute; width:70%; height:280px;
 	   });
 	
 
-	$(function() {
-		//feildset prop enable
-		$("#optionsRadios1").click(function() {
-			$("#myfields").prop("disabled", false);
-		});
-		$("#optionsRadios2").click(function() {
-			$("#myfields").prop("disabled", true);
-		});
-	});
+	
 	
 	    function checkAllOrders(ele) {
     	//select all
