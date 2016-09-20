@@ -81,7 +81,12 @@ conn1.close();
               <!-- enname-->
               <td>${i.getCompetenceLV()}</td>
               <!-- competenceLV -->
-              <td>${i.getStatus()}</td>
+              <c:if test="${i.getStatus()==1}">
+              	<td>ON</td>
+              </c:if>
+              <c:if test="${i.getStatus()==0}">
+              	<td>OFF</td>
+              </c:if>
               <!-- status --> 
               
             </tr>

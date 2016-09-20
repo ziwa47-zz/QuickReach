@@ -92,10 +92,10 @@ public class CEbayFactory extends CEbay {
 //			 + "where ebayId = ?"; //(10個)
 		
 		String strsql = "UPDATE  ebayaccount SET "	
-				 + "paypalAccount = ?,"
+				 + "ebayToken = ?," + "paypalAccount = ?,"
 				 + "correspondCompany = ?," + "startTime = ?," + "lastFixTime = ?,"	
 				 + "status = ?," + "comment = ?," + "systemFeedback = ? "
-				 + "where ebayId = ?"; //(8個)
+				 + "where ebayId = ?"; //(10個)
 		
 	
 		PreparedStatement ps = null;
@@ -114,14 +114,16 @@ public class CEbayFactory extends CEbay {
 //		ps.setString(10, request.getParameter("ebayId")); //10th
 		
 		
-		ps.setString(1, request.getParameter("paypalAccount"));
-		ps.setString(2, request.getParameter("correspondCompany"));
-		ps.setString(3, request.getParameter("startTime"));
-		ps.setString(4, request.getParameter("lastFixTime"));  //6th
-		ps.setString(5, request.getParameter("status"));
-		ps.setString(6, request.getParameter("comment"));
-		ps.setString(7, request.getParameter("systemFeedback"));
-		ps.setString(8, request.getParameter("ebayId")); //10th
+		
+		ps.setString(1, request.getParameter("ebayToken")); 
+		ps.setString(2, request.getParameter("paypalAccount"));
+		ps.setString(3, request.getParameter("correspondCompany"));
+		ps.setString(4, request.getParameter("startTime"));
+		ps.setString(5, request.getParameter("lastFixTime"));  
+		ps.setString(6, request.getParameter("status"));
+		ps.setString(7, request.getParameter("comment"));
+		ps.setString(8, request.getParameter("systemFeedback"));
+		ps.setString(9, request.getParameter("ebayId")); 
 		
 		int i =ps.executeUpdate();		
 							
