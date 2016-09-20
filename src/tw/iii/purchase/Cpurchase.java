@@ -6,7 +6,6 @@ import java.util.LinkedList;
 public class Cpurchase {
 
 	Cpurchase_master CPurchase_master = new Cpurchase_master();
-	LinkedList<Cpurchase_detail> CPurchase_details = new LinkedList<Cpurchase_detail>();
 	
 	Cpurchase_detail CPurchase_detailsSingle = new Cpurchase_detail();
 
@@ -26,10 +25,4 @@ public class Cpurchase {
 		CPurchase_detailsSingle = Cpurchase_detailsSingle;
 	}
 	
-	public LinkedList<Cpurchase_detail> getCPurchase_detail() {
-		return CPurchase_details;
-	}
-	public void setCPpurchase_detail(LinkedList<Cpurchase_detail> Cpurchase_detail) {
-		CPurchase_details = Cpurchase_detail;
-	}
 }

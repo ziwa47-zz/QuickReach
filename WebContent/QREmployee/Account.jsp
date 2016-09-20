@@ -121,10 +121,10 @@ session.setAttribute("getCompetenceLv", list);
           </div>
           <div class="col-md-5 well-sm">
             <label class="checkbox-inline">
-              <input type="radio" id="id_fd-is_active_0" value="1" name="status" checked/>
+              <input type="radio" id="id_fd-is_active_0" value="ON" name="status" checked/>
               有效</label>
             <label class="checkbox-inline">
-              <input type="radio" id="id_fd-is_active_1" value="0" name="status" />
+              <input type="radio" id="id_fd-is_active_1" value="OFF" name="status" />
               停用</label>
           </div>
         </div>

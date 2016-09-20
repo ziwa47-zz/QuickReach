@@ -122,19 +122,24 @@ System.out.println(accountinfo.getAccount());
           </div>
         </div>
         
+        
         <div class="row">
           <div class="col-md-3 text-right well-sm label-tag"  >
             <h4>帳號狀態</h4>
           </div>
-          <div class="col-md-5 well-sm">
-            <label class="checkbox-inline">
-              <input type="radio" id="id_fd-is_active_0" value="1" name="status" checked/>
-              有效</label>
-            <label class="checkbox-inline">
-              <input type="radio" id="id_fd-is_active_1" value="0" name="status" />
-              停用</label>
+          <div class="col-md-5 well-sm">           
+            <c:if test="${accountinfo.getstatus() eq 'ON' }"> 
+              	<input type="radio" id="id_fd-is_active_0" value="ON" name="status" checked/> 有效
+          	  	<input type="radio" id="id_fd-is_active_0" value="OFF" name="status"/> 停用
+           	</c:if>          
+            <c:if test="${accountinfo.getstatus() eq 'OFF' }"> 
+                <input type="radio" id="id_fd-is_active_0" value="ON" name="status"/> 有效
+          	    <input type="radio" id="id_fd-is_active_0" value="OFF" name="status" checked/> 停用
+            </c:if>
           </div>
         </div>
+        
+        
         <div class="" align="center">
           <button type="submit" name="submit" value="editAccount" class="btn-lg btn-success">修改送出</button>
           <td><a href="accountManage.jsp">

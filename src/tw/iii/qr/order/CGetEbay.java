@@ -15,6 +15,7 @@ import java.sql.Date;
 import com.ebay.sdk.ApiContext;
 import com.ebay.sdk.ApiCredential;
 import com.ebay.sdk.call.GetOrdersCall;
+import com.ebay.sdk.call.GetSellerTransactionsCall;
 import com.ebay.sdk.call.GeteBayOfficialTimeCall;
 import com.ebay.sdk.helper.ConsoleUtil;
 import com.ebay.sdk.helper.Utils;
@@ -50,7 +51,7 @@ public class CGetEbay {
 	          GeteBayOfficialTimeCall apiCall = new GeteBayOfficialTimeCall(apiContext);
 	          Calendar cal = apiCall.geteBayOfficialTime();
 	          
-	        
+	         
 	          GetOrdersCall apiord = new GetOrdersCall(apiContext);
 	          apiord.setDetailLevel(new DetailLevelCodeType[]{DetailLevelCodeType.RETURN_ALL,DetailLevelCodeType.ITEM_RETURN_DESCRIPTION,DetailLevelCodeType.ITEM_RETURN_ATTRIBUTES});
 	          apiord.setNumberOfDays(30);
@@ -63,8 +64,9 @@ public class CGetEbay {
 	          
 	          TradingRoleCodeType role = TradingRoleCodeType.SELLER;
 	          apiord.setOrderRole(role);
-	      	 
+	      	  apiord.setIncludeFinalValueFee(true);
 	          OrderType[] orders = apiord.getOrders();
+	          
 	          displayOrders(orders);
 	          //Handle the result returned
 	          System.out.println("Official eBay Time : " + cal.getTime().toString());
@@ -95,13 +97,14 @@ public class CGetEbay {
 		  if("COMPLETE".equals(order.getCheckoutStatus().getStatus().toString())){
 		  
 		  ShippingServiceOptionsType sso = order.getShippingServiceSelected();
+
 		  String QR_id = autoInsertData.generateQR_Id();
 		  
 		  
 		  String strSql = "INSERT INTO orders_master (QR_id, order_id, outsideCode, platform, company,"
 		  		+ " eBayAccount, guestAccount, orderDate, payDate, logisticsId, logistics, orderStatus, paypal_id,"
-		  		+ " payment, ebayFees, paypalFees, totalPrice, currency)"
-		  		+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		  		+ " payment, ebayFees, paypalFees, totalPrice, currency, ebayPrice, paypalNet, ebayItemNO, paypalmentId)"
+		  		+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		  
 		  PreparedStatement ps = conn.prepareStatement(strSql);
 		  ps.setString(1, QR_id);
@@ -119,10 +122,14 @@ public class CGetEbay {
 		  ps.setString(13, order.getMonetaryDetails().getPayments().getPayment()[0].getPayer().getValue());
 		  ps.setDouble(14, order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentAmount().getValue());
 		  ps.setDouble(15, order.getMonetaryDetails().getPayments().getPayment()[0].getFeeOrCreditAmount().getValue());
-		  ps.setDouble(16, order.getExternalTransaction()[0].getFeeOrCreditAmount().getValue());
+		  ps.setDouble(16, order.getTransactionArray().getTransaction()[0].getFinalValueFee().getValue());
 		  ps.setDouble(17, order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentAmount().getValue());
 		  ps.setString(18, order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentAmount().getCurrencyID().value());
-		  
+		  ps.setDouble(19, order.getTransactionArray().getTransaction()[0].getTransactionPrice().getValue());
+		  ps.setDouble(20, order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentAmount().getValue()
+				  - order.getMonetaryDetails().getPayments().getPayment()[0].getFeeOrCreditAmount().getValue());
+		  ps.setString(21, order.getTransactionArray().getTransaction()[0].getItem().getItemID().toString());
+		  ps.setString(22, order.getTransactionArray().getTransaction()[0].getTransactionID());
 		  int x =ps.executeUpdate();
 		  
 

@@ -25,9 +25,9 @@
 	function jqueryAutoCompletePurchaseId() {
 
 		$("#stockTransferId").autocomplete({
-			source : "../JQueryAutoCompletePurchaseId",
+			source : "../JQueryStockTransferId",
 			minLength : 8,
-			delay : 1000,
+			delay : 500,
 
 		});
 
@@ -57,7 +57,7 @@
 
 	}
 </script>
-<title>進貨紀錄</title>
+<title>轉倉紀錄</title>
 </head>
 <body>
 	<%@ include file="../href/navbar.jsp"%>
@@ -177,18 +177,7 @@
 						</div>
 					</div>
 
-					<div class="col-md-4 form-group ">
-						<div class="row">
-							<div class="col-md-4">
-								<h5>
-									<label for="focusedInput ">品名：</label>
-								</h5>
-							</div>
-							<div class="col-md-8">
-								<input class="form-control" name="pname" type="text" value="">
-							</div>
-						</div>
-					</div>
+					
 
 
 				</div>
@@ -203,11 +192,11 @@
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<select class="form-control" name="staff">
+								<select class="form-control" name="staffId">
 									<option value=""></option>
 									<c:forEach var="i" begin="0" step="1" items="${accountList}">
 
-										<option value="${i.get(0)}">${i.get(1)}</option>
+										<option value="${i.get(0)}">${i.get(0)}</option>
 
 									</c:forEach>
 								</select>
