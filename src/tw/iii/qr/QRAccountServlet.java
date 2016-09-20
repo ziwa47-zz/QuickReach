@@ -57,7 +57,7 @@ public class QRAccountServlet extends HttpServlet {
 		out = response.getWriter();
 		
 		QRAccount qra = new QRAccount();
-		
+
 		qra.setAccount(request.getParameter("account"));
 		qra.setPassword(request.getParameter("password"));
 		qra.setLastName(request.getParameter("lastName"));
@@ -65,12 +65,12 @@ public class QRAccountServlet extends HttpServlet {
 		qra.setEmail(request.getParameter("E-mail"));
 		qra.setEnName(request.getParameter("enName"));
 		//qra.setSignatureImage(request.getParameter("signatureImage"));
-		qra.setCompetenceLV(request.getParameter("competenceLV"));
+		qra.setCompetenceLV(request.getParameter("competenceLv"));
 		qra.setStatus(Integer.parseInt(request.getParameter("status")));
 		
 		try {
 			qraf.insertQRAccount(qra);
-			response.sendRedirect("Account.jsp");
+			response.sendRedirect("accountManage.jsp");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -91,7 +91,7 @@ private void processEdit(HttpServletRequest request, HttpServletResponse respons
 			qra.setEmail(request.getParameter("E-mail"));
 			qra.setEnName(request.getParameter("enName"));
 			//qra.setSignatureImage(request.getParameter("signatureImage"));
-			qra.setCompetenceLV(request.getParameter("CompetenceLv"));
+			qra.setCompetenceLV(request.getParameter("competenceLv"));
 			System.out.print("test"+qra.getCompetenceLV());
 			qra.setStatus(Integer.parseInt(request.getParameter("status")));
 			

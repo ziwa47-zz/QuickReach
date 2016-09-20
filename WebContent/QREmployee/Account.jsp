@@ -13,7 +13,7 @@
 
 <body><%@ include file="/href/navbar.jsp" %>
 <%
-LinkedList<Competence> list= competence1.get權限();
+LinkedList<Competence> list= competence1.getCompetence();
 session.setAttribute("getCompetenceLv", list);
 %>
 <div class="nav">
@@ -42,7 +42,7 @@ session.setAttribute("getCompetenceLv", list);
   </ol>
 </div>
 <div class="container" style="background: #E9C2D0; border-radius:20px;">
-  <form name="searchform" method="post" action="../EbayAccountDo" class="form-inline container required" 
+  <form name="searchform" method="post" action="QRAccountServlet.do" class="form-inline container required" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;">
       <legend>輸入帳號資料</legend>
@@ -60,7 +60,7 @@ session.setAttribute("getCompetenceLv", list);
             <h4>密碼</h4>
           </div>
           <div class="col-md-5 well-sm">
-            <input class="form-control" name="password" type="text" >
+            <input class="form-control" name="password" type="password" >
           </div>
         </div>
         <div class="row">
@@ -102,37 +102,28 @@ session.setAttribute("getCompetenceLv", list);
             <h4>權限等級</h4>
           </div>
           <div class="col-md-5 well-sm">
-            <select class="form-control" name="CompetenceLv" >
+            <select class="form-control" name="competenceLv" >
               <c:forEach var="i" varStatus="check" items="${getCompetenceLv}" begin="0" step="1">
                 <option  value="${i.getCompetenceLv()}">${i.getCompetenceLv()}</option>
               </c:forEach>
             </select>
           </div>
         </div>
-        
-        <!--                <div class="row">
-                      <div class="col-md-3 text-right well-sm label-tag"  ><h4>簽名圖檔</h4></div>
-                      <div class="col-md-5 well-sm"><input class="checkbox-inline" name="signatureImage" type="file" ></div>
-                  </div>
-     -->
-        <div class="row">
+   
+       <div class="row">
           <div class="col-md-3 text-right well-sm label-tag"  >
             <h4>帳號狀態</h4>
           </div>
-          <div class="col-md-5 well-sm">
-            <label class="checkbox-inline">
-              <input type="radio" id="id_fd-is_active_0" value="ON" name="status" checked/>
-              有效</label>
-            <label class="checkbox-inline">
-              <input type="radio" id="id_fd-is_active_1" value="OFF" name="status" />
-              停用</label>
-          </div>
+          <div class="col-md-5 well-sm">           
+              <input type="radio" id="id_fd-is_active_0" value="1" name="status" checked/>有效           
+              <input type="radio" id="id_fd-is_active_1" value="0" name="status" />停用 </div>
         </div>
-        <div class="row">
-          <center>
-            <button class="btn-lg btn-success" name="submit" type="submit" value="addAccount" >新增</button>
-          </center>
+        
+        <div class="row" align="center">              
+         	 <button type="submit" name="submit" value="addAccount" class="btn-lg btn-success">新增</button>
+       		 <a href="accountManage.jsp"><button type="button" value="取消" class="btn-lg btn-success">取消 </button></a>
         </div>
+        
       </div>
     </fieldset>
   </form>
