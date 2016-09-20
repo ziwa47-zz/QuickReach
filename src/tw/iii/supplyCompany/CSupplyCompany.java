@@ -2,17 +2,18 @@ package tw.iii.supplyCompany;
 
 public class CSupplyCompany {
 	
-	private int companyId;
+	private String companyId;
 	private String companyName;
 	private String tel;
 	private String fax;
 	private String address;
 	private String comment;
+	private String item;
 	
-	public int getCompanyId(){	
+	public String getCompanyId(){	
 		return companyId;
 	}
-	public void setCompanyId(int companyId){
+	public void setCompanyId(String companyId){
 		this.companyId = companyId;
 	}
 	public String getCompanyName(){
@@ -43,11 +44,21 @@ public class CSupplyCompany {
 		this.address = address;
 	}
 	
+
+	public String getItem(){
+		return item;
+	}
+	public void setItem(String item) {
+        this.item = item;	
+	}
+	
+	
 	public String getComment(){
 		return comment;
 	}
 	public void setComment(String comment){
 		this.comment = comment;
 	}
+	
 	
 }

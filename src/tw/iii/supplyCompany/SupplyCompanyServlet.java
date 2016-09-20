@@ -2,6 +2,8 @@ package tw.iii.supplyCompany;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,23 +11,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.QRAccount;
 import tw.iii.qr.QRAccountFactory;
 
 
-@WebServlet("/SupplyCompany/SupplyCompanyServlet.do")
+@WebServlet("/SupplyCompanyServlet.do")
 public class SupplyCompanyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
    
 	SCFactory scf = new SCFactory();
-	private PrintWriter out;
+
+	private Connection conn;
 	
-    public SupplyCompanyServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-
+  
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 	}
@@ -36,13 +35,14 @@ public class SupplyCompanyServlet extends HttpServlet {
 		try {
 			request.setCharacterEncoding("UTF-8");
 			response.setContentType("text/html;charset=UTF-8");
-			String submitType = request.getParameter("submit");
+			String submitType = request.getParameter("submitButton");
+			
 			switch(submitType){
 			
-			case "addAccount":
+			case "addCompany":
 				processInsert(request,response); // new a SupplyCompany name
 				break;
-			case "editAccount":
+			case "editCompany":
 				processEdit(request,response); // update a SupplyCompany name
 				break;
 			default:
@@ -55,52 +55,38 @@ public class SupplyCompanyServlet extends HttpServlet {
 		
 	}
 
-private void processInsert(HttpServletRequest request, HttpServletResponse response) throws IOException {
+private void processInsert(HttpServletRequest request, HttpServletResponse response) throws Exception, SQLException, Exception {
 		
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
-		out = response.getWriter();
 		
-		CSupplyCompany csc = new CSupplyCompany();
+		DataBaseConn jdbc = new DataBaseConn();
+		conn = jdbc.getConn();
 		
-		csc.setCompanyId(Integer.parseInt(request.getParameter("companyId")));  //1st
-		csc.setCompanyName(request.getParameter("companyName"));
-		csc.setTel(request.getParameter("tel"));
-		csc.setFax(request.getParameter("fax"));
-		csc.setAddress(request.getParameter("address"));
-		csc.setComment(request.getParameter("comment"));  //6th	
+		SCFactory scf = new SCFactory();
+		scf.insertSCompany(conn, request);
 		
-		try {
-			scf.insertSCompanyId(csc);
-			response.sendRedirect("addSCName.jsp");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		conn.close();
+		response.sendRedirect("SupplyCompany/SCManage.jsp");
+		
+		
 	}	
 	
-private void processEdit(HttpServletRequest request, HttpServletResponse response) throws IOException {
+private void processEdit(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
 	
 	request.setCharacterEncoding("UTF-8");
 	response.setContentType("text/html;charset=UTF-8");
-	out = response.getWriter();
 	
-	CSupplyCompany csc = new CSupplyCompany();
+	DataBaseConn jdbc = new DataBaseConn();
+	conn = jdbc.getConn();
 	
-	csc.setCompanyId(Integer.parseInt(request.getParameter("companyId")));  //1st
-	csc.setCompanyName(request.getParameter("companyName"));
-	csc.setTel(request.getParameter("tel"));
-	csc.setFax(request.getParameter("fax"));
-	csc.setAddress(request.getParameter("address"));
-	csc.setComment(request.getParameter("comment"));  //6th	
+	SCFactory scf = new SCFactory();
+	scf.editCompany(conn, request);
 	
-	try {
-		scf.insertSCompanyId(csc);
-		response.sendRedirect("addSCName.jsp");
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+	conn.close();
+	response.sendRedirect("SupplyCompany/SCManage.jsp");
+	
+	
 
 }
 

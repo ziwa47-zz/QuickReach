@@ -140,6 +140,7 @@ textarea {
 				<li><a href="/QREBayAccount/eBayAccount.jsp">Ebay帳號管理</a></li>
 				<li><a href="/QREmployee/accountManage.jsp">員工管理</a></li>
 				<li><a href="/QRAccess/Competence.jsp">權限管理</a></li>
+			    <li><a href="/SupplyCompany/SCManage.jsp">供應商/倉庫</a></li>
 			</ul>
 
 			<ul class="nav navbar-right">
