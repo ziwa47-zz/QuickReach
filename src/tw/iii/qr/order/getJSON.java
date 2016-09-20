@@ -56,6 +56,7 @@ public class getJSON {
 		
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ps.setString(1, request.getParameter("QR_id"));
+		ps.setString(2, request.getParameter("QR_id"));
 		ResultSet rs = ps.executeQuery();
 		
 		while(rs.next()){

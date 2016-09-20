@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.stock.CProduct;
+import tw.iii.qr.stock.CProductFactory;
 
 public class DayliBalanceSheetFactory extends COrders {
 
@@ -106,6 +107,10 @@ public class DayliBalanceSheetFactory extends COrders {
 			order.COrderDetailSingle.setPrice(rs.getDouble(27));
 			
 			order.COrderReciever.setCountry(rs.getString(28));
+			
+			CProductFactory myCProductFactory = new CProductFactory();
+
+			order.COrderMaster.setPurchaseCost(myCProductFactory.isBundle(rs.getString(23)));
 
 			orderList.add(order);
 		}
