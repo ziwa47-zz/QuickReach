@@ -19,10 +19,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import tw.iii.qr.DataBaseConn;
 
 public class CDBtoExcel {
+	public static void main(String[] args) {
+		日結表();
+	}
 	public CDBtoExcel() {
 	
 	}
-	public void  日結表(){
+	public static void  日結表(){
 		try {
 			XSSFWorkbook wb = new XSSFWorkbook();
 			XSSFSheet sheet = wb.createSheet("日結表");
@@ -125,6 +128,58 @@ public class CDBtoExcel {
 		conn.close();
 	}
 
+	
+	public void 物流匯出格式() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+		XSSFWorkbook wb = new XSSFWorkbook();
+		XSSFSheet sheet = wb.createSheet("物流匯出報表");
+		String strsql = "select s.date, s.type, s.QR_id, d.SKU, d.productName, d.qty, m.eBayAccount,"
+				+ " r.country"
+				+ " from orders_master as m inner join shippinglog as s on m.QR_id = s.QR_id"
+				+ " inner join order_recieverinfo as r on m.QR_id = r.QR_id"
+				+ " inner join orders_detail as d on m.QR_id = d.QR_id"
+				+ " where m.orderStatus = N'撿貨中'";
+		Connection conn = new DataBaseConn().getConn();
+		PreparedStatement ps = null;
+		ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+		int index = 1;
+		XSSFRow myRow = sheet.createRow(0);
+		myRow.createCell(0).setCellValue("出貨日期");
+		myRow.createCell(1).setCellValue("寄件類型");
+		myRow.createCell(2).setCellValue("order no.");
+		myRow.createCell(3).setCellValue("SKU");
+		myRow.createCell(4).setCellValue("商品名稱");
+		myRow.createCell(5).setCellValue("數量");
+		myRow.createCell(6).setCellValue("寄件人資訊");//eBayAccount
+		myRow.createCell(7).setCellValue("幣別");  //master currency
+		myRow.createCell(8).setCellValue("E/B含運費");//
+		myRow.createCell(9).setCellValue("寄件材積");
+		myRow.createCell(10).setCellValue("寄件重量"); 
+		myRow.createCell(11).setCellValue("Trqacking No."); //trackingCode
+		myRow.createCell(12).setCellValue("運費(TWD)");
+		myRow.createCell(13).setCellValue("運費(USD)");
+		while (rs.next()) {
+			myRow = sheet.createRow(index);
+			myRow.createCell(0).setCellValue(rs.getString(1));
+			myRow.createCell(1).setCellValue(rs.getString(2));
+			myRow.createCell(2).setCellValue(rs.getString(3));
+			myRow.createCell(3).setCellValue(rs.getString(4));
+			myRow.createCell(4).setCellValue(rs.getString(5));
+			myRow.createCell(5).setCellValue(rs.getString(6));
+			myRow.createCell(6).setCellValue(rs.getString(7));
+			myRow.createCell(7).setCellValue(rs.getString(8));
+			
+			index++;
+		}
+		String date = getDay();
+		
+		FileOutputStream out = new FileOutputStream("C:\\EC\\物流匯出報表.xlsx");
+		wb.write(out);
+		rs.close();
+		ps.close();
+		conn.close();
+	}
+	
 
 public void 出貨單(){
 		
