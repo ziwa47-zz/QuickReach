@@ -86,8 +86,8 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
                   <td>${i.getCOrderMaster().getOrder_id()}</td>
                   <td>${i.getCOrderReciever().getCountry()}</td>
                   <td>${i.getCOrderMaster().getEbayPrice()}</td>
-                  <td>${i.getCOrderMaster().getEbayTotal()}</td>
                   <td>${i.getCOrderMaster().getEbayFees()}</td>
+                  <td>${i.getCOrderMaster().getTotalPrice()}</td>
                   <td>${i.getCOrderMaster().getPaypalFees()}</td>
                   <td>${i.getCOrderMaster().getPaypalNet()}</td>
                 </tr>
@@ -159,7 +159,7 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
                   <td>${i.getCOrderReciever().getCountry()}</td>
                   <td>${i.getCOrderMaster().getCurrency()}</td>
                   <td>${i.getCOrderMaster().getEbayPrice()}</td>
-                  <td>${i.getCOrderMaster().getEbayTotal()}</td>
+                  <td>${i.getCOrderMaster().getTotalPrice()}</td>
                   <td>${i.getCOrderMaster().getPayDate()}</td>
                   <td>${i.getCOrderMaster().getPaypalmentId()}</td>
                   <td>${i.getCOrderMaster().getPaypalTotal()}</td>
@@ -175,8 +175,8 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
                       <option value="EMS">EMS</option>
                       <option value="AP">AP</option>
                       <option value="RA">RA</option>
-                      <option value="seven">seven</option>
-                      <option value="familyMart">familyMart</option>
+                      <option value="USPS(寄倉)">USPS(寄倉)</option>
+                      <option value="USPS(集運)">USPS(集運)</option>
                       <option value="Post">Post</option>
                     </select>
                   </td>

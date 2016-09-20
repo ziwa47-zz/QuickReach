@@ -38,9 +38,10 @@ public class DayliBalanceSheetFactory extends COrders {
 
 		String strSql = "select m.orderDate, m.QR_id, r.tel1, m.shippingFees,"
 				+ " m.packageFees, m.comment, m.totalWeight,m.ebayNO,m.ebayItemNO, m.eBayAccount,r.country, m.currency,"
-				+ " m.ebayprice,m.ebayTotal, m.payDate, m.paypalmentId, m.paypalTotal,m.paypalFees,"
+				+ " m.ebayprice,m.ebayTotal, m.payDate, m.paypalmentId, m.totalPrice,m.paypalFees,"
 				+ " m.paypalNet, m.shippingDate, m.ebayFees, m.order_id,"
-				+ " d.sku, d.productName, d.qty, d.owner, d.price"
+				+ " d.sku, d.productName, d.qty, d.owner, d.price,"
+				+ " r.country"
 				+ " FROM  orders_master as m inner join"
 				+ "  orders_detail as d  on m.QR_id = d.QR_id left join"
 				+ "  order_recieverinfo as r on m.QR_id = r.QR_id"
@@ -90,7 +91,7 @@ public class DayliBalanceSheetFactory extends COrders {
 			order.COrderMaster.setEbayTotal(rs.getDouble(14));
 			order.COrderMaster.setPayDate(rs.getDate(15));
 			order.COrderMaster.setPaypalmentId(rs.getString(16));
-			order.COrderMaster.setPaypalTotal(rs.getDouble(17));
+			order.COrderMaster.setTotalPrice(rs.getDouble(17));
 			order.COrderMaster.setPaypalFees(rs.getDouble(18));
 			order.COrderMaster.setPaypalNet(rs.getDouble(19));
 			//order.COrderDetail.setPrice(rs.getDouble(24));
@@ -103,6 +104,8 @@ public class DayliBalanceSheetFactory extends COrders {
 			order.COrderDetailSingle.setQty(rs.getInt(25));
 			order.COrderDetailSingle.setOwner(rs.getString(26));
 			order.COrderDetailSingle.setPrice(rs.getDouble(27));
+			
+			order.COrderReciever.setCountry(rs.getString(28));
 
 			orderList.add(order);
 		}
