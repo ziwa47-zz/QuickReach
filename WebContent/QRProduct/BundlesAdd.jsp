@@ -58,9 +58,23 @@
 	}
     
     function checkDetailSKUValue(){
+    	if($("#productSKU").val()=='select' ){
+    		$("#listForm").submit( function () { 
+    			  return false; 
+    		});
+    		alert("請選擇子商品");   		  		
+    	}else if($("#productSKU").val()!='select' & $("#qty").val() <=0 ){
+    		$("#listForm").submit( function () { 
+    			  return false; 
+    		});
+    		alert("請輸入正確數量");   		  		
+    	}else{
+    		listForm.action = "bundlesAdd.do"
+    	    listForm.submit()
+    	}
     	
     }
-    
+       
     </script>
     
   </head>
@@ -278,9 +292,9 @@ request.setAttribute("listSubBrand",listSubBrand);
 	            </select>
               </td>
             </tr> 
-            <tr> <th>數量:<input type="number" name="qty"></th></tr>
+            <tr> <th>數量:<input type="number" id="qty" name="qty"></th></tr>
             <tr>
-            	<td ><button type="submit" name="smt" value="add" >加入</button></td>
+            	<td ><button type="submit" id="addsmt" name="smt" value="add" onclick="checkDetailSKUValue()">加入</button></td>
             </tr>           
           </tbody>
         </table>
@@ -294,14 +308,21 @@ request.setAttribute("listSubBrand",listSubBrand);
 				<th>SKU</th>
 				<th>品名</th>
 				<th>數量</th>
+				<th>庫存量</th>
 				<th></th>							
 			</tr>
 
 		<c:forEach var="i" varStatus="check" items="${getBundlesAddDetail}" begin="0" step="1">
 			<tr>
-				<td>${i[0]}</td>
+				<td><a href="StockDetail.jsp?sku=${i[0]}">${i[0]}</a></td>
 				<td>${i[1]}</td>
 				<td>${i[2]}</td>
+				<c:set var="getStockSKU" scope="session" value="${i[0]}"></c:set>
+				<%
+				String getStockSKU = (String)session.getAttribute("getStockSKU");
+				request.setAttribute("stock", blf.getStock(getStockSKU));
+				%>
+				<td>${stock}</td>
 				<td><button type="submit" name="smt" value="${i[0]}" >刪除</button></td>
 			</tr>
 		</c:forEach>    
