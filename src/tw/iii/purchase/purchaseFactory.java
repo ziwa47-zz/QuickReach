@@ -282,7 +282,7 @@ public class purchaseFactory {
 		
 
 
-		sqlstr1 += " order by 1 desc";
+		sqlstr1 += " order by b.date desc";
 		return sqlstr1;
 	}
 
@@ -347,7 +347,7 @@ public class purchaseFactory {
 				ps = null;
 				int count = rs.getInt(1);
 				if (count == 0) {
-					String sqlstr3 = "Insert into storage values(?,?,?,?,?,?,(select dateadd(hour,8,getdate())))";
+					String sqlstr3 = "Insert into storage values(?,?,?,?,?,?,(select dateadd(hour,8,getdate())),(select C_name from company where C_id=?))";
 					ps = conn.prepareStatement(sqlstr3);
 					ps.setString(1, preparePurchaseDetail.get(i).getSKU());
 					ps.setString(2, preparePurchaseDetail.get(i).getWarehouse());
@@ -355,6 +355,7 @@ public class purchaseFactory {
 					ps.setString(4, preparePurchaseDetail.get(i).getWarehousePosition2());
 					ps.setInt(5, preparePurchaseDetail.get(i).getQty());
 					ps.setString(6, preparePurchaseDetail.get(i).getComment());
+					ps.setString(7, preparePurchaseMaster.getCompanyId());
 
 					ps.executeUpdate();
 				} else {

@@ -78,7 +78,7 @@ public class WarehouseFactory {
 
 		CWarehouse cwr = new CWarehouse();
 		
-		cwr.setWarehouse(request.getParameter("id"));
+		cwr.setId(request.getParameter("id"));
 		cwr.setWarehouse(request.getParameter("warehouse"));
 		cwr.setWarehouseName(request.getParameter("warehouseName")); 
 		
