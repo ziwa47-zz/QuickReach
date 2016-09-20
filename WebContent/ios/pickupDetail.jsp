@@ -5,6 +5,11 @@
 	pageEncoding="UTF-8"%>
 <jsp:useBean id="getJSON" class="tw.iii.qr.order.getJSON"	scope="page" />
 <%
+if(request.getParameter("QR_id")!=null){
 JSONArray pickupResults = getJSON.pickupDetail(request);
 out.print(pickupResults);
+} 
+if(request.getParameter("status")!=null){
+getJSON.updateToFinished(request);
+}
 %>
