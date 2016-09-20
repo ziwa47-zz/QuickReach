@@ -17,7 +17,8 @@
 <%
   COrderFactory.checkUrlToRemoveSession(request, session);
   Connection conn = new DataBaseConn().getConn();
-  LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"待處理");
+  //LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"待處理");
+  LinkedList<COrders> orderList = new LinkedList<COrders>();
   request.setAttribute("list", orderList);
   request.setAttribute("begin", request.getParameter("begin"));
   request.setAttribute("end", request.getParameter("end"));
