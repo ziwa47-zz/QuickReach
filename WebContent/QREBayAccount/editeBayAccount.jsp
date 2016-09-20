@@ -36,7 +36,7 @@
   <ol class="breadcrumb">
     <li><a href="../HomePage.jsp">首頁</a></li>
     <li class="active"><a href="eBayAccount.jsp">eBay帳號管理</a></li>
-    <li><a href="eBayAccount.jsp">新增eBay帳號</a></li>
+    <li><a href="addAccount.jsp">新增eBay帳號</a></li>
   </ol>
 </div>
 
@@ -65,7 +65,7 @@ System.out.println(ebayaccount.getebayId());
           <h4>ebay ID</h4>
         </div>
         <div class="col-md-5 well-sm control-label">
-          <input class="form-control" type="text" name="ebayId" value="${eBayAccount.getebayId()}" >
+          <input class="form-control" type="text" name="ebayId" value="${eBayAccount.getebayId()}" readonly>
         </div>
       </div>
       
