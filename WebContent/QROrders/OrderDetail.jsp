@@ -46,7 +46,6 @@ conn.close();
         <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
-        <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
         <li><a href="ShipmentRecord.jsp?begin=0&end=10" >訂單出貨記錄</a></li>
       </ul>
     </div>
@@ -233,10 +232,6 @@ conn.close();
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>物流配送方式</h4></div>
 		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getLogistics()}"></div>
-		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>提早出貨</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>出貨編號</h4></div>
