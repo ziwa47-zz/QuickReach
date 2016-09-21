@@ -132,8 +132,11 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td><input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getEbayItemNO()}"></td>
-                    <td>${i.getCOrderMaster().getLogistics()}<input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getLogistics()}"></td>
+                    <td>
+                      <input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getEbayItemNO()}">
+                      <input type="hidden" name="paypalmentId" value="${i.getCOrderMaster().getPaypalmentId()}">
+                    </td>
+                    <td>${i.getCOrderMaster().getLogistics()}<input type="hidden" name="logistics" value="${i.getCOrderMaster().getLogistics()}"></td>
                     <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
@@ -165,8 +168,10 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td><input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getEbayItemNO()}"></td>
-                    <td>${i.getCOrderMaster().getLogistics()}<input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getLogistics()}"></td>
+                    <td><input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getEbayItemNO()}">
+                      <input type="hidden" name="paypalmentId" value="${i.getCOrderMaster().getPaypalmentId()}">
+                    </td>
+                    <td>${i.getCOrderMaster().getLogistics()}<input type="hidden" name="logistics" value="${i.getCOrderMaster().getLogistics()}"></td>
                     <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
