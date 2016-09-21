@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import tw.iii.qr.DataBaseConn;
+
 public class CProductFactory extends CProduct {
 
 	public CProductFactory() {
@@ -158,13 +160,12 @@ public class CProductFactory extends CProduct {
 	}
 
 	public void updateProduct(HttpServletRequest request, Connection conn) throws SQLException {
-		String strsql = "UPDATE  product SET " 
-				+ "owner  = ?," + "productType  = ?," + "brand  = ?,"
-				+ "subBrand  = ?," + "EAN  = ?," + "productCode  = ?," + "P_name  = ?," + "spec  = ?," + "color  = ?,"
-				+ "cost  = ?," + "comment  = ?," + "checkupdate  = ?," + "added  = ?," + "weight  = ?,"
-				+ "packageMatrial  = ?," + "vilumetricWeight  = ? ,"+" volume = ? " + " WHERE  sku  = ? ";
+		String strsql = "UPDATE  product SET " + "owner  = ?," + "productType  = ?," + "brand  = ?," + "subBrand  = ?,"
+				+ "EAN  = ?," + "productCode  = ?," + "P_name  = ?," + "spec  = ?," + "color  = ?," + "cost  = ?,"
+				+ "comment  = ?," + "checkupdate  = ?," + "added  = ?," + "weight  = ?," + "packageMatrial  = ?,"
+				+ "vilumetricWeight  = ? ," + " volume = ? " + " WHERE  sku  = ? ";
 		CProduct cp = new CProduct();
-		
+
 		cp.setOwner(request.getParameter("owner"));
 		cp.setProductType(request.getParameter("producttype"));
 		cp.setBrand(request.getParameter("brand"));
@@ -183,64 +184,142 @@ public class CProductFactory extends CProduct {
 		cp.setVilumetricWeight(Double.valueOf(request.getParameter("vilu")));
 		cp.setVolume(request.getParameter("volume"));
 		cp.setSKU(request.getParameter("sku"));
-		
+
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
 
-		ps.setString(1, cp.getOwner()); //owner
+		ps.setString(1, cp.getOwner()); // owner
 		ps.setString(2, cp.getProductType()); // productType
-		ps.setString(3, cp.getBrand()); //brand
-		ps.setString(4, cp.getSubBrand()); //subbrand
-		ps.setString(5, cp.getEAN()); //Ean
-		ps.setString(6, cp.getProductCode()); //productcode
-		ps.setString(7, cp.getP_name()); //pname
-		ps.setString(8, cp.getSpec()); //spec
-		ps.setString(9, cp.getColor()); //color
-		ps.setDouble(10, cp.getCost()); //cost
+		ps.setString(3, cp.getBrand()); // brand
+		ps.setString(4, cp.getSubBrand()); // subbrand
+		ps.setString(5, cp.getEAN()); // Ean
+		ps.setString(6, cp.getProductCode()); // productcode
+		ps.setString(7, cp.getP_name()); // pname
+		ps.setString(8, cp.getSpec()); // spec
+		ps.setString(9, cp.getColor()); // color
+		ps.setDouble(10, cp.getCost()); // cost
 		ps.setString(11, cp.getComment()); // comment
-		ps.setDate(12, cp.getCheckupdate()); //checkupdate
-		ps.setString(13, cp.getAdded()); //added
-		ps.setDouble(14, cp.getWeight()); //weight
-		ps.setString(15, cp.getPackageMatrial()); //package
+		ps.setDate(12, cp.getCheckupdate()); // checkupdate
+		ps.setString(13, cp.getAdded()); // added
+		ps.setDouble(14, cp.getWeight()); // weight
+		ps.setString(15, cp.getPackageMatrial()); // package
 		ps.setDouble(16, cp.getVilumetricWeight()); // vilu
 		ps.setString(17, cp.getVolume()); // Volume
-		ps.setString(18,cp.getSKU());
+		ps.setString(18, cp.getSKU());
 		int i = ps.executeUpdate();
-		
+
 	}
-	
-	public void InsertNewProduct (HttpServletRequest request, Connection conn) throws SQLException{
+
+	public void InsertNewProduct(HttpServletRequest request, Connection conn) throws SQLException {
 		String strsql = "INSERT INTO product(SKU,owner,productType,brand,subbrand,ean,productCode,p_name,spec"
-				+ ",color,securedQty,cost,comment,checkupdate,added,weight,packageMatrial,vilumetricWeight,createDate,picturePath,volume) "+
-			 " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; //(20個)，還未加入barCode
-	
+				+ ",color,securedQty,cost,comment,checkupdate,added,weight,packageMatrial,vilumetricWeight,createDate,picturePath,volume) "
+				+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; // (20個)，還未加入barCode
+
 		PreparedStatement ps = null;
-		//System.out.print(strsql); 
+		// System.out.print(strsql);
 		ps = conn.prepareStatement(strsql);
-		
+
 		ps.setString(1, request.getParameter("SKU"));
-		//ps.setString(1, request.getParameter("barCode")); //此行未加入
+		// ps.setString(1, request.getParameter("barCode")); //此行未加入
 		ps.setString(2, request.getParameter("owner"));
 		ps.setString(3, request.getParameter("productType"));
 		ps.setString(4, request.getParameter("brand"));
 		ps.setString(5, request.getParameter("subBrand"));
-		ps.setString(6, request.getParameter("EAN"));//(6)
+		ps.setString(6, request.getParameter("EAN"));// (6)
 		ps.setString(7, request.getParameter("productCode"));
 		ps.setString(8, request.getParameter("P_name"));
 		ps.setString(9, request.getParameter("spec"));
 		ps.setString(10, request.getParameter("color"));
-		ps.setInt(11, Integer.valueOf(request.getParameter("securedQty")));//(11)
+		ps.setInt(11, Integer.valueOf(request.getParameter("securedQty")));// (11)
 		ps.setDouble(12, Double.valueOf(request.getParameter("cost")));
 		ps.setString(13, request.getParameter("comment"));
 		ps.setDate(14, Date.valueOf(request.getParameter("checkupdate")));
 		ps.setString(15, request.getParameter("added"));
-		ps.setDouble(16, Double.valueOf(request.getParameter("weight")));//(16)
+		ps.setDouble(16, Double.valueOf(request.getParameter("weight")));// (16)
 		ps.setString(17, request.getParameter("packageMatrial"));
 		ps.setDouble(18, Double.valueOf(request.getParameter("vilumetricWeight")));
 		ps.setDate(19, Date.valueOf(request.getParameter("createDate")));
-		ps.setString(20, request.getParameter("picturePath")); //picturePath(20)
+		ps.setString(20, request.getParameter("picturePath")); // picturePath(20)
 		ps.setString(21, request.getParameter("volume"));
-		int i =ps.executeUpdate();
+		int i = ps.executeUpdate();
+	}
+	
+	public Double isBundle(String sku){
+		Double cost = 0.0 ;
+		try{
+		if(sku.substring(0,3).equals("B00")){
+		cost =	plusBundleCost(sku);
+		}else{
+		cost =	plusSingleCost(sku);
+		}
+		}catch(Exception e ){
+			e.printStackTrace();
+		}
+		return cost;
+	}
+	
+
+	public Double plusBundleCost(String sku) throws SQLException {
+		Connection conn;
+		Double cost = 0.0;
+		LinkedList<String> skulist = new LinkedList<String>();
+		try {
+			conn = new DataBaseConn().getConn();
+
+			String strsql = " select p_sku from bundles where '1' = '1' and m_sku = ? ";
+			PreparedStatement ps = conn.prepareStatement(strsql);
+			ps.setString(1, sku);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				skulist.add(rs.getString(1));
+			}
+			rs = null;
+			ps = null;
+			
+			
+			
+			for (int i = 0; i < skulist.size(); i++) {
+				String strsql2 = "select cost from product where sku = ?";
+				ps = conn.prepareStatement(strsql2);
+				ps.setString(1, skulist.get(i));
+
+				rs = ps.executeQuery();
+				if(rs.next()) {
+					cost += rs.getDouble(1);
+				}
+			}
+			rs.close();
+			ps.close();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return cost;
+	}
+
+	public Double plusSingleCost(String sku) throws SQLException {
+		Connection conn;
+		Double cost = 0.0;
+		PreparedStatement ps;
+		ResultSet rs;
+		try {
+			conn = new DataBaseConn().getConn();
+
+			String strsql = "select cost from product where sku = ?";
+			ps = conn.prepareStatement(strsql);
+			ps.setString(1, sku);
+
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				cost += rs.getDouble(1);
+			}
+			rs.close();
+			ps.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cost;
 	}
 
 }

@@ -272,7 +272,7 @@ public class BundlesFactory {
 		dbc.connclose(conn);
 	}
 	
-public void bundlesDeleteFormBundles(String sku) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+	public void bundlesDeleteFormBundles(String sku) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
 		
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
@@ -283,6 +283,26 @@ public void bundlesDeleteFormBundles(String sku) throws IllegalAccessException, 
 		state.executeUpdate(sqlstr);
 		state.close();
 		dbc.connclose(conn);
+	}
+	
+	public int getStock(String sku) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+		
+		DataBaseConn dbc = new DataBaseConn();		
+		Connection conn = dbc.getConn() ;
+		state = conn.createStatement();
+
+		String sqlstr = "select qty from storage where sku='"+sku+"'";
+
+		ResultSet rs = state.executeQuery(sqlstr);
+	
+		while (rs.next()) {
+			return rs.getInt(1);		
+		}
+		
+		rs.close();
+		state.close();	
+		dbc.connclose(conn);
+		return 0;
 	}
 	
 }

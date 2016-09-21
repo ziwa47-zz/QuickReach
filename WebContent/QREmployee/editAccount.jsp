@@ -1,4 +1,5 @@
 <%@page import="tw.iii.qr.DataBaseConn"%>
+<%@page import="tw.iii.qr.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -41,6 +42,11 @@
 </div>
 <%
 request.setCharacterEncoding("UTF-8");
+
+LinkedList<Competence> list= getaccount.getCompetence();
+session.setAttribute("getCompetenceLv", list);
+
+
 String account1 = request.getParameter("p");
 
 System.out.println(account1);   
@@ -51,6 +57,8 @@ Connection conn = new DataBaseConn().getConn();
 QRAccount accountinfo  = getaccount.searchDetail(account1);
 session.setAttribute("accountinfo", accountinfo);
 System.out.println(accountinfo.getAccount());
+
+conn.close();
 }
 %>  
 
@@ -114,7 +122,7 @@ System.out.println(accountinfo.getAccount());
             <h4>權限等級</h4>
           </div>
            <div class="col-md-5 well-sm">
-            <select class="form-control" name="CompetenceLv" >
+            <select class="form-control" name="competenceLv" >
               <c:forEach var="i" varStatus="check" items="${getCompetenceLv}" begin="0" step="1">
                 <option  value="${i.getCompetenceLv()}">${i.getCompetenceLv()}</option>
               </c:forEach>
@@ -123,29 +131,28 @@ System.out.println(accountinfo.getAccount());
         </div>
         
         
-        <div class="row">
+     <div class="row">
           <div class="col-md-3 text-right well-sm label-tag"  >
             <h4>帳號狀態</h4>
           </div>
           <div class="col-md-5 well-sm">           
-            <c:if test="${accountinfo.getstatus() eq 'ON' }"> 
-              	<input type="radio" id="id_fd-is_active_0" value="ON" name="status" checked/> 有效
-          	  	<input type="radio" id="id_fd-is_active_0" value="OFF" name="status"/> 停用
+            <c:if test="${accountinfo.getStatus() == 1 }"> 
+              	<input type="radio" id="id_fd-is_active_0" value="1" name="status" checked/> 有效
+          	  	<input type="radio" id="id_fd-is_active_0" value="0" name="status"/> 停用
            	</c:if>          
-            <c:if test="${accountinfo.getstatus() eq 'OFF' }"> 
-                <input type="radio" id="id_fd-is_active_0" value="ON" name="status"/> 有效
-          	    <input type="radio" id="id_fd-is_active_0" value="OFF" name="status" checked/> 停用
+            <c:if test="${accountinfo.getStatus() == 0 }"> 
+                <input type="radio" id="id_fd-is_active_0" value="1" name="status"/> 有效
+          	    <input type="radio" id="id_fd-is_active_0" value="0" name="status" checked/> 停用
             </c:if>
           </div>
-        </div>
-        
+           </div>
+          
         
         <div class="" align="center">
           <button type="submit" name="submit" value="editAccount" class="btn-lg btn-success">修改送出</button>
-          <td><a href="accountManage.jsp">
-            <input type="button" value="取消" class="btn-lg btn-success">
-            </a></td>
+          <a href="accountManage.jsp"><button type="button" value="取消" class="btn-lg btn-success">取消</button></a>
         </div>
+        
       </div>
     </fieldset>
   </form>
