@@ -181,13 +181,14 @@
       <form name="searchform" method="post" action="#" style="font-size: 100%; vertical-align: baseline; padding: 15px;" class="form-inline container">
         <table class="table table-bordered table-hover table-condensed pull-left" style="margin: 0 0 0 -15px">
           <tr class="ListTitle2">
-            <th>編輯</th>
+            <th nowrap>查看</th>
             <th>SKU</th>
             <th>廠牌</th>
             <th>副廠牌</th>
             <th>品名</th>
             <th>規格</th>
             <th>顏色</th>
+          
           </tr>
           <c:forEach var="i" items="${productall}" begin="0" step="1" varStatus="check">
             <tr>
@@ -198,6 +199,7 @@
               <td>${i.getP_name()}</td>
               <td>${i.getSpec()}</td>
               <td>${i.getColor()}</td>
+             
             </tr>
           </c:forEach>
         </table>

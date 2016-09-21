@@ -39,7 +39,6 @@
         <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10" style="color:#fff">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
-        <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
         <li><a href="ShipmentRecord.jsp?begin=0&end=10" >訂單出貨記錄</a></li>
       </ul>
     </div>
@@ -132,8 +131,11 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td><input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getEbayItemNO()}"></td>
-                    <td>${i.getCOrderMaster().getLogistics()}<input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getLogistics()}"></td>
+                    <td>
+                      <input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getEbayItemNO()}">
+                      <input type="hidden" name="paypalmentId" value="${i.getCOrderMaster().getPaypalmentId()}">
+                    </td>
+                    <td>${i.getCOrderMaster().getLogistics()}<input type="hidden" name="logistics" value="${i.getCOrderMaster().getLogistics()}"></td>
                     <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
@@ -165,8 +167,10 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td><input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getEbayItemNO()}"></td>
-                    <td>${i.getCOrderMaster().getLogistics()}<input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getLogistics()}"></td>
+                    <td><input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getEbayItemNO()}">
+                      <input type="hidden" name="paypalmentId" value="${i.getCOrderMaster().getPaypalmentId()}">
+                    </td>
+                    <td>${i.getCOrderMaster().getLogistics()}<input type="hidden" name="logistics" value="${i.getCOrderMaster().getLogistics()}"></td>
                     <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
