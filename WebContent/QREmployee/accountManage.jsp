@@ -55,7 +55,7 @@ conn1.close();
           <tr class="ListTitle2">
             <th>編輯</th>
             <th>員工帳號</th>
-            <th>密碼</th>
+        <!--<th>密碼</th>-->
             <th>姓氏</th>
             <th>名字</th>
             <th>E-Mail</th>
@@ -72,7 +72,7 @@ conn1.close();
               <!-- account -->
               
               <!--<c:if test="${i.getPassword()==i.getPassword()}"> -->
-              <td>*****</td>
+              <!--<td>*****</td>-->
               <!--</c:if> -->                         
               <!-- password -->
               
