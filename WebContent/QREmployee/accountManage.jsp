@@ -55,7 +55,7 @@ conn1.close();
           <tr class="ListTitle2">
             <th>編輯</th>
             <th>員工帳號</th>
-            <th>密碼</th>
+        <!--<th>密碼</th>-->
             <th>姓氏</th>
             <th>名字</th>
             <th>E-Mail</th>
@@ -70,8 +70,12 @@ conn1.close();
               <td><a href ="editAccount.jsp?p=${i.getAccount()}"> <img src="../img/compose-4.png"></a></td>
               <td>${i.getAccount()}</td>
               <!-- account -->
-              <td>${i.getPassword()}</td>
+              
+              <!--<c:if test="${i.getPassword()==i.getPassword()}"> -->
+              <!--<td>*****</td>-->
+              <!--</c:if> -->                         
               <!-- password -->
+              
               <td>${i.getLastName()}</td>
               <td>${i.getFirstName()}</td>
               <!-- firstname -->

@@ -209,7 +209,8 @@
               <td>${i.getP_name()}</td>
               <td>${i.getSpec()}</td>
               <td>${i.getColor()}</td>
-              <td></td>
+              <td>${i.getAllStock()}</td>
+              
             </tr>
             </tbody>
           </c:forEach>
