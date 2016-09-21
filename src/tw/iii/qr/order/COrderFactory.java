@@ -654,9 +654,10 @@ public class COrderFactory extends COrders {
 	}
 	
 	public void updateToFinished(HttpServletRequest request, Connection conn) throws Exception {
-		String strSql = "update orders_master" + " set orderStatus = N'已完成', shippingDate = getdate() " + " where QR_id = ? ";
+		String strSql = "update orders_master" + " set orderStatus = N'已完成', shippingDate = getdate() , trackingCode = ? " + " where QR_id = ? ";
 		PreparedStatement ps = conn.prepareStatement(strSql);
-		ps.setString(1, request.getParameter("QR_id"));
+		ps.setString(1, request.getParameter("trackingCode"));
+		ps.setString(2, request.getParameter("QR_id"));
 		ps.executeUpdate();
 	}
 	
