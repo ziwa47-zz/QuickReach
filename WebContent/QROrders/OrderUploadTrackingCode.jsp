@@ -39,7 +39,6 @@
         <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10" style="color:#fff">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
-        <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
         <li><a href="ShipmentRecord.jsp?begin=0&end=10" >訂單出貨記錄</a></li>
       </ul>
     </div>
@@ -67,8 +66,8 @@
               </div>
             </div>
           </div>
-          <button type="submit" name="send" value="sendTrackingCode" class="btn btn-lg btn-primary">送出追蹤碼</button>
-      
+          <button type="submit" name="send" value="sendTrackingCode" class="btn btn-lg btn-primary">送出追蹤碼(真實)</button>
+      	  <button type="submit" name="send" value="sendTrackingCodeSandbox" class="btn btn-lg btn-primary">送出追蹤碼(沙盒)</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
@@ -132,8 +131,11 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td></td>
-                    <td>${i.getCOrderMaster().getLogistics()}</td>
+                    <td>
+                      <input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getEbayItemNO()}">
+                      <input type="hidden" name="paypalmentId" value="${i.getCOrderMaster().getPaypalmentId()}">
+                    </td>
+                    <td>${i.getCOrderMaster().getLogistics()}<input type="hidden" name="logistics" value="${i.getCOrderMaster().getLogistics()}"></td>
                     <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
@@ -143,7 +145,7 @@
                   <tr style="background-color:#D4F4D8">
 					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
                     <td colspan="3">
@@ -165,8 +167,10 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td></td>
-                    <td>${i.getCOrderMaster().getLogistics()}</td>
+                    <td><input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getEbayItemNO()}">
+                      <input type="hidden" name="paypalmentId" value="${i.getCOrderMaster().getPaypalmentId()}">
+                    </td>
+                    <td>${i.getCOrderMaster().getLogistics()}<input type="hidden" name="logistics" value="${i.getCOrderMaster().getLogistics()}"></td>
                     <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
@@ -176,7 +180,7 @@
                   <tr>
 					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
                     <td colspan="3">
@@ -197,6 +201,7 @@
         </form>
       </div>
       </div>
+<%@ include file="../href/footer.jsp" %>
 <script type="text/javascript">
  	function preventDoubleOrder(ele){
  	  var id = ele.value;

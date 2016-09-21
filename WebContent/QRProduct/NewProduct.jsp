@@ -143,13 +143,8 @@ session.setAttribute("today", today);
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>ProductCode</h4></div>
                       <div class="col-md-8  well-sm"><input class="form-control"    type="text" name="productCode" value="" ></div>
                   </div>
-                  <div class="row">
-                      <div class="col-md-3 text-right well-sm label-tag"  ><h4>上傳圖片</h4></div>
-                      <div class="col-md-8  well-sm">
-                        <input class="" type="file" name="pic" accept="image/*">
-                       
-                      </div>
-                  </div>
+                  
+                      
               </div>
             </div>
           </div>

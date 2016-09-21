@@ -17,7 +17,8 @@
 <%
   COrderFactory.checkUrlToRemoveSession(request, session);
   Connection conn = new DataBaseConn().getConn();
-  LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"待處理");
+  //LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"待處理");
+  LinkedList<COrders> orderList = new LinkedList<COrders>();
   request.setAttribute("list", orderList);
   request.setAttribute("begin", request.getParameter("begin"));
   request.setAttribute("end", request.getParameter("end"));
@@ -39,7 +40,6 @@
         <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
-        <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
         <li><a href="ShipmentRecord.jsp?begin=0&end=10" >訂單出貨記錄</a></li>
       </ul>
     </div>
@@ -311,19 +311,19 @@
           </ul>
 		  <table class="table table-bordered table-hover table-condensed pull-left" style="margin:0 0 0 -15px">
             <tr class="ListTitle">
-              <th>選取</th>
-              <th>編輯</th>
-              <th>訂單編號</th>
-              <th>平台</th>
-              <th>Ebay Account</th>
-              <th>客戶帳號</th>
-              <th>購買日期</th>
-              <th>出貨日期</th>
-              <th>物流</th>
-              <th>國家</th>
-              <th>訂單狀態</th>
-              <th>總金額</th>
-              <th>使用者</th>
+              <th nowrap>選取</th>
+              <th nowrap>編輯</th>
+              <th nowrap>訂單編號</th>
+              <th nowrap>平台</th>
+              <th nowrap>Ebay Account</th>
+              <th nowrap>客戶帳號</th>
+              <th nowrap>購買日期</th>
+              <th nowrap>出貨日期</th>
+              <th nowrap>物流</th>
+              <th nowrap>國家</th>
+              <th nowrap>訂單狀態</th>
+              <th nowrap>總金額</th>
+              <th nowrap>使用者</th>
             </tr>
             <c:forEach var="i" items="${SearchOrdersResult}" begin="${begin}" end="${end}" step="1" varStatus="check">
               <c:choose>
@@ -338,15 +338,16 @@
                     <td>${i.getCOrderMaster().getPayDate()}</td>
                     <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
-                    <td>${i.getCOrderMaster().getOrderStatus()}</td>
                     <td>${i.getCOrderReciever().getCountry()}</td>
+                    <td>${i.getCOrderMaster().getOrderStatus()}
+                    <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
                     <td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
                     <td colspan="3">
@@ -380,7 +381,7 @@
                   <tr>
 					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                      <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
                     <td colspan="3">
@@ -444,19 +445,19 @@
           </ul>
           <table class="table table-bordered table-hover table-condensed pull-left" style="margin:0 0 0 -15px">
             <tr class="ListTitle">
-              <th>選取</th>
-              <th>編輯</th>
-              <th>訂單編號</th>
-              <th>平台</th>
-              <th>Ebay Account</th>
-              <th>客戶帳號</th>
-              <th>購買日期</th>
-              <th>出貨日期</th>
-              <th>物流</th>
-              <th>國家</th>
-              <th>訂單狀態</th>
-              <th>總金額</th>
-              <th>使用者</th>
+              <th nowrap>選取</th>
+              <th nowrap>編輯</th>
+              <th nowrap>訂單編號</th>
+              <th nowrap>平台</th>
+              <th nowrap>Ebay Account</th>
+              <th nowrap>客戶帳號</th>
+              <th nowrap>購買日期</th>
+              <th nowrap>出貨日期</th>
+              <th nowrap>物流</th>
+              <th nowrap>國家</th>
+              <th nowrap>訂單狀態</th>
+              <th nowrap>總金額</th>
+              <th nowrap>使用者</th>
             </tr>
             <c:forEach var="i" items="${list}" begin="${begin}" end="${end}" step="1" varStatus="check">
               <c:choose>
@@ -480,7 +481,7 @@
                   <tr style="background-color:#D4F4D8">
 					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
                     <td colspan="3">
@@ -513,7 +514,7 @@
                   <tr>
 					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
                     <td colspan="3">

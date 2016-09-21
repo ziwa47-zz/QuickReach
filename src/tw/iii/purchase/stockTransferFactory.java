@@ -244,8 +244,8 @@ public class stockTransferFactory {
 
 	}
 
-	public String makeSqlString(String stockTransferId, String date1, String date2, String sku, String newWareHouse,
-			String oldWareHouse, String staffId) {
+	public String makeSqlString(String stockTransferId, String date1, String date2, String sku, String oldWareHouse,String newWareHouse,
+			 String staffId) {
 		String sqlstr1 = "select a.stockTransferId,b.SKU,b.oldWarehouse,b.oldWarehousePosition1+'-'+b.oldWarehousePosition2,b.newWarehouse,b.newWarehousePosition1+'-'+b.newWarehousePosition2,a.staffName,b.qty,b.comment"
 				+ " from stockTransferlog_master as a  inner join stockTransferlog_detail  as b on  a.stockTransferId = b.stockTransferId  ";
 
@@ -267,15 +267,17 @@ public class stockTransferFactory {
 			sqlstr1 += " and b.SKU like '%" + sku + "%'";
 			System.out.println(sku);
 		}
-		if (!isNullorEmpty(newWareHouse)) {
-			sqlstr1 += " and b.newWareHouse = '"+ newWareHouse +"'";
-			System.out.println(newWareHouse);
-		}
+		
 
 		if (!isNullorEmpty(oldWareHouse)) {
 			sqlstr1 += " and b.oldWareHouse = '"+ oldWareHouse +"'";
 			System.out.println(oldWareHouse);
 		}
+		if (!isNullorEmpty(newWareHouse)) {
+			sqlstr1 += " and b.newWareHouse = '"+ newWareHouse +"'";
+			System.out.println(newWareHouse);
+		}
+
 
 		if (!isNullorEmpty(staffId)) {
 			sqlstr1 += " and a.staffName = N'"+ staffId +"'";
