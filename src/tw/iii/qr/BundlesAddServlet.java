@@ -95,8 +95,8 @@ public class BundlesAddServlet extends HttpServlet {
 			bdf.bundlesToDetail(bdsku);
 			session.removeAttribute("getBundlesAddDetail");
 			session.removeAttribute("bdSKU");
-			session.removeAttribute("bdName");
-			session.removeAttribute("bdComment");
+			session.removeAttribute("bdname");
+			session.removeAttribute("bdcomment");
 			response.sendRedirect("BundlesAdd.jsp");
 			
 		} catch (Exception e) {
