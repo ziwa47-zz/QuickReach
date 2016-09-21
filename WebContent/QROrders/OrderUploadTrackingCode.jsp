@@ -67,8 +67,8 @@
               </div>
             </div>
           </div>
-          <button type="submit" name="send" value="sendTrackingCode" class="btn btn-lg btn-primary">送出追蹤碼</button>
-      
+          <button type="submit" name="send" value="sendTrackingCode" class="btn btn-lg btn-primary">送出追蹤碼(真實)</button>
+      	  <button type="submit" name="send" value="sendTrackingCodeSandbox" class="btn btn-lg btn-primary">送出追蹤碼(沙盒)</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
@@ -132,8 +132,8 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td></td>
-                    <td>${i.getCOrderMaster().getLogistics()}</td>
+                    <td><input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getEbayItemNO()}"></td>
+                    <td>${i.getCOrderMaster().getLogistics()}<input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getLogistics()}"></td>
                     <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
@@ -165,8 +165,8 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td></td>
-                    <td>${i.getCOrderMaster().getLogistics()}</td>
+                    <td><input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getEbayItemNO()}"></td>
+                    <td>${i.getCOrderMaster().getLogistics()}<input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getLogistics()}"></td>
                     <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>

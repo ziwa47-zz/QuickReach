@@ -15,11 +15,13 @@
 
 <script type="text/javascript">
 function optionsonchange(ele){
-	if(ele.checked){
-		$("#optionsRadiosButton").prop("disabled", false);
-	} else{
-		$("#optionsRadiosButton").prop("disabled", true);
-	}
+	if (ele.checked) {
+		  $("#myfields").prop("disabled", false);
+		  $("#btnCheck").prop("disabled", false);
+	  } else {
+		  $("#myfields").prop("disabled", true);
+		  $("#btnCheck").prop("disabled", true);
+	  }
 	
 };
 
@@ -122,11 +124,11 @@ conn.close();
               <input type="checkbox" name= "optionsRadios" id="optionsRadios1"  onchange="optionsonchange(this)">開啟</label>
       	   
       	    <button type="submit" name="submit" value="updateProduct"
-						class="btn-lg btn-success" id = "optionsRadiosButton" disabled>更新產品資料</button></label>
+						class="btn btn-lg btn-success" id = "btnCheck" disabled>更新產品資料</button></label>
       	       
           </div>
       </div>
-    <w id="myfields" class="container-fluid" style="padding:0 30px 0 0;" disabled><legend>產品明細</legend>
+    <fieldset id="myfields" class="container-fluid" style="padding:0 30px 0 0;" disabled><legend>產品明細</legend>
       <input type="hidden">
       <div class="panel-group" id="accordion">
         <div class="panel panel-default">

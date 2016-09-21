@@ -44,6 +44,7 @@ public class COrderMaster {
 	private String paypalmentId;
 	private double paypalTotal;
 	private double paypalNet;
+	private double purchaseCost;
 	
 	
 	public String getOrder_id() {
@@ -292,6 +293,12 @@ public class COrderMaster {
 	}
 	public void setPaypalNet(double paypalNet) {
 		this.paypalNet = paypalNet;
+	}
+	public double getPurchaseCost() {
+		return purchaseCost;
+	}
+	public void setPurchaseCost(double purchaseCost) {
+		this.purchaseCost = purchaseCost;
 	}
 	
 }
