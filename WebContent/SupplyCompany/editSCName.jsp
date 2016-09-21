@@ -57,7 +57,7 @@ conn.close();
   <form name="searchform" method="post" action="../SupplyCompanyServlet.do" class="form-inline container required" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;">
-      <legend>輸入帳號資料</legend>
+      <legend>編輯供應商資料</legend>
       <div class="container-fluid form-horizontal">
       
       <div class="row">
@@ -119,7 +119,7 @@ conn.close();
             <h4>備註</h4>
           </div>
           <div class="col-md-5 well-sm ">     
-             <textarea class="form-control" name="comment"  rows="2"	cols="55"  ></textarea>
+             <textarea class="form-control" name="comment"  rows="2"	cols="55"  >${supplycompany.getComment()}</textarea>
           </div>
         </div>
                  
