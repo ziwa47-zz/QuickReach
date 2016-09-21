@@ -37,7 +37,10 @@ public class CGetEbay {
 	public CGetEbay() {
 		
 	}
-	
+	public void CGetEbay2(){
+		
+		new MyThread().start();
+	}
 	public void CGetEbay1() {
 		// TODO Auto-generated constructor stub
 		 try {
@@ -332,4 +335,14 @@ public class CGetEbay {
 		}
 		return outsideCode;
 	}
+}
+class MyThread extends Thread {
+	CGetEbay c = new CGetEbay();
+	@Override
+	public void run() {
+		
+		c.CGetEbay1();
+		
+	}
+
 }
