@@ -339,8 +339,9 @@
                     <td>${i.getCOrderMaster().getPayDate()}</td>
                     <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
-                    <td>${i.getCOrderMaster().getOrderStatus()}</td>
                     <td>${i.getCOrderReciever().getCountry()}</td>
+                    <td>${i.getCOrderMaster().getOrderStatus()}
+                    <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>
