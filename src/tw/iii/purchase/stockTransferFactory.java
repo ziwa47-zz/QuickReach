@@ -282,7 +282,7 @@ public class stockTransferFactory {
 			System.out.println(staffId);
 		}
 
-		sqlstr1 += " order by 1 desc";
+		sqlstr1 += " order by a.date desc";
 		return sqlstr1;
 	}
 

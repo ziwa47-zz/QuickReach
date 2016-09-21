@@ -27,5 +27,10 @@
       </div>     
     </div>
   </div>
+<script type="text/javascript">
+$('a').click(function() {
+    $('#spinner').show();
+});
+</script>
 </body>
 </html>

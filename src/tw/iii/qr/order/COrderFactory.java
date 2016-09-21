@@ -62,7 +62,7 @@ public class COrderFactory extends COrders {
 
 		String strSql = "SELECT distinct m.order_id, platform, m.guestAccount, orderDate, shippingDate,"
 				+ " logistics, orderstatus, totalPrice, staffName, m.comment, m.eBayAccount, m.payDate,"
-				+ " m.QR_id, m.currency, r.country"
+				+ " m.QR_id, m.currency, r.country, m.ebayItemNO"
 				+ " FROM  orders_master as m inner join  orders_detail as d on m.QR_id = d.QR_id"
 				+ " left join  orders_guestinfo as g on m.QR_id = g.QR_id"
 				+ " inner join  order_recieverinfo as r on m.QR_id = r.QR_id"
@@ -310,6 +310,7 @@ public class COrderFactory extends COrders {
 			order.COrderMaster.setEbayAccount(rs.getString(11));
 			order.COrderMaster.setPayDate(rs.getDate(12));
 			order.COrderMaster.setQR_id(rs.getString(13));
+			order.COrderMaster.setEbayItemNO(rs.getString(14));
 			// System.out.println(order);
 			orderList.add(order);
 		}
@@ -321,7 +322,7 @@ public class COrderFactory extends COrders {
 
 		String strSql = "SELECT distinct m.order_id, platform, m.guestAccount, orderDate, shippingDate,"
 				+ " logistics, orderstatus, totalPrice, staffName, m.comment, m.eBayAccount, m.payDate,"
-				+ " m.QR_id, m.currency, r.country"
+				+ " m.QR_id, m.currency, r.country, m.ebayItemNO"
 				+ " FROM  orders_master as m inner join  orders_detail as d on m.QR_id = d.QR_id"
 				+ " left join  orders_guestinfo as g on m.QR_id = g.QR_id"
 				+ " inner join  order_recieverinfo as r on m.QR_id = r.QR_id"
@@ -370,6 +371,7 @@ public class COrderFactory extends COrders {
 			order.COrderMaster.setEbayAccount(rs.getString(11));
 			order.COrderMaster.setPayDate(rs.getDate(12));
 			order.COrderMaster.setQR_id(rs.getString(13));
+			order.COrderMaster.setEbayItemNO(rs.getString(14));
 			// System.out.println(order);
 			orderList.add(order);
 		}
