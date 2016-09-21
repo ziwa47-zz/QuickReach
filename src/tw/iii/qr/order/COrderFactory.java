@@ -255,7 +255,7 @@ public class COrderFactory extends COrders {
 			param++;
 		}
 		if (!isNullorEmpty(payDateMax)) {
-			ps.setString(param, payDateMax);
+			ps.setString(param, payDateMax + " 23:59:59");
 			param++;
 		}
 		if (!isNullorEmpty(productName)) {
@@ -263,7 +263,7 @@ public class COrderFactory extends COrders {
 			param++;
 		}
 		if (!isNullorEmpty(shippingDateMin)) {
-			ps.setString(param, shippingDateMin);
+			ps.setString(param, shippingDateMin + " 23:59:59");
 			param++;
 		}
 		if (!isNullorEmpty(shippingDateMax)) {
@@ -323,7 +323,7 @@ public class COrderFactory extends COrders {
 		String strSql = "SELECT distinct m.order_id, platform, m.guestAccount, orderDate, shippingDate,"
 				+ " logistics, orderstatus, totalPrice, staffName, m.comment, m.eBayAccount, m.payDate,"
 				+ " m.QR_id, m.currency, r.country, m.ebayItemNO, m.paypalmentId"
-				+ " FROM  orders_master as m inner join  orders_detail as d on m.QR_id = d.QR_id"
+				+ " FROM  orders_master as m left join  orders_detail as d on m.QR_id = d.QR_id"
 				+ " left join  orders_guestinfo as g on m.QR_id = g.QR_id"
 				+ " inner join  order_recieverinfo as r on m.QR_id = r.QR_id"
 				+ " where '1' = '1' and orderstatus = ?"
@@ -586,6 +586,17 @@ public class COrderFactory extends COrders {
 		
 		ps.setString(1, request.getParameter("item"));
 		int x =ps.executeUpdate();
+		
+//		String strSql2 = "select QR_id from orders_detail where QR_id = ?";
+//		PreparedStatement ps2 = conn.prepareStatement(strSql2);
+//		ps2.setString(1, request.getParameter("QR_id"));
+//		
+//		ResultSet rs = ps2.executeQuery();
+//		if(rs.getString(1) == null){
+//			String strSql3 = "insert into orders_detail (QR_id) values (?)";
+//			PreparedStatement ps3 = conn.prepareStatement(strSql3);
+//			ps3.setString(1, request.getParameter("QR_id"));
+//		}
 	}
 	
 	public void updateToProcessing(HttpServletRequest request, Connection conn) throws SQLException {
