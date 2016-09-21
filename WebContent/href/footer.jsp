@@ -31,6 +31,9 @@
 $('a').click(function() {
     $('#spinner').show();
 });
+$('button').click(function() {
+    $('#spinner').show();
+});
 </script>
 </body>
 </html>
