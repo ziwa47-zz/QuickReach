@@ -322,7 +322,7 @@ public class COrderFactory extends COrders {
 
 		String strSql = "SELECT distinct m.order_id, platform, m.guestAccount, orderDate, shippingDate,"
 				+ " logistics, orderstatus, totalPrice, staffName, m.comment, m.eBayAccount, m.payDate,"
-				+ " m.QR_id, m.currency, r.country, m.ebayItemNO"
+				+ " m.QR_id, m.currency, r.country, m.ebayItemNO, m.paypalmentId"
 				+ " FROM  orders_master as m inner join  orders_detail as d on m.QR_id = d.QR_id"
 				+ " left join  orders_guestinfo as g on m.QR_id = g.QR_id"
 				+ " inner join  order_recieverinfo as r on m.QR_id = r.QR_id"
@@ -371,7 +371,8 @@ public class COrderFactory extends COrders {
 			order.COrderMaster.setEbayAccount(rs.getString(11));
 			order.COrderMaster.setPayDate(rs.getDate(12));
 			order.COrderMaster.setQR_id(rs.getString(13));
-			order.COrderMaster.setEbayItemNO(rs.getString(14));
+			order.COrderMaster.setEbayItemNO(rs.getString(16));
+			order.COrderMaster.setPaypalmentId(rs.getString(17));
 			// System.out.println(order);
 			orderList.add(order);
 		}
@@ -654,9 +655,10 @@ public class COrderFactory extends COrders {
 	}
 	
 	public void updateToFinished(HttpServletRequest request, Connection conn) throws Exception {
-		String strSql = "update orders_master" + " set orderStatus = N'已完成', shippingDate = getdate() " + " where QR_id = ? ";
+		String strSql = "update orders_master" + " set orderStatus = N'已完成', shippingDate = getdate() , trackingCode = ? " + " where QR_id = ? ";
 		PreparedStatement ps = conn.prepareStatement(strSql);
-		ps.setString(1, request.getParameter("QR_id"));
+		ps.setString(1, request.getParameter("trackingCode"));
+		ps.setString(2, request.getParameter("QR_id"));
 		ps.executeUpdate();
 	}
 	

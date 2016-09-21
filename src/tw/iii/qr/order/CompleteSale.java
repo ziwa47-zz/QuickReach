@@ -35,12 +35,25 @@ public class CompleteSale {
         CompleteSaleCall apiCsC = new CompleteSaleCall(apiContext);
         apiCsC.setDetailLevel(new DetailLevelCodeType[]{DetailLevelCodeType.RETURN_ALL,DetailLevelCodeType.ITEM_RETURN_DESCRIPTION,DetailLevelCodeType.ITEM_RETURN_ATTRIBUTES});
         //as TransactionID value
-        apiCsC.setOrderID(request.getParameter("ebayItemNO"));
+        System.out.println(request.getParameter("paypalmentId"));
+        apiCsC.setTransactionID(request.getParameter("paypalmentId"));
+        //itemid
+        System.out.println(request.getParameter("ebayItemNO"));
+        apiCsC.setItemID(request.getParameter("ebayItemNO"));
+        
+        //System.out.println(request.getParameter("ebayItemNO"));
+        //apiCsC.setOrderID(request.getParameter("ebayItemNO"));
+        
         //買家是否付款,賣家是否收到錢
         apiCsC.setPaid(true);
+        //是否已送出
+        apiCsC.setShipped(true);
+        
         ShipmentType ShipmentType1 = new ShipmentType();
         ShipmentType1.setShipmentTrackingNumber(request.getParameter("trackingCode"));
         ShipmentType1.setShippingCarrierUsed(request.getParameter("logistics"));
+        //送出時間
+        //ShipmentType1.setShippedTime(cal);
         apiCsC.setShipment(ShipmentType1);
 
         ErrorType error= new ErrorType(); 
