@@ -324,7 +324,7 @@ conn.close();
 		            <td>
 		              <input class="" type="hidden" name="SKU" value="${i.getSKU()}">
 		              SKU:<br/><a href="../QRProduct/StockDetail.jsp?sku=${i.getSKU()}"><b>${i.getSKU()}</b></a>
-	          		  <button type="submit" name="submit" value="deleteDetail" class="btn btn-sm btn-danger" onClick="myConfirm()">移除此商品
+	          		  <button type="submit" name="submit" value="deleteDetail" class="btn btn-sm btn-danger">移除此商品
 		            </td>
 		            <td>Product Name:<br/>${i.getProductName()}<br/>
 						Invoice Name:<br/><input class="" type="text" name="invoiceName" value="${i.getInvoiceName()}">
@@ -358,22 +358,15 @@ conn.close();
 
 <script type="text/javascript">
  
- function myConfirm(){
-	 var bool = confirm("確認刪除商品?");
-	 if (!bool) {
-	     return false;
-	     }
-  };
-  
-  $(function() {
-		//feildset prop enable
-		$("#optionsRadios1").click(function() {
-			$("#myfields").prop("disabled", false);
-		});
-		$("#optionsRadios2").click(function() {
-			$("#myfields").prop("disabled", true);
-		});
+$(function () {
+	$(".btn-danger").click(function() {
+		bool = confirm("確認是否刪除訂單");
+		if(!bool){
+			return false;
+		}
 	});
+});
+  
   function enableFields(ele){
 	  if (ele.checked) {
 		  $("#myfields").prop("disabled", false);
