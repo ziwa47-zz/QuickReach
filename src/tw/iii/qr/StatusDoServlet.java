@@ -111,10 +111,12 @@ public class StatusDoServlet extends HttpServlet {
 		case "sendTrackingCode":
 			if (!OFactory.checkOrderIdOrderStatus(request, conn) == false){
 				System.out.println("checked true");
-				OFactory.updateToFinished(request, conn);
-				OFactory.deductStock(request, conn);
-				OFactory.insertIntoShippingLog(request, conn);
-				OFactory.insertIntoPurchaseLogFromOrders(request, conn);
+				//OFactory.updateToFinished(request, conn);
+				//OFactory.deductStock(request, conn);
+				//OFactory.insertIntoShippingLog(request, conn);
+				//OFactory.insertIntoPurchaseLogFromOrders(request, conn);
+				CompleteSale myCompleteSale = new CompleteSale();
+				myCompleteSale.CompleteSale1(request);
 				response.sendRedirect("QROrders/OrderFinished.jsp?begin=0&end=10");
 				conn.close();
 			} else {
