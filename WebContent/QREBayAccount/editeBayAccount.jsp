@@ -36,7 +36,7 @@
   <ol class="breadcrumb">
     <li><a href="../HomePage.jsp">首頁</a></li>
     <li class="active"><a href="eBayAccount.jsp">eBay帳號管理</a></li>
-    <li><a href="eBayAccount.jsp">新增eBay帳號</a></li>
+    <li><a href="addAccount.jsp">新增eBay帳號</a></li>
   </ol>
 </div>
 

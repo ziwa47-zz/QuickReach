@@ -47,7 +47,7 @@
 </div>
 <div class="container container-fluid breadcrumbBox">
   <ol class="breadcrumb">
-    <li><a href="../QRMain/HomePag.jsp">首頁</a></li>
+    <li><a href="../HomePage.jsp">首頁</a></li>
     <li class="active" style="display:"><a href="Competence.jsp">權限管理</a></li>
     <li><a href="Competence.jsp">檢視權限</a></li>
   </ol>
