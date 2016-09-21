@@ -46,7 +46,6 @@ conn.close();
         <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
-        <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
         <li><a href="ShipmentRecord.jsp?begin=0&end=10" >訂單出貨記錄</a></li>
       </ul>
     </div>
@@ -67,10 +66,9 @@ conn.close();
   	<div class="row">
       <label for="inputPassword" class="col-md-2 control-label text-left">編輯模式</label>
       <div class="col-md-4">
-        <label class="radio-inline"><input type="radio" name="optionsRadios" id="optionsRadios1">開啟</label>
-        <label class="radio-inline"><input type="radio" name="optionsRadios" id="optionsRadios2">關閉</label>
+        <label class="radio-inline"><input type="checkbox" name="optionsRadios" id="optionsCheck" onchange="enableFields(this)">開關</label>
     	<label class="radio-inline">
-    	<button type="submit" name="submit" value="updateOrder" class="btn btn-lg btn-success">更新商品資料</button>
+    	<button type="submit" name="submit" value="updateOrder" class="btn btn-lg btn-success" id="btnCheck" disabled>更新商品資料</button>
       	</label>
       </div>
     </div>
@@ -236,10 +234,6 @@ conn.close();
 		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getLogistics()}"></div>
 		        </div>
 		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>提早出貨</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
-		        </div>
-		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>出貨編號</h4></div>
 		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
 		        </div>
@@ -370,6 +364,25 @@ conn.close();
 	     return false;
 	     }
   };
+  
+  $(function() {
+		//feildset prop enable
+		$("#optionsRadios1").click(function() {
+			$("#myfields").prop("disabled", false);
+		});
+		$("#optionsRadios2").click(function() {
+			$("#myfields").prop("disabled", true);
+		});
+	});
+  function enableFields(ele){
+	  if (ele.checked) {
+		  $("#myfields").prop("disabled", false);
+		  $("#btnCheck").prop("disabled", false);
+	  } else {
+		  $("#myfields").prop("disabled", true);
+		  $("#btnCheck").prop("disabled", true);
+ 	  }
+   };
   
 </script>  
 

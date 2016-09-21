@@ -17,7 +17,8 @@
 <%
   COrderFactory.checkUrlToRemoveSession(request, session);
   Connection conn = new DataBaseConn().getConn();
-  LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"待處理");
+  //LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"待處理");
+  LinkedList<COrders> orderList = new LinkedList<COrders>();
   request.setAttribute("list", orderList);
   request.setAttribute("begin", request.getParameter("begin"));
   request.setAttribute("end", request.getParameter("end"));
@@ -39,7 +40,6 @@
         <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
-        <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
         <li><a href="ShipmentRecord.jsp?begin=0&end=10" >訂單出貨記錄</a></li>
       </ul>
     </div>
@@ -338,8 +338,9 @@
                     <td>${i.getCOrderMaster().getPayDate()}</td>
                     <td></td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
-                    <td>${i.getCOrderMaster().getOrderStatus()}</td>
                     <td>${i.getCOrderReciever().getCountry()}</td>
+                    <td>${i.getCOrderMaster().getOrderStatus()}
+                    <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
                     <td>${i.getCOrderMaster().getTotalPrice()}</td>
                     <td>${i.getCOrderMaster().getStaffName()}</td>
                   </tr>

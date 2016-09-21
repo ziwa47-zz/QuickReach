@@ -24,6 +24,7 @@ import com.mysql.fabric.xmlrpc.base.Data;
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.order.COrderDetail;
 import tw.iii.qr.order.COrderFactory;
+import tw.iii.qr.order.CompleteSale;
 
 
 @WebServlet("/StatusDo")
@@ -114,6 +115,8 @@ public class StatusDoServlet extends HttpServlet {
 				OFactory.deductStock(request, conn);
 				OFactory.insertIntoShippingLog(request, conn);
 				OFactory.insertIntoPurchaseLogFromOrders(request, conn);
+//				CompleteSale myCompleteSale = new CompleteSale();
+//				myCompleteSale.CompleteSale1(request);
 				response.sendRedirect("QROrders/OrderFinished.jsp?begin=0&end=10");
 				conn.close();
 			} else {
@@ -129,7 +132,14 @@ public class StatusDoServlet extends HttpServlet {
 			OFactory.revertTo(request, conn);
 			response.sendRedirect(request.getHeader("Referer"));
 			conn.close();
-		break;
+			break;
+		case "sendTrackingCodeSandbox":
+			OFactory.updateToFinished(request, conn);
+			CompleteSale myCompleteSale = new CompleteSale();
+			myCompleteSale.CompleteSale1(request);
+			response.sendRedirect("QROrders/OrderFinished.jsp?begin=0&end=10");
+			conn.close();
+			break;
 		}
 		
 		conn.close();

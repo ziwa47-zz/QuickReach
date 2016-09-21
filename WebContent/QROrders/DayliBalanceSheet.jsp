@@ -7,6 +7,7 @@
 	pageEncoding="UTF-8"%>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 	<jsp:useBean id="newd" class="tw.iii.qr.order.DayliBalanceSheetFactory"	scope="page" />
+	<jsp:useBean id="CProductFactory" class="tw.iii.qr.stock.CProductFactory" scope="page" />
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -39,7 +40,6 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
         <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
-        <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
         <li><a href="ShipmentRecord.jsp?begin=0&end=10" >訂單出貨記錄</a></li>
       </ul>
     </div>
@@ -53,12 +53,10 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
     <li><a href="DayliBalanceSheet.jsp">日結表</a></li>
   </ol>
 </div>
-
   
 <div class="container table-responsive" style="background: #D9A56B; border-radius:20px;">
   <form name="searchform" method="post" action="../StatusDo" class="container"
    style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
-    <button type="" name="" class="btn-sm btn-info">清除勾選</button>
     <label>共有:${ndbs.size()}筆</label>
     <c:forEach var="i" items="${ndbs}" begin="0" step="1" varStatus="check">
     <div class="panel-group" id="accordion">
@@ -69,7 +67,6 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
               <thead>
                 <tr>
                   <th>結標日</th>
-                  <th>訂單編號</th>
                   <th>EbayNO.</th>
                   <th>國家</th>
                   <th>E/B 成交價</th>
@@ -77,23 +74,26 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
                   <th>P/P Total</th>
                   <th>P/P FEE</th>
                   <th>P/P NET</th>  <!-- P/P Total - P/P Fee -->
+                  <th>進貨成本</th>
+                  <th>平台</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>${i.getCOrderMaster().getOrderDate()}</td>
-                  <td>${i.getCOrderMaster().getQR_id()}</td>
-                  <td>${i.getCOrderMaster().getOrder_id()}</td>
+                  <td>${i.getCOrderMaster().getEbayNO()}</td>
                   <td>${i.getCOrderReciever().getCountry()}</td>
                   <td>${i.getCOrderMaster().getEbayPrice()}</td>
                   <td>${i.getCOrderMaster().getEbayFees()}</td>
                   <td>${i.getCOrderMaster().getTotalPrice()}</td>
                   <td>${i.getCOrderMaster().getPaypalFees()}</td>
                   <td>${i.getCOrderMaster().getPaypalNet()}</td>
+                  <td>${i.getCOrderMaster().getPurchaseCost()}</td>
+                  <td>${i.getCOrderMaster().getEbayAccount()}</td>
                 </tr>
                 <tr>
-                  <td colspan="4"><c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1">
-                  <b>${j.getSKU()}</b>${j.getProductName()}<br/>
+                  <td colspan="9"><c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1">
+                  <b>${j.getSKU()}</b>&nbsp${j.getProductName()}(SKU/品名)&nbsp數量:${j.getQty()}<br/>
 						</c:forEach>
                   </td>
                 </tr>
@@ -108,14 +108,11 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
                   <th>選取</th>
                   <th>結標日</th>
                   <th>訂單編號</th>
-                  <th colspan="3">SKU</th>
-                  <th colspan="6">品名</th>
+                  <th>SKU</th>
+                  <th>品名</th>
+                  <td>幣別</td>
                   <th>TEL</th>
-                  <th>運費(USD)</th>
-                  <th>包材(NTD)</th>
-                  <th>REMARK</th>
-                  <th>商品持有人</th>
-                  <th>貨重</th>
+                  <td>遞交方式</td>
                 </tr>
                 <tr>
                   <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id"
@@ -123,50 +120,10 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
                     onchange="enableOrderStatus(this)"></td>
                   <td>${i.getCOrderMaster().getOrderDate()}</td>
                   <td>${i.getCOrderMaster().getQR_id()}</td>
-                  <td colspan="3">${i.getCOrderDetailSingle().getSKU()}</td><!--sku-->
-                  <td colspan="6">${i.getCOrderDetailSingle().getProductName()}</td><!--productName-->
-                  <td>${i.getCOrderGuestInfo().getTel1()}</td>
-                  <td>${i.getCOrderMaster().getShippingFees()}</td>
-                  <td>${i.getCOrderMaster().getPackageFees()}</td>
-                  <td>${i.getCOrderMaster().getComment()}</td>
-                  <td>${i.getCOrderDetailSingle().getOwner()}</td><!--owner-->
-                  <td>${i.getCOrderMaster().getTotalWeight()}</td>
-                </tr>
-                <tr class="ListTitle">
-                  <td>E/B NO.</td>
-                  <td>E/B ITEM NO.</td>
-                  <td>數量</td>
-                  <td>E/B ID</td>
-                  <td>國家</td>
-                  <td>幣別</td>
-                  <td>E/B 成交價</td>
-                  <td>E/B 含運價</td>
-                  <td>P/P Date</td>
-                  <td>P/P PAYMENT ID</td>
-                  <td>P/P TOTAL</td>
-                  <td>P/P FEE</td>
-                  <td>P/P NET</td>
-                  <td>進貨成本 NTD</td>
-                  <td>寄件日</td>
-                  <td>遞交方式</td>
-                  <td>EBAYFEE (US)</td>
-                </tr>
-                <tr>
-                  <td>${i.getCOrderMaster().getEbayNO()}</td>
-                  <td>${i.getCOrderMaster().getEbayItemNO()}</td>
-                  <td>${i.getCOrderDetailSingle().getQty()}</td><!--qty-->
-                  <td>${i.getCOrderMaster().getEbayAccount()}</td>
-                  <td>${i.getCOrderReciever().getCountry()}</td>
+                  <td>${i.getCOrderDetailSingle().getSKU()}</td><!--sku-->
+                  <td>${i.getCOrderDetailSingle().getProductName()}</td><!--productName-->
                   <td>${i.getCOrderMaster().getCurrency()}</td>
-                  <td>${i.getCOrderMaster().getEbayPrice()}</td>
-                  <td>${i.getCOrderMaster().getTotalPrice()}</td>
-                  <td>${i.getCOrderMaster().getPayDate()}</td>
-                  <td>${i.getCOrderMaster().getPaypalmentId()}</td>
-                  <td>${i.getCOrderMaster().getPaypalTotal()}</td>
-                  <td>${i.getCOrderMaster().getPaypalFees()}</td>
-                  <td>${i.getCOrderMaster().getPaypalNet()}</td>
-                  <td>${i.getCOrderDetailSingle().getPrice()}</td><!--Pricex-->
-                  <td>${i.getCOrderMaster().getShippingDate()}</td>
+                  <td>${i.getCOrderGuestInfo().getTel1()}</td>
                   <td>
                     <select name="init" id="${i.getCOrderMaster().getQR_id()}" onchange="autoChecked(this)">
                       <option value="">請選擇</option>
@@ -180,7 +137,6 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
                       <option value="Post">Post</option>
                     </select>
                   </td>
-                  <td>${i.getCOrderMaster().getEbayFees()}</td>
                 </tr>
             </table>
           </div>
