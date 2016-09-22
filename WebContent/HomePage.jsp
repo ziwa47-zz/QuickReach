@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE>
@@ -40,6 +40,7 @@
   </ul>	
 
   <div class="tab-content">
+
     <c:if test="${PageCompetence.getProductManage()==1}">
 	    <div id="home" class="tab-pane fade in active">
 	      <h3>商品管理</h3>
@@ -54,6 +55,7 @@
 	      </div>
 	    </div>
  	</c:if>  
+
     <div id="menu1" class="tab-pane fade">
       <h3>訂單資訊</h3>
       <div class="row" style="font-size:24px; padding:10px">
