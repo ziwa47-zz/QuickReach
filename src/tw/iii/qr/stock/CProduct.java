@@ -26,6 +26,7 @@ public class CProduct {
 	private Date createDate;
 	private String picturePath;
 	private String volume;
+	private int AllStock;
 	public String getItem() {
 		return item;
 	}
@@ -159,6 +160,12 @@ public class CProduct {
 	}
 	public void setVolume(String volume) {
 		this.volume = volume;
+	}
+	public int getAllStock() {
+		return AllStock;
+	}
+	public void setAllStock(int allStock) {
+		AllStock = allStock;
 	}
 }
 	

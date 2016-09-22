@@ -36,6 +36,7 @@ public class LoginServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("NONO");
+			response.sendRedirect("/Login.jsp?p=0");
 		}
 	}
 
@@ -47,6 +48,7 @@ public class LoginServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("NONO");
+			response.sendRedirect("/Login.jsp?p=0");
 		}
 		
 		

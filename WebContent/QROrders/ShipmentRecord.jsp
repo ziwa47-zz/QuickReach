@@ -40,7 +40,6 @@
         <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
-        <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
         <li><a href="ShipmentRecord.jsp?begin=0&end=10" style="color:#fff">訂單出貨記錄</a></li>
       </ul>
     </div>
@@ -254,13 +253,6 @@
               </c:otherwise>
             </c:choose>
             <label>共有:${SearchOrdersResult.size()}筆</label>
-            <label>顯示
-              <select class="form-control" name="showCounts" onChange="">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-              </select>
-              筆</label>
           </ul>
           <table class="table table-bordered table-hover table-condensed pull-left" style="margin:0 0 0 -15px">
             <thead>
@@ -362,13 +354,6 @@
               </c:otherwise>
             </c:choose>
             <label>共有:${list.size()}筆</label>
-            <label>顯示
-              <select class="form-control" name="showCounts" onChange="">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-              </select>
-              筆</label>
           </ul>
           <table class="table table-bordered table-hover table-condensed pull-left" style="margin:0 0 0 -15px">
             <thead>

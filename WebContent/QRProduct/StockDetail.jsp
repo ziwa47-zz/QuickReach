@@ -80,7 +80,7 @@ conn1.close();
       <div class="container-fluid form-horizontal">
        <div class="row">
           <div class="col-md-3 text-right well-sm label-tag"  ><h4>品名</h4></div>
-          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="P_name" value="${product.getP_name()}" ></div>
+          <div class="col-md-9 well-sm"><input class="form-control" type="text" name="P_name" value="${product.getP_name()}" ></div>
         </div>
         <div class="row">
           <div class="col-md-3 text-right well-sm label-tag"  ><h4>SKU</h4></div>
@@ -104,7 +104,7 @@ conn1.close();
         </div>
         <div class="row">
           <div class="col-md-3 text-right well-sm label-tag"  ><h4>供應商代號</h4></div>
-          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="cid" value="${product.getSKU()}" ></div>
+          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="cid" value="${stock.get(0).getCompany()}" ></div>
         </div>
       </div>
     </fieldset>
@@ -117,40 +117,36 @@ conn1.close();
       <table class="table table-bordered table-hover table-condensed pull-left" 
       style="margin:0 0 0 -15px" >
       <thead>
+      
  	    <tr class="ListTitle2">
           <th>倉別</th>
           <th>儲位</th>
           <th>庫存數量</th>
-          <th>待處理量</th>
-          <th>餘額</th>
           <th>進貨日期</th>
           <th>備註</th>
         </tr>
       </thead>
       <c:forEach var="i" items="${stock}" begin="0" step="1" >
       <c:set var="total" value="${total +i.getQty()}" />
-      <c:set var="sold" value="${sold +i.getQtysold()}" />
+      <c:set var="sold" value="${i.getQtysold()}" />
    
       <tbody>
         <tr>
           <td>${i.getWareHouse()}</td>
           <td>${i.getPosition1()}-${i.getPosition2()}</td>
           <td>${i.getQty()}</td>
-          <td>${i.getQtysold()}</td>
-          <td>${i.getQty()-i.getQtysold()}</td>
           <td>${i.getLastpurchasedate()}</td>
           <td>${i.getComment()}</td>
         </tr>
       </tbody>
      </c:forEach>
-     <tr class="ListTitle2">
+     <tr  style="background-color:#D5B6EA">
       <th></th>
           <th></th>
-          <th>${total}</th>
-          <th>${sold}</th>
-          <th>${total - sold}</th>
-          <th></th>
-          <th></th>
+          <th>庫存量 : ${total}</th>
+          <th>待處理量 : ${sold}</th>
+          <th>餘額 : ${total - sold}</th>
+         
      </tr>
        </table>
       </form>

@@ -15,7 +15,7 @@
 
 <html lang="en">
   <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>新增組合商品</title>
@@ -24,9 +24,12 @@
     <link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui.css">
 
       <!-- Include all compiled plugins (below), or include individual files as needed -->
-      <script src="js/bootstrap.js"></script>
-
-    
+	<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/lib/jquery.js"></script>
+	<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+	<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+	<script src="js/jquery-1.12.4.min.js"></script>
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/lib/jquery.js"></script>
+	<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
     <script src="js/jquery.ui.datepicker-zh-TW.js"></script>
@@ -35,7 +38,7 @@
     	listForm.action = "BundlesAdd.jsp"
 	    listForm.submit()
 	    	
-    }
+    };
        
     function getSelectt(){
 	    document.getElementById('subBrand').value='select';
@@ -43,26 +46,109 @@
     	document.getElementById('P_name').value='select';
     	listForm.action = "BundlesAdd.jsp"
 	    listForm.submit()	    	
-	}
+	};
     
     function getSelectPname(){
     	document.getElementById('productSKU').value='select';
     	listForm.action = "BundlesAdd.jsp"
     	listForm.submit()	    	    	    	
-	}
+	};
     
     function getSelectPSKU(){
     	document.getElementById('P_name').value='select';
     	listForm.action = "BundlesAdd.jsp"
     	listForm.submit()	    	    	    	
-	}
+	};
     
     function checkDetailSKUValue(){
     	
-    }
+    	//var smtstatus = false;
+    	
+    	if($("#productSKU").val()=='select' ){
+    		$("#listForm").submit( function () { 
+    			  return false; 
+    		});
+    		alert("請選擇子商品"); 
+    		//smtstatus = false;
+    	}/*else if($("#productSKU").val()!='select' & $("#qty").val() <=0 ){
+    		$("#listForm").submit( function () { 
+  			  return false; 
+	  		});
+	  		alert("請輸入正確數量");  
+	  		//smtstatus = false;		  		
+  		}*/else{
+  			$("#listForm").validate({
+      			rules: {
+      			    qty: "required",
+	      			/*productSKU:{
+	      				checksku:"select",
+	      			},*/
+      			},
+      			messages: {
+      			    qty: "请输入子商品數量",   			  
+      			  	/*productSKU:{
+      			  		checksku:"請選擇子商品",
+        			},*/
+      			}
+      		});
+  			/*$("#listForm").submit( function () { 
+    			 smtstatus = true; 
+  	  		});*/
+  	  		
+  			/*listForm.action = "bundlesAdd.do"
+    		listForm.submit()*/
+    	}
+    	/* $("#listForm").submit( function () { 
+        		 return smtstatus; 
+      	 });*/
+    };
     
+ 	$.validator.addMethod("checksku",function(value,ele,param){return value!=param;},"");
+    
+    $.validator.addMethod("skucheck",function(value,element,arg) 
+    {return value != arg;},"");             
+    
+    $().ready(function() {	
+    	$("#smtinsert").click(function() {
+    	  $("#listForm").validate({
+    			rules: {
+    			  bdsku: "required",
+    			  bdname: "required",    		
+    			},
+    			messages: {
+    			  bdsku: "请输入商品sku碼",
+    			  bdname: "请输入商品名稱",    			
+   			  
+    			}
+    		});
+    	});
+    });
+    
+   /* $().ready(function() {	    	
+    	$("#smtadd").click(function() {
+      	  $("#listForm").validate({
+      			rules: {
+      			    qty: "required",
+	      			/*productSKU:{
+	      				checksku:"select",
+	      			},
+      			},
+      			messages: {
+      			    qty: "请输入子商品數量",   			  
+      			  	/*productSKU:{
+      			  		checksku:"請選擇子商品",
+        			},
+      			}
+      		});
+      	});
+    });*/
+       
     </script>
-    
+<style>
+.error{
+	color:red;
+}
+</style> 
   </head>
   <body>
  <%@ include file = "/href/navbar.jsp"%>
@@ -105,6 +191,15 @@
 
 request.setCharacterEncoding("UTF-8");
 response.setContentType("text/html;charset=UTF-8");
+if(request.getParameter("bdsku") != null){
+session.setAttribute("bdSKU", new String(request.getParameter("bdsku").getBytes("8859_1"), "UTF-8"));
+}
+if(request.getParameter("bdname") != null){
+session.setAttribute("bdname", new String(request.getParameter("bdname").getBytes("8859_1"), "UTF-8"));
+}
+if(request.getParameter("comment") != null){
+session.setAttribute("bdcomment", new String(request.getParameter("comment").getBytes("8859_1"), "UTF-8"));
+}
 String bd = null;
 String subbd = null;
 String sku = null;
@@ -148,13 +243,8 @@ request.setAttribute("listSubBrand",listSubBrand);
 		  <div class="col-md-8 form-group ">
             <div class="row">
               <div class="col-md-2"><h5><label for="focusedInput " >SKU：</label></h5></div>
-              <div class="col-md-8">
-              	<c:if test="${param.bdsku == null }">            	
-              		<input class="form-control" type="text" name="bdsku" value="${bdSKU}">
-				</c:if>	
-				<c:if test="${param.bdsku != null }">            	
-              		<input class="form-control" type="text" name="bdsku" value="${param.bdsku}">
-				</c:if>	  
+              <div class="col-md-8">          	
+              		<input class="form-control" type="text" id="bdsku" name="bdsku" value="${bdSKU}">
               </div>
             </div>
           </div>
@@ -162,12 +252,7 @@ request.setAttribute("listSubBrand",listSubBrand);
             <div class="row">
               <div class="col-md-2"><h5><label for="focusedInput " >商品名稱：</label></h5></div>
               <div class="col-md-10">
-              	<c:if test="${param.bdname == null }">
-              		<input class="form-control" name="bdname" type="text" value="${bdname}">
-              	</c:if>
-              	<c:if test="${param.bdname != null }">
-              		<input class="form-control" name="bdname" type="text" value="${param.bdname}">
-              	</c:if>
+              		<input class="form-control" id="bdname" name="bdname" type="text" value="${bdname}">
               </div>
             </div>
           </div>
@@ -175,12 +260,7 @@ request.setAttribute("listSubBrand",listSubBrand);
             <div class="row">
               <div class="col-md-2"><h5><label for="focusedInput " >備註：</label></h5></div>
               <div class="col-md-8">
-              	<c:if test="${param.comment == null }">
-              		<textarea style="width:178px;height:55px;"  class="form-control" name="comment" >${bdcomment}</textarea>
-             	</c:if>
-             	<c:if test="${param.comment != null }">
-              		<textarea style="width:177px;height:55px;"  class="form-control" name="comment" >${param.comment}</textarea>
-             	</c:if>
+              		<textarea style="width:178px;height:55px;"  class="form-control" name="comment" >${bdcomment}</textarea>           	
               </div>
             </div>
           </div>
@@ -278,9 +358,9 @@ request.setAttribute("listSubBrand",listSubBrand);
 	            </select>
               </td>
             </tr> 
-            <tr> <th>數量:<input type="number" name="qty"></th></tr>
+            <tr> <th>數量:<input type="number" id="qty" name="qty"></th></tr>
             <tr>
-            	<td ><button type="submit" name="smt" value="add" >加入</button></td>
+            	<td ><button type="submit" id="smtadd" name="smt" value="add" onclick="checkDetailSKUValue()">加入</button></td>
             </tr>           
           </tbody>
         </table>
@@ -294,23 +374,41 @@ request.setAttribute("listSubBrand",listSubBrand);
 				<th>SKU</th>
 				<th>品名</th>
 				<th>數量</th>
+				<th>庫存量</th>
 				<th></th>							
 			</tr>
 
 		<c:forEach var="i" varStatus="check" items="${getBundlesAddDetail}" begin="0" step="1">
 			<tr>
-				<td>${i[0]}</td>
+				<td><a href="StockDetail.jsp?sku=${i[0]}">${i[0]}</a></td>
 				<td>${i[1]}</td>
 				<td>${i[2]}</td>
+				<c:set var="getStockSKU" scope="session" value="${i[0]}"></c:set>
+				<%
+				String getStockSKU = (String)session.getAttribute("getStockSKU");
+				request.setAttribute("stock", blf.getStock(getStockSKU));
+				%>
+				<td>${stock}</td>
 				<td><button type="submit" name="smt" value="${i[0]}" >刪除</button></td>
 			</tr>
 		</c:forEach>    
 	</table>	
 </div>
-	<center><button type="submit" name="smt" value="insert" >新增</button></center>
+	<center><button type="submit" id="smtinsert" name="smt" value="insert" >新增</button></center>
 </form>
 
-    
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#smtinsert").click(function(){
+        $('#spinner').hide();
+    });
+    $("#smtadd").click(function(){
+        $('#spinner').hide();
+    });
+});
+</script>
+  
 </body>
   
 <%@ include file="/href/footer.jsp" %>    

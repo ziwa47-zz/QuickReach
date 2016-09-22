@@ -187,17 +187,20 @@
     <div class="container table-responsive bg-warning" style="border-radius: 20px">
       <form name="searchform" method="post" action="#" style="font-size: 100%; vertical-align: baseline; padding: 15px;" class="form-inline container">
         <table class="table table-bordered table-hover table-condensed pull-left" style="margin: 0 0 0 -15px">
+          <thead>
           <tr class="ListTitle2">
-         
-            <th>編輯</th>
+            <th nowrap>查看</th>
             <th>SKU</th>
             <th>廠牌</th>
             <th>副廠牌</th>
             <th>品名</th>
             <th>規格</th>
             <th>顏色</th>
+            <th nowrap>總庫存</th>
           </tr>
+          </thead>
           <c:forEach var="i" items="${storageall}" begin="0" step="1" varStatus="check">
+          <tbody>
             <tr>
               <td><a href="StockDetail.jsp?sku=${i.getSKU()}"><img src="../img/compose-4.png"></a></td>
               <td>${i.getSKU()}</td>
@@ -206,7 +209,10 @@
               <td>${i.getP_name()}</td>
               <td>${i.getSpec()}</td>
               <td>${i.getColor()}</td>
+              <td>${i.getAllStock()}</td>
+              
             </tr>
+            </tbody>
           </c:forEach>
         </table>
       </form>

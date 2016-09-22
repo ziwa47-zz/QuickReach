@@ -15,7 +15,7 @@
 <!-- <script src="../js/jquery-ui.min.js"></script> -->
 <!-- <script src="../js/jquery.ui.datepicker-zh-TW.js"></script> -->
 
-<link rel="stylesheet" href="../css/custom.css" rel="stylesheet">
+
 <!-- downloaded -->
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -24,20 +24,44 @@
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+<link rel="stylesheet"
+	href="http://fonts.googleapis.com/earlyaccess/notosanstc.css">
+<link rel="stylesheet" href="../css/custom.css" rel="stylesheet">
 
-  
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.js"></script>
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.min.js"></script>
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.js"></script>
   <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.min.js"></script>
-
 <style type="text/css">
 textarea {
     resize: none;
 }
 </style>  
- 
+<style>
+.loader {
+margin: 0px auto;
+position:absolute; width:70%; height:280px;
+    top:0; bottom:0; left:0; right:0; margin:auto;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+  z-index:4;
+}
 
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
 <script type="text/javascript">
 	$(function() {
 		//日期選擇器
@@ -70,15 +94,7 @@ textarea {
 	   });
 	
 
-	$(function() {
-		//feildset prop enable
-		$("#optionsRadios1").click(function() {
-			$("#myfields").prop("disabled", false);
-		});
-		$("#optionsRadios2").click(function() {
-			$("#myfields").prop("disabled", true);
-		});
-	});
+	
 	
 	    function checkAllOrders(ele) {
     	//select all
@@ -111,6 +127,13 @@ textarea {
 		}
 	});
 });
+	
+$( document ).ready(function() {
+$('body').css({'font-family': 'Noto Sans TC'});
+	});
+
+
+
 </script>
 </head>
 <body>
@@ -135,11 +158,22 @@ textarea {
 		</div>
 		<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="nav navbar-nav">
-				<li><a href="/QRProduct/SearchStockPage.jsp">商品/庫存 </a></li>
-				<li><a href="/QROrders/SearchOrder.jsp">訂單資訊</a></li>
-				<li><a href="/QREBayAccount/eBayAccount.jsp">Ebay帳號管理</a></li>
-				<li><a href="/QREmployee/accountManage.jsp">員工管理</a></li>
-				<li><a href="/QRAccess/Competence.jsp">權限管理</a></li>
+				<c:if test="${PageCompetence.getProductManage() ==1}">
+					<li><a href="/QRProduct/SearchStockPage.jsp">商品/庫存 </a></li>
+				</c:if>
+				<c:if test="${PageCompetence.getOrdersManage() ==1}">
+					<li><a href="/QROrders/SearchOrder.jsp">訂單資訊</a></li>
+				</c:if>
+				<c:if test="${PageCompetence.getEbayPaypalAccountEdit()==1}">
+					<li><a href="/QREBayAccount/eBayAccount.jsp">Ebay帳號管理</a></li>
+				</c:if>
+				<c:if test="${PageCompetence.getAccountInfoEdit() ==1 }"> 
+					<li><a href="/QREmployee/accountManage.jsp">員工管理</a></li>
+					<li><a href="/QRAccess/Competence.jsp">權限管理</a></li>
+			    </c:if>
+			    <c:if test="${PageCompetence.getParamSettingEdit() ==1}">
+			    	<li><a href="/SupplyCompany/SCManage.jsp">供應商/倉庫</a></li>
+				</c:if>
 			</ul>
 
 			<ul class="nav navbar-right">
@@ -154,5 +188,9 @@ textarea {
 		</div>
 	</div>
 	</nav>
+	<div class="loader text-center" id="spinner" hidden></div>
+<script type="text/javascript">
+    
+</script>
 </body>
 </html>

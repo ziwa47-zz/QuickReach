@@ -39,7 +39,6 @@
         <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10" style="color:#fff">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
-        <li><a href="OrderAbnormal.jsp?begin=0&end=10">異常訂單</a></li>
         <li><a href="ShipmentRecord.jsp?begin=0&end=10" >訂單出貨記錄</a></li>
       </ul>
     </div>
@@ -67,8 +66,8 @@
               </div>
             </div>
           </div>
-          <button type="submit" name="send" value="sendTrackingCode" class="btn btn-lg btn-primary">送出追蹤碼</button>
-      
+          <button type="submit" name="send" value="sendTrackingCode" class="btn btn-lg btn-primary">送出追蹤碼(真實)</button>
+      	  <button type="submit" name="send" value="sendTrackingCodeSandbox" class="btn btn-lg btn-primary">送出追蹤碼(沙盒)</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
@@ -97,13 +96,6 @@
               </c:otherwise>
             </c:choose>
             <label>共有:${list.size()}筆</label>
-            <label>顯示
-              <select class="form-control" name="showCounts" onChange="">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-              </select>
-              筆</label>
           </ul>
           <table class="table table-bordered table-hover table-condensed pull-left" style="margin:0 0 0 -15px">
             <tr class="ListTitle">
@@ -127,13 +119,16 @@
                   <tr style="background-color:#D4F4D8">
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}" onchange="preventDoubleOrder(this)"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td>${i.getCOrderMaster().getQR_id()}
+                    <td>${i.getCOrderMaster().getEbayNO()}
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td></td>
-                    <td>${i.getCOrderMaster().getLogistics()}</td>
+                    <td>
+                      <input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getEbayItemNO()}">
+                      <input type="hidden" name="paypalmentId" value="${i.getCOrderMaster().getPaypalmentId()}">
+                    </td>
+                    <td>${i.getCOrderMaster().getLogistics()}<input type="hidden" name="logistics" value="${i.getCOrderMaster().getLogistics()}"></td>
                     <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
@@ -143,7 +138,7 @@
                   <tr style="background-color:#D4F4D8">
 					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
                     <td colspan="3">
@@ -160,13 +155,15 @@
                   <tr>
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}" onchange="preventDoubleOrder(this)"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td>${i.getCOrderMaster().getQR_id()}
+                    <td>${i.getCOrderMaster().getEbayNO()}
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td></td>
-                    <td>${i.getCOrderMaster().getLogistics()}</td>
+                    <td><input type="hidden" name="ebayItemNO" value="${i.getCOrderMaster().getEbayItemNO()}">
+                      <input type="hidden" name="paypalmentId" value="${i.getCOrderMaster().getPaypalmentId()}">
+                    </td>
+                    <td>${i.getCOrderMaster().getLogistics()}<input type="hidden" name="logistics" value="${i.getCOrderMaster().getLogistics()}"></td>
                     <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
                       <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
@@ -176,7 +173,7 @@
                   <tr>
 					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}(SKU/品名)<br/>
+                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
                     <td colspan="3">
@@ -197,6 +194,7 @@
         </form>
       </div>
       </div>
+<%@ include file="../href/footer.jsp" %>
 <script type="text/javascript">
  	function preventDoubleOrder(ele){
  	  var id = ele.value;

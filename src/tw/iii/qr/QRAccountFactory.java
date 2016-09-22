@@ -132,7 +132,7 @@ public class QRAccountFactory extends QRAccount{
 	
 		return employeeall;
 	}
-	public  LinkedList<Competence> get權限(){
+	public  LinkedList<Competence> getCompetence(){
 		LinkedList<Competence> list= new LinkedList<>();
 		try {
 			Connection conn = new DataBaseConn().getConn();

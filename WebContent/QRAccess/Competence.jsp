@@ -47,7 +47,7 @@
 </div>
 <div class="container container-fluid breadcrumbBox">
   <ol class="breadcrumb">
-    <li><a href="../QRMain/HomePag.jsp">首頁</a></li>
+    <li><a href="../HomePage.jsp">首頁</a></li>
     <li class="active" style="display:"><a href="Competence.jsp">權限管理</a></li>
     <li><a href="Competence.jsp">檢視權限</a></li>
   </ol>
@@ -129,7 +129,7 @@
 								</c:if>
 							</div>
 						</div>
-						<div class="row">
+						<div  style="display:none" class="row">
 							<div class="col-md-3 text-right well-sm label-tag">
 								<h4>採購權限</h4>
 							</div>
@@ -173,7 +173,7 @@
 
 							</div>
 						</div>
-						<div class="row">
+						<div  style="display:none" class="row">
 							<div class="col-md-3 text-right well-sm label-tag">
 								<h4>客戶權限</h4>
 							</div>
@@ -206,12 +206,12 @@
 								</c:if>
 
 								<c:if test="${lv.getOrdersInvoiceDownload() == 1 }">
-									<label class="checkboxbox-inline"><input
+									<label  style="display:none" class="checkboxbox-inline"><input
 										type="checkbox" id="id_fd-is_active_1"
 										name="OrdersInvoiceDownload" checked />下載所有訂單Invoice</label>
 								</c:if>
 								<c:if test="${lv.getOrdersInvoiceDownload() == 0 }">
-									<label class="checkboxbox-inline"><input
+									<label  style="display:none" class="checkboxbox-inline"><input
 										type="checkbox" id="id_fd-is_active_1"
 										name="OrdersInvoiceDownload" />下載所有訂單Invoice</label>
 								</c:if>
@@ -276,12 +276,12 @@
 							</div>
 							<div class="col-md-5 well-sm">
 								<c:if test="${lv.getChartView() == 1 }">
-									<label class="checkboxbox-inline"><input
+									<label  style="display:none" class="checkboxbox-inline"><input
 										type="checkbox" id="id_fd-is_active_0" name="ChartView"
 										checked />查看圖表&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 								</c:if>
 								<c:if test="${lv.getChartView() == 0 }">
-									<label class="checkboxbox-inline"><input
+									<label  style="display:none" class="checkboxbox-inline"><input
 										type="checkbox" id="id_fd-is_active_0" name="ChartView" />查看圖表&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 								</c:if>
 
@@ -303,12 +303,12 @@
 							</div>
 							<div class="col-md-5 well-sm">
 								<c:if test="${lv.getReportView() == 1 }">
-									<label class="checkboxbox-inline"><input
+									<label  style="display:none" class="checkboxbox-inline"><input
 										type="checkbox" id="id_fd-is_active_0" name="ReportView"
 										checked />查看報表&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 								</c:if>
 								<c:if test="${lv.getReportView() == 0 }">
-									<label class="checkboxbox-inline"><input
+									<label  style="display:none" class="checkboxbox-inline"><input
 										type="checkbox" id="id_fd-is_active_0" name="ReportView" />查看報表&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 								</c:if>
 
