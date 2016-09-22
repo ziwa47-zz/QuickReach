@@ -48,7 +48,7 @@
 	      	<a href="/QRProduct/PurchasePage.jsp"><label class="btn btn-lg btn-primary">進貨</label></a>
 	      	<a href="/QRProduct/PurchaseRecordPage.jsp"><label class="btn btn-lg btn-primary">查詢庫存紀錄</label></a>
 	      	<a href="/QRProduct/SearchProductPage.jsp"><label class="btn btn-lg btn-primary">查詢商品</label></a>
-	      	<a href="/QRProduct/ProductAddPage.jsp"><label class="btn btn-lg btn-primary">新增單項商品</label></a>
+	      	<a href="/QRProduct/NewProduct.jsp"><label class="btn btn-lg btn-primary">新增單項商品</label></a>
 	      	<a href="/QRProduct/BundlesAdd.jsp"><label class="btn btn-lg btn-primary">新增組合商品</label></a>
 	      	<a href="/QRProduct/TotalBundles.jsp"><label class="btn btn-lg btn-primary">組合商品</label></a>
 	      </div>

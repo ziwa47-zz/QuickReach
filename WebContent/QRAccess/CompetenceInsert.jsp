@@ -41,7 +41,7 @@
               <div class="container-fluid form-horizontal">
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>權限等級</h4></div>
-                      <div class="col-md-5 well-sm"><input class="form-control" type="text" required="required" name="CompetenceLv"></div>
+                      <div class="col-md-5 well-sm"><input class="form-control" type="text" name="CompetenceLv"></div>
                   </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>商品權限</h4></div>
