@@ -2,7 +2,7 @@
 <%@page import="java.util.LinkedList"%>
 <%@page import="tw.iii.qr.DataBaseConn"%>
 <%@ page
-	import="java.sql.Connection,java.sql.ResultSet,java.util.LinkedList,java.util.*,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse"%>
+	import="java.sql.Connection,java.sql.ResultSet,java.util.LinkedList,java.util.*,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse, java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -19,9 +19,16 @@
 <%@ include file = "/href/navbar.jsp"%>
 
 <%
+SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+Date date = new Date();
+String strDate = sdFormat.format(date);
+System.out.println(strDate);
+if(session.getAttribute("ndbs")==null){
 Connection conn = new DataBaseConn().getConn();
 LinkedList<COrders> dayliBalanceSheetnew = newd.dayliBalanceSheet(request,response, conn);
 request.setAttribute("ndbs", dayliBalanceSheetnew);
+}
+System.out.println(strDate);
 %>
  <div class="nav">
   <div class="container">
