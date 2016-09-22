@@ -150,8 +150,8 @@
 							</div>
 							<div class="col-md-8">
 								<input class="form-control" type="text" name="dateMin"
-									style="width: 89px" readonly> - <input
-									class="form-control" type="text" style="width: 89px"
+									style="width: 100px" readonly> - <input
+									class="form-control" type="text" style="width: 100px"
 									name="dateMax" readonly>
 							</div>
 						</div>
@@ -274,11 +274,11 @@
 
 						<th>轉出數量</th>
 						<th>原倉別</th>
-						<th>原櫃位</th>
+						<th>原儲位</th>
 						
 
 						<th>新倉別</th>
-						<th>新櫃位</th>
+						<th>新儲位</th>
 						
 						<th>經手人</th>
 

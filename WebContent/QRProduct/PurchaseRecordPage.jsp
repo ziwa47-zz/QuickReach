@@ -169,8 +169,8 @@
 							</div>
 							<div class="col-md-8" style="padding-left:22px">
 								<input class="form-control"  type="text" name="dateMin"
-									style="width: 89px ;" readonly> - <input
-									class="form-control" type="text" style="width: 89px"
+									style="width: 100px ;" readonly> - <input
+									class="form-control" type="text" style="width: 100px"
 									name="dateMax" readonly>
 							</div>
 						</div>
@@ -217,7 +217,7 @@
 						<div class="row">
 							<div class="col-md-4">
 								<h5>
-									<label for="focusedInput ">廠商：</label>
+									<label for="focusedInput ">供應商：</label>
 								</h5>
 							</div>
 							<div class="col-md-8">
@@ -283,7 +283,7 @@
 				<!-- 						<div class="row"> -->
 				<!-- 							<div class="col-md-2"> -->
 				<!-- 								<h5> -->
-				<!-- 									<label for="focusedInput ">櫃位：</label> -->
+				<!-- 									<label for="focusedInput ">儲位：</label> -->
 				<!-- 								</h5> -->
 				<!-- 							</div> -->
 				<!-- 							<div class="col-md-8"> -->
@@ -357,7 +357,7 @@
 
 						<th>倉別</th>
 
-						<th>櫃位</th>
+						<th>儲位</th>
 						<th>Owner</th>
 						<th>日期</th>
 						<th>供應商</th>

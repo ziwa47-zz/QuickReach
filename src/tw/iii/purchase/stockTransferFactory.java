@@ -137,7 +137,7 @@ public class stockTransferFactory {
 				ps = null;
 				int count = rs.getInt(1);
 				if (count == 0) {
-					String sqlstr5 = "Insert into storage values(?,?,?,?,?,?,(select dateadd(hour,8,getdate())))";
+					String sqlstr5 = "Insert into storage values(?,?,?,?,?,?,(select dateadd(hour,8,getdate())),(select C_name from company where C_id=?))";
 					ps = conn.prepareStatement(sqlstr5);
 					ps.setString(1, prepareTransferDetail.get(i).getSKU());
 					ps.setString(2, prepareTransferMaster.getWarehouse2());
@@ -145,6 +145,7 @@ public class stockTransferFactory {
 					ps.setString(4, prepareTransferDetail.get(i).getNewWarehousePosition2());
 					ps.setInt(5, prepareTransferDetail.get(i).getQty());
 					ps.setString(6, prepareTransferDetail.get(i).getComment());
+					ps.setString(7, prepareTransferMaster.getCompanyId());
 
 					ps.executeUpdate();
 				} else {
@@ -259,7 +260,7 @@ public class stockTransferFactory {
 			System.out.println(date1);
 		}
 		if (!isNullorEmpty(date2)) {
-			sqlstr1 += " and a.date  <= '" + (Integer.valueOf(date2) + 1) + "'";
+			sqlstr1 += " and a.date  <= '" + date2 + " 23:59:59'";
 			System.out.println(date2);
 		}
 
