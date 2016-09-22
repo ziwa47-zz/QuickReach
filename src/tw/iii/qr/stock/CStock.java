@@ -12,7 +12,7 @@ public class CStock extends CProduct {
 	private int qtyremain;
 	private String comment;
 	private Date lastpurchasedate;
-	
+	private String Company;
 	
 	
 	public String getWareHouse() {
@@ -62,6 +62,12 @@ public class CStock extends CProduct {
 	}
 	public void setLastpurchasedate(Date lastpurchasedate) {
 		this.lastpurchasedate = lastpurchasedate;
+	}
+	public String getCompany() {
+		return Company;
+	}
+	public void setCompany(String company) {
+		Company = company;
 	}
 
 }

@@ -26,7 +26,9 @@
       <!-- Include all compiled plugins (below), or include individual files as needed -->
       <script src="js/bootstrap.js"></script>
 
-    
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/lib/jquery.js"></script>
+	<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+	<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
     <script src="js/jquery.ui.datepicker-zh-TW.js"></script>
@@ -57,8 +59,71 @@
     	listForm.submit()	    	    	    	
 	}
     
-    </script>
+function checkDetailSKUValue(){
+    	
+    	//var smtstatus = false;
+    	
+    	if($("#productSKU").val()=='select' ){
+    		$("#listForm").submit( function () { 
+    			  return false; 
+    		});
+    		alert("請選擇子商品"); 
+    		//smtstatus = false;
+    	}/*else if($("#productSKU").val()!='select' & $("#qty").val() <=0 ){
+    		$("#listForm").submit( function () { 
+  			  return false; 
+	  		});
+	  		alert("請輸入正確數量");  
+	  		//smtstatus = false;		  		
+  		}*/else{
+  			$("#listForm").validate({
+      			rules: {
+      			    qty: "required",
+	      			/*productSKU:{
+	      				checksku:"select",
+	      			},*/
+      			},
+      			messages: {
+      			    qty: "请输入子商品數量",   			  
+      			  	/*productSKU:{
+      			  		checksku:"請選擇子商品",
+        			},*/
+      			}
+      		});
+  			/*$("#listForm").submit( function () { 
+    			 smtstatus = true; 
+  	  		});*/
+  	  		
+  			/*listForm.action = "bundlesAdd.do"
+    		listForm.submit()*/
+    	}
+    	/* $("#listForm").submit( function () { 
+        		 return smtstatus; 
+      	 });*/
+    };
     
+    $().ready(function() {	
+    	$("#smtupdate").click(function() {
+    	  $("#listForm").validate({
+    			rules: {
+    			  bdsku: "required",
+    			  bdname: "required",    		
+    			},
+    			messages: {
+    			  bdsku: "请输入商品sku碼",
+    			  bdname: "请输入商品名稱",    			
+   			  
+    			}
+    		});
+    	});
+    });
+    
+    </script>
+ <style>
+.error{
+	color:red;
+}
+</style>    
   </head>
   <body>
  <%@ include file = "/href/navbar.jsp"%>
@@ -144,34 +209,19 @@ request.setAttribute("listSubBrand",listSubBrand);
 		  <div class="col-md-8 form-group ">
             <div class="row">
               <div class="col-md-2"><h5><label for="focusedInput " >SKU：</label></h5></div>
-              <c:if test="${param.bdsku == null }">
-              	<div class="col-md-8"><input class="form-control" type="text" name="bdsku" value="${bdsku}"></div>
-              </c:if>
-              <c:if test="${param.bdsku != null }">
-              	<div class="col-md-8"><input class="form-control" type="text" name="bdsku" value="${param.bdsku}"></div>
-              </c:if>
+              	<div class="col-md-8"><input class="form-control" type="text" id="bdsku" name="bdsku" value="${bdsku}"></div>
             </div>
           </div>
 		  <div class="col-md-8 form-group ">
             <div class="row">
               <div class="col-md-2"><h5><label for="focusedInput " >商品名稱：</label></h5></div>
-              <c:if test="${param.bdname == null }">	
-              	<div class="col-md-10"><input class="form-control" name="bdname" type="text" value="${bdName}"></div>
-              </c:if>
-              <c:if test="${param.bdname != null }">
-              	<div class="col-md-8"><input class="form-control" type="text" name="bdname" value="${param.bdname}"></div>
-              </c:if>
+              	<div class="col-md-10"><input class="form-control" id="bdname" name="bdname" type="text" value="${bdName}"></div>
             </div>
           </div>
 		  <div class="col-md-8 form-group ">
             <div class="row">
               <div class="col-md-2"><h5><label for="focusedInput " >備註：</label></h5></div>
-              <c:if test="${param.comment == null }">
-             	 <div class="col-md-8"><textarea style="width:177px;height:55px;"  class="form-control" name="comment" >${bdComment}</textarea></div>
-              </c:if>
-              <c:if test="${param.comment != null }">
-             	 <div class="col-md-8"><textarea style="width:177px;height:55px;"  class="form-control" name="comment" >${param.comment}</textarea></div>
-              </c:if>
+             	 <div class="col-md-8"><textarea style="width:177px;height:55px;"  class="form-control" name="comment" >${bdComment}</textarea></div>                         
             </div>
           </div>
 		</div>
@@ -269,7 +319,7 @@ request.setAttribute("listSubBrand",listSubBrand);
             </tr> 
             <tr> <th>數量:<input type="number" name="qty"></th></tr>
             <tr>
-            	<td ><button type="submit" name="smt" value="add" >加入</button></td>
+            	<td ><button type="submit" name="smt" value="add" onclick="checkDetailSKUValue()">加入</button></td>
             </tr>           
           </tbody>
         </table>
@@ -303,7 +353,7 @@ request.setAttribute("listSubBrand",listSubBrand);
 		</c:forEach>    
 	</table>	
 </div>
-	<center><button type="submit" name="smt" value="update" >修改</button></center>
+	<center><button type="submit" id="smtupdate" name="smt" value="update" >修改</button></center>
 
 
 </form>
