@@ -243,7 +243,7 @@ conn.close();
                   <div class="col-md-8 well-sm"><input class="form-control" style="width:700px" type="text" name="package" value="${resultDetail.getPackageMatrial()}" ></div>
               </div>
               <div class="row">
-                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>材積重</h4></div>
+                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>材積重(克)</h4></div>
                   <div class="col-md-8 well-sm"><input class="form-control number"type="text"name="vilu" value="${resultDetail.getVilumetricWeight()}" ></div>
               </div>
               <div class="row">
