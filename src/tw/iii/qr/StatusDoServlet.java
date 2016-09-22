@@ -112,7 +112,7 @@ public class StatusDoServlet extends HttpServlet {
 			if (!OFactory.checkOrderIdOrderStatus(request, conn) == false){
 				System.out.println("checked true");
 				OFactory.updateToFinished(request, conn);
-				OFactory.deductStock(request, conn);
+				OFactory.isBundledeductStock(request, conn);
 				OFactory.insertIntoShippingLog(request, conn);
 				OFactory.insertIntoPurchaseLogFromOrders(request, conn);
 //				CompleteSale myCompleteSale = new CompleteSale();

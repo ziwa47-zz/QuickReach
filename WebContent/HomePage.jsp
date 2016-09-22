@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE>
@@ -18,28 +18,44 @@
   <h2>歡迎使用QuickReach系統</h2>
   <p>請開始您的作業</p>
   <ul class="nav nav-tabs" style="font-size:24px;">
-    <li class="active"><a href="#home"><img src="/img/database.png" width="24" height="24">商品管理</a></li>
-    <li><a href="#menu1"><img src="img/clipboard-2.png" width="24" height="24">訂單資訊</a></li>
-    <li><a href="#menu2"><img src="img/store-2.png" width="24" height="24">帳號管理</a></li>
-    <li><a href="#menu3"><img src="img/users.png" width="24" height="24">員工管理</a></li>
-    <li><a href="#menu4"><img src="img/compose-3.png" width="24" height="24">權限管理</a></li>
-    <li><a href="#menu6"><img src="img/warehouse.png" width="36" height="36">供應商/倉庫</a></li>
-    <li><a href="#menu5">獲取訂單</a></li>
+    <c:if test="${PageCompetence.getProductManage() ==1}">
+    	<li class="active"><a href="#home"><img src="/img/database.png" width="24" height="24">商品管理</a></li>
+    </c:if>
+    <c:if test="${PageCompetence.getOrdersManage() ==1}">
+    	<li><a href="#menu1"><img src="img/clipboard-2.png" width="24" height="24">訂單資訊</a></li>
+    </c:if>
+    <c:if test="${PageCompetence.getEbayPaypalAccountEdit()==1}">
+    	<li><a href="#menu2"><img src="img/store-2.png" width="24" height="24">帳號管理</a></li>
+	</c:if>
+	<c:if test="${PageCompetence.getAccountInfoEdit() ==1 }">    
+	    <li><a href="#menu3"><img src="img/users.png" width="24" height="24">員工管理</a></li>
+	    <li><a href="#menu4"><img src="img/compose-3.png" width="24" height="24">權限管理</a></li>
+    </c:if>
+    <c:if test="${PageCompetence.getParamSettingEdit() ==1}">
+    	<li><a href="#menu6"><img src="img/warehouse.png" width="36" height="36">供應商/倉庫</a></li>
+    </c:if>
+    <c:if test="${PageCompetence.getOrdersManage() ==1}">
+    	<li><a href="#menu5">獲取訂單</a></li>
+    </c:if>
   </ul>	
 
   <div class="tab-content">
-    <div id="home" class="tab-pane fade in active">
-      <h3>商品管理</h3>
-      <div class="row" style="font-size:24px; padding:10px">
-        <a href="/QRProduct/SearchStockPage.jsp"><label class="btn btn-lg btn-primary">查詢庫存</label></a>
-      	<a href="/QRProduct/PurchasePage.jsp"><label class="btn btn-lg btn-primary">進貨</label></a>
-      	<a href="/QRProduct/PurchaseRecordPage.jsp"><label class="btn btn-lg btn-primary">查詢庫存紀錄</label></a>
-      	<a href="/QRProduct/SearchProductPage.jsp"><label class="btn btn-lg btn-primary">查詢商品</label></a>
-      	<a href="/QRProduct/NewProduct.jsp"><label class="btn btn-lg btn-primary">新增單項商品</label></a>
-      	<a href="/QRProduct/BundlesAdd.jsp"><label class="btn btn-lg btn-primary">新增組合商品</label></a>
-      	<a href="/QRProduct/TotalBundles.jsp"><label class="btn btn-lg btn-primary">組合商品</label></a>
-      </div>
-    </div>
+
+    <c:if test="${PageCompetence.getProductManage()==1}">
+	    <div id="home" class="tab-pane fade in active">
+	      <h3>商品管理</h3>
+	      <div class="row" style="font-size:24px; padding:10px">
+	        <a href="/QRProduct/SearchStockPage.jsp"><label class="btn btn-lg btn-primary">查詢庫存</label></a>
+	      	<a href="/QRProduct/PurchasePage.jsp"><label class="btn btn-lg btn-primary">進貨</label></a>
+	      	<a href="/QRProduct/PurchaseRecordPage.jsp"><label class="btn btn-lg btn-primary">查詢庫存紀錄</label></a>
+	      	<a href="/QRProduct/SearchProductPage.jsp"><label class="btn btn-lg btn-primary">查詢商品</label></a>
+	      	<a href="/QRProduct/NewProduct.jsp"><label class="btn btn-lg btn-primary">新增單項商品</label></a>
+	      	<a href="/QRProduct/BundlesAdd.jsp"><label class="btn btn-lg btn-primary">新增組合商品</label></a>
+	      	<a href="/QRProduct/TotalBundles.jsp"><label class="btn btn-lg btn-primary">組合商品</label></a>
+	      </div>
+	    </div>
+ 	</c:if>  
+
     <div id="menu1" class="tab-pane fade">
       <h3>訂單資訊</h3>
       <div class="row" style="font-size:24px; padding:10px">
@@ -72,7 +88,7 @@
       <h3>權限管理</h3>
       <div class="row" style="font-size:24px; padding:10px">
       	<a href="/QRAccess/Competence.jsp"><label class="btn btn-lg btn-primary">權限管理</label></a>
-      	<a href="/QRAccess/Competence.jsp"><label class="btn btn-lg btn-primary">層級設定</label></a>
+      	<a href="/QRAccess/CompetenceInsert.jsp"><label class="btn btn-lg btn-primary">新增權限</label></a>
       </div>
     </div>
     <div id="menu6" class="tab-pane fade">

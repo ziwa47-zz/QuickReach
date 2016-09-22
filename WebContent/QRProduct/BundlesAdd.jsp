@@ -397,7 +397,18 @@ request.setAttribute("listSubBrand",listSubBrand);
 	<center><button type="submit" id="smtinsert" name="smt" value="insert" >新增</button></center>
 </form>
 
-    
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#smtinsert").click(function(){
+        $('#spinner').hide();
+    });
+    $("#smtadd").click(function(){
+        $('#spinner').hide();
+    });
+});
+</script>
+  
 </body>
   
 <%@ include file="/href/footer.jsp" %>    
