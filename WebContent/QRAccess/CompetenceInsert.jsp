@@ -34,14 +34,14 @@
 </div>
 
   <div class="container" >
-  	<form id="searchform" name="searchform" action="CompetenceInsert.do" method="post" style="font-size: 100%; vertical-align: baseline;" class=" form-group container">
+  	<form name="searchform" action="CompetenceInsert.do" method="post" style="font-size: 100%; vertical-align: baseline;" class=" form-group container">
       
           <input type="hidden">
               <h3 class="" style="background: #BCF1E5; border-left: 6px solid #1CAF9A;" >新增權限</h3>
               <div class="container-fluid form-horizontal">
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>權限等級</h4></div>
-                      <div class="col-md-5 well-sm"><input class="form-control" type="text" id="CompetenceLv" name="CompetenceLv" required="required"></div>
+                      <div class="col-md-5 well-sm"><input class="form-control" type="text" name="CompetenceLv"></div>
                   </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>商品權限</h4></div>
