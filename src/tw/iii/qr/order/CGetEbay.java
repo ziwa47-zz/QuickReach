@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.LinkedList;
 
 import javax.swing.undo.AbstractUndoableEdit;
 
@@ -76,43 +77,18 @@ public class CGetEbay {
 	      }
 	}
 	
-	private static void other(OrderType[] orders) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
-
-		int size = orders != null ? orders.length : 0;
-		 System.out.println(size);
-		 for (int i = 0; i < size; i++) {
-		  OrderType order = orders[i];
-		  Connection conn = new DataBaseConn().getConn();
-		  String QR_id = autoInsertData.generateQR_Id();
-		  String strSql = "INSERT INTO orders_master (QR_id, order_id, outsideCode, platform, totalPrice, ebayItemNO)"
-		  		+ " VALUES (?, ?, ?, ?, ?, ?)";
-		  
-		  PreparedStatement ps = conn.prepareStatement(strSql);
-		  ps.setString(1, QR_id);
-		  ps.setString(2, order.getOrderID());
-		  ps.setString(3, order.getExtendedOrderID());
-		  ps.setString(4, "ebay");
-		  ps.setDouble(5, order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentAmount().getValue());
-		  ps.setString(6, order.getTransactionArray().getTransaction()[0].getItem().getItemID().toString());
-		  int x =ps.executeUpdate();
-		  
-		  System.out.println("orderId"+order.getOrderID());
-		  
-		 }
-		 
-	}
 
 	private static void displayOrders(OrderType[] orders) throws IllegalAccessException, ClassNotFoundException, Exception {
 		
 		
 		int size = orders != null ? orders.length : 0;
-		 System.out.println(size);
-		 for (int i = 0; i < size; i++) {
+		System.out.println(size);
+		for (int i = 0; i < size; i++) {
 		  OrderType order = orders[i];
 		  Connection conn = new DataBaseConn().getConn();
 		  System.out.println(order.getCheckoutStatus().getStatus().toString());
 		  if("COMPLETE".equals(order.getCheckoutStatus().getStatus().toString())){
-		  
+		  if(!checkExist(order)){
 		  ShippingServiceOptionsType sso = order.getShippingServiceSelected();
 
 		  String QR_id = autoInsertData.generateQR_Id();
@@ -298,6 +274,7 @@ public class CGetEbay {
 		  }
 		 
 		 }
+		}
 	}
 	private static ApiContext getApiContext() throws IOException {
 		 String input;
@@ -320,21 +297,34 @@ public class CGetEbay {
 
 	        
 	}
-	 
 
-
-
-	private static String checkExistedOrNot(Connection conn) throws SQLException{
+	private static LinkedList<String> getOutsideCodeFromDatabase(Connection conn) throws SQLException{
 		
-		String outsideCode = null;
-		String strSql = "select top 1 outsideCode from orders_master order by item desc ";
+		LinkedList<String> outsideCode = new LinkedList<String>();
+		
+		String strSql = "select outsideCode from orders_master";
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ResultSet rs = ps.executeQuery();
+		
 		while(rs.next()){
-			outsideCode = rs.getString(1);
+			outsideCode.add(rs.getString(1));
 		}
+
 		return outsideCode;
 	}
+	
+	private static boolean checkExist(OrderType orders) throws IllegalAccessException, ClassNotFoundException, Exception {
+		
+		Connection conn = new DataBaseConn().getConn();
+		LinkedList<String> outsideCode = getOutsideCodeFromDatabase(conn);
+		for(int i = 0; i< outsideCode.size(); i++){
+			if(outsideCode.get(i).equals(orders.getExtendedOrderID())){
+				System.out.println("true");
+				return true;
+			}
+		}
+		System.out.println("false");
+		return false;
 }
 class MyThread extends Thread {
 	CGetEbay c = new CGetEbay();
@@ -344,5 +334,32 @@ class MyThread extends Thread {
 		c.CGetEbay1();
 		
 	}
+}
+
+private static void other(OrderType[] orders) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+
+	int size = orders != null ? orders.length : 0;
+	 System.out.println(size);
+	 for (int i = 0; i < size; i++) {
+	  OrderType order = orders[i];
+	  Connection conn = new DataBaseConn().getConn();
+	  String QR_id = autoInsertData.generateQR_Id();
+	  String strSql = "INSERT INTO orders_master (QR_id, order_id, outsideCode, platform, totalPrice, ebayItemNO)"
+	  		+ " VALUES (?, ?, ?, ?, ?, ?)";
+	  
+	  PreparedStatement ps = conn.prepareStatement(strSql);
+	  ps.setString(1, QR_id);
+	  ps.setString(2, order.getOrderID());
+	  ps.setString(3, order.getExtendedOrderID());
+	  ps.setString(4, "ebay");
+	  ps.setDouble(5, order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentAmount().getValue());
+	  ps.setString(6, order.getTransactionArray().getTransaction()[0].getItem().getItemID().toString());
+	  int x =ps.executeUpdate();
+	  
+	  System.out.println("orderId"+order.getOrderID());
+	  
+	 }
+	 
+}
 
 }

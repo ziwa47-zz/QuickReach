@@ -10,8 +10,6 @@
 </head>
 <body>
 
-
-
 <%@ include file="/href/navbar.jsp"%>
 <div style="background-color:#CCFFCC;">
 <div class="container">
