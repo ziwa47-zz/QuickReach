@@ -158,12 +158,22 @@ $('body').css({'font-family': 'Noto Sans TC'});
 		</div>
 		<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="nav navbar-nav">
-				<li><a href="/QRProduct/SearchStockPage.jsp">商品/庫存 </a></li>
-				<li><a href="/QROrders/SearchOrder.jsp">訂單資訊</a></li>
-				<li><a href="/QREBayAccount/eBayAccount.jsp">Ebay帳號管理</a></li>
-				<li><a href="/QREmployee/accountManage.jsp">員工管理</a></li>
-				<li><a href="/QRAccess/Competence.jsp">權限管理</a></li>
-			    <li><a href="/SupplyCompany/SCManage.jsp">供應商/倉庫</a></li>
+				<c:if test="${PageCompetence.getProductManage() ==1}">
+					<li><a href="/QRProduct/SearchStockPage.jsp">商品/庫存 </a></li>
+				</c:if>
+				<c:if test="${PageCompetence.getOrdersManage() ==1}">
+					<li><a href="/QROrders/SearchOrder.jsp">訂單資訊</a></li>
+				</c:if>
+				<c:if test="${PageCompetence.getEbayPaypalAccountEdit()==1}">
+					<li><a href="/QREBayAccount/eBayAccount.jsp">Ebay帳號管理</a></li>
+				</c:if>
+				<c:if test="${PageCompetence.getAccountInfoEdit() ==1 }"> 
+					<li><a href="/QREmployee/accountManage.jsp">員工管理</a></li>
+					<li><a href="/QRAccess/Competence.jsp">權限管理</a></li>
+			    </c:if>
+			    <c:if test="${PageCompetence.getParamSettingEdit() ==1}">
+			    	<li><a href="/SupplyCompany/SCManage.jsp">供應商/倉庫</a></li>
+				</c:if>
 			</ul>
 
 			<ul class="nav navbar-right">
