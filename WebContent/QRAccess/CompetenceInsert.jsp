@@ -32,16 +32,16 @@
     <li><a href="Competence.jsp">檢視權限</a></li>
   </ol>
 </div>
-<h3>新增權限</h3>
+
   <div class="container" >
   	<form name="searchform" action="CompetenceInsert.do" method="post" style="font-size: 100%; vertical-align: baseline;" class=" form-group container">
       
           <input type="hidden">
-              <h3 class="" style="background: #BCF1E5; border-left: 6px solid #1CAF9A;" >權限設定</h3>
+              <h3 class="" style="background: #BCF1E5; border-left: 6px solid #1CAF9A;" >新增權限</h3>
               <div class="container-fluid form-horizontal">
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>權限等級</h4></div>
-                      <div class="col-md-5 well-sm"><input class="form-control" type="text" name="CompetenceLv"></div>
+                      <div class="col-md-5 well-sm"><input class="form-control" type="text" required="required" name="CompetenceLv"></div>
                   </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>商品權限</h4></div>
@@ -51,7 +51,7 @@
 					   
 					  </div>
                   </div>
-                  <div class="row">
+                  <div  style="display:none" class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>採購權限</h4></div>
                       <div class="col-md-5 well-sm">
                       	
@@ -68,7 +68,7 @@
 					   
 					  </div>
                   </div>
-                  <div class="row">
+                  <div  style="display:none" class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>客戶權限</h4></div>
                       <div class="col-md-5 well-sm">
                       	
@@ -81,7 +81,7 @@
                       <div class="col-md-5 well-sm">
                       	
                       	<label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_0" name="EntireOrders" />所有狀態訂單</label>
-					 	<label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_1"  name="OrdersInvoiceDownload" />下載所有訂單Invoice</label>
+					 	<label  style="display:none" class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_1"  name="OrdersInvoiceDownload" />下載所有訂單Invoice</label>
 					   
 					  </div>
                   </div>
@@ -107,7 +107,7 @@
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>報表權限</h4></div>
                       <div class="col-md-5 well-sm">
                       	
-                      	<label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_0"  name="ChartView" />查看圖表&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                      	<label  style="display:none" class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_0"  name="ChartView" />查看圖表&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 					 	<label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_1"  name="ProductProfitView" />查看商品利潤</label>
 					   
 					  </div>
@@ -116,7 +116,7 @@
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>&nbsp;</h4></div>
                       <div class="col-md-5 well-sm">
                       	
-                      	<label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_0"  name="ReportView" />查看報表&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                      	<label  style="display:none" class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_0"  name="ReportView" />查看報表&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 					 	<label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_1"  name="ProductCostView" />查看商品成本</label>
 					   
 					  </div>
