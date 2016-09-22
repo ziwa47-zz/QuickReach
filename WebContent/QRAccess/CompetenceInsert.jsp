@@ -141,7 +141,7 @@
                   </div>
                   <div class="container-fluid form-horizontal">
                 	<div class="row text-center" >     
-                        <button type="submit" value="insert" name="smt" id="">新增</button>
+                        <button type="submit" value="insert" name="smt" id="new">新增</button>
                     </div>
                 
                 </div>
@@ -150,7 +150,13 @@
               
 </form>
 </div>
-
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#new").click(function(){
+        $('#spinner').hide();
+    });
+});
+</script>
   
   
   <%@ include file="/href/footer.jsp" %>
