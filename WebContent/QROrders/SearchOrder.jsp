@@ -313,16 +313,16 @@
             <tr class="ListTitle">
               <th nowrap>選取</th>
               <th nowrap>編輯</th>
-              <th nowrap>訂單編號</th>
-              <th nowrap>平台</th>
-              <th nowrap>Ebay Account</th>
-              <th nowrap>客戶帳號</th>
-              <th nowrap>購買日期</th>
-              <th nowrap>出貨日期</th>
-              <th nowrap>物流</th>
-              <th nowrap>國家</th>
-              <th nowrap>訂單狀態</th>
-              <th nowrap>總金額</th>
+              <th>訂單編號</th>
+              <th>平台</th>
+              <th>Ebay Account</th>
+              <th>客戶帳號</th>
+              <th>購買日期</th>
+              <th>出貨日期</th>
+              <th >物流</th>
+              <th>國家</th>
+              <th>訂單狀態</th>
+              <th>總金額</th>
               <th nowrap>使用者</th>
             </tr>
             <c:forEach var="i" items="${SearchOrdersResult}" begin="${begin}" end="${end}" step="1" varStatus="check">
@@ -447,16 +447,16 @@
             <tr class="ListTitle">
               <th nowrap>選取</th>
               <th nowrap>編輯</th>
-              <th nowrap>訂單編號</th>
-              <th nowrap>平台</th>
-              <th nowrap>Ebay Account</th>
-              <th nowrap>客戶帳號</th>
-              <th nowrap>購買日期</th>
-              <th nowrap>出貨日期</th>
-              <th nowrap>物流</th>
-              <th nowrap>國家</th>
-              <th nowrap>訂單狀態</th>
-              <th nowrap>總金額</th>
+              <th>訂單編號</th>
+              <th>平台</th>
+              <th>Ebay Account</th>
+              <th>客戶帳號</th>
+              <th>購買日期</th>
+              <th>出貨日期</th>
+              <th>物流</th>
+              <th>國家</th>
+              <th>訂單狀態</th>
+              <th>總金額</th>
               <th nowrap>使用者</th>
             </tr>
             <c:forEach var="i" items="${list}" begin="${begin}" end="${end}" step="1" varStatus="check">
