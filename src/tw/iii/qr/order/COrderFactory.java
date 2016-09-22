@@ -725,7 +725,7 @@ public class COrderFactory extends COrders {
 	}
 
 	public void isBundledeductStock(HttpServletRequest request, Connection conn) throws Exception {
-		
+
 		LinkedList<COrderDetail> condition = getCondition(request, conn);
 
 		for (int i = 0; i < condition.size(); i++) {
@@ -780,7 +780,7 @@ public class COrderFactory extends COrders {
 			ps.executeUpdate();
 
 		}
-	
+
 		ps.close();
 
 	}
@@ -852,14 +852,13 @@ public class COrderFactory extends COrders {
 	// return result;
 	// }
 
-	public void insertIntoPurchaseLogFromOrders(HttpServletRequest request, Connection conn) throws SQLException {
-
+	public void insertIntoPurchaseLogFromOrders(HttpServletRequest request, Connection conn) throws Exception {
+		LinkedList<COrderDetail> condition = getCondition(request, conn);
 		COrders orderInfo = getOrderAllInfo(request.getParameter("QR_id"), conn);
 		LinkedList<COrderDetail> orderDetailInfo = getOrderDetails(request.getParameter("QR_id"), conn);
 		System.out.println(orderInfo.getCOrderMaster().getQR_id());
 		System.out.println(orderInfo.getCOrderDetailSingle().getSKU());
 
-		LinkedList<Cpurchase_detail> PurchaseLog = new LinkedList<Cpurchase_detail>();
 		String strSql = "insert into purchaselog_master (purchaseId, date, staffName, comment, stockStatus)"
 				+ " values( ?, getdate(), ?, ?, ?)";
 		System.out.println(strSql);
@@ -869,6 +868,47 @@ public class COrderFactory extends COrders {
 		ps.setString(3, orderInfo.getCOrderMaster().getComment());
 		ps.setString(4, "2");
 		int x = ps.executeUpdate();
+
+		for (int i = 0; i < condition.size(); i++) {
+
+			if ("B00".equals(condition.get(i).getSKU().substring(0, 3))) {
+
+				LinkedList<String> skulist = new LinkedList<String>();
+				LinkedList<String> warehouse = new LinkedList<String>();
+				LinkedList<Integer> qty = new LinkedList<Integer>();
+				LinkedList<Double> cost = new LinkedList<Double>();
+				String strsql = " select p.SKU, b.qty,warehouse , p.cost from bundles b inner join product p on b.p_SKU=p.SKU left join storage s on p.sku = s.sku where '1' = '1' and m_sku = ? ";
+				ps = conn.prepareStatement(strsql);
+				ps.setString(1, condition.get(i).getSKU());
+				ResultSet rs = ps.executeQuery();
+
+				while (rs.next()) {
+
+					skulist.add(rs.getString(1));
+					qty.add(rs.getInt(2));
+					warehouse.add(rs.getString(3));
+					cost.add(rs.getDouble(4));
+				}
+
+				rs = null;
+				ps = null;
+
+				String strSql2 = "insert into purchaselog_detail (purchaseId, SKU, warehouse, qty, price, stockStatus)"
+						+ " values( ?, ?, ?, ?, ?, ?)";
+				PreparedStatement ps2 = conn.prepareStatement(strSql2);
+				for (int j = 0; j < skulist.size(); j++) {
+					ps2.setString(1, orderInfo.getCOrderMaster().getQR_id());
+					ps2.setString(2, skulist.get(j));
+					ps2.setString(3, warehouse.get(j));
+					ps2.setInt(4, qty.get(j) * orderDetailInfo.get(i).getQty());
+					ps2.setDouble(5, cost.get(j));
+					ps2.setString(6, "2");
+					int y = ps2.executeUpdate();
+				}
+			} else if (!"B00".equals(condition.get(i).getSKU().substring(0, 3))) {
+
+			}
+		}
 
 		String strSql2 = "insert into purchaselog_detail (purchaseId, SKU, warehouse, qty, price, stockStatus)"
 				+ " values( ?, ?, ?, ?, ?, ?)";
