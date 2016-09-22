@@ -62,9 +62,9 @@
 function checkDetailSKUValue(){
     	
     	//var smtstatus = false;
-    	
     	if($("#productSKU").val()=='select' ){
-    		$("#listForm").submit( function () { 
+    		$("#listForm").submit( function () {
+    			$('#spinner').hide();
     			  return false; 
     		});
     		alert("請選擇子商品"); 
@@ -76,6 +76,7 @@ function checkDetailSKUValue(){
 	  		alert("請輸入正確數量");  
 	  		//smtstatus = false;		  		
   		}*/else{
+  			
   			$("#listForm").validate({
       			rules: {
       			    qty: "required",
@@ -319,7 +320,7 @@ request.setAttribute("listSubBrand",listSubBrand);
             </tr> 
             <tr> <th>數量:<input type="number" name="qty"></th></tr>
             <tr>
-            	<td ><button type="submit" name="smt" value="add" onclick="checkDetailSKUValue()">加入</button></td>
+            	<td ><button type="submit" name="smt" value="add" id="smtadd" onclick="checkDetailSKUValue()">加入</button></td>
             </tr>           
           </tbody>
         </table>
@@ -358,7 +359,18 @@ request.setAttribute("listSubBrand",listSubBrand);
 
 </form>
 
-    
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#smtupdate").click(function(){
+        $('#spinner').hide();
+    });
+    $("#smtadd").click(function(){
+        $('#spinner').hide();
+    });
+});
+</script>
+
 </body>
   
 <%@ include file="/href/footer.jsp" %>    
