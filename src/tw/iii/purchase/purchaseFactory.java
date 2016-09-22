@@ -254,7 +254,7 @@ public class purchaseFactory {
 			System.out.println(date1);
 		}
 		if (!isNullorEmpty(date2)) {
-			sqlstr1 += " and b.date  <= '" + (Integer.valueOf(date2)+1)+ "'";
+			sqlstr1 += " and b.date  <= '" + date2 +" 23:59:59'";
 			System.out.println(date2);
 		}
 
@@ -455,6 +455,32 @@ public class purchaseFactory {
 
 				list.add(d);
 			}
+			
+			rs.close();
+			
+			String strsq2 = "select a.stockTransferId,b.qty,a.date,b.oldwarehouse+'->'+b.newwarehouse,b.oldwarehousePosition1+'-'+b.oldwarehousePosition2,b.newwarehousePosition1+'-'+b.newwarehousePosition2 from stockTransferlog_master as a inner join stockTransferlog_detail as b  on a.stockTransferId=b.stockTransferId where 1 = 1 "
+					+ " and sku = ? ";
+
+				ps = conn.prepareStatement(strsq2);
+				ps.setString(1, sku);
+				ResultSet rs2 = ps.executeQuery();
+				while (rs2.next()) {
+					d = new Cpurchase_detail();
+					d.setPurchaseId(rs2.getString(1));
+					d.setStockStatus("轉倉");
+					
+					d.setQty(rs2.getInt(2));
+					d.setDate(rs2.getDate(3));
+					d.setWarehouse(rs2.getString(4));
+					d.setWarehousePosition(rs2.getString(5));
+					d.setWarehousePosition2(rs2.getString(6));
+
+					list.add(d);
+				
+					
+				}
+				rs2.close();
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
