@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.*,javax.servlet.*"%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="en">
 <head>
@@ -192,7 +193,16 @@
           </tr>
           <c:forEach var="i" items="${productall}" begin="0" step="1" varStatus="check">
             <tr>
-              <td><a href="ProductDetail.jsp?sku=${i.getSKU()}"><img src="../img/compose-4.png"></a></td>
+               <c:set var="string1" value="${ i.getSKU()}"/>
+           <c:set var="string2" value="${fn:substring(string1, 0, 3)}" />	
+           
+           <c:if test="${string2  != 'B00'}" > 
+             <td><a href="ProductDetail.jsp?sku=${i.getSKU()}"><img src="../img/compose-4.png"></a></td>
+           </c:if>
+           
+ 		<c:if test="${string2 == 'B00'}">
+             <td><a href="BundlesDetail.jsp?QQ=${i.getSKU()}"><img src="../img/compose-4.png"></a></td>
+           </c:if>
               <td>${i.getSKU()}</td>
               <td>${i.getBrand()}</td>
               <td>${i.getSubBrand()}</td>
