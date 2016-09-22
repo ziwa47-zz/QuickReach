@@ -305,4 +305,29 @@ public class BundlesFactory {
 		return 0;
 	}
 	
+	public String[] getQQ(String sku) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+		//查看所有複合商品
+		DataBaseConn dbc = new DataBaseConn();		
+		Connection conn = dbc.getConn() ;
+		state = conn.createStatement();
+
+		String sqlstr = "SELECT sku,P_name,comment FROM product where  sku ='"+sku+"'";
+
+		ResultSet rs = state.executeQuery(sqlstr);
+		String[] strQQ = new String[3]; 
+		
+		while (rs.next()) {
+			
+			strQQ[0]=rs.getString(1);
+			strQQ[1]=rs.getString(2);
+			strQQ[2]=rs.getString(3);
+						
+		}
+		
+		rs.close();
+		state.close();
+		dbc.connclose(conn);
+		return strQQ;
+	}
+	
 }
