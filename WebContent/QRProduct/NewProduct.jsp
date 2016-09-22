@@ -195,7 +195,7 @@ session.setAttribute("today", today);
               </div>  
                 <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>重量</h4></div>
-                  <div class="col-md-8  well-sm"><input class="form-control number "   title="請輸入正確重量  ex:8.7" type="text" name="weight" value="" ></div>
+                  <div class="col-md-8  well-sm"><input class="form-control number "   title="請輸入正確重量  ex:8.7" type="text" name="weight" value="0" ></div>
               </div>
               </div>
 
