@@ -100,7 +100,7 @@ System.out.println(strDate);
                 </tr>
                 <tr>
                   <td colspan="9"><c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1">
-                  <b>${j.getSKU()}</b>&nbsp${j.getProductName()}(SKU/品名)&nbsp數量:${j.getQty()}<br/>
+                  <b>${j.getSKU()}</b>&nbsp${j.getProductName()}&nbsp數量:${j.getQty()}<br/>
 						</c:forEach>
                   </td>
                 </tr>
@@ -114,7 +114,6 @@ System.out.println(strDate);
                 <tr class="ListTitle">
                   <th>選取</th>
                   <th>結標日</th>
-                  <th>訂單編號</th>
                   <th>SKU</th>
                   <th>品名</th>
                   <td>幣別</td>
@@ -126,7 +125,6 @@ System.out.println(strDate);
                     value="${i.getCOrderMaster().getQR_id()}" id="${i.getCOrderMaster().getQR_id()}"
                     onchange="enableOrderStatus(this)"></td>
                   <td>${i.getCOrderMaster().getOrderDate()}</td>
-                  <td>${i.getCOrderMaster().getQR_id()}</td>
                   <td>${i.getCOrderDetailSingle().getSKU()}</td><!--sku-->
                   <td>${i.getCOrderDetailSingle().getProductName()}</td><!--productName-->
                   <td>${i.getCOrderMaster().getCurrency()}</td>
