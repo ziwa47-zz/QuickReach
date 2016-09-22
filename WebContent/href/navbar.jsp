@@ -77,10 +77,10 @@ position:absolute; width:70%; height:280px;
 			dateFormat : 'yy-mm-dd',
 		});
 		$("input[name=dateMin]").datepicker({
-			dateFormat : 'yymmdd',
+			dateFormat : 'yy-mm-dd',
 		});
 		$("input[name=dateMax]").datepicker({
-			dateFormat : 'yymmdd',
+			dateFormat : 'yy-mm-dd',
 
 		});
 		 $("input[name=date1]").datepicker({dateFormat : 'yy/mm/dd'});
