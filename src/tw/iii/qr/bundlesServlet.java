@@ -81,6 +81,9 @@ public class bundlesServlet extends HttpServlet {
 		//新增子商品
 		request.setCharacterEncoding("UTF-8");
 		String submit = request.getParameter("smt");
+		String bdsku = request.getParameter("bdsku");
+		String bdName = request.getParameter("bdname");
+		String bdComment = request.getParameter("comment");
 		String dSKU = request.getParameter("productSKU");
 		String dPName = request.getParameter("P_name");
 		String dQty = request.getParameter("qty");
@@ -102,6 +105,9 @@ public class bundlesServlet extends HttpServlet {
 		bdf.setBundles(dSKU,dPName,dQty);
 		bdf.processBundles(submit);
 		session.setAttribute("getBundlesDetail", bdf.bundlesList );
+		session.setAttribute("bdsku", bdsku );
+		session.setAttribute("bdName", bdName );
+		session.setAttribute("bdComment", bdComment );	
 		response.sendRedirect("BundlesDetail.jsp");
 		
 		

@@ -1,5 +1,6 @@
 ﻿package tw.iii.purchase;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.util.Date;
 import java.sql.PreparedStatement;
@@ -38,7 +39,7 @@ public class purchaseFactory {
 
 		while (rs.next()) {
 			account = new LinkedList<>();
-			account.add(rs.getString(1));
+			
 			account.add(rs.getString(2)+rs.getString(3));
 
 			Alllist.add(account);
@@ -138,7 +139,18 @@ public class purchaseFactory {
 		String pname = request.getParameter("pName");
 
 		String companyName = request.getParameter("companyName");
-		String owner = request.getParameter("owner");
+		//String owner = request.getParameter("owner");
+		String owner = "";
+		if(!(isNullorEmpty(request.getParameter("owner")))){
+			
+			try {
+				owner = new String(request.getParameter("owner").getBytes("8859_1"), "UTF-8");
+			} catch (UnsupportedEncodingException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		
 		String wareHouse = request.getParameter("wareHouse");
 
 		String warehousePositionOne = request.getParameter("warehousePositionOne");
@@ -256,36 +268,19 @@ public class purchaseFactory {
 		}
 
 		if (!isNullorEmpty(companyName)) {
-			sqlstr1 += " and b.companyName like '%" + companyName + "%'";
+			sqlstr1 += " and b.companyName  = '"+companyName+"'";
 			System.out.println(companyName);
 		}
 		if (!isNullorEmpty(wareHouse)) {
-			sqlstr1 += " and a.warehouse like '%" + wareHouse + "%'";
+			sqlstr1 += " and a.warehouse = '"+wareHouse+"'";
 			System.out.println(wareHouse);
 		}
 		if (!isNullorEmpty(owner)) {
-			sqlstr1 += " and b.staffName like '%" + owner + "%'";
+			sqlstr1 += " and b.staffName = N'"+owner+"'";
 			System.out.println(owner);
 		}
-		if (!isNullorEmpty(warehousePositionOne)) {
-			sqlstr1 += " and a.warehousePosition1 like '%" + warehousePositionOne + "%'";
-			System.out.println(warehousePositionOne);
-		}
+		
 
-		if (!isNullorEmpty(warehousePositionTwo)) {
-			sqlstr1 += " and a.warehousePosition2 like '%" + warehousePositionTwo + "%'";
-			System.out.println(warehousePositionTwo);
-		}
-
-		if (!isNullorEmpty(qty)) {
-			sqlstr1 += " and a.qty like '%" + qty + "%'";
-			System.out.println(qty);
-		}
-
-		if (!isNullorEmpty(price)) {
-			sqlstr1 += " and a.price like '%" + price + "%'";
-			System.out.println(price);
-		}
 
 		sqlstr1 += " order by 1 desc";
 		return sqlstr1;
@@ -298,7 +293,7 @@ public class purchaseFactory {
 
 		System.out.println("Tell me who you are?:" + purchaseId);
 		PreparedStatement ps = null;
-		String sqlstr1 = "Insert Into purchaselog_master(purchaseId,date,companyId,companyName,staffName,warehouse,comment,stockStatus) Values(?,getdate(),?,(select C_name from company where C_id=?),?,?,?,1)";
+		String sqlstr1 = "Insert Into purchaselog_master(purchaseId,date,companyId,companyName,staffName,warehouse,comment,stockStatus) Values(?,(select dateadd(hour,8,getdate())),?,(select C_name from company where C_id=?),?,?,?,1)";
 		ps = conn.prepareStatement(sqlstr1);
 		ps.setString(1, purchaseId);
 		ps.setString(2, preparePurchaseMaster.getCompanyId()); // companyId
@@ -352,7 +347,7 @@ public class purchaseFactory {
 				ps = null;
 				int count = rs.getInt(1);
 				if (count == 0) {
-					String sqlstr3 = "Insert into storage values(?,?,?,?,?,?,getdate())";
+					String sqlstr3 = "Insert into storage values(?,?,?,?,?,?,(select dateadd(hour,8,getdate())))";
 					ps = conn.prepareStatement(sqlstr3);
 					ps.setString(1, preparePurchaseDetail.get(i).getSKU());
 					ps.setString(2, preparePurchaseDetail.get(i).getWarehouse());

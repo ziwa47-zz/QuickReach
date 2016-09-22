@@ -13,6 +13,32 @@
 </head>
 <body>
 <%@ include file="/href/navbar.jsp" %>
+
+<div class="nav">
+  <div class="container">
+    <div class="navbar-left" style="background-color:#C7AAE4;" >
+      <ul class="nav nav-tabs">
+        <li><a href="./accountManage.jsp" style="color:#fff">員工帳號管理</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container">
+    <div class="nav" style="background-color:#984AC0;" >
+      <ul class="nav nav-tabs">
+        <li><a href="./accountManage.jsp" style="color: #fff">員工帳號管理</a></li>
+        <li><a href="./Account.jsp">新增員工帳號</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+  
+<div class="container container-fluid breadcrumbBox">
+  <ol class="breadcrumb" >
+    <li><a href="../HomePage.jsp" >首頁</a></li>
+    <li class="active"><a href="./accountManage.jsp">員工帳號管理</a></li>
+    <li><a href="./Account.jsp">新增員工帳號</a></li>
+  </ol>
+</div>
 <%
 request.setCharacterEncoding("UTF-8");
 String account1 = request.getParameter("p");
@@ -27,6 +53,7 @@ session.setAttribute("accountinfo", accountinfo);
 System.out.println(accountinfo.getAccount());
 }
 %>  
+
 <div class="container" style="background: #E9C2D0; border-radius:20px;">
   <form name="searchform" method="post" action="QRAccountServlet.do" class="form-inline container required" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
@@ -95,19 +122,24 @@ System.out.println(accountinfo.getAccount());
           </div>
         </div>
         
+        
         <div class="row">
           <div class="col-md-3 text-right well-sm label-tag"  >
             <h4>帳號狀態</h4>
           </div>
-          <div class="col-md-5 well-sm">
-            <label class="checkbox-inline">
-              <input type="radio" id="id_fd-is_active_0" value="1" name="status" />
-              有效</label>
-            <label class="checkbox-inline">
-              <input type="radio" id="id_fd-is_active_1" value="0" name="status" checked/>
-              停用</label>
+          <div class="col-md-5 well-sm">           
+            <c:if test="${accountinfo.getstatus() eq 'ON' }"> 
+              	<input type="radio" id="id_fd-is_active_0" value="ON" name="status" checked/> 有效
+          	  	<input type="radio" id="id_fd-is_active_0" value="OFF" name="status"/> 停用
+           	</c:if>          
+            <c:if test="${accountinfo.getstatus() eq 'OFF' }"> 
+                <input type="radio" id="id_fd-is_active_0" value="ON" name="status"/> 有效
+          	    <input type="radio" id="id_fd-is_active_0" value="OFF" name="status" checked/> 停用
+            </c:if>
           </div>
         </div>
+        
+        
         <div class="" align="center">
           <button type="submit" name="submit" value="editAccount" class="btn-lg btn-success">修改送出</button>
           <td><a href="accountManage.jsp">

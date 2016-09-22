@@ -42,7 +42,7 @@ conn1.close();
 </div>
 <div class="container container-fluid breadcrumbBox">
   <ol class="breadcrumb" >
-    <li><a href="../QRMain/HomePage.jsp" >首頁</a></li>
+    <li><a href="../HomePage.jsp" >首頁</a></li>
     <li class="active" style="display:"><a href="./eBayAccount.jsp">eBay帳號管理</a></li>
     <li><a href="./eBayAccount.jsp">帳號列表</a></li>
   </ol>
@@ -57,14 +57,14 @@ conn1.close();
           <tr class="ListTitle2">
             <th>編輯</th>
             <th>eBayID</th>
-            <th>eBay Token</th>
-            <th>Token 到期</th>
+        <!--    <th>eBay Token</th>  -->  
+        <!--    <th>Token 到期</th>  --> 
             <th>paypal 帳號</th>
             <th>對應公司</th>
             <th>啟動時間</th>
             <th>最後修改時間</th>
             <th>狀態</th>
-            <th>Comment</th>
+        <!--    <th>Comment</th>    --> 
             <th>SystemFeedback</th>
           </tr>
         </thead>
@@ -75,9 +75,9 @@ conn1.close();
               <!-- <td width="50px" align="left"><input class="checker" type="checkbox" name="checking_companys[]" value="10"></td>	 -->
               <td>${i.getebayId()}</a></td>
               <!-- ebayId -->
-              <td>${i.getebayToken()}</a></td>
+        <!--      <td>${i.getebayToken()}</a></td>  -->
               <!-- ebayToken -->
-              <td>${i.getendToken()}</td>
+        <!--      <td>${i.getendToken()}</td>  -->
               <!-- endToken -->
               <td>${i.getpaypalAccount() }</td>
               <!-- paypallAccount -->
@@ -89,59 +89,13 @@ conn1.close();
               <!-- lastFixTime -->
               <td>${i.getstatus()}</td>
               <!-- status -->
-              <td>${i.getcomment()}</td>
+        <!--  <td>${i.getcomment()}</td>   --> 
               <!-- comment -->
               <td>${i.getsystemFeedback()}</td>
               <!-- systemFeedback --> 
             </tr>
             
-            <!-- 				<tr>				
-                    <td width="50px" align="left"><input class="checker" type="checkbox" name="checking_companys[]" value="11"></td>				
-					<td align="left"><a href="/settings/edit_ebay_account/?id=11">cyclistbike</a></td>
-										
-					<td><a href="/settings/edit_ebay_account/?id=11">QdgFsoVhGN...</a></td>
-                    <td>2017-03-28 09:52:21</td> 
-					<td width="150px">mandarinbike@gmail.com</td>					
-					<td>2015-10-05 15:30:56</td>
-					<td>2016-08-04 08:46:33</td>
-					<td> Success </td>					
-				</tr>
-                
-				<tr>				
-                    <td width="50px" align="left"><input class="checker" type="checkbox" name="checking_companys[]" value="12"></td>				
-					<td align="left"><a href="/settings/edit_ebay_account/?id=12">magicbike</a></td>
-									
-					<td><a href="/settings/edit_ebay_account/?id=12">NlhVlMEhRg...</a></td>
-                    <td>2017-05-24 08:52:11</td> 
-					<td width="150px">mandarinbike@gmail.com</td>					
-					<td>2015-12-01 16:44:32</td>
-					<td>2016-08-04 08:46:34</td>
-					<td> Success </td>					
-				</tr>
-                
-				<tr>				
-                    <td width="50px" align="left"><input class="checker" type="checkbox" name="checking_companys[]" value="13"></td>				
-					<td align="left"><a href="/settings/edit_ebay_account/?id=13">igrocery</a></td>
-									
-					<td><a href="/settings/edit_ebay_account/?id=13">xMRu/Qtc+B...</a></td>
-                    <td>2017-05-31 08:38:44</td> 
-					<td width="150px">mandarinbike@gmail.com</td>					
-					<td>2015-12-08 16:39:00</td>
-					<td>2016-08-04 08:46:36</td>
-					<td> Success </td>					
-				</tr>
-                
-				<tr>				
-                    <td width="50px" align="left"><input class="checker" type="checkbox" name="checking_companys[]" value="14"></td>				
-					<td align="left"><a href="/settings/edit_ebay_account/?id=14">comenwin0903</a></td>
-					
-					<td><a href="/settings/edit_ebay_account/?id=14">0WIdC2uYjk...</a></td>
-                    <td>2017-05-31 08:38:44</td>
-					<td width="150px">william19780901@gmail.com</td>					
-					<td>2016-04-28 16:37:35</td>
-					<td>2016-08-04 08:46:37</td>
-					<td> Failed </td>					
-				</tr> --> 
+         
             
           </c:forEach>
         </tbody>

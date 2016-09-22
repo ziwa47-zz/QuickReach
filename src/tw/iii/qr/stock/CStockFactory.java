@@ -1,12 +1,19 @@
 package tw.iii.qr.stock;
 
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import javax.servlet.http.HttpServletRequest;
+
+import tw.iii.qr.DataBaseConn;
 
 public class CStockFactory extends CStock {
 	public CStockFactory() {
@@ -164,7 +171,43 @@ public class CStockFactory extends CStock {
 
 		return storageall;
 	}
-
+	public JSONArray iosSearchSecuredno(){
+		JSONObject jo = null;
+		JSONArray ja = new JSONArray();
+		try{
+		Connection conn = new DataBaseConn().getConn();
+		
+		String strsql = "select p.sku,p.p_name,p.spec,p.securedQty,sum(qty) as sum1 from product as p inner join storage as s on p.sku=s.sku group by p.sku,p.p_name,p.spec,p.securedQty having p.securedQty >sum(qty) ";
+		PreparedStatement ps = null;
+		ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+		HashMap<String, String> hm = new HashMap<String, String>();
+		
+		while(rs.next()){
+			hm= new HashMap<String, String>();
+			
+			
+			hm.put("Sku", rs.getString(1));
+			hm.put("Pname", rs.getString(2));
+			hm.put("Spec", rs.getString(3));
+			hm.put("SecureNo",String.valueOf(rs.getInt(4)));
+			hm.put("Storage", String.valueOf(rs.getInt(5)));
+			
+			jo = new JSONObject(hm);
+			ja.put(jo);
+			
+		}
+		
+		rs.close();
+		
+		
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		return ja;
+		
+	}
 	public boolean isNullorEmpty(String s) {
 		
 			if (s == null || s.length()==0) 

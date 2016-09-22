@@ -35,7 +35,7 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
     <div class="nav" style="background-color:#A45A21;" >
       <ul class="nav nav-tabs">
         <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
-        <li><a href="OrderProcessingPage.jsp?begin=0&end=10">處理中</a></li>
+        <li><a href="OrderProcessingPage.jsp?begin=0&end=10" style="color:#fff">處理中</a></li>
         <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
@@ -84,7 +84,7 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
                   <td>${i.getCOrderMaster().getOrderDate()}</td>
                   <td>${i.getCOrderMaster().getQR_id()}</td>
                   <td>${i.getCOrderMaster().getOrder_id()}</td>
-                  <td>${i.getCOrderGuestInfo().getCountry()}</td>
+                  <td>${i.getCOrderReciever().getCountry()}</td>
                   <td>${i.getCOrderMaster().getEbayPrice()}</td>
                   <td>${i.getCOrderMaster().getEbayTotal()}</td>
                   <td>${i.getCOrderMaster().getEbayFees()}</td>
@@ -156,7 +156,7 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
                   <td>${i.getCOrderMaster().getEbayItemNO()}</td>
                   <td>${i.getCOrderDetailSingle().getQty()}</td><!--qty-->
                   <td>${i.getCOrderMaster().getEbayAccount()}</td>
-                  <td>${i.getCOrderGuestInfo().getCountry()}</td>
+                  <td>${i.getCOrderReciever().getCountry()}</td>
                   <td>${i.getCOrderMaster().getCurrency()}</td>
                   <td>${i.getCOrderMaster().getEbayPrice()}</td>
                   <td>${i.getCOrderMaster().getEbayTotal()}</td>
@@ -189,7 +189,7 @@ request.setAttribute("ndbs", dayliBalanceSheetnew);
     </div>
     </c:forEach>
     <div class="row text-center" >
-      <button type="submit" name="send" value="dayliBalance" class="btn-lg btn-primary"
+      <button type="submit" name="send" value="dayliBalance" class="btn btn-lg btn-primary"
        >送出</button>
     </div>
   </form>

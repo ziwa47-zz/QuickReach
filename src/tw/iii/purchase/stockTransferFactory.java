@@ -1,10 +1,10 @@
 package tw.iii.purchase;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,7 +74,7 @@ public class stockTransferFactory {
 
 		System.out.println("stockTransferId:" + stockTransferId);
 
-		String sqlstr1 = "Insert Into stockTransferlog_master(stockTransferId,date,staffName,oldWarehouse,newWarehouse,comment,stockStatus) Values(?,getdate(),?,?,?,?,3)";
+		String sqlstr1 = "Insert Into stockTransferlog_master(stockTransferId,date,staffName,oldWarehouse,newWarehouse,comment,stockStatus) Values(?,(select dateadd(hour,8,getdate())),?,?,?,?,3)"; // getdate(0)
 		PreparedStatement ps = conn.prepareStatement(sqlstr1);
 		ps.setString(1, stockTransferId);
 
@@ -119,9 +119,11 @@ public class stockTransferFactory {
 			ps = conn.prepareStatement(sqlstr3);
 			ps.setInt(1, Integer.valueOf(prepareTransferDetail.get(i).getQty()));
 			ps.setString(2, prepareTransferDetail.get(i).getSKU());
-			ps.setString(3, prepareTransferDetail.get(i).getWarehouse());
+			ps.setString(3, prepareTransferMaster.getWarehouse());
 
 			ps.executeUpdate();
+
+			System.out.println("原倉" + prepareTransferMaster.getWarehouse());
 
 			// 判別將轉入之庫別有無此商品庫存記錄
 			System.out.println("PRE storage");
@@ -135,7 +137,7 @@ public class stockTransferFactory {
 				ps = null;
 				int count = rs.getInt(1);
 				if (count == 0) {
-					String sqlstr5 = "Insert into storage values(?,?,?,?,?,?,getdate())";
+					String sqlstr5 = "Insert into storage values(?,?,?,?,?,?,(select dateadd(hour,8,getdate())))";
 					ps = conn.prepareStatement(sqlstr5);
 					ps.setString(1, prepareTransferDetail.get(i).getSKU());
 					ps.setString(2, prepareTransferMaster.getWarehouse2());
@@ -149,11 +151,13 @@ public class stockTransferFactory {
 
 					// 增加該品項轉倉庫存
 
-					String sqlstr5 = "Update  storage set qty=qty+? where SKU= ? and warehouse = ?";
+					String sqlstr5 = "Update  storage set qty=qty+?,warehousePosition1 = ?,warehousePosition2 = ? where SKU= ? and warehouse = ?";
 					ps = conn.prepareStatement(sqlstr5);
 					ps.setInt(1, Integer.valueOf(prepareTransferDetail.get(i).getQty()));
-					ps.setString(2, prepareTransferDetail.get(i).getSKU());
-					ps.setString(3, prepareTransferMaster.getWarehouse2());
+					ps.setString(2, prepareTransferDetail.get(i).getNewWarehousePosition());
+					ps.setString(3, prepareTransferDetail.get(i).getNewWarehousePosition2());
+					ps.setString(4, prepareTransferDetail.get(i).getSKU());
+					ps.setString(5, prepareTransferMaster.getWarehouse2());
 
 					ps.executeUpdate();
 				}
@@ -161,19 +165,17 @@ public class stockTransferFactory {
 
 			System.out.println("qty:" + Integer.valueOf(prepareTransferDetail.get(i).getQty()));
 			System.out.println("sku:" + prepareTransferDetail.get(i).getSKU());
-			System.out.println("newWarehouse:" + prepareTransferDetail.get(i).getWarehouse2());
+			System.out.println("新倉:" + prepareTransferMaster.getWarehouse2());
 
 		}
 		ps.close();
 	}
 
 	public LinkedList<Cpurchase> searchStockTransfer(Connection conn, HttpServletRequest request) {
-		
+
 		LinkedList<Cpurchase> list = new LinkedList<Cpurchase>();
-		
+
 		ResultSet rs = null;
-		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
 		String stockTransferId = request.getParameter("stockTransferId");
 
@@ -184,12 +186,25 @@ public class stockTransferFactory {
 
 		String oldwareHouse = request.getParameter("oldWareHouse");
 		String newWareHouse = request.getParameter("newWareHouse");
-		
-		String staff = request.getParameter("staff");
-		
-		String sqlstr1 = makeSqlString(stockTransferId, date1, date2, sku, oldwareHouse, newWareHouse,staff);
 
-		System.out.println("sssssss:"+date2);
+		String staffId = request.getParameter("staffId");
+//		if (!(isNullorEmpty(request.getParameter("staffId")))) {
+			System.out.println("-------ld"+request.getParameter("staffId"));
+//			try {
+//				
+//				staffId = new String(request.getParameter("staffId").getBytes("8859_1"), "UTF-8");
+//				System.out.println("oooooold"+staffId);
+//			
+//			} catch (UnsupportedEncodingException e1) {
+//				e1.printStackTrace();
+//			}
+//			
+//		}
+
+		 
+
+		String sqlstr1 = makeSqlString(stockTransferId, date1, date2, sku, oldwareHouse, newWareHouse, staffId);
+
 		System.out.println(sqlstr1);
 		try {
 			PreparedStatement ps = conn.prepareStatement(sqlstr1);
@@ -207,7 +222,8 @@ public class stockTransferFactory {
 				cpr.CPurchase_detailsSingle.setNewWarehousePosition(rs.getString(6));
 				cpr.CPurchase_master.setStaffId(rs.getString(7));
 				cpr.CPurchase_detailsSingle.setQty(rs.getInt(8));
-				cpr.CPurchase_detailsSingle.setComment(rs.getString(9));;
+				cpr.CPurchase_detailsSingle.setComment(rs.getString(9));
+				;
 
 				list.add(cpr);
 			}
@@ -228,12 +244,10 @@ public class stockTransferFactory {
 
 	}
 
-	public String makeSqlString(String stockTransferId, String date1, String date2,
-			 String sku,String newWareHouse, String oldWareHouse,String staff) {
+	public String makeSqlString(String stockTransferId, String date1, String date2, String sku, String newWareHouse,
+			String oldWareHouse, String staffId) {
 		String sqlstr1 = "select a.stockTransferId,b.SKU,b.oldWarehouse,b.oldWarehousePosition1+'-'+b.oldWarehousePosition2,b.newWarehouse,b.newWarehousePosition1+'-'+b.newWarehousePosition2,a.staffName,b.qty,b.comment"
 				+ " from stockTransferlog_master as a  inner join stockTransferlog_detail  as b on  a.stockTransferId = b.stockTransferId  ";
-
-	
 
 		if (!isNullorEmpty(stockTransferId)) {
 			sqlstr1 += " and a.stockTransferId  ='" + stockTransferId + "'";
@@ -245,29 +259,28 @@ public class stockTransferFactory {
 			System.out.println(date1);
 		}
 		if (!isNullorEmpty(date2)) {
-			sqlstr1 += " and a.date  <= '" + (Integer.valueOf(date2)+1)+ "'";
+			sqlstr1 += " and a.date  <= '" + (Integer.valueOf(date2) + 1) + "'";
 			System.out.println(date2);
 		}
 
 		if (!isNullorEmpty(sku)) {
-			sqlstr1 += " and a.SKU like '%" + sku + "%'";
+			sqlstr1 += " and b.SKU like '%" + sku + "%'";
 			System.out.println(sku);
 		}
 		if (!isNullorEmpty(newWareHouse)) {
-			sqlstr1 += " and newWareHouse = " + newWareHouse ;
+			sqlstr1 += " and b.newWareHouse = '"+ newWareHouse +"'";
 			System.out.println(newWareHouse);
 		}
-	
+
 		if (!isNullorEmpty(oldWareHouse)) {
-			sqlstr1 += " and oldWareHouse " + oldWareHouse ;
+			sqlstr1 += " and b.oldWareHouse = '"+ oldWareHouse +"'";
 			System.out.println(oldWareHouse);
 		}
-		
-		if (!isNullorEmpty(staff)) {
-			sqlstr1 += " and staffNmae " + staff ;
-			System.out.println(staff);
+
+		if (!isNullorEmpty(staffId)) {
+			sqlstr1 += " and a.staffName = N'"+ staffId +"'";
+			System.out.println(staffId);
 		}
-	
 
 		sqlstr1 += " order by 1 desc";
 		return sqlstr1;

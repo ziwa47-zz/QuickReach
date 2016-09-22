@@ -65,7 +65,6 @@ public class LoginServlet extends HttpServlet {
 			//Login true
 			System.out.println(competencelv);
 			session.setAttribute("account", account);
-			session.setAttribute("password", password);
 			session.setAttribute("staffName",staffName);
 			competenceSession(request,competencelv);
 			response.sendRedirect("/HomePage.jsp");
