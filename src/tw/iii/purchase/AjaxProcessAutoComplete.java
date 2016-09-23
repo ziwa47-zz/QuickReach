@@ -106,6 +106,19 @@ public class AjaxProcessAutoComplete extends HttpServlet {
 			}
 			rs2.close();
 			
+
+			String strSql3 = "Select warehousePosition1,warehousePosition2 from storage where SKU = ? and warehouse = ?";
+			ps = conn.prepareStatement(strSql3);
+			ps.setString(1, autoCompleteNumber);
+			ps.setString(2, request.getParameter("newWarehouse"));
+//			System.out.println("倉庫:"+request.getParameter("warehouse"));
+			ResultSet rs3 = ps. executeQuery();
+			if(rs3.next()){
+				hm.put("newWarehousePosition", rs3.getString(1));
+				hm.put("newWarehousePosition2", rs3.getString(2));	
+			}
+			rs3.close();
+			
 			
 			
 			
