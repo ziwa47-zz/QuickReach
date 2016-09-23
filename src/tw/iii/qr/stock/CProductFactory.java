@@ -163,7 +163,7 @@ public class CProductFactory extends CProduct {
 		String strsql = "UPDATE  product SET " + "owner  = ?," + "productType  = ?," + "brand  = ?," + "subBrand  = ?,"
 				+ "EAN  = ?," + "productCode  = ?," + "P_name  = ?," + "spec  = ?," + "color  = ?," + "cost  = ?,"
 				+ "comment  = ?," + "checkupdate  = ?," + "added  = ?," + "weight  = ?," + "packageMatrial  = ?,"
-				+ "vilumetricWeight  = ? ," + " volume = ? " + " WHERE  sku  = ? ";
+				+ "vilumetricWeight  = ? ," + " volume = ? ,"+"securedQty = ? " + " WHERE  sku  = ? ";
 		CProduct cp = new CProduct();
 
 		cp.setOwner(request.getParameter("owner"));
@@ -184,6 +184,7 @@ public class CProductFactory extends CProduct {
 		cp.setVilumetricWeight(Double.valueOf(request.getParameter("vilu")));
 		cp.setVolume(request.getParameter("volume"));
 		cp.setSKU(request.getParameter("sku"));
+		cp.setSecuredQty(Integer.valueOf(request.getParameter("securedqty")));
 
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
@@ -205,7 +206,9 @@ public class CProductFactory extends CProduct {
 		ps.setString(15, cp.getPackageMatrial()); // package
 		ps.setDouble(16, cp.getVilumetricWeight()); // vilu
 		ps.setString(17, cp.getVolume()); // Volume
-		ps.setString(18, cp.getSKU());
+		ps.setInt(18, cp.getSecuredQty());
+		ps.setString(19, cp.getSKU());
+		
 		int i = ps.executeUpdate();
 
 	}
