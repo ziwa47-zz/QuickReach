@@ -31,16 +31,13 @@ public class DayliBalanceSheetFactory extends COrders {
 		return false;
 	}
 
-	public LinkedList<COrders> dayliBalanceSheet(HttpServletRequest request, HttpServletResponse response,
-			Connection conn) throws ClassNotFoundException, Exception {
+	public LinkedList<COrders> dayliBalanceSheet() throws ClassNotFoundException, Exception {
 		
 		
 		
 		
 		
-		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html;charset=UTF-8");
-		conn = new DataBaseConn().getConn();
+		Connection conn = new DataBaseConn().getConn();
 
 		String strSql = "select m.orderDate, m.QR_id, r.tel1, m.shippingFees,"
 				+ " m.packageFees, m.comment, m.totalWeight,m.ebayNO,m.ebayItemNO, m.eBayAccount,r.country, m.currency,"
