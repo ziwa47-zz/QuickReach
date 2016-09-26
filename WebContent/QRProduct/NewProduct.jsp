@@ -178,7 +178,7 @@ session.setAttribute("today", today);
                   <div class="col-md-8  well-sm"><input class="form-control digits required"    title="請輸入正確安全庫存" type="text" name="securedQty" value=""></div>
               </div>
               <div class="row">
-                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>成本</h4></div>
+                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>成本(TWD)</h4></div>
                   <div class="col-md-8  well-sm"><input class="form-control digits required"     title="請輸入正確成本" type="text" name="cost" value="" ></div>
               </div>
               <div class="row">
@@ -194,8 +194,8 @@ session.setAttribute("today", today);
                   <div class="col-md-8  well-sm"><input class="form-control required"     type="text" name="added" value="" ></div>
               </div>  
                 <div class="row">
-                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>重量</h4></div>
-                  <div class="col-md-8  well-sm"><input class="form-control number "   title="請輸入正確重量  ex:8.7" type="text" name="weight" value="" ></div>
+                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>重量(克)</h4></div>
+                  <div class="col-md-8  well-sm"><input class="form-control number "   title="請輸入正確重量  ex:8.7" type="text" name="weight" value="0" ></div>
               </div>
               </div>
 
@@ -217,7 +217,7 @@ session.setAttribute("today", today);
                   <div class="col-md-8  well-sm"><input class="form-control"    type="text" name="packageMatrial" value="" ></div>
               </div>
               <div class="row">
-                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>材積重</h4></div>
+                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>材積重(克)</h4></div>
                   <div class="col-md-8  well-sm"><input class="form-control number"    type="text" title="請輸入正確重量  ex:8.7" name="vilumetricWeight" value="0" ></div>
               </div>
               <div class="row">
