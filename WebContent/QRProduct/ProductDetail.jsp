@@ -203,10 +203,12 @@ conn.close();
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>安全庫存</h4></div>
                   <div class="col-md-8 well-sm"><input class="form-control digits required" title="請輸入正確安全庫存" type="text"name="securedqty" value="${resultDetail.getSecuredQty()}"></div>
               </div>
-              <div class="row">
-                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>成本</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control number required" title="請輸入正確成本" type="text" name="cost" value="${resultDetail.getCost()}" ></div>
-              </div>
+	          <c:if test="${PageCompetence.getProductCostView() == 1 }">   
+	              <div class="row">
+	                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>成本(TWD)</h4></div>
+	                  <div class="col-md-8 well-sm"><input class="form-control number required" title="請輸入正確成本" type="text" name="cost" value="${resultDetail.getCost()}" ></div>
+	              </div>
+              </c:if>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>備註</h4></div>
                   <div class="col-md-8 well-sm"><input class="form-control" type="text" name="comment" value="${resultDetail.getComment()}"></div>
@@ -216,7 +218,7 @@ conn.close();
                   <div class="col-md-8 well-sm"><input class="form-control required yymmdd" type="text" name="checkupdate" value="${resultDetail.getCheckupdate()}" readonly></div>
               </div>
                 <div class="row">
-                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>重量</h4></div>
+                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>重量(克)</h4></div>
                   <div class="col-md-8 well-sm"><input class="form-control number" type="text" name="weight" value="${resultDetail.getWeight()}" ></div>
               </div>
 
@@ -243,7 +245,7 @@ conn.close();
                   <div class="col-md-8 well-sm"><input class="form-control" style="width:700px" type="text" name="package" value="${resultDetail.getPackageMatrial()}" ></div>
               </div>
               <div class="row">
-                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>材積重</h4></div>
+                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>材積重(克)</h4></div>
                   <div class="col-md-8 well-sm"><input class="form-control number"type="text"name="vilu" value="${resultDetail.getVilumetricWeight()}" ></div>
               </div>
               <div class="row">
