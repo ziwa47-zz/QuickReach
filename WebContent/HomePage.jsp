@@ -121,6 +121,12 @@ $(document).ready(function(){
         $(".prev span").text(y);
     });
 });
+$('a').click(function() {
+    $('#spinner').show();
+});
+$('button').click(function() {
+    $('#spinner').show();
+});
 </script>
 <%@ include file="/href/footer.jsp"%>
 </body>

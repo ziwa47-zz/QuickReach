@@ -133,7 +133,7 @@ conn1.close();
       <tbody>
         <tr>
           <td>${i.getWareHouse()}</td>
-          <td>${i.getPosition1()}->${i.getPosition2()}</td>
+          <td>${i.getPosition1()}-${i.getPosition2()}</td>
           <td>${i.getQty()}</td>
           <td>${i.getLastpurchasedate()}</td>
           <td>${i.getComment()}</td>
