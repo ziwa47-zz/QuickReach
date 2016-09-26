@@ -259,7 +259,7 @@ submitHandler: function (form)
 						
 						  +'         	<div class="col-md-4 form-group ">'
 	                        +'             <div class="row">'
-	                        +'              <div class="col-md-4"><h5><label for="focusedInput " >櫃位：</label></h5></div>'
+	                        +'              <div class="col-md-4"><h5><label for="focusedInput " >儲位：</label></h5></div>'
 	                        +'              <div class="col-md-8"><input class="form-control" style="width:88px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:88px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text"></div>'
 	                        +'            </div>'
 	                        +'                </div>'
@@ -473,18 +473,7 @@ display: block;
                     </div>
                   </div>
 					
-					<div class="col-md-4 form-group ">
-						<div class="row">
-							<div class="col-md-4">
-								<h5>
-									<label for="focusedInput ">備註：</label>
-								</h5>
-							</div>
-							<div class="col-md-8">
-								<input class="form-control" name="purchaseMasterComment" type="text">
-							</div>
-						</div>
-					</div>
+					
 				</div>
 
 
@@ -561,7 +550,7 @@ display: block;
                 
                 	<div class="col-md-4 form-group ">
                   <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >櫃位：</label></h5></div>
+                    <div class="col-md-4"><h5><label for="focusedInput " >儲位：</label></h5></div>
                     
                    <div class="col-md-8"><input class="form-control " style="width:88px;" id="warehousePositionOne1" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:88px;" id="warehousePositionTwo1" name="warehousePositionTwo1" type="text"></div>
                   </div>
