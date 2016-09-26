@@ -55,7 +55,9 @@ public class DayliBalanceSheetFactory extends COrders {
 		LinkedList<COrders> orderList = new LinkedList<COrders>();
 		LinkedList<COrderDetail> orderDetails = new LinkedList<COrderDetail>();
 		COrders order = new COrders();
+		int index = 0 ;
 		while (rs.next()) {
+			System.out.println(index +":"+rs.getString(2));
 			order = new COrders();
 			order.COrderMaster.setOrderDate(rs.getDate(1));
 			order.COrderMaster.setQR_id(rs.getString(2));
