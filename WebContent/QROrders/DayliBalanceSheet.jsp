@@ -19,16 +19,6 @@
 <%@ include file = "/href/navbar.jsp"%>
 
 <%
-SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
-Date date = new Date();
-String strDate = sdFormat.format(date);
-System.out.println(strDate);
-if(session.getAttribute("ndbs")==null){
-Connection conn = new DataBaseConn().getConn();
-LinkedList<COrders> dayliBalanceSheetnew = newd.dayliBalanceSheet(request,response, conn);
-request.setAttribute("ndbs", dayliBalanceSheetnew);
-}
-System.out.println(strDate);
 %>
  <div class="nav">
   <div class="container">
