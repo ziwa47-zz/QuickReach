@@ -512,6 +512,15 @@ function selectAllOrders(ele) {
     	$("input[name=QR_id]").prop("checked", false);
     }
 };
+function enableWarehouse(ele){
+	  var id = ele.value;
+	  if (ele.checked) {
+		  $(ele).attr("name","QR_id");
+	  } else {
+		  $(ele).attr("name","init");
+		  alert("取消勾選了一筆訂單");
+	  }
+ };
 </script>
 </body>
   
