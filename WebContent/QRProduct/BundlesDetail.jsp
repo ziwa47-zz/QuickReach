@@ -62,9 +62,9 @@
 function checkDetailSKUValue(){
     	
     	//var smtstatus = false;
+    	
     	if($("#productSKU").val()=='select' ){
-    		$("#listForm").submit( function () {
-    			$('#spinner').hide();
+    		$("#listForm").submit( function () { 
     			  return false; 
     		});
     		alert("請選擇子商品"); 
@@ -76,7 +76,6 @@ function checkDetailSKUValue(){
 	  		alert("請輸入正確數量");  
 	  		//smtstatus = false;		  		
   		}*/else{
-  			
   			$("#listForm").validate({
       			rules: {
       			    qty: "required",
@@ -201,6 +200,35 @@ LinkedList<CProduct> listSubBrand =  new LinkedList<CProduct>();
 listSubBrand = blf.getSubBrand(bd);
 request.setAttribute("listSubBrand",listSubBrand);
 
+if(request.getParameter("QQ") != null){
+	session = request.getSession();
+	String sku2 = request.getParameter("QQ");
+	
+	String[] strQQ = blf.getQQ(sku2);
+	
+	String bdsku = strQQ[0];
+	String bdName = strQQ[1];
+	String bdComment = strQQ[2];
+
+	try {
+		
+		blf.showBundlesDetail(bdsku);
+		//getBundlesDetail = bdf.bundlesList;
+
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	session.setAttribute("bdsku", bdsku );
+	session.setAttribute("bdName", bdName );
+	session.setAttribute("bdComment", bdComment );
+	//getBundlesDetail = blf.bundlesList ;
+	session.setAttribute("getBundlesDetail", blf.bundlesList );
+}
+
+
+
+
+
 %>
         	
       <fieldset id="myfields" class="container-fluid" style="padding:0 30 0 0;" ><legend>檢視組合商品</legend>
@@ -320,7 +348,7 @@ request.setAttribute("listSubBrand",listSubBrand);
             </tr> 
             <tr> <th>數量:<input type="number" name="qty"></th></tr>
             <tr>
-            	<td ><button type="submit" name="smt" value="add" id="smtadd" onclick="checkDetailSKUValue()">加入</button></td>
+            	<td ><button type="submit" name="smt" value="add" onclick="checkDetailSKUValue()">加入</button></td>
             </tr>           
           </tbody>
         </table>
@@ -359,18 +387,7 @@ request.setAttribute("listSubBrand",listSubBrand);
 
 </form>
 
-
-<script type="text/javascript">
-$(document).ready(function(){
-    $("#smtupdate").click(function(){
-        $('#spinner').hide();
-    });
-    $("#smtadd").click(function(){
-        $('#spinner').hide();
-    });
-});
-</script>
-
+    
 </body>
   
 <%@ include file="/href/footer.jsp" %>    
