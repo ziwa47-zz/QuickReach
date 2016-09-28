@@ -87,7 +87,7 @@ public class StatusDoServlet extends HttpServlet {
 			}
 			break;
 		case "processing":
-//			LinkedList<String> warehouses = OFactory.getWarehouse(request);
+			LinkedList<String> warehouses = OFactory.getWarehouse(request);
 //			
 //			for(int i=0; i<warehouses.size(); i++){
 //				System.out.println("warehouse:" + warehouses.get(i));
@@ -112,7 +112,7 @@ public class StatusDoServlet extends HttpServlet {
 			if (!OFactory.checkOrderIdOrderStatus(request, conn) == false){
 				System.out.println("checked true");
 				OFactory.updateToFinished(request, conn);
-				OFactory.deductStock(request, conn);
+				OFactory.isBundledeductStock(request, conn);
 				OFactory.insertIntoShippingLog(request, conn);
 				OFactory.insertIntoPurchaseLogFromOrders(request, conn);
 //				CompleteSale myCompleteSale = new CompleteSale();

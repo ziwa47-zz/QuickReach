@@ -200,6 +200,35 @@ LinkedList<CProduct> listSubBrand =  new LinkedList<CProduct>();
 listSubBrand = blf.getSubBrand(bd);
 request.setAttribute("listSubBrand",listSubBrand);
 
+if(request.getParameter("QQ") != null){
+	session = request.getSession();
+	String sku2 = request.getParameter("QQ");
+	
+	String[] strQQ = blf.getQQ(sku2);
+	
+	String bdsku = strQQ[0];
+	String bdName = strQQ[1];
+	String bdComment = strQQ[2];
+
+	try {
+		
+		blf.showBundlesDetail(bdsku);
+		//getBundlesDetail = bdf.bundlesList;
+
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	session.setAttribute("bdsku", bdsku );
+	session.setAttribute("bdName", bdName );
+	session.setAttribute("bdComment", bdComment );
+	//getBundlesDetail = blf.bundlesList ;
+	session.setAttribute("getBundlesDetail", blf.bundlesList );
+}
+
+
+
+
+
 %>
         	
       <fieldset id="myfields" class="container-fluid" style="padding:0 30 0 0;" ><legend>檢視組合商品</legend>

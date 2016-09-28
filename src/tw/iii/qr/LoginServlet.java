@@ -20,14 +20,14 @@ import javax.sql.rowset.serial.SQLInputImpl;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Statement state;
-	private ResultSet rs;
-	private String account;
-	private String password;
-	String competencelv;
+	private Statement state=null;
+	private ResultSet rs=null;
+	private String account="";
+	private String password="";
+	String competencelv="";
 	boolean ok = false;
-	String staffName;
-	HttpSession session;
+	String staffName="";
+	HttpSession session=null;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
@@ -36,6 +36,7 @@ public class LoginServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("NONO");
+			response.sendRedirect("/Login.jsp?p=0");
 		}
 	}
 
@@ -47,6 +48,7 @@ public class LoginServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("NONO");
+			response.sendRedirect("/Login.jsp?p=0");
 		}
 		
 		
@@ -54,6 +56,8 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	private void processLogin(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException, ClassNotFoundException, Exception {
+		
+		ok = false;
 		request.setCharacterEncoding("UTF-8");
 		account = request.getParameter("account");
 		password = request.getParameter("password");		
@@ -68,11 +72,13 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("staffName",staffName);
 			competenceSession(request,competencelv);
 			response.sendRedirect("/HomePage.jsp");
+			
 		}else{
 			//Login false
 			System.out.println("NO");
 			response.setContentType("text/html;charset=UTF-8");
 			response.sendRedirect("/Login.jsp?p=0");
+			
 		}
 	
 	}

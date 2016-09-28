@@ -43,7 +43,31 @@ function warehouseChange() {
 	})
 }
 
+function checkQty(id){
+	     
+	
+	var oldWarehouse = $("#warehouse").val();
+	var newWarehouse = $("#newWarehouse").val();
+	
+	     var oldQty = parseInt($("#qtyOne"+id).val());
+	     var newQty = parseInt($("#qtyTwo"+id).val());
+	     
+	     if(oldWarehouse == newWarehouse){
+	    	 $("#qtyTwo"+id).val($("#qtyOne"+id).val()) ;
+	    	
+	    	 
+	     }else{
 
+		     if(oldQty < newQty){
+		    	 alert("轉出數量不得大於原數量");
+		    	 $("#qtyTwo"+id).focus();
+		    	 $('#submitButton').attr('disabled', 'disabled');
+		     }else{ 
+			 $('#submitButton').attr('disabled', false);
+		     }
+	     }
+	     
+}
 
 
 function autoComplete(id){
@@ -57,6 +81,22 @@ function autoComplete(id){
 			});
 	
 };
+
+//檢查數量 retire
+function ckeckAllQty(){
+	 for(var j=1;j<=dynamicId;j++){
+			
+		 var oldQty = parseInt($("#qtyOne"+dynamicId).val());
+	     var newQty = parseInt($("#qtyTwo"+dynamicId).val());
+		if(oldQty < newQty){
+	    	 $('#submitButton').attr('disabled', 'disabled');
+	    	 return false
+	     }else {
+	    	 $('#submitButton').attr('disabled', false);
+	    	 return true
+	     }
+	}
+		}
 
 
 
@@ -78,7 +118,10 @@ function test() {
                  $("#qtyOne"+setValueId).val(response.qty);//just for stockTransferPage.jsp
                  
                  $("#warehousePositionOne"+setValueId).val(response.warehousePosition);
-                 $("#warehousePositionTwo"+setValueId).val(response.warehousePosition2);   
+                 $("#warehousePositionTwo"+setValueId).val(response.warehousePosition2);
+                 
+                 $("#newWarehousePositionOne"+setValueId).val(response.newWarehousePosition);   
+                 $("#newWarehousePositionTwo"+setValueId).val(response.newWarehousePosition2);   
 
         },        
 	})
@@ -98,42 +141,46 @@ function test() {
 			submitHandler: function (form)
 		    {
 				
-				 
-			    var arr = new Array;
-			    var value;
-			    arr[0] = $("#sku1").val();
-			    for(var i =1;i < dynamicId; i++){
-			    	 value = $("#sku"+(i+1)).val();
-			    		arr[i] = value;
-			    	
-			    }
-			    	
-			    function isRepeat(arr){
-			    	var hash = {};
-			    	for(var i in arr) {
-			    	if(hash[arr[i]])
-			    	return true;
-			    	hash[arr[i]] = true;
-			    	}
-			    	return false;
-			    	}
-			    
-			    function warehouseRepeat(){//暫時無用
-			    	
-			    	if($("newWarehouse").val() == $("warehouse").val()){
-			    		alert("repeat");
-			    	}
-			    	
-			    }
+				
+				
+				 function isRepeat(){
+				    	
+			    	 
+				        var arr = new Array;
+				        
+				        for(var i =1;i <= dynamicId; i++){
+				        	
+				        	
+				        	 arr[0] = $("#sku1").val();
+				        	 //alert("0:"+arr[0])
+				        	 if($("#sku"+(i+1)).val() != null){
+				        			arr[i] = $("#sku"+(i+1)).val();
+				        			//alert(i+arr[i])
+				        	 }
+				        	
+				        	
+				        }
+				    	
+				    	 var sortArr = arr.sort();
+				    	    for(var i=0;i<sortArr.length;i++){
+				    	    	
+				    	    	if (sortArr[i]==sortArr[i+1]){
+				    	    	alert("sku重複："+sortArr[i]);
+				    	    	return true
+				    	    	}
+				    	    	
+				    	    	}
+				    }
+			 
 			         
-			    if(isRepeat(arr)){
-			    	alert("請確認SKU是否重複");
+			    if(isRepeat()){
+			    	alert("SKU重複");
 			    	
-			    } else {
+			    }  else {
 			    	
 			        $('#submitButton').attr('disabled', 'disabled');
 			        warehouseChange();
-			        alert("此進貨單單號:"+realPurchaseId)
+			        alert("此轉倉單單號:"+realPurchaseId)
 			        form.submit();
 			    }
 				
@@ -265,15 +312,15 @@ function test() {
 						+'     </div>'
 						 +'<div class="col-md-4 form-group ">'
                         +'                <div class="row">'
-                  +'                  <div class="col-md-4"><h5><label for="focusedInput " >數量：</label></h5></div>'
+                  +'                  <div class="col-md-4"><h5><label for="focusedInput " >原數量：</label></h5></div>'
                   +'                 <div class="col-md-8"><input class="form-control digits required" id="qtyOne'+dynamicId+'" name="qty'+dynamicId+'" title="數量必須大於0" type="text"></div>'
                   +'                </div>'
                   +'               </div>'
                   
                  +' <div class="col-md-4 form-group ">'
                   +'                <div class="row">'
-            +'                  <div class="col-md-4"><h5><label for="focusedInput " >數量：</label></h5></div>'
-            +'                 <div class="col-md-8"><input class="form-control number required" id="qtyTwo'+dynamicId+'" name="qtyTwo'+dynamicId+'" title="價格必須大於0" type="text"></div>'
+            +'                  <div class="col-md-4"><h5><label for="focusedInput " >轉出數量：</label></h5></div>'
+            +'                 <div class="col-md-8"><input class="form-control number required" id="qtyTwo'+dynamicId+'" name="qtyTwo'+dynamicId+'" title="價格必須大於0" type="text" onblur="checkQty('+dynamicId+')"></div>'
             +'                </div>'
             +'               </div>'
 	                
@@ -286,14 +333,14 @@ function test() {
 	                        +'           <div class="row">'
 	                        +'         	<div class="col-md-4 form-group ">'
 	                        +'             <div class="row">'
-	                        +'              <div class="col-md-4"><h5><label for="focusedInput " >原櫃位：</label></h5></div>'
-	                        +'              <div class="col-md-8"><input class="form-control" style="width:88px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:88px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text"></div>'
+	                        +'              <div class="col-md-4"><h5><label for="focusedInput " >原儲位：</label></h5></div>'
+	                        +'              <div class="col-md-8"><input class="form-control" style="width:88px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text" readonly> - <input class="form-control" style="width:88px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text" readonly></div>'
 	                        +'            </div>'
 	                        +'                </div>'
 	                        
 	                        +'         	<div class="col-md-4 form-group ">'
 	                        +'             <div class="row">'
-	                        +'              <div class="col-md-4"><h5><label for="focusedInput " >新櫃位：</label></h5></div>'
+	                        +'              <div class="col-md-4"><h5><label for="focusedInput " >新儲位：</label></h5></div>'
 	                        +'              <div class="col-md-8"><input class="form-control" style="width:88px;"id="newWarehousePositionOne'+dynamicId+'" name="newWarehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:88px;" id="newWarehousePositionTwo'+dynamicId+'" name="newWarehousePositionTwo'+dynamicId+'" type="text"></div>'
 	                        +'            </div>'
 	                        +'                </div>'
@@ -478,18 +525,6 @@ display: block;
                     </div>
                   </div>
 					
-					<div class="col-md-4 form-group ">
-						<div class="row">
-							<div class="col-md-4">
-								<h5>
-									<label for="focusedInput ">備註：</label>
-								</h5>
-							</div>
-							<div class="col-md-8">
-								<input class="form-control" name="transferMasterComment" type="text">
-							</div>
-						</div>
-					</div>
 				</div>
 
 
@@ -573,7 +608,7 @@ display: block;
                 <div class="col-md-4 form-group ">
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >轉倉數量：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control number required" title="數量必須大於0" id="qtyTwo1" name="qtyTwo1" type="text" ></div>
+                    <div class="col-md-8"><input class="form-control number required" title="數量必須大於0" id="qtyTwo1" name="qtyTwo1" type="text" onblur="checkQty(1)" ></div>
                   </div>
                 </div>
               
@@ -582,14 +617,14 @@ display: block;
             <div class="row">
             	<div class="col-md-4 form-group ">
                   <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >原櫃位：</label></h5></div>
+                    <div class="col-md-4"><h5><label for="focusedInput " >原儲位：</label></h5></div>
                     <div class="col-md-8"><input class="form-control" style="width:88px;"id="warehousePositionOne1" name="warehousePositionOne1" type="text" readonly> - <input class="form-control" style="width:88px;" id="warehousePositionTwo1" name="warehousePositionTwo1" type="text" readonly></div>
                   </div>
                 </div>
                 
                 <div class="col-md-4 form-group ">
                   <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >新櫃位：</label></h5></div>
+                    <div class="col-md-4"><h5><label for="focusedInput " >新儲位：</label></h5></div>
                     <div class="col-md-8"><input class="form-control" style="width:88px;"id="newWarehousePositionOne1" name="newWarehousePositionOne1" type="text"> - <input class="form-control" style="width:88px;" id="newWarehousePositionTwo1" name="newWarehousePositionTwo1" type="text"></div>
                   </div>
                 </div>

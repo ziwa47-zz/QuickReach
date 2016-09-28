@@ -62,11 +62,10 @@ public class COrderFactory extends COrders {
 
 		String strSql = "SELECT distinct m.order_id, platform, m.guestAccount, orderDate, shippingDate,"
 				+ " logistics, orderstatus, totalPrice, staffName, m.comment, m.eBayAccount, m.payDate,"
-				+ " m.QR_id, m.currency, r.country, m.ebayItemNO"
+				+ " m.QR_id, m.currency, r.country, m.ebayItemNO, m.paypalmentId, ebayNO"
 				+ " FROM  orders_master as m inner join  orders_detail as d on m.QR_id = d.QR_id"
 				+ " left join  orders_guestinfo as g on m.QR_id = g.QR_id"
-				+ " inner join  order_recieverinfo as r on m.QR_id = r.QR_id"
-				+ " where '1' = '1' ";
+				+ " inner join  order_recieverinfo as r on m.QR_id = r.QR_id" + " where '1' = '1' ";
 
 		String eBayAccount = request.getParameter("eBayAccount");
 		if (!isNullorEmpty(eBayAccount)) {
@@ -74,7 +73,7 @@ public class COrderFactory extends COrders {
 		}
 		String ebayNO = request.getParameter("ebayNO");
 		if (!isNullorEmpty(ebayNO)) {
-			strSql += " and m.eBayAccount like ? ";
+			strSql += " and m.ebayNO like ? ";
 		}
 		String paypal_id = request.getParameter("paypal_id");
 		if (!isNullorEmpty(paypal_id)) {
@@ -310,7 +309,9 @@ public class COrderFactory extends COrders {
 			order.COrderMaster.setEbayAccount(rs.getString(11));
 			order.COrderMaster.setPayDate(rs.getDate(12));
 			order.COrderMaster.setQR_id(rs.getString(13));
-			order.COrderMaster.setEbayItemNO(rs.getString(14));
+			order.COrderMaster.setEbayItemNO(rs.getString(16));
+			order.COrderMaster.setPaypalmentId(rs.getString(17));
+			order.COrderMaster.setEbayNO(rs.getString(18));
 			// System.out.println(order);
 			orderList.add(order);
 		}
@@ -322,11 +323,10 @@ public class COrderFactory extends COrders {
 
 		String strSql = "SELECT distinct m.order_id, platform, m.guestAccount, orderDate, shippingDate,"
 				+ " logistics, orderstatus, totalPrice, staffName, m.comment, m.eBayAccount, m.payDate,"
-				+ " m.QR_id, m.currency, r.country, m.ebayItemNO, m.paypalmentId"
+				+ " m.QR_id, m.currency, r.country, m.ebayItemNO, m.paypalmentId, ebayNO"
 				+ " FROM  orders_master as m left join  orders_detail as d on m.QR_id = d.QR_id"
 				+ " left join  orders_guestinfo as g on m.QR_id = g.QR_id"
-				+ " inner join  order_recieverinfo as r on m.QR_id = r.QR_id"
-				+ " where '1' = '1' and orderstatus = ?"
+				+ " inner join  order_recieverinfo as r on m.QR_id = r.QR_id" + " where '1' = '1' and orderstatus = ?"
 				+ " order by QR_id desc";
 
 		System.out.println(status);
@@ -373,6 +373,7 @@ public class COrderFactory extends COrders {
 			order.COrderMaster.setQR_id(rs.getString(13));
 			order.COrderMaster.setEbayItemNO(rs.getString(16));
 			order.COrderMaster.setPaypalmentId(rs.getString(17));
+			order.COrderMaster.setEbayNO(rs.getString(18));
 			// System.out.println(order);
 			orderList.add(order);
 		}
@@ -384,7 +385,7 @@ public class COrderFactory extends COrders {
 		String strsql = "SELECT distinct g.guestFirstName, g.guestLastName, g.guestAccount, g.email, g.tel1, g.tel2"
 				+ ", g.mobile, g.birthday, g.company, g.address, g.country, g.postcode, g.gender"
 				+ ", r.recieverFirstName, r.recieverLastName, r.tel1, r.tel2, r.address, r.country, r.postcode"
-				
+
 				+ ", m.outsideCode, m.orderStatus, m.order_id, m.QR_id, m.company, m.platform, m.eBayAccount, "
 				+ " m.orderDate, m.payDate, m.logisticsId, m.logistics, m.paypal_id, m.payment,"
 				+ " m.shippingDate, m.shippingFees, m.refundFees, m.otherFees, m.ebayFees, m.paypalFees,"
@@ -453,7 +454,7 @@ public class COrderFactory extends COrders {
 			orderInfo.COrderMaster.setStaffName(rs.getString(47));
 			orderInfo.COrderMaster.setSize(rs.getString(48));
 			orderInfo.COrderMaster.setTotalPrice(rs.getDouble(49));
-			
+
 		}
 
 		return orderInfo;
@@ -493,8 +494,8 @@ public class COrderFactory extends COrders {
 
 	}
 
-
-	public void updateOrderDetail(HttpServletRequest request, Connection conn, String staffName, String QR_id) throws SQLException {
+	public void updateOrderDetail(HttpServletRequest request, Connection conn, String staffName, String QR_id)
+			throws SQLException {
 
 		String[] itemList = request.getParameterValues("item");
 		String[] SKUList = request.getParameterValues("SKU");
@@ -504,7 +505,7 @@ public class COrderFactory extends COrders {
 		String[] qtyList = request.getParameterValues("qty");
 		String[] commentList = request.getParameterValues("comment");
 		String[] warehouseList = request.getParameterValues("warehouse");
-		
+
 		LinkedList<String> items = new LinkedList<String>(Arrays.asList(itemList));
 		LinkedList<String> SKUs = new LinkedList<String>(Arrays.asList(SKUList));
 		LinkedList<String> invoiceNames = new LinkedList<String>(Arrays.asList(invoiceNameList));
@@ -513,8 +514,8 @@ public class COrderFactory extends COrders {
 		LinkedList<String> qtys = new LinkedList<String>(Arrays.asList(qtyList));
 		LinkedList<String> comments = new LinkedList<String>(Arrays.asList(commentList));
 		LinkedList<String> warehouses = new LinkedList<String>(Arrays.asList(warehouseList));
-		
-		for(int i=0; i<items.size(); i++){
+
+		for (int i = 0; i < items.size(); i++) {
 			String strSql = "update orders_detail"
 					+ " SET invoiceName= ?, price= ?, invoicePrice= ?, qty= ?, comment=?, warehouse=? "
 					+ " WHERE SKU= ? and item= ?;";
@@ -531,7 +532,7 @@ public class COrderFactory extends COrders {
 			System.out.println(items.get(i));
 			System.out.println(SKUs.get(i));
 			PreparedStatement ps = conn.prepareStatement(strSql);
-	
+
 			ps.setString(1, od.getInvoiceName());
 			ps.setDouble(2, od.getPrice());
 			ps.setDouble(3, od.getInvoicePrice());
@@ -540,33 +541,31 @@ public class COrderFactory extends COrders {
 			ps.setString(6, od.getWarehouse());
 			ps.setString(7, od.getSKU());
 			ps.setInt(8, od.getItem());
-			
+
 			int x = ps.executeUpdate();
 		}
-		
-		String strSql2 = "update orders_master"
-				+ " Set staffName = ?"
-				+ " where QR_id = ?";
+
+		String strSql2 = "update orders_master" + " Set staffName = ?" + " where QR_id = ?";
 		PreparedStatement ps2 = conn.prepareStatement(strSql2);
 		ps2.setString(1, staffName);
 		ps2.setString(2, QR_id);
 		int y = ps2.executeUpdate();
-		
+
 	}
-	
+
 	public void insertOrderDetail(HttpServletRequest request, Connection conn, String QR_id) throws SQLException {
-		
+
 		String[] strSKUArray = request.getParameterValues("SKU");
 		LinkedList<String> SKUs = new LinkedList<String>(Arrays.asList(strSKUArray));
 		String[] strProductName = request.getParameterValues("productName");
 		LinkedList<String> productNames = new LinkedList<String>(Arrays.asList(strProductName));
-		
-		for(int i=0; i<SKUs.size(); i++){
+
+		for (int i = 0; i < SKUs.size(); i++) {
 			String strSql = "insert into orders_detail"
 					+ " (QR_id, SKU, productName, invoiceName, price, invoicePrice, qty)"
 					+ " values( ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement ps = conn.prepareStatement(strSql);
-			
+
 			ps.setString(1, QR_id);
 			ps.setString(2, SKUs.get(i));
 			ps.setString(3, productNames.get(i));
@@ -574,41 +573,40 @@ public class COrderFactory extends COrders {
 			ps.setDouble(5, 0.0);
 			ps.setDouble(6, 0.0);
 			ps.setInt(7, 0);
-			int x =ps.executeUpdate();			
+			int x = ps.executeUpdate();
 		}
 	}
-	
-	public void deleteFromOrderDetail (HttpServletRequest request, Connection conn) throws SQLException {
-		
-		String strSql = "delete from orders_detail"
-				+ " where item = ?";
+
+	public void deleteFromOrderDetail(HttpServletRequest request, Connection conn) throws SQLException {
+
+		String strSql = "delete from orders_detail" + " where item = ?";
 		PreparedStatement ps = conn.prepareStatement(strSql);
-		
+
 		ps.setString(1, request.getParameter("item"));
-		int x =ps.executeUpdate();
-		
-//		String strSql2 = "select QR_id from orders_detail where QR_id = ?";
-//		PreparedStatement ps2 = conn.prepareStatement(strSql2);
-//		ps2.setString(1, request.getParameter("QR_id"));
-//		
-//		ResultSet rs = ps2.executeQuery();
-//		if(rs.getString(1) == null){
-//			String strSql3 = "insert into orders_detail (QR_id) values (?)";
-//			PreparedStatement ps3 = conn.prepareStatement(strSql3);
-//			ps3.setString(1, request.getParameter("QR_id"));
-//		}
+		int x = ps.executeUpdate();
+
+		// String strSql2 = "select QR_id from orders_detail where QR_id = ?";
+		// PreparedStatement ps2 = conn.prepareStatement(strSql2);
+		// ps2.setString(1, request.getParameter("QR_id"));
+		//
+		// ResultSet rs = ps2.executeQuery();
+		// if(rs.getString(1) == null){
+		// String strSql3 = "insert into orders_detail (QR_id) values (?)";
+		// PreparedStatement ps3 = conn.prepareStatement(strSql3);
+		// ps3.setString(1, request.getParameter("QR_id"));
+		// }
 	}
-	
+
 	public void updateToProcessing(HttpServletRequest request, Connection conn) throws SQLException {
-		
+
 		String[] strQR_idArray = request.getParameterValues("QR_id");
 		String[] strLogisticsArray = request.getParameterValues("logistics");
 		// convert array to LinkedList
 		LinkedList<String> QR_ids = new LinkedList<String>(Arrays.asList(strQR_idArray));
 		LinkedList<String> Logistics = new LinkedList<String>(Arrays.asList(strLogisticsArray));
 		// iterate over each element in LinkedList and show what is in the list.
-		Iterator<String> iterator = QR_ids.iterator();	
-		Iterator<String> iterator2 = Logistics.iterator();	
+		Iterator<String> iterator = QR_ids.iterator();
+		Iterator<String> iterator2 = Logistics.iterator();
 		while (iterator.hasNext()) {
 			// Print element to console
 			System.out.println(iterator.next());
@@ -618,8 +616,7 @@ public class COrderFactory extends COrders {
 			System.out.println(iterator2.next());
 		}
 		for (int i = 0; i < QR_ids.size(); i++) {
-			String strSql = "update  orders_master" + " set orderStatus = N'處理中', logistics= ? "
-					+ " where QR_id = ? ";
+			String strSql = "update  orders_master" + " set orderStatus = N'處理中', logistics= ? " + " where QR_id = ? ";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ps.setString(1, Logistics.get(i));
 			ps.setString(2, QR_ids.get(i));
@@ -664,21 +661,22 @@ public class COrderFactory extends COrders {
 			ps.executeUpdate();
 		}
 	}
-	
+
 	public void updateToFinished(HttpServletRequest request, Connection conn) throws Exception {
-		String strSql = "update orders_master" + " set orderStatus = N'已完成', shippingDate = getdate() , trackingCode = ? " + " where QR_id = ? ";
+		String strSql = "update orders_master"
+				+ " set orderStatus = N'已完成', shippingDate = getdate() , trackingCode = ? " + " where QR_id = ? ";
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ps.setString(1, request.getParameter("trackingCode"));
 		ps.setString(2, request.getParameter("QR_id"));
 		ps.executeUpdate();
 	}
-	
-	public void revertTo (HttpServletRequest request, Connection conn) throws Exception {
-		
+
+	public void revertTo(HttpServletRequest request, Connection conn) throws Exception {
+
 		String[] strQR_idArray = request.getParameterValues("QR_id");
 		LinkedList<String> QR_ids = new LinkedList<String>(Arrays.asList(strQR_idArray));
 		String strSql = "update orders_master" + " set orderStatus = ? " + " where QR_id = ? ";
-		for(int i=0; i<QR_ids.size(); i++){
+		for (int i = 0; i < QR_ids.size(); i++) {
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ps.setString(1, request.getParameter("status"));
 			ps.setString(2, QR_ids.get(i));
@@ -711,131 +709,234 @@ public class COrderFactory extends COrders {
 		System.out.println("QRId is invalid or wrong order status.");
 		return false;
 	}
-	
+
 	public void insertIntoShippingLog(HttpServletRequest request, Connection conn) throws SQLException {
-		
+
 		LinkedList<ShipmentRecord> ShippingLog = new LinkedList<ShipmentRecord>();
-			String strSql = "insert into  shippinglog (QR_id, date, trackingCode, staffName)"
-					+ " values( ?, getdate(), ?, ?)";
-			PreparedStatement ps = conn.prepareStatement(strSql);
-			ps.setString(1, request.getParameter("QR_id"));
-			ps.setString(2, request.getParameter("trackingCode"));
-			ps.setString(3, request.getParameter("staffName"));
-	
-			int x =ps.executeUpdate();
-		
+		String strSql = "insert into  shippinglog (QR_id, date, trackingCode, staffName)"
+				+ " values( ?, getdate(), ?, ?)";
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		ps.setString(1, request.getParameter("QR_id"));
+		ps.setString(2, request.getParameter("trackingCode"));
+		ps.setString(3, request.getParameter("staffName"));
+
+		int x = ps.executeUpdate();
+
 	}
 
-	public void deductStock(HttpServletRequest request, Connection conn) throws Exception {
+	public void isBundledeductStock(HttpServletRequest request, Connection conn) throws Exception {
 
 		LinkedList<COrderDetail> condition = getCondition(request, conn);
+
 		for (int i = 0; i < condition.size(); i++) {
-			String strSql = "update  storage" + " set qty = ? " + " where sku = ? and warehouse = ? and item= ?";
-			PreparedStatement ps = conn.prepareStatement(strSql);
-			ps.setInt(1, condition.get(i).getQty());
-			ps.setString(2, condition.get(i).getSKU());
-			ps.setString(3, condition.get(i).getWarehouse());
-			ps.setInt(4, condition.get(i).getItem());
-			ps.executeUpdate();
-			
+
+			System.out.println(condition.get(i).getSKU());
+
+			if ("B00".equals(condition.get(i).getSKU().substring(0, 3))) {
+
+				System.out.println("bundle");
+				plusBundledeductStock(request, conn, condition.get(i));
+
+			} else if (!"B00".equals(condition.get(i).getSKU().substring(0, 3))) {
+
+				System.out.println("single");
+				deductStock(request, conn, condition.get(i));
+			}
 		}
+
+	}
+
+	public void plusBundledeductStock(HttpServletRequest request, Connection conn, COrderDetail condition)
+			throws Exception {
+
+		LinkedList<String> skulist = new LinkedList<String>();
+		LinkedList<Integer> qty = new LinkedList<Integer>();
+		String strsql = " select p_sku,qty from bundles where '1' = '1' and m_sku = ? ";
+		PreparedStatement ps = conn.prepareStatement(strsql);
+		ps.setString(1, condition.getSKU());
+		ResultSet rs = ps.executeQuery();
+
+		while (rs.next()) {
+
+			skulist.add(rs.getString(1));
+			System.out.println(rs.getString(1));
+			qty.add(rs.getInt(2));
+			System.out.println(rs.getInt(2));
+		}
+
+		rs = null;
+		ps = null;
+		String strSql = "update  storage set qty = (select (isnull( (select qty from storage  where sku = ?  and warehouse = ? ),0) -  (? * ?))) where sku = ? and warehouse = ?";
+
+		for (int j = 0; j < skulist.size(); j++) {
+			ps = null;
+			ps = conn.prepareStatement(strSql);
+			ps.setString(1, skulist.get(j));
+			ps.setString(2, condition.getWarehouse());
+			ps.setInt(3, qty.get(j));
+			ps.setInt(4, condition.getQty());
+			ps.setString(5, skulist.get(j));
+			ps.setString(6, condition.getWarehouse());
+			ps.executeUpdate();
+
+		}
+
+		ps.close();
+
+	}
+
+	public void deductStock(HttpServletRequest request, Connection conn, COrderDetail condition) throws Exception {
+
+		String strSql = "update  storage set qty =(select qty from storage  where sku = ? and warehouse = ? ) -  ? "
+				+ " where sku = ? and warehouse = ?";
+		PreparedStatement ps = conn.prepareStatement(strSql);
+
+		ps.setString(1, condition.getSKU());
+		ps.setString(2, condition.getWarehouse());
+		ps.setInt(3, condition.getQty());
+		ps.setString(4, condition.getSKU());
+		ps.setString(5, condition.getWarehouse());
+
+		ps.executeUpdate();
+
 	}
 
 	public LinkedList<COrderDetail> getCondition(HttpServletRequest request, Connection conn) throws Exception {
 
-		LinkedList<COrderDetail> condition = getSkuAndWarehouse(request, conn);
 		LinkedList<COrderDetail> result = new LinkedList<COrderDetail>();
-		for (int i = 0; i < condition.size(); i++) {
-			String strSql = "select distinct s.SKU, s.qty, d.qty, s.warehouse, s.item, p.productType"
-					+ " from  storage as s inner join  orders_detail as d on s.SKU = d.SKU"
-					+ " inner join product as p on s.SKU = p.SKU"
-					+ " where d.QR_id = ? and s.sku = ? and s.warehouse = ?";
-			PreparedStatement ps = conn.prepareStatement(strSql);
 
-			ps.setString(1, request.getParameter("QR_id"));
-			ps.setString(2, condition.get(i).getSKU());
-			ps.setString(3, condition.get(i).getWarehouse());
-			System.out.println(strSql);
-			ResultSet rs = ps.executeQuery();
-			COrderDetail detail = new COrderDetail();
-			
-			while (rs.next()) {
-				if(!"調貨類".equals(rs.getString(6))){
-				detail.setSKU(rs.getString(1));
-				detail.setQty(rs.getInt(2) - rs.getInt(3));
-				detail.setWarehouse(rs.getString(4));
-				detail.setItem(Integer.valueOf(rs.getString(5)));
-				result.add(detail);
-				}
-			}
-		}
-		return result;
-	}
+		String strSql = "select d.SKU,d.qty, d.warehouse, d.item, p.productType ,d.Qr_id "
+				+ " from orders_detail as d left join product p on d.sku = p.sku   where d.QR_id = ? ";
 
-	public LinkedList<COrderDetail> getSkuAndWarehouse(HttpServletRequest request, Connection conn) throws Exception {
-
-		String strSql = "select SKU, warehouse"
-				+ " from  orders_master as m inner join  orders_detail as d"
-				+ "  on m.QR_id = d.QR_id where m.QR_id = ?";
 		PreparedStatement ps = conn.prepareStatement(strSql);
+
 		ps.setString(1, request.getParameter("QR_id"));
+
+		System.out.println(strSql);
 		ResultSet rs = ps.executeQuery();
-		LinkedList<COrderDetail> result = new LinkedList<COrderDetail>();
 		COrderDetail detail = new COrderDetail();
+
 		while (rs.next()) {
 			detail = new COrderDetail();
-			detail.setSKU(rs.getString(1));
-			detail.setWarehouse(rs.getString(2));
-			result.add(detail);
+			if (!"調貨類".equals(rs.getString(4))) {
+				detail.setSKU(rs.getString(1));
+				detail.setQty(rs.getInt(2));
+				detail.setWarehouse(rs.getString(3));
+				detail.setItem(Integer.valueOf(rs.getString(4)));
+				result.add(detail);
+				System.out.println("con:" + rs.getString(1));
+			}
 		}
-		System.out.println("true");
+
 		return result;
 	}
-	
-	public void insertIntoPurchaseLogFromOrders(HttpServletRequest request, Connection conn) throws SQLException {
-		
+
+	// public LinkedList<COrderDetail> getSkuAndWarehouse(HttpServletRequest
+	// request, Connection conn) throws Exception {
+	//
+	// String strSql = "select SKU, warehouse" + " from orders_master as m inner
+	// join orders_detail as d"
+	// + " on m.QR_id = d.QR_id where m.QR_id = ?";
+	// PreparedStatement ps = conn.prepareStatement(strSql);
+	// ps.setString(1, request.getParameter("QR_id"));
+	// ResultSet rs = ps.executeQuery();
+	// LinkedList<COrderDetail> result = new LinkedList<COrderDetail>();
+	// COrderDetail detail = new COrderDetail();
+	// while (rs.next()) {
+	// detail = new COrderDetail();
+	// detail.setSKU(rs.getString(1));
+	// detail.setWarehouse(rs.getString(2));
+	// result.add(detail);
+	// }
+	// System.out.println("true");
+	// return result;
+	// }
+
+	public void insertIntoPurchaseLogFromOrders(HttpServletRequest request, Connection conn) throws Exception {
+		LinkedList<COrderDetail> condition = getCondition(request, conn);
 		COrders orderInfo = getOrderAllInfo(request.getParameter("QR_id"), conn);
 		LinkedList<COrderDetail> orderDetailInfo = getOrderDetails(request.getParameter("QR_id"), conn);
 		System.out.println(orderInfo.getCOrderMaster().getQR_id());
 		System.out.println(orderInfo.getCOrderDetailSingle().getSKU());
-		
-		LinkedList<Cpurchase_detail> PurchaseLog = new LinkedList<Cpurchase_detail>();
+
 		String strSql = "insert into purchaselog_master (purchaseId, date, staffName, comment, stockStatus)"
 				+ " values( ?, getdate(), ?, ?, ?)";
 		System.out.println(strSql);
 		PreparedStatement ps = conn.prepareStatement(strSql);
-			ps.setString(1, orderInfo.getCOrderMaster().getQR_id());
-			ps.setString(2, orderInfo.getCOrderMaster().getStaffName());
-			ps.setString(3, orderInfo.getCOrderMaster().getComment());
-			ps.setString(4, "2");
-			int x =ps.executeUpdate();
+		ps.setString(1, orderInfo.getCOrderMaster().getQR_id());
+		ps.setString(2, orderInfo.getCOrderMaster().getStaffName());
+		ps.setString(3, orderInfo.getCOrderMaster().getComment());
+		ps.setString(4, "2");
+		int x = ps.executeUpdate();
+
+		for (int i = 0; i < condition.size(); i++) {
+
+			if ("B00".equals(condition.get(i).getSKU().substring(0, 3))) {
+
+				LinkedList<String> skulist = new LinkedList<String>();
+				LinkedList<String> warehouse = new LinkedList<String>();
+				LinkedList<Integer> qty = new LinkedList<Integer>();
+				LinkedList<Double> cost = new LinkedList<Double>();
+				String strsql = " select p.SKU, b.qty,warehouse , p.cost from bundles b inner join product p on b.p_SKU=p.SKU left join storage s on p.sku = s.sku where '1' = '1' and m_sku = ? ";
+				ps = conn.prepareStatement(strsql);
+				ps.setString(1, condition.get(i).getSKU());
+				ResultSet rs = ps.executeQuery();
+
+				while (rs.next()) {
+
+					skulist.add(rs.getString(1));
+					qty.add(rs.getInt(2));
+					warehouse.add(rs.getString(3));
+					cost.add(rs.getDouble(4));
+				}
+
+				rs = null;
+				ps = null;
+
+				String strSql2 = "insert into purchaselog_detail (purchaseId, SKU, warehouse, qty, price, stockStatus)"
+						+ " values( ?, ?, ?, ?, ?, ?)";
+				PreparedStatement ps2 = conn.prepareStatement(strSql2);
+				for (int j = 0; j < skulist.size(); j++) {
+					ps2.setString(1, orderInfo.getCOrderMaster().getQR_id());
+					ps2.setString(2, skulist.get(j));
+					ps2.setString(3, warehouse.get(j));
+					ps2.setInt(4, qty.get(j) * orderDetailInfo.get(i).getQty());
+					ps2.setDouble(5, cost.get(j));
+					ps2.setString(6, "2");
+					int y = ps2.executeUpdate();
+				}
+			} else if (!"B00".equals(condition.get(i).getSKU().substring(0, 3))) {
+
+			}
+		}
 
 		String strSql2 = "insert into purchaselog_detail (purchaseId, SKU, warehouse, qty, price, stockStatus)"
 				+ " values( ?, ?, ?, ?, ?, ?)";
 		PreparedStatement ps2 = conn.prepareStatement(strSql2);
-		for(int i=0; i<orderDetailInfo.size(); i++){
+		for (int i = 0; i < orderDetailInfo.size(); i++) {
 			ps2.setString(1, orderInfo.getCOrderMaster().getQR_id());
 			ps2.setString(2, orderDetailInfo.get(i).getSKU());
 			ps2.setString(3, orderDetailInfo.get(i).getWarehouse());
 			ps2.setInt(4, orderDetailInfo.get(i).getQty());
 			ps2.setDouble(5, orderDetailInfo.get(i).getPrice());
 			ps2.setString(6, "2");
-			int y =ps2.executeUpdate();
+			int y = ps2.executeUpdate();
 		}
 	}
-	
-	public LinkedList<String> getWarehouse (HttpServletRequest request) {
-		if(request.getParameterValues("warehouse")!=null){
-		String[] strWarehouse = request.getParameterValues("warehouse");
-		// convert array to LinkedList
-		LinkedList<String> Warehouses = new LinkedList<String>(Arrays.asList(strWarehouse));
-		// iterate over each element in LinkedList and show what is in the list.
-		Iterator<String> iterator = Warehouses.iterator();	
-		return Warehouses;
+
+	public LinkedList<String> getWarehouse(HttpServletRequest request) {
+		if (request.getParameterValues("warehouse") != null) {
+			String[] strWarehouse = request.getParameterValues("warehouse");
+			// convert array to LinkedList
+			LinkedList<String> Warehouses = new LinkedList<String>(Arrays.asList(strWarehouse));
+			// iterate over each element in LinkedList and show what is in the
+			// list.
+			Iterator<String> iterator = Warehouses.iterator();
+			return Warehouses;
 		}
 		return null;
 	}
-	
+
 	public void checkUrlToRemoveSession(HttpServletRequest request, HttpSession session) {
 		String referer = request.getHeader("Referer");
 
@@ -850,78 +951,88 @@ public class COrderFactory extends COrders {
 			session.removeAttribute("SearchOrdersResult");
 		}
 	}
-	
-	public LinkedList<String> unSelectedList (HttpServletRequest request) {
-		
+
+	public LinkedList<String> unSelectedList(HttpServletRequest request) {
+
 		String[] strQR_idArray = request.getParameterValues("QR_id");
 		String[] strLogisticsArray = request.getParameterValues("logistics");
 		// convert array to LinkedList
 		LinkedList<String> QR_ids = new LinkedList<String>(Arrays.asList(strQR_idArray));
 		LinkedList<String> Logistics = new LinkedList<String>(Arrays.asList(strLogisticsArray));
 		// iterate over each element in LinkedList and show what is in the list.
-		Iterator<String> iterator = QR_ids.iterator();	
+		Iterator<String> iterator = QR_ids.iterator();
 		Iterator<String> iterator2 = Logistics.iterator();
-		
+
 		LinkedList<String> unSelected = new LinkedList<>();
-		for(int i=0;i<QR_ids.size();i++){
-			if(Logistics.get(i) != "請選擇"){
-				
+		for (int i = 0; i < QR_ids.size(); i++) {
+			if (Logistics.get(i) != "請選擇") {
+
 			} else {
 				unSelected.add(QR_ids.get(i));
 			}
 		}
 		return unSelected;
 	}
-	
-	public LinkedList<ShipmentRecord> searchShipmentRecord (HttpServletRequest request, Connection conn) throws Exception {
-		
+
+	public LinkedList<ShipmentRecord> searchShipmentRecord(HttpServletRequest request, Connection conn)
+			throws Exception {
+
 		String strSql = "select s.date, s.QR_id, s.type, m.eBayAccount, d.SKU, d.productName, d.qty,"
 				+ " r.country, d.owner, d.warehouse, m.staffName, s.comment, s.trackingCode"
 				+ " from orders_master as m inner join shippinglog as s on m.QR_id = s.QR_id"
 				+ " inner join order_recieverinfo as r on m.QR_id = r.QR_id"
-				+ " inner join orders_detail as d on m.QR_id = d.QR_id"
-				+ " where '1' = '1' ";
+				+ " inner join orders_detail as d on m.QR_id = d.QR_id" + " where '1' = '1' ";
 
 		String eBayAccount = request.getParameter("eBayAccount");
 		if (!isNullorEmpty(eBayAccount)) {
 			strSql += " and m.eBayAccount = ? ";
-		};
+		}
+		;
 		String type = request.getParameter("type");
 		if (!isNullorEmpty(type)) {
 			strSql += " and s.type like ? ";
-		};
+		}
+		;
 		String owner = request.getParameter("owner");
 		if (!isNullorEmpty(owner)) {
 			strSql += " and d.owner like ? ";
-		};
+		}
+		;
 		String QR_id = request.getParameter("QR_id");
 		if (!isNullorEmpty(QR_id)) {
 			strSql += " and m.QR_id like ? ";
-		};
+		}
+		;
 		String country = request.getParameter("country");
 		if (!isNullorEmpty(country)) {
 			strSql += " and r.country like ? ";
-		};
+		}
+		;
 		String SKU = request.getParameter("SKU");
 		if (!isNullorEmpty(SKU)) {
 			strSql += " and d.SKU like ? ";
-		};
+		}
+		;
 		String productName = request.getParameter("productName");
 		if (!isNullorEmpty(productName)) {
 			strSql += " and d.productName like ? ";
-		};
+		}
+		;
 		String warehouse = request.getParameter("warehouse");
 		if (!isNullorEmpty(warehouse)) {
 			strSql += " and d.warehouse like ? ";
-		};
+		}
+		;
 		String staffName = request.getParameter("staffName");
 		if (!isNullorEmpty(staffName)) {
 			strSql += " and m.staffName like ? ";
-		};
+		}
+		;
 		String comment = request.getParameter("comment");
 		if (!isNullorEmpty(comment)) {
 			strSql += " and m.comment like ? ";
-		};
+		}
+		;
 		String shippingDateMin = request.getParameter("shippingDateMin");
 		if (!isNullorEmpty(shippingDateMin)) {
 			strSql += " and m.shippingDate >= ? ";
@@ -930,11 +1041,11 @@ public class COrderFactory extends COrders {
 		if (!isNullorEmpty(shippingDateMax)) {
 			strSql += " and m.shippingDate <= ? ";
 		}
-		
+
 		LinkedList<ShipmentRecord> shipmentRecord = new LinkedList<ShipmentRecord>();
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		int param = 1;
-		
+
 		if (!isNullorEmpty(eBayAccount)) {
 			ps.setString(param, eBayAccount);
 			param++;
@@ -983,13 +1094,12 @@ public class COrderFactory extends COrders {
 			ps.setString(param, shippingDateMax);
 			param++;
 		}
-		
+
 		System.out.println(strSql);
-		
+
 		ResultSet rs = ps.executeQuery();
-		
-		
-		while(rs.next()){
+
+		while (rs.next()) {
 			ShipmentRecord record = new ShipmentRecord();
 			record.setShippingDate(rs.getDate(1));
 			record.setQR_id(rs.getString(2));
@@ -1008,38 +1118,35 @@ public class COrderFactory extends COrders {
 		}
 		return shipmentRecord;
 	}
-	
-	public LinkedList<String> getGuestAccounts (Connection conn) throws Exception {
-		
+
+	public LinkedList<String> getGuestAccounts(Connection conn) throws Exception {
+
 		LinkedList<String> guestAccounts = new LinkedList<String>();
-		String strSql = "select guestaccount,count(*)"
-				+ " from orders_master"
-				+ " group by guestaccount"
+		String strSql = "select guestaccount,count(*)" + " from orders_master" + " group by guestaccount"
 				+ " having count(*) > 1";
-		
+
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ResultSet rs = ps.executeQuery();
-		
-		while(rs.next()){
+
+		while (rs.next()) {
 			guestAccounts.add(rs.getString(1));
 		}
 		return guestAccounts;
 	}
-	
-	public LinkedList<COrders> getSimilarOrders (HttpServletRequest request, Connection conn) throws Exception {
-		
+
+	public LinkedList<COrders> getSimilarOrders(HttpServletRequest request, Connection conn) throws Exception {
+
 		LinkedList<String> guestAccounts = getGuestAccounts(conn);
 		LinkedList<COrders> SimilarOrders = new LinkedList<COrders>();
-		for(int i=0; i<guestAccounts.size();i++){
+		for (int i = 0; i < guestAccounts.size(); i++) {
 			String strSql = "select QR_id, platform, eBayAccount, guestAccount, payDate, orderStatus, totalPrice"
-					+ " from orders_master"
-					+ " where guestAccount = ?";
-			
+					+ " from orders_master" + " where guestAccount = ?";
+
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ps.setString(1, guestAccounts.get(i));
 			ResultSet rs = ps.executeQuery();
-			
-			while(rs.next()){
+
+			while (rs.next()) {
 				COrders order = new COrders();
 				order.COrderMaster.setQR_id(rs.getString(1));
 				order.COrderMaster.setPlatform(rs.getString(2));
@@ -1053,27 +1160,26 @@ public class COrderFactory extends COrders {
 		}
 		return SimilarOrders;
 	}
-	
+
 	public void createCombinedOrders(HttpServletRequest request, Connection conn) throws Exception {
-		
+
 		String[] QR_ids = request.getParameterValues("QR_id");
-		
+
 	}
-	
-	public LinkedList<COrders> getCombinedOrders (HttpServletRequest request, Connection conn) throws Exception {
-		
+
+	public LinkedList<COrders> getCombinedOrders(HttpServletRequest request, Connection conn) throws Exception {
+
 		LinkedList<String> guestAccounts = getGuestAccounts(conn);
 		LinkedList<COrders> SimilarOrders = new LinkedList<COrders>();
-		for(int i=0; i<guestAccounts.size();i++){
+		for (int i = 0; i < guestAccounts.size(); i++) {
 			String strSql = "select QR_id, platform, eBayAccount, guestAccount, payDate, orderStatus, totalPrice"
-					+ " from orders_master"
-					+ " where guestAccount = ?";
-			
+					+ " from orders_master" + " where guestAccount = ?";
+
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ps.setString(1, guestAccounts.get(i));
 			ResultSet rs = ps.executeQuery();
-			
-			while(rs.next()){
+
+			while (rs.next()) {
 				COrders order = new COrders();
 				order.COrderMaster.setQR_id(rs.getString(1));
 				order.COrderMaster.setPlatform(rs.getString(2));
@@ -1087,5 +1193,5 @@ public class COrderFactory extends COrders {
 		}
 		return SimilarOrders;
 	}
-	
+
 }

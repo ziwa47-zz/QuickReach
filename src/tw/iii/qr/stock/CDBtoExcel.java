@@ -67,6 +67,10 @@ public class CDBtoExcel {
 			e.printStackTrace();
 		}
 	}
+	public static void 美日結表(){
+		
+	}
+	
 	public void 進出貨紀錄(){
 		
 	}
@@ -77,7 +81,7 @@ public class CDBtoExcel {
 	public void dailyBalanceSheetExcel() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
 		XSSFWorkbook wb = new XSSFWorkbook();
 		XSSFSheet sheet = wb.createSheet("日出貨報表");
-		String strsql = "select s.date, s.QR_id, s.type, m.eBayAccount, d.SKU, d.productName, d.qty,"
+		String strsql = "select s.date, s.QR_id, m.eBayAccount, m.ebayNO, d.SKU, d.productName, d.qty,"
 				+ " r.country, d.owner, d.warehouse, m.staffName, s.comment, s.trackingCode"
 				+ " from orders_master as m inner join shippinglog as s on m.QR_id = s.QR_id"
 				+ " inner join order_recieverinfo as r on m.QR_id = r.QR_id"
@@ -90,38 +94,41 @@ public class CDBtoExcel {
 		int index = 1;
 		XSSFRow myRow = sheet.createRow(0);
 		myRow.createCell(0).setCellValue("出貨日期");
-		myRow.createCell(1).setCellValue("訂單編號");
+		myRow.createCell(1).setCellValue("出貨編號");
 		myRow.createCell(2).setCellValue("type");
 		myRow.createCell(3).setCellValue("EbayAccount");
-		myRow.createCell(4).setCellValue("SKU");
-		myRow.createCell(5).setCellValue("產品名稱");
-		myRow.createCell(6).setCellValue("數量");
-		myRow.createCell(7).setCellValue("國家");
-		myRow.createCell(8).setCellValue("Owner");
-		myRow.createCell(9).setCellValue("倉別");
-		myRow.createCell(10).setCellValue("員工姓名");
-		myRow.createCell(11).setCellValue("備註");
-		myRow.createCell(12).setCellValue("追蹤碼");
+		myRow.createCell(4).setCellValue("訂單編號");
+		myRow.createCell(5).setCellValue("SKU");
+		myRow.createCell(6).setCellValue("產品名稱");
+		myRow.createCell(7).setCellValue("數量");
+		myRow.createCell(8).setCellValue("國家");
+		myRow.createCell(9).setCellValue("Owner");
+		myRow.createCell(10).setCellValue("倉別");
+		myRow.createCell(11).setCellValue("員工姓名");
+		myRow.createCell(12).setCellValue("備註");
+		myRow.createCell(13).setCellValue("追蹤碼");
 		while (rs.next()) {
 			myRow = sheet.createRow(index);
 			myRow.createCell(0).setCellValue(rs.getString(1));
 			myRow.createCell(1).setCellValue(rs.getString(2));
-			myRow.createCell(2).setCellValue(rs.getString(3));
-			myRow.createCell(3).setCellValue(rs.getString(4));
-			myRow.createCell(4).setCellValue(rs.getString(5));
-			myRow.createCell(5).setCellValue(rs.getString(6));
-			myRow.createCell(6).setCellValue(rs.getString(7));
-			myRow.createCell(7).setCellValue(rs.getString(8));
-			myRow.createCell(8).setCellValue(rs.getString(9));
-			myRow.createCell(9).setCellValue(rs.getString(10));
-			myRow.createCell(10).setCellValue(rs.getString(11));
-			myRow.createCell(11).setCellValue(rs.getString(12));
-			myRow.createCell(12).setCellValue(rs.getString(13));
+			myRow.createCell(2).setCellValue("訂單出貨");
+			myRow.createCell(3).setCellValue(rs.getString(3));
+			myRow.createCell(4).setCellValue(rs.getString(4));
+			myRow.createCell(5).setCellValue(rs.getString(5));
+			myRow.createCell(6).setCellValue(rs.getString(6));
+			myRow.createCell(7).setCellValue(rs.getString(7));
+			myRow.createCell(8).setCellValue(rs.getString(8));
+			myRow.createCell(9).setCellValue(rs.getString(9));
+			myRow.createCell(10).setCellValue(rs.getString(10));
+			myRow.createCell(11).setCellValue(rs.getString(11));
+			myRow.createCell(12).setCellValue(rs.getString(12));
+			myRow.createCell(13).setCellValue(rs.getString(13));
 			index++;
 		}
 		String date = getDay();
 		
-		FileOutputStream out = new FileOutputStream("./" + date + "日出貨報表.xlsx");
+		//FileOutputStream out = new FileOutputStream("C:/Users/Jenan/Desktop/" + date + "日出貨報表.xlsx");
+		FileOutputStream out = new FileOutputStream("C:/Users/iii/Documents/Excel_Data/" + date + "日出貨報表.xlsx");
 		wb.write(out);
 		rs.close();
 		ps.close();
@@ -173,7 +180,8 @@ public class CDBtoExcel {
 		}
 		String date = getDay();
 		
-		FileOutputStream out = new FileOutputStream("C:\\EC\\物流匯出報表.xlsx");
+		FileOutputStream out = new FileOutputStream("C:\\EC\\"+date+"物流匯出報表.xlsx");
+		//FileOutputStream out = new FileOutputStream("C:/Users/iii/Documents/Excel_Data/" + date + "報表.xlsx");
 		wb.write(out);
 		rs.close();
 		ps.close();
