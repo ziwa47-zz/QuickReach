@@ -70,13 +70,19 @@ function test() {
         dataType: "json", 
 
         success : function(response){       	
-                   
             	 $("#pName"+setValueId).val(response.pName);
                  $("#spec"+setValueId).val(response.spec);
                  $("#color"+setValueId).val(response.color);
                  
+                 
+                 
                  $("#warehousePositionOne"+setValueId).val(response.warehousePosition);
                  $("#warehousePositionTwo"+setValueId).val(response.warehousePosition2);   
+                 
+                 if((response.warehousePosition==null)&&(response.warehousePosition2==null)){
+                	 $("#warehousePositionOne"+setValueId).attr("readonly",false);
+                	 $("#warehousePositionTwo"+setValueId).attr("readonly",false);
+                 }
 
         },        
 	})
@@ -271,7 +277,7 @@ submitHandler: function (form)
 						  +'         	<div class="col-md-4 form-group ">'
 	                        +'             <div class="row">'
 	                        +'              <div class="col-md-4"><h5><label for="focusedInput " >儲位：</label></h5></div>'
-	                        +'              <div class="col-md-8"><input class="form-control" style="width:88px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:88px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text"></div>'
+	                        +'              <div class="col-md-8"><input class="form-control" style="width:88px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text" readonly> - <input class="form-control" style="width:88px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text" readonly></div>'
 	                        +'            </div>'
 	                        +'                </div>'
 						
@@ -563,7 +569,7 @@ display: block;
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >儲位：</label></h5></div>
                     
-                   <div class="col-md-8"><input class="form-control " style="width:88px;" id="warehousePositionOne1" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:88px;" id="warehousePositionTwo1" name="warehousePositionTwo1" type="text"></div>
+                   <div class="col-md-8"><input class="form-control " style="width:88px;" id="warehousePositionOne1" name="warehousePositionOne1" type="text" readonly> - <input class="form-control" style="width:88px;" id="warehousePositionTwo1" name="warehousePositionTwo1" type="text" readonly></div>
                   </div>
                 </div>
                   
