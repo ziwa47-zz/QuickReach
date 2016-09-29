@@ -124,7 +124,7 @@ conn.close();
               <input type="checkbox" name= "optionsRadios" id="optionsRadios1"  onchange="optionsonchange(this)">開啟</label>
       	   
       	    <button type="submit" name="submit" value="updateProduct"
-						class="btn btn-lg btn-success" id = "btnCheck" disabled>更新產品資料</button></label>
+						class="btn btn-lg btn-success" id = "btnCheck" disabled>更新產品資料</button>
       	       
           </div>
       </div>
@@ -172,6 +172,13 @@ conn.close();
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>ProductCode</h4></div>
                       <div class="col-md-8 well-sm"><input class="form-control" type="text" name="productcode" value="${resultDetail.getProductCode()}" ></div>
                   </div>
+                  
+                  <div class="row">
+                      <div class="col-md-3 text-right well-sm label-tag"  ><h4>上傳圖片</h4></div>
+                      <div class="col-md-8 well-sm"><input class="form-control" type="file" name="picturePath" value="" ></div>
+                  </div>
+                  
+                  
               </div>
             </div>
           </div>
@@ -209,18 +216,27 @@ conn.close();
 	                  <div class="col-md-8 well-sm"><input class="form-control number required" title="請輸入正確成本" type="text" name="cost" value="${resultDetail.getCost()}" ></div>
 	              </div>
               </c:if>
-              <div class="row">
-                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>備註</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control" type="text" name="comment" value="${resultDetail.getComment()}"></div>
-              </div>
+              
+             
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>更新紀錄</h4></div>
                   <div class="col-md-8 well-sm"><input class="form-control required yymmdd" type="text" name="checkupdate" value="${resultDetail.getCheckupdate()}" readonly></div>
               </div>
-                <div class="row">
-                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>重量(克)</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control number" type="text" name="weight" value="${resultDetail.getWeight()}" ></div>
-              </div>
+              
+               <div class="row">
+                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>上架否</h4></div>
+                  <div class="col-md-8  well-sm">
+                  
+                  <select class="form-control" name = "added">
+                      
+                      <option value="true">是</option>
+                      <option value="false">否</option>
+                      
+                      </select>
+                  
+                  </div>
+              </div>  
+                
 
             </div>
             </div>
@@ -238,11 +254,11 @@ conn.close();
               <div class="container-fluid form-horizontal">
                <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>材積</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control" style="width:700px" type="text" name="volume" value="${resultDetail.getVolume()}" ></div>
+                  <div class="col-md-8 well-sm"><input class="form-control"  type="text" name="volume" value="${resultDetail.getVolume()}" ></div>
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>包裝材質</h4></div>
-                  <div class="col-md-8 well-sm"><input class="form-control" style="width:700px" type="text" name="package" value="${resultDetail.getPackageMatrial()}" ></div>
+                  <div class="col-md-8 well-sm"><input class="form-control" type="text" name="package" value="${resultDetail.getPackageMatrial()}" ></div>
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>材積重(克)</h4></div>
@@ -253,6 +269,15 @@ conn.close();
 
                   <div class="col-md-8 well-sm"><input class="form-control  yymmdd" type="text"name="cdate" value="${resultDetail.getCreateDate()}" readonly></div>
 
+              </div>
+              
+              <div class="row">
+                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>重量(克)</h4></div>
+                  <div class="col-md-8 well-sm"><input class="form-control number" type="text" name="weight" value="${resultDetail.getWeight()}" ></div>
+              </div>
+               <div class="row">
+                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>備註</h4></div>
+                  <div class="col-md-8 well-sm"><input class="form-control" type="text" name="comment" value="${resultDetail.getComment()}"></div>
               </div>
           
               </div>
