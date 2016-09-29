@@ -46,9 +46,10 @@ public class DayliBalanceSheetFactory extends COrders {
 				+ " d.sku, d.productName, d.qty, d.owner, d.price,"
 				+ " r.country"
 				+ " FROM  orders_master as m inner join"
-				+ "  orders_detail as d  on m.QR_id = d.QR_id left join"
-				+ "  order_recieverinfo as r on m.QR_id = r.QR_id"
-				+ "  where m.orderstatus = N'待處理' order by m.QR_id";
+				+ " orders_detail as d  on m.QR_id = d.QR_id left join"
+				+ " order_recieverinfo as r on m.QR_id = r.QR_id"
+				+ " where m.orderstatus = N'待處理' order by m.QR_id"
+				+ " order by payDate desc";
 		System.out.println(strSql);
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ResultSet rs = ps.executeQuery();

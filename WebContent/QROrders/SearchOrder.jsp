@@ -17,11 +17,12 @@
 <%
   COrderFactory.checkUrlToRemoveSession(request, session);
   Connection conn = new DataBaseConn().getConn();
-  //LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"待處理");
   LinkedList<COrders> orderList = new LinkedList<COrders>();
-  request.setAttribute("list", orderList);
+  LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts(conn);
+  session.setAttribute("list", orderList);
   request.setAttribute("begin", request.getParameter("begin"));
   request.setAttribute("end", request.getParameter("end"));
+  session.setAttribute("ebayAccounts", ebayAccounts);
 %>
 <div class="nav">
   <div class="container">
@@ -69,11 +70,9 @@
               <div class="col-md-8">
                 <select class="form-control" name="eBayAccount">
                   <option value="">請選擇</option>
-                  <option value="comenwin0903">comenwin0903</option>
-                  <option value="cyclistbike">cyclistbike</option>
-                  <option value="huangbowei">huangbowei</option>
-                  <option value="igrocery">igrocery</option>
-                  <option value="magicbike">magicbike</option>
+                  <c:forEach var="q" items="${ebayAccounts}" step="1" varStatus="check">
+                  <option value="">${q}</option>
+                  </c:forEach>
                 </select>
               </div>
             </div>
