@@ -67,6 +67,10 @@ public class CDBtoExcel {
 			e.printStackTrace();
 		}
 	}
+	public static void 美日結表(){
+		
+	}
+	
 	public void 進出貨紀錄(){
 		
 	}
@@ -123,6 +127,7 @@ public class CDBtoExcel {
 		}
 		String date = getDay();
 		
+		//FileOutputStream out = new FileOutputStream("C:/Users/Jenan/Desktop/" + date + "日出貨報表.xlsx");
 		FileOutputStream out = new FileOutputStream("C:/Users/Jenan/Desktop/" + date + "日出貨報表.xlsx");
 		wb.write(out);
 		rs.close();
@@ -175,7 +180,8 @@ public class CDBtoExcel {
 		}
 		String date = getDay();
 		
-		FileOutputStream out = new FileOutputStream("C:\\EC\\物流匯出報表.xlsx");
+		FileOutputStream out = new FileOutputStream("C:\\EC\\"+date+"物流匯出報表.xlsx");
+		//FileOutputStream out = new FileOutputStream("C:/Users/iii/Documents/Excel_Data/" + date + "報表.xlsx");
 		wb.write(out);
 		rs.close();
 		ps.close();
