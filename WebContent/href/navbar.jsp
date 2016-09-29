@@ -83,18 +83,18 @@ position:absolute; width:70%; height:280px;
 			dateFormat : 'yy-mm-dd',
 
 		});
-		 $("input[name=date1]").datepicker({dateFormat : 'yy/mm/dd'});
-	        $("input[name=date2]").datepicker({dateFormat : 'yy/mm/dd'});
+		 $("input[name=date1]").datepicker({dateFormat : 'yy-mm-dd'});
+	        $("input[name=date2]").datepicker({dateFormat : 'yy-mm-dd'});
 	        $("input[name=payDateMin]").datepicker({dateFormat : 'yy-mm-dd'});
 	        $("input[name=payDateMax]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=shippingDateMin]").datepicker({dateFormat : 'yy/mm/dd'});
-	        $("input[name=shippingDateMax]").datepicker({dateFormat : 'yy/mm/dd'});
-	        $("input[name=startTime]").datepicker({dateFormat : 'yy/mm/dd'});
-	        $("input[name=lastFixTime]").datepicker({dateFormat : 'yy/mm/dd'});
+	        $("input[name=shippingDateMin]").datepicker({dateFormat : 'yy-mm-dd'});
+	        $("input[name=shippingDateMax]").datepicker({dateFormat : 'yy-mm-dd'});
+	        $("input[name=startTime]").datepicker({dateFormat : 'yy-mm-dd'});
+	        $("input[name=lastFixTime]").datepicker({dateFormat : 'yy-mm-dd'});
+	        $("input[name=OrderDate]").datepicker({dateFormat : 'yy-mm-dd'});
+	        $("input[name=PayDate]").datepicker({dateFormat : 'yy-mm-dd'});
+	        $("input[name=ShippingDate]").datepicker({dateFormat : 'yy-mm-dd'});
 	   });
-	
-
-	
 	
 	    function checkAllOrders(ele) {
     	//select all

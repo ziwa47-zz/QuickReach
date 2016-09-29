@@ -53,7 +53,7 @@ public class daliy implements ServletContextListener {
 
 								LinkedList<COrders> da = new DayliBalanceSheetFactory().dayliBalanceSheet();
 								a.getServletContext().setAttribute("ndbs", da);
-								System.out.println("da done");
+								//System.out.println("da done");
 							} catch (ClassNotFoundException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
