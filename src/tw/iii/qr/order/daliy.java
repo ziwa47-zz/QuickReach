@@ -20,7 +20,7 @@ import org.apache.tomcat.util.net.SecureNio2Channel.ApplicationBufferHandler;
 @WebListener
 public class daliy implements ServletContextListener {
 	boolean isContinued = true;
-	Timer t1 = new Timer();
+	
 	/**
 	 * Default constructor.
 	 */
@@ -45,41 +45,39 @@ public class daliy implements ServletContextListener {
 	}
 
 	public void getdailyandorders(ServletContextEvent a) {
-		
-		t1.scheduleAtFixedRate(new TimerTask() {
+		Timer t1 = new Timer();
+		  t1.scheduleAtFixedRate(new TimerTask() {
+		   
+		   @Override
+		   public void run() {
+		    try {
+		     
+		     new Thread() {
+		      @Override
+		      public void run() {
 
-			@Override
-			public void run() {
-				try {
-					while (isContinued) {
-						new Thread() {
-							@Override
-							public void run() {
+		       try {
 
-								try {
-									while (isContinued) {
-										LinkedList<COrders> da = new DayliBalanceSheetFactory().dayliBalanceSheet();
-										a.getServletContext().setAttribute("ndbs", da);
-										System.out.println("da done");
-									}
-								} catch (ClassNotFoundException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								} catch (Exception e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
+		        LinkedList<COrders> da = new DayliBalanceSheetFactory().dayliBalanceSheet();
+		        a.getServletContext().setAttribute("ndbs", da);
+		        //System.out.println("da done");
+		       } catch (ClassNotFoundException e) {
+		        // TODO Auto-generated catch block
+		        e.printStackTrace();
+		       } catch (Exception e) {
+		        // TODO Auto-generated catch block
+		        e.printStackTrace();
+		       }
 
-							}
-
-						}.start();
-					}
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}, 0, 900000);
+		      }
+		     }.start();
+		     
+		    } catch (Exception e) {
+		     // TODO Auto-generated catch block
+		     e.printStackTrace();
+		    }    
+		   }
+		  } ,0,1800000);
 	}
 
 	public void terminate() {
