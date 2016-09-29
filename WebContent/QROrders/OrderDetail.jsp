@@ -85,7 +85,7 @@ conn.close();
               <div class="container-fluid form-horizontal">
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>客戶名子</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getGuestFirstName()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" name="" type="text" value="${result.getCOrderGuestInfo().getGuestFirstName()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>客戶姓氏</h4></div>
@@ -198,6 +198,14 @@ conn.close();
 		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="QR_id" value="${result.getCOrderMaster().getQR_id()}"></div>
 		        </div>
 		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>出貨編號</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getQR_id() }"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>Tracking Code</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		        </div>
+		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>公司</h4></div>
 		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getCompany()}"></div>
 		        </div>
@@ -234,10 +242,6 @@ conn.close();
 		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getLogistics()}"></div>
 		        </div>
 		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>出貨編號</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
-		        </div>
-		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>運費</h4></div>
 		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getShippingFees()}"></div>
 		        </div>
@@ -251,14 +255,6 @@ conn.close();
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>其它費用備註</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
-		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>其它收入</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
-		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>其它收入備註</h4></div>
 		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
 		        </div>
 		        <div class="row">
@@ -279,10 +275,6 @@ conn.close();
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>毛重(公克)</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
-		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>Fedex服務</h4></div>
 		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
 		        </div>
 		        <div class="row">

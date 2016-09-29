@@ -1,191 +1,135 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!doctype html>
+<%@page import="tw.iii.qr.order.COrderDetail"%>
+<%@page import="tw.iii.qr.order.COrders"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.*,tw.iii.qr.stock.CProduct" %>
+<%@page import="tw.iii.qr.DataBaseConn"%>
+<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.COrderFactory" scope="page" />
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta charset="utf-8">
-<title>NewOrder</title>
-<!-- Bootstrap -->
-	<link href="./css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="./css/smoothness/jquery-ui.css">
-
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="./js/bootstrap.js"></script>
-
-    
-    <script src="./js/jquery-1.12.4.min.js"></script>
-    <script src="./js/jquery-ui.min.js"></script>
-    <script src="./js/jquery.ui.datepicker-zh-TW.js"></script>
-    
-    <script type="text/javascript">        
-        $(function () {
-            //日期選擇器
-            $("input[name=date]").datepicker({ dateFormat: 'yy/mm/dd', showOn: "both" });
-           });
-	</script>   
-    
-    <style type="text/css">
-            .label-tag {
-                background-color:#BFE9B2;
-            }
-            .pressed {
-                border-width: 5px;
-                border-color: black;
-                border-style: solid;
-            }
-        </style>
-    
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>訂單內容</title>
 </head>
+<body>
+<%@ include file ="/href/navbar.jsp" %>
+<%
+String QR_id ;
+request.setCharacterEncoding("UTF-8");
+if(request.getParameter("QR_id") != null || request.getParameter("QR_id") != ""){
+Connection conn = new DataBaseConn().getConn();
+QR_id = request.getParameter("QR_id");
+COrders searchResult = COrderFactory.getOrderAllInfo(QR_id, conn);
+session.setAttribute("result", searchResult);
+LinkedList<COrderDetail> resultDetail = COrderFactory.getOrderDetails(QR_id, conn);
+session.setAttribute("resultDetail", resultDetail);
+}else {
+	response.sendRedirect("QROrders/SearchOrder.jsp");	
+}
+%>
+ <div class="nav">
+  <div class="container">
+    <div class="navbar-left" style="background-color:#F3CE9A;" >
+      <ul class="nav nav-tabs">
+        <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp" style="color:#FFFFFF">訂單管理</a></li>
+        <li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container">
+    <div class="nav" style="background-color:#A45A21;" >
+      <ul class="nav nav-tabs">
+        <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
+        <li><a href="OrderProcessingPage.jsp?begin=0&end=10" style="color:#fff">處理中</a></li>
+        <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
+        <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
+        <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
+        <li><a href="ShipmentRecord.jsp?begin=0&end=10" >訂單出貨記錄</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
 
-<body><%@ include file="/href/navbar.jsp" %>
-  <div class="nav">
-  	<div class="container">
-    	<div class="navbar-left" style="background-color:#F3CE9A;" >
-        	<ul class="nav nav-tabs">
-              <li><a href="SearchOrder.jsp" >訂單管理</a></li>
-              <li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
-              <li><a href="SearchComment.jsp">查詢評價</a></li>
-              <li><a href="NewOrder.jsp" style="background-color:#A45A21; color:#fff">新增訂單</a></li>
-            </ul>
-        </div>
+<div class="container container-fluid breadcrumbBox">
+  <ol class="breadcrumb" >
+    <li><a href="/HomePage.jsp" >首頁</a></li>
+    <li class="active" style="display:"><a href="SearchOrder.jsp?begin=0&end=10">訂單管理</a></li>
+    <li><a href="OrderDetail.jsp?QR_id=${result.getCOrderMaster().getQR_id()}">訂單明細</a></li>
+  </ol>
+</div>
+
+  <div class="container table-responsive" style="background: #D9A56B; border-radius:20px;">
+  	<form name="searchform" method="post" action="../OrdersServlet" class="form-inline container" 
+  	style="font-size: 100%; vertical-align: baseline; padding: 15px;">
+  	<div class="row">
+      <button type="submit" name="submit" value="updateOrderNew" class="btn btn-lg btn-success" id="btnCheck">暫存訂單</button>
     </div>
-    <div class="container">
-   	  <div class="nav" style="background-color:#A45A21;" >
-        <ul class="nav nav-tabs">
-          <li><a href="SearchOrder.jsp">訂單查詢</a></li>
-          <li><a href="OrderProcessingPage.jsp">處理中</a></li>
-          <li><a href="OrderPickupPage.jsp">揀貨中</a></li>
-          <li><a href="OrderUploadTrackingCode.jsp">上傳追蹤碼</a></li>
-          <li><a href="OrderFinished.jsp">已完成訂單</a></li>
-          <li><a href="OrderAbnormal.jsp">異常訂單</a></li>
-        </ul>
-      </div>
-    </div>
-  
-  </div>
-  
-  <div class="container container-fluid breadcrumbBox">
-    <ol class="breadcrumb" >
-      <li><a href="#" >主要目錄</a></li>
-      <li class="active" style="display:"><a href="#">訂單</a></li>
-      <li><a href="#">訂單查詢</a></li>
-    </ol>
-  </div>
-  
-  <div class="container" style="background: #9DDCD1; border-radius:20px;">
-  <form id="listForm" name="listForm" method="post" action="PurchaseRecordPage.jsp" style="font-size: 100%; vertical-align: baseline; padding: 15px; " class="form-inline container">
-    <fieldset class="container-fluid" style="padding:0 30px 0 0;"><legend>新增訂單</legend>
-      <input type="hidden">
-      <div class="panel-group" id="accordion" >
+    <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;"><legend>訂單明細</legend>
+      <div class="panel-group" id="accordion">
         <div class="panel panel-default" style="background-color:#E7D29F">
           <div class="panel-heading">
             <h4 class="panel-title">
               <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">訂購人資料</a>
             </h4>
           </div>
-          <div id="collapse1" class="panel-collapse collapse in">
+          <div id="collapse1" class="panel-collapse collapse">
             <div class="panel-body">
-              <input type="hidden">
-              <div class="row">
-            	<div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >訂購人名子：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="text"></div>
-                  </div>
-                </div>
-            	<div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >訂購人姓氏：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="text"></div>
-                  </div>
-                </div>
-                <div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >帳號：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="text"></div>
-                  </div>
-                </div>
-              </div>
-            
-              <div class="row">
-            	<div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >電子郵件'：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="text"></div>
-                  </div>
-                </div>
-                <div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >電話(日)：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="text"></div>
-                  </div>
-                </div>
-                <div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >電話(夜)：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="text"></div>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >行動電話：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="text"></div>
-                  </div>
-                </div>
-                <div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >生日：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="text"></div>
-                  </div>
-                </div>
-                <div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >公司/學校：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="text"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-8 ">
-                  <div class="row ">
-                    <div class="col-md-2"><h5><label for="focusedInput " >地址：</label></h5></div>
-                    <div class="col-md-10 input-group" style="padding-left:15px; padding-right:35px"><input class="form-control " name="sku" type="text" style=" border-radius: 4px; "></div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >國家：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="text"></div>
-                  </div>
-                </div>
-                <div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >郵遞區號：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="text"></div>
-                  </div>
-                </div>
-                <div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >性別</label></h5></div>
-                    <div class="col-md-8">
-                      <select class="form-control" name="warehouse">
-                        <option value="男"></option>
-                        <option value="kaohsiung">男</option>
-                        <option value="US">女</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div class="container-fluid form-horizontal">
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>客戶名子</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getGuestFirstName()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>客戶姓氏</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getGuestLastName()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>訂購帳號</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getGuestAccount()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>電子郵件</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getEmail()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>電話(日)</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getTel1()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>電話(夜)</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getTel2()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>行動電話</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getMobile()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>生日</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getBirthday()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>公司/學校</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getCompany()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>地址</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getAddress()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>國家</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getCountry()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>郵遞區號</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getPostcode()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>性別</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getGender()}"></div>
+		        </div>
+		      </div>
             </div>
           </div>
-        </div>
-        <div class="panel panel-default" style="background-color:#E7D29F">
           <div class="panel-heading">
             <h4 class="panel-title">
               <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">收件人資料</a>
@@ -193,199 +137,229 @@
           </div>
           <div id="collapse2" class="panel-collapse collapse">
             <div class="panel-body">
-              <input type="hidden">
-              <div class="row">
-                <div class="col-md-4"><input class="form-control radio" name="sku" type="radio">同訂購者資料</div>
-              </div>
-              <div class="row">
-            	<div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >收件人姓名：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="r"></div>
-                  </div>
-                </div>
-            	<div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >收件姓氏：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="text"></div>
-                  </div>
-                </div>
-                <div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >電話(日)：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="text"></div>
-                  </div>
-                </div>
-              </div>
-            
-              <div class="row">
-            	<div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >地址：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="text"></div>
-                  </div>
-                </div>
-                <div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >郵遞區號：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="text"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >國家)：</label></h5></div>
-                    <div class="col-md-8">
-                      <select class="form-control" id="">
-                        <option value="" selected="selected">--請選擇--</option>
-                        <option value="AL">ALBANIA 阿爾巴尼亞</option>
-                        <option value="UY">URUGUAY 烏拉圭</option>
-                        <option value="UZ">UZBEKISTAN 烏茲別克</option>
-                        <option value="VN">VIET NAM 越南</option>
-                        <option value="VG">VIRGIN ISLANDS, BRITISH 英屬維京群島</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div class="container-fluid form-horizontal">
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>收件人名字</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderReciever().getRecieverFirstName()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>收件人姓氏</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderReciever().getRecieverLastName()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>電話1</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderReciever().getTel1()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>電話2</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderReciever().getTel2()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>地址</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderReciever().getAddress()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>收件人國家</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderReciever().getCountry()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>郵遞區號</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderReciever().getPostCode()}"></div>
+		        </div>
+		      </div>
             </div>
           </div>
-        </div>
-        <div class="panel panel-default" style="background-color:#E7D29F">
           <div class="panel-heading">
             <h4 class="panel-title">
-              <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">訂單詳細資料</a>
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">訂單資料</a>
             </h4>
           </div>
           <div id="collapse3" class="panel-collapse collapse">
             <div class="panel-body">
-              <input type="hidden">
-              <div class="row">
-                <div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >公司：</label></h5></div>
-                    <div class="col-md-8">
-                      <select class="form-control" id="">
-                        <option value="" selected="selected">--請選擇--</option>
-                        <option value="AL">ALBANIA 阿爾巴尼亞</option>
-                        <option value="UY">URUGUAY 烏拉圭</option>
-                        <option value="UZ">UZBEKISTAN 烏茲別克</option>
-                        <option value="VN">VIET NAM 越南</option>
-                        <option value="VG">VIRGIN ISLANDS, BRITISH 英屬維京群島</option>
+              <div class="container-fluid form-horizontal">
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>外部訂單編號</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getOutsideCode()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>訂單狀態</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getOrderStatus()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>訂單編號</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="QR_id" value="${result.getCOrderMaster().getQR_id()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>公司</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getCompany()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>平台</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getPlatform()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>ebay 帳號</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getEbayAccount()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>購買日期</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getOrderDate()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>付款日期</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getPayDate()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>付款方式</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>paypal 交易序號</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getPaypalId()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>出貨日期</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getShippingDate()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>物流配送方式</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getLogistics()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>出貨編號</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>運費</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getShippingFees()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>退運費</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>其它費用</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getOtherFees()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>其它費用備註</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>其它收入</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>其它收入備註</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>ebay成交費</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getEbayFees()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>計算保價</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>paypal費用</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getPaypalFees()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>淨重(公克)</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>毛重(公克)</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>Fedex服務</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>長/寛/高</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>備註</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getComment()}"></div>
+		        </div>
+		        <div class="row">
+		          <div class="col-md-3 text-right well-sm label-tag"><h4>總計</h4></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getTotalPrice()}"></div>
+		        </div>
+		      </div>
+            </div>
+          </div>
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">訂購商品清單</a>
+            </h4>
+          </div>
+          <div id="collapse4" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <table class="table table-bordered table-hover table-condensed pull-left" style="margin:0 0 0 -15px">
+			    <thead>
+			 	  <tr class="ListTitle2">
+			        <th>商品SKU</th>
+			        <th>商品名稱 / invoice名稱</th>
+			        <th>成交價</th>
+			        <th>invoice價格</th>
+			        <th>數量</th>
+			        <th>備註</th>
+		          </tr>
+	            </thead>
+	            <c:forEach var="i" items="${resultDetail}" begin="0" step="1" varStatus="check">
+		        <tbody>
+		          <tr>
+		            <td>
+		              <input class="" type="hidden" name="SKU" value="${i.getSKU()}">
+		              SKU:<br/><a href="../QRProduct/StockDetail.jsp?sku=${i.getSKU()}"><b>${i.getSKU()}</b></a>
+	          		  <button type="submit" name="submit" value="deleteDetailNew" class="btn btn-sm btn-danger">移除此商品
+		            </td>
+		            <td>Product Name:<br/>${i.getProductName()}<br/>
+						Invoice Name:<br/><input class="" type="text" name="invoiceName" value="${i.getInvoiceName()}">
+		            </td>
+		            <td><input class="" type="text" name="price" value="${i.getPrice()}"></td>
+		            <td><input class="" type="text" name="invoicePrice" value="${i.getInvoicePrice()}"></td>
+		            <td>
+		              <input class="" type="text" name="qty" value="${i.getQty()}">
+		             	 倉別:${i.getWarehouse()}<br/>
+		              <select name="warehouse">
+                        <option></option>
+                        <option value="KH">KH</option>
+                        <option value="US">US</option>
                       </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-10 form-group">
-                  <div class="row">
-                    <div class="col-md-2"><h5><label>物流配送方式:</label></h5></div>
-                    <div class="col-md-10"><h5>
-                      <label class="radio-inline"><input type="radio" value="">EMS</label>
-                      <label class="radio-inline"><input type="radio" value="">Fedex</label>
-                      <label class="radio-inline"><input type="radio" value="">DHL</label>
-                      <label class="radio-inline"><input type="radio" value="">TNT</label>	
-                      <label class="radio-inline"><input type="radio" value="">掛號小包</label>
-                      <label class="radio-inline"><input type="radio" value="">國際包裹</label>
-                      <label class="radio-inline"><input type="radio" value="">其他</label></h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-10 form-group">
-                  <div class="row">
-                    <div class="col-md-2"><h5><label>平台:</label></h5></div>
-                    <div class="col-md-10"><h5>
-                      <label class="radio-inline"><input type="radio" value="">Order</label>
-                      <label class="radio-inline"><input type="radio" value="">官網</label>
-                      <label class="radio-inline"><input type="radio" value="">Ebay</label>
-                      <label class="radio-inline"><input type="radio" value="">AMAZON</label></h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="row">
-            	<div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput ">ebay 帳號</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="r"></div>
-                  </div>
-                </div>
-            	<div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >paypal 帳號：</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="text"></div>
-                  </div>
-                </div>
-              </div>
-            
-              <div class="row">
-            	<div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >購買日期</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" type="text" name="date" ></div>
-                  </div>
-                </div>
-                <div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >出貨日期</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" type="text" name="date" ></div>
-                  </div>
-                </div>
-                <div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >付款方式</label></h5></div>
-                    <div class="col-md-8"><input type="checkbox" value="" checked>Paypal</div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-            	<div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput ">ebay 帳號</label></h5></div>
-                    <div class="col-md-8"><input class="form-control" name="sku" type="r"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4 form-group ">
-                  <div class="row">
-                    <div class="col-md-4"><h5><label for="focusedInput " >國家)：</label></h5></div>
-                    <div class="col-md-8">
-                      <select class="form-control" id="">
-                        <option value="" selected="selected">--請選擇--</option>
-                        <option value="AL">ALBANIA 阿爾巴尼亞</option>
-                        <option value="UY">URUGUAY 烏拉圭</option>
-                        <option value="UZ">UZBEKISTAN 烏茲別克</option>
-                        <option value="VN">VIET NAM 越南</option>
-                        <option value="VG">VIRGIN ISLANDS, BRITISH 英屬維京群島</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
+		            </td>
+		            <td>備註:<input class="" type="text" name="comment" value="${i.getComment()}">
+		            <input type="hidden" name="item" value="${i.getItem()}">
+		            </td>
+		          </tr>
+		        </tbody>
+		        </c:forEach>
+		      </table>
+	          <button type="submit" name="submit" value="toGetProductsNew" class="btn btn-sm btn-success">新增商品</button>
+              <button type="submit" name="submit" value="sendNewOrder" class="btn btn-sm btn-success">新增商品</button>
             </div>
           </div>
         </div>
-		
-		<br/>
-		
-        <div class="row text-center">
-          <button type="submit" name="" class="btn-lg btn-success">送出</button>
-        </div>
-
       </div>
-      
     </fieldset>
-  </form>
-</div>
+    </form>
+  </div>
 
-  
-  
-  <%@ include file="/href/footer.jsp" %>
+<script type="text/javascript">
+ 
+$(function () {
+	$(".btn-danger").click(function() {
+		bool = confirm("確認是否刪除訂單");
+		if(!bool){
+			return false;
+		}
+	});
+});
+</script>  
+
 </body>
-</html>
+</html>	
