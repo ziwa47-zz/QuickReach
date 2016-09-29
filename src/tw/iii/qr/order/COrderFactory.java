@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -25,6 +26,7 @@ import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.order.COrderDetail;
 import tw.iii.qr.order.COrders;
 import tw.iii.qr.stock.CProduct;
+import tw.iii.qr.stock.CStock;
 
 //orderdate paydate shippingdate schema confirm
 public class COrderFactory extends COrders {
@@ -388,9 +390,10 @@ public class COrderFactory extends COrders {
 
 				+ ", m.outsideCode, m.orderStatus, m.order_id, m.QR_id, m.company, m.platform, m.eBayAccount, "
 				+ " m.orderDate, m.payDate, m.logisticsId, m.logistics, m.paypal_id, m.payment,"
-				+ " m.shippingDate, m.shippingFees, m.refundFees, m.otherFees, m.ebayFees, m.paypalFees,"
+				+ " m.shippingDate, m.shippingFees, m.refundShippingFees, m.otherFees, m.ebayFees, m.paypalFees,"
 				+ " m.insurance, m.insurancePrice, m.insuranceTotal, m.currency, m.weight, m.totalWeight,"
-				+ " m.FedexService, m.staffName, m.size, m.totalPrice"
+				+ " m.FedexService, m.staffName, m.size, m.totalPrice, m.ebayNO, m.trackingCode, m.payWay,"
+				+ " m.size, m.comment"
 				+ " from  orders_master as m inner join  orders_detail as d on m.QR_id = d.QR_id"
 				+ " left join  orders_guestinfo as g on m.QR_id = g.QR_id "
 				+ " inner join  order_recieverinfo as r on m.QR_id = r.QR_id" + " where m.QR_id = ?";
@@ -440,7 +443,7 @@ public class COrderFactory extends COrders {
 			orderInfo.COrderMaster.setPayment(rs.getInt(33));
 			orderInfo.COrderMaster.setShippingDate(rs.getDate(34));
 			orderInfo.COrderMaster.setShippingFees(rs.getDouble(35));
-			orderInfo.COrderMaster.setRefundFees(rs.getDouble(36));
+			orderInfo.COrderMaster.setRefundShippingFees(rs.getDouble(36));
 			orderInfo.COrderMaster.setOtherFees(rs.getDouble(37));
 			orderInfo.COrderMaster.setEbayFees(rs.getDouble(38));
 			orderInfo.COrderMaster.setPaypalFees(rs.getDouble(39));
@@ -454,7 +457,11 @@ public class COrderFactory extends COrders {
 			orderInfo.COrderMaster.setStaffName(rs.getString(47));
 			orderInfo.COrderMaster.setSize(rs.getString(48));
 			orderInfo.COrderMaster.setTotalPrice(rs.getDouble(49));
-
+			orderInfo.COrderMaster.setEbayNO(rs.getString(50));
+			orderInfo.COrderMaster.setTrackingCode(rs.getString(51));
+			orderInfo.COrderMaster.setPayWay(rs.getString(52));
+			orderInfo.COrderMaster.setSize(rs.getString(53));
+			orderInfo.COrderMaster.setComment(rs.getString(54));
 		}
 
 		return orderInfo;
@@ -492,6 +499,29 @@ public class COrderFactory extends COrders {
 		}
 		return detailList;
 
+	}
+	
+	public void updateOrderGuestInfo(HttpServletRequest request, Connection conn, String staffName, String QR_id)
+			throws SQLException {
+		String strSql = "update orders_guestinfo"
+				+ " set orderStatus = N'已完成', shippingDate = getdate() , trackingCode = ? " + " where QR_id = ? ";
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		ps.setString(1, request.getParameter("trackingCode"));
+		ps.setString(2, request.getParameter("QR_id"));
+		ps.executeUpdate();
+		
+	}
+	
+	public void updateOrderRecieverInfo(HttpServletRequest request, Connection conn, String staffName, String QR_id)
+			throws SQLException {
+		
+		
+	}
+	
+	public void updateOrderMaster(HttpServletRequest request, Connection conn, String staffName, String QR_id)
+			throws SQLException {
+		
+		
 	}
 
 	public void updateOrderDetail(HttpServletRequest request, Connection conn, String staffName, String QR_id)
@@ -544,13 +574,83 @@ public class COrderFactory extends COrders {
 
 			int x = ps.executeUpdate();
 		}
-
 		String strSql2 = "update orders_master" + " Set staffName = ?" + " where QR_id = ?";
 		PreparedStatement ps2 = conn.prepareStatement(strSql2);
 		ps2.setString(1, staffName);
 		ps2.setString(2, QR_id);
 		int y = ps2.executeUpdate();
-
+	}
+	
+	public void updateMainOrderDetail(HttpServletRequest request, Connection conn, String QR_id) throws SQLException, ParseException {
+		
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+		String strSql = "update orders_master"
+				+ " Set OutsideCode =?, OrderStatus=?, EbayNO=?, TrackingCode=?, Company=?, Platform=?,"
+				+ " EbayAccount=?, OrderDate=?, PayDate=?, PayWay=?, PaypalmentId=?, ShippingDate=?, Logistics=?,"
+				+ " ShippingFees=?, RefundShippingFees=?, OtherFees=?, EbayFees=?, InsuranceTotal=?, PaypalFees=?, Weight=?,"
+				+ " TotalWeight=?, Size=?, Comment=?, TotalPrice=?" + " where QR_id = ?";
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		
+		ps.setString(1, request.getParameter("OutsideCode"));
+		ps.setString(2, request.getParameter("OrderStatus"));
+		ps.setString(3, request.getParameter("EbayNO"));
+		ps.setString(4, request.getParameter("TrackingCode"));
+		ps.setString(5, request.getParameter("MCompany"));
+		ps.setString(6, request.getParameter("Platform"));
+		ps.setString(7, request.getParameter("EbayAccount"));
+		ps.setDate(8, new java.sql.Date(sdf1.parse(request.getParameter("OrderDate")).getTime()));
+		ps.setDate(9, new java.sql.Date(sdf1.parse(request.getParameter("PayDate")).getTime()));
+		ps.setString(10, request.getParameter("PayWay"));
+		ps.setString(11, request.getParameter("PaypalId"));
+		ps.setDate(12, new java.sql.Date(sdf1.parse(request.getParameter("ShippingDate")).getTime()));
+		ps.setString(13, request.getParameter("Logistics"));
+		ps.setDouble(14, Double.valueOf(request.getParameter("ShippingFees")));
+		ps.setDouble(15, Double.valueOf(request.getParameter("RefundShippingFees")));
+		ps.setDouble(16, Double.valueOf(request.getParameter("OtherFees")));
+		ps.setDouble(17, Double.valueOf(request.getParameter("EbayFees")));
+		ps.setDouble(18, Double.valueOf(request.getParameter("InsuranceTotal")));
+		ps.setDouble(19, Double.valueOf(request.getParameter("PaypalFees")));
+		ps.setDouble(20, Double.valueOf(request.getParameter("Weight")));
+		ps.setDouble(21, Double.valueOf(request.getParameter("TotalWeight")));
+		ps.setString(22, request.getParameter("Size"));
+		ps.setString(23, request.getParameter("Comment"));
+		ps.setDouble(24, Double.valueOf(request.getParameter("TotalPrice")));
+		ps.setString(25, QR_id);
+		int x = ps.executeUpdate();
+		
+		String strSql2 = "update orders_guestinfo"
+				+ " Set GuestFirstName =?, GuestLastName=?, GuestAccount=?, Email=?, Tel1=?, Tel2=?, Mobile=?,"
+				+ " Company=?, Address=?, Country=?, Postcode=?, Gender=?"
+				+ " where QR_id = ?";
+		PreparedStatement ps2 = conn.prepareStatement(strSql2);
+		ps2.setString(1, request.getParameter("GuestFirstName"));
+		ps2.setString(2, request.getParameter("GuestLastName"));
+		ps2.setString(3, request.getParameter("GuestAccount"));
+		ps2.setString(4, request.getParameter("Email"));
+		ps2.setString(5, request.getParameter("GTel1"));
+		ps2.setString(6, request.getParameter("GTel2"));
+		ps2.setString(7, request.getParameter("Mobile"));
+		ps2.setString(8, request.getParameter("Company"));
+		ps2.setString(9, request.getParameter("GAddress"));
+		ps2.setString(10, request.getParameter("GCountry"));
+		ps2.setString(11, request.getParameter("GPostcode"));
+		ps2.setString(12, request.getParameter("Gender"));
+		ps2.setString(13, QR_id);
+		int y = ps2.executeUpdate();
+		
+		String strSql3 = "update order_recieverinfo"
+				+ " Set RecieverFirstName=?, RecieverLastName=?, Tel1=?, Tel2=?, Address=?, Country=?, PostCode=?"
+				+ " where QR_id = ?";
+		PreparedStatement ps3 = conn.prepareStatement(strSql3);
+		ps3.setString(1, request.getParameter("RecieverFirstName"));
+		ps3.setString(2, request.getParameter("RecieverLastName"));
+		ps3.setString(3, request.getParameter("RTel1"));
+		ps3.setString(4, request.getParameter("RTel2"));
+		ps3.setString(5, request.getParameter("RAddress"));
+		ps3.setString(6, request.getParameter("RCountry"));
+		ps3.setString(7, request.getParameter("RPostCode"));
+		ps3.setString(8, QR_id);
+		int z = ps3.executeUpdate();
 	}
 
 	public void insertOrderDetail(HttpServletRequest request, Connection conn, String QR_id) throws SQLException {
@@ -670,6 +770,34 @@ public class COrderFactory extends COrders {
 		ps.setString(2, request.getParameter("QR_id"));
 		ps.executeUpdate();
 	}
+	
+	public void updateToRefund(HttpServletRequest request, Connection conn) throws SQLException {
+
+		String[] strQR_ids = request.getParameterValues("QR_id");
+		// convert array to LinkedList
+		LinkedList<String> QR_ids = new LinkedList<String>(Arrays.asList(strQR_ids));
+		// iterate over each element in LinkedList and show what is in the list.
+		Iterator<String> iterator = QR_ids.iterator();
+		while (iterator.hasNext()) {
+			// Print element to console
+			System.out.println(iterator.next());
+		}
+		for (int i = 0; i < QR_ids.size(); i++) {
+			String strSql = "update orders_master" + " set orderStatus = N'退貨' " + " where QR_id = ? ";
+			PreparedStatement ps = conn.prepareStatement(strSql);
+			ps.setString(1, QR_ids.get(i));
+			ps.executeUpdate();
+		}
+	}
+	
+	public void updateNewToCompelete(HttpServletRequest request, Connection conn) throws Exception {
+		String strSql = "update orders_master"
+				+ " set orderStatus = N'已完成', shippingDate = getdate() , trackingCode = ? " + " where QR_id = ? ";
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		ps.setString(1, request.getParameter("trackingCode"));
+		ps.setString(2, request.getParameter("QR_id"));
+		ps.executeUpdate();
+	}
 
 	public void revertTo(HttpServletRequest request, Connection conn) throws Exception {
 
@@ -721,6 +849,83 @@ public class COrderFactory extends COrders {
 		ps.setString(3, request.getParameter("staffName"));
 
 		int x = ps.executeUpdate();
+
+	}
+	
+	public void isBundleAddBackToStock(HttpServletRequest request, Connection conn) throws Exception {
+
+		LinkedList<COrderDetail> condition = getCondition(request, conn);
+
+		for (int i = 0; i < condition.size(); i++) {
+
+			System.out.println(condition.get(i).getSKU());
+
+			if ("B00".equals(condition.get(i).getSKU().substring(0, 3))) {
+
+				System.out.println("bundle");
+				plusBundleAddBackToStock(request, conn, condition.get(i));
+
+			} else if (!"B00".equals(condition.get(i).getSKU().substring(0, 3))) {
+
+				System.out.println("single");
+				addBackToStock(request, conn, condition.get(i));
+			}
+		}
+
+	}
+	
+	public void plusBundleAddBackToStock(HttpServletRequest request, Connection conn, COrderDetail condition)
+			throws Exception {
+
+		LinkedList<String> skulist = new LinkedList<String>();
+		LinkedList<Integer> qty = new LinkedList<Integer>();
+		String strsql = " select p_sku,qty from bundles where '1' = '1' and m_sku = ? ";
+		PreparedStatement ps = conn.prepareStatement(strsql);
+		ps.setString(1, condition.getSKU());
+		ResultSet rs = ps.executeQuery();
+
+		while (rs.next()) {
+
+			skulist.add(rs.getString(1));
+			System.out.println(rs.getString(1));
+			qty.add(rs.getInt(2));
+			System.out.println(rs.getInt(2));
+		}
+
+		rs = null;
+		ps = null;
+		String strSql = "update  storage set qty = (select (isnull( (select qty from storage  where sku = ?  and warehouse = ? ),0) +  (? * ?))) where sku = ? and warehouse = ?";
+
+		for (int j = 0; j < skulist.size(); j++) {
+			ps = null;
+			ps = conn.prepareStatement(strSql);
+			ps.setString(1, skulist.get(j));
+			ps.setString(2, condition.getWarehouse());
+			ps.setInt(3, qty.get(j));
+			ps.setInt(4, condition.getQty());
+			ps.setString(5, skulist.get(j));
+			ps.setString(6, condition.getWarehouse());
+			ps.executeUpdate();
+
+		}
+
+		ps.close();
+
+	}
+
+	public void addBackToStock(HttpServletRequest request, Connection conn, COrderDetail condition) throws Exception {
+
+		String strSql = "update  storage set qty =(select qty from storage  where sku = ? and warehouse = ? ) +  ? "
+				+ " where sku = ? and warehouse = ?";
+		PreparedStatement ps = conn.prepareStatement(strSql);
+
+		ps.setString(1, condition.getSKU());
+		ps.setString(2, condition.getWarehouse());
+		ps.setInt(3, condition.getQty());
+		ps.setString(4, condition.getSKU());
+		ps.setString(5, condition.getWarehouse());
+
+		ps.executeUpdate();
 
 	}
 
@@ -1133,6 +1338,20 @@ public class COrderFactory extends COrders {
 		}
 		return guestAccounts;
 	}
+	
+	public LinkedList<String> getEbayAccounts(Connection conn) throws Exception {
+		
+		LinkedList<String> getEbayAccounts = new LinkedList<String>();
+		String strSql = "select ebayid" + " from ebayaccount" + " where status = 'ON'";
+
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		ResultSet rs = ps.executeQuery();
+
+		while (rs.next()) {
+			getEbayAccounts.add(rs.getString(1));
+		}
+		return getEbayAccounts;
+	}
 
 	public LinkedList<COrders> getSimilarOrders(HttpServletRequest request, Connection conn) throws Exception {
 
@@ -1192,6 +1411,65 @@ public class COrderFactory extends COrders {
 			}
 		}
 		return SimilarOrders;
+	}
+	
+	public String generateQR_Id04() throws IllegalAccessException, ClassNotFoundException, Exception {
+
+		String strsql = " select top 1 item, QR_id from  orders_master where QR_id like '%04ebay%' order by item desc ";
+		Connection conn = new DataBaseConn().getConn();
+		PreparedStatement ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+
+		String QR_idFromDatabase = null;
+		while (rs.next()) {
+			QR_idFromDatabase = rs.getString(2);
+		}
+		
+		java.util.Date date = Calendar.getInstance().getTime();
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		String formatted = formatter.format(date);
+		System.out.println(formatted);
+
+		DecimalFormat df = new DecimalFormat("000");
+		int serailNumber = 1;
+		
+		//System.out.println(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()));
+		String QR_id = "";
+		if (QR_idFromDatabase != null) {
+			if (serailNumber <= Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()))) {
+				int getSerailNumber = Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()));
+				serailNumber = getSerailNumber + 1;
+				QR_id = formatted + "04" + "ebay" + df.format(serailNumber);
+			}
+			
+		} else {
+			QR_id = formatted + "04" + "ebay" + "001";
+		}
+		System.out.println(QR_id);
+		return QR_id;
+	}
+	
+	
+	
+	public LinkedList<String> getWarehouses(HttpServletRequest request, String SKU) throws IllegalAccessException, ClassNotFoundException, Exception {
+		
+		Connection conn = new DataBaseConn().getConn();
+		LinkedList<String> warehouses = new LinkedList<String>();
+		CStock myCStock = new CStock();
+		String strSql = "select d.SKU, s.warehouse"
+				+ " from orders_detail as d left join storage s on d.sku = s.sku"
+				+ " where d.QR_id = ? and d.SKU = ?";
+
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		ps.setString(1, request.getParameter("QR_id"));
+		ps.setString(2, SKU);
+		ResultSet rs = ps.executeQuery();
+		
+		while(rs.next()){
+			warehouses.add(rs.getString(2));
+		}
+		return warehouses;
 	}
 
 }
