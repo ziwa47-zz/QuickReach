@@ -13,6 +13,7 @@ public class COrderMaster {
 	private String guestAccount;
 	private Date orderDate;
 	private Date payDate;
+	private String payWay;
 	private String logisticsID;
 	private String logistics;
 	private String orderStatus;
@@ -20,7 +21,7 @@ public class COrderMaster {
 	private double payment;
 	private Date shippingDate;
 	private double shippingFees;
-	private double refundFees;
+	private double refundShippingFees;
 	private double otherFees;
 	private double ebayFees;
 	private double paypalFees;
@@ -107,6 +108,12 @@ public class COrderMaster {
 	public void setPayDate(Date payDate) {
 		this.payDate = payDate;
 	}
+	public String getPayWay() {
+		return payWay;
+	}
+	public void setPayWay(String payWay) {
+		this.payWay = payWay;
+	}
 	public String getLogisticsID() {
 		return logisticsID;
 	}
@@ -149,11 +156,11 @@ public class COrderMaster {
 	public void setShippingFees(double shippingFees) {
 		this.shippingFees = shippingFees;
 	}
-	public double getRefundFees() {
-		return refundFees;
+	public double getRefundShippingFees() {
+		return refundShippingFees;
 	}
-	public void setRefundFees(double refundFees) {
-		this.refundFees = refundFees;
+	public void setRefundShippingFees(double refundShippingFees) {
+		this.refundShippingFees = refundShippingFees;
 	}
 	public double getOtherFees() {
 		return otherFees;

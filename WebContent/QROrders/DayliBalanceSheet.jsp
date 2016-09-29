@@ -51,7 +51,7 @@
   </ol>
 </div>
   
-<div class="container table-responsive" style="background: #D9A56B; border-radius:20px;">
+<div class="container table-responsive bg-warning" style="border-radius:20px;">
   <form name="searchform" method="post" action="../StatusDo" class="container"
    style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
     <button type="submit" name="send" value="dayliBalance" class="btn btn-lg btn-primary"
@@ -60,7 +60,7 @@
     <c:forEach var="i" items="${ndbs}" begin="0" step="1" varStatus="check">
             <table class="table table-bordered table-hover table-condensed pull-left" >
               <thead>
-                <tr>
+                <tr class="listtitle">
                   <th rowspan="2">選取</th>
                   <th>結標日</th>
                   <th>EbayNO.</th>
@@ -95,7 +95,7 @@
                   <td>${i.getCOrderGuestInfo().getTel1()}</td>
                 </tr>
                 <tr>
-                  <td colspan="9"><c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1">
+                  <td colspan="12"><c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1">
                   <b>${j.getSKU()}</b>&nbsp${j.getProductName()}&nbsp數量:${j.getQty()}<br/>
 						</c:forEach>
                   </td>
