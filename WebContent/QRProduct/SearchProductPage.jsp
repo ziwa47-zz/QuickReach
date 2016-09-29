@@ -40,13 +40,13 @@
 	</div>
 <div class="container container-fluid breadcrumbBox">
   <ol class="breadcrumb">
-    <li><a href="../QRMain/HomePage.jsp">首頁</a></li>
+    <li><a href="/HomePage.jsp">首頁</a></li>
     <li class="active"><a href="SearchProductPage.jsp">庫存/商品管理</a></li>
     <li><a href="SearchProductPage.jsp">查詢商品</a></li>
   </ol>
 </div>
 <div class="container" style="background: #9DDCD1; border-radius: 20px;">
-  <form name="searchform" method="post" action="../ProductDo" 
+  <form name="searchform" method="post" action="../Product.do" 
   style="font-size: 100%; vertical-align: baseline; padding: 15px;" 
   class="form-inline container">
     <fieldset>
