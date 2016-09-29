@@ -19,9 +19,11 @@
 	COrderFactory.checkUrlToRemoveSession(request, session);
 	Connection conn = new DataBaseConn().getConn();
 	LinkedList<ShipmentRecord> shipmentRecord = COrderFactory.searchShipmentRecord(request, conn);
+	LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts(conn);
 	session.setAttribute("list", shipmentRecord);
     request.setAttribute("begin", request.getParameter("begin"));
     request.setAttribute("end", request.getParameter("end"));
+    session.setAttribute("ebayAccounts", ebayAccounts);
 %>
 <div class="nav">
   <div class="container">
@@ -69,11 +71,9 @@
               <div class="col-md-8">
                 <select class="form-control" name="eBayAccount">
                   <option value="">請選擇</option>
-                  <option value="comenwin0903">comenwin0903</option>
-                  <option value="cyclistbike">cyclistbike</option>
-                  <option value="huangbowei">huangbowei</option>
-                  <option value="igrocery">igrocery</option>
-                  <option value="magicbike">magicbike</option>
+                  <c:forEach var="q" items="${ebayAccounts}" step="1" varStatus="check">
+                  <option value="">${q}</option>
+                  </c:forEach>
                 </select>
               </div>
             </div>
@@ -323,7 +323,7 @@
     </c:when>
     <c:otherwise>
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
-        <form name="searchform" method="post" action="../OrdersServlet" class="form-inline container"
+        <form name="searchform" method="post" action="../toExcelServlet" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
           <button class="btn btn-md btn-info" type="submit" name="submit" value="toDailyBalanceSheetExcel" >匯出日出貨報表</button>
           <ul class="pager pagination">

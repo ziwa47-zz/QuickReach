@@ -31,16 +31,13 @@ public class DayliBalanceSheetFactory extends COrders {
 		return false;
 	}
 
-	public LinkedList<COrders> dayliBalanceSheet(HttpServletRequest request, HttpServletResponse response,
-			Connection conn) throws ClassNotFoundException, Exception {
+	public LinkedList<COrders> dayliBalanceSheet() throws ClassNotFoundException, Exception {
 		
 		
 		
 		
 		
-		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html;charset=UTF-8");
-		conn = new DataBaseConn().getConn();
+		Connection conn = new DataBaseConn().getConn();
 
 		String strSql = "select m.orderDate, m.QR_id, r.tel1, m.shippingFees,"
 				+ " m.packageFees, m.comment, m.totalWeight,m.ebayNO,m.ebayItemNO, m.eBayAccount,r.country, m.currency,"
@@ -49,16 +46,19 @@ public class DayliBalanceSheetFactory extends COrders {
 				+ " d.sku, d.productName, d.qty, d.owner, d.price,"
 				+ " r.country"
 				+ " FROM  orders_master as m inner join"
-				+ "  orders_detail as d  on m.QR_id = d.QR_id left join"
-				+ "  order_recieverinfo as r on m.QR_id = r.QR_id"
-				+ "  where m.orderstatus = N'待處理' order by m.QR_id";
+				+ " orders_detail as d  on m.QR_id = d.QR_id left join"
+				+ " order_recieverinfo as r on m.QR_id = r.QR_id"
+				+ " where m.orderstatus = N'待處理' "
+				+ " order by payDate desc";
 		System.out.println(strSql);
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ResultSet rs = ps.executeQuery();
 		LinkedList<COrders> orderList = new LinkedList<COrders>();
 		LinkedList<COrderDetail> orderDetails = new LinkedList<COrderDetail>();
 		COrders order = new COrders();
+		int index = 0 ;
 		while (rs.next()) {
+			System.out.println(index +":"+rs.getString(2));
 			order = new COrders();
 			order.COrderMaster.setOrderDate(rs.getDate(1));
 			order.COrderMaster.setQR_id(rs.getString(2));

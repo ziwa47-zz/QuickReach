@@ -19,16 +19,6 @@
 <%@ include file = "/href/navbar.jsp"%>
 
 <%
-SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
-Date date = new Date();
-String strDate = sdFormat.format(date);
-System.out.println(strDate);
-if(session.getAttribute("ndbs")==null){
-Connection conn = new DataBaseConn().getConn();
-LinkedList<COrders> dayliBalanceSheetnew = newd.dayliBalanceSheet(request,response, conn);
-request.setAttribute("ndbs", dayliBalanceSheetnew);
-}
-System.out.println(strDate);
 %>
  <div class="nav">
   <div class="container">
@@ -64,15 +54,14 @@ System.out.println(strDate);
 <div class="container table-responsive" style="background: #D9A56B; border-radius:20px;">
   <form name="searchform" method="post" action="../StatusDo" class="container"
    style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
+    <button type="submit" name="send" value="dayliBalance" class="btn btn-lg btn-primary"
+       >送出</button>
     <label>共有:${ndbs.size()}筆</label>
     <c:forEach var="i" items="${ndbs}" begin="0" step="1" varStatus="check">
-    <div class="panel-group" id="accordion">
-      <div class="panel panel-default" style="background-color:#E7D29F">
-        <div class="panel-heading">
-          <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#${check.index}">
-            <table class="table table-condensed" >
+            <table class="table table-bordered table-hover table-condensed pull-left" >
               <thead>
                 <tr>
+                  <th rowspan="2">選取</th>
                   <th>結標日</th>
                   <th>EbayNO.</th>
                   <th>國家</th>
@@ -83,10 +72,15 @@ System.out.println(strDate);
                   <th>P/P NET</th>  <!-- P/P Total - P/P Fee -->
                   <th>進貨成本</th>
                   <th>平台</th>
+                  <td>幣別</td>
+                  <th>TEL</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
+                  <td style="vertical-align:middle"><input type="checkbox" name="QR_id"
+                    value="${i.getCOrderMaster().getQR_id()}" id="${i.getCOrderMaster().getQR_id()}"
+                    onchange="enableOrderStatus(this)"></td>
                   <td>${i.getCOrderMaster().getOrderDate()}</td>
                   <td>${i.getCOrderMaster().getEbayNO()}</td>
                   <td>${i.getCOrderReciever().getCountry()}</td>
@@ -97,38 +91,14 @@ System.out.println(strDate);
                   <td>${i.getCOrderMaster().getPaypalNet()}</td>
                   <td>${i.getCOrderMaster().getPurchaseCost()}</td>
                   <td>${i.getCOrderMaster().getEbayAccount()}</td>
+                  <td>${i.getCOrderMaster().getCurrency()}</td>
+                  <td>${i.getCOrderGuestInfo().getTel1()}</td>
                 </tr>
                 <tr>
                   <td colspan="9"><c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1">
                   <b>${j.getSKU()}</b>&nbsp${j.getProductName()}&nbsp數量:${j.getQty()}<br/>
 						</c:forEach>
                   </td>
-                </tr>
-              </tbody>
-            </table>
-            </a> </h4>
-        </div>
-        <div id="${check.index}" class="panel-collapse collapse">
-          <div class="panel-body">
-            <table class="table table-bordered table-hover table-condensed pull-left">
-                <tr class="ListTitle">
-                  <th>選取</th>
-                  <th>結標日</th>
-                  <th>SKU</th>
-                  <th>品名</th>
-                  <td>幣別</td>
-                  <th>TEL</th>
-                  <td>遞交方式</td>
-                </tr>
-                <tr>
-                  <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id"
-                    value="${i.getCOrderMaster().getQR_id()}" id="${i.getCOrderMaster().getQR_id()}"
-                    onchange="enableOrderStatus(this)"></td>
-                  <td>${i.getCOrderMaster().getOrderDate()}</td>
-                  <td>${i.getCOrderDetailSingle().getSKU()}</td><!--sku-->
-                  <td>${i.getCOrderDetailSingle().getProductName()}</td><!--productName-->
-                  <td>${i.getCOrderMaster().getCurrency()}</td>
-                  <td>${i.getCOrderGuestInfo().getTel1()}</td>
                   <td>
                     <select name="init" id="${i.getCOrderMaster().getQR_id()}" onchange="autoChecked(this)">
                       <option value="">請選擇</option>
@@ -143,11 +113,8 @@ System.out.println(strDate);
                     </select>
                   </td>
                 </tr>
+              </tbody>
             </table>
-          </div>
-        </div>
-      </div>
-    </div>
     </c:forEach>
     <div class="row text-center" >
       <button type="submit" name="send" value="dayliBalance" class="btn btn-lg btn-primary"

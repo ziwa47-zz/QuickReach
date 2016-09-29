@@ -18,9 +18,11 @@
 	COrderFactory.checkUrlToRemoveSession(request, session);
 	Connection conn = new DataBaseConn().getConn();
 	LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"處理中");
+	LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts(conn);
 	session.setAttribute("list", orderList);
     request.setAttribute("begin", request.getParameter("begin"));
     request.setAttribute("end", request.getParameter("end"));
+    session.setAttribute("ebayAccounts", ebayAccounts);
 %>
 
 
@@ -71,11 +73,9 @@
               <div class="col-md-8">
                 <select class="form-control" name="eBayAccount">
                   <option value="">請選擇</option>
-                  <option value="comenwin0903">comenwin0903</option>
-                  <option value="cyclistbike">cyclistbike</option>
-                  <option value="huangbowei">huangbowei</option>
-                  <option value="igrocery">igrocery</option>
-                  <option value="magicbike">magicbike</option>
+                  <c:forEach var="q" items="${ebayAccounts}" step="1" varStatus="check">
+                  <option value="">${q}</option>
+                  </c:forEach>
                 </select>
               </div>
             </div>
@@ -512,6 +512,15 @@ function selectAllOrders(ele) {
     	$("input[name=QR_id]").prop("checked", false);
     }
 };
+function enableWarehouse(ele){
+	  var id = ele.value;
+	  if (ele.checked) {
+		  $(ele).attr("name","QR_id");
+	  } else {
+		  $(ele).attr("name","init");
+		  alert("取消勾選了一筆訂單");
+	  }
+ };
 </script>
 </body>
   

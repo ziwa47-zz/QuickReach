@@ -143,36 +143,44 @@ function test() {
 				
 				
 				
-				//檢查 sku重複
-			    var arr = new Array;
-			    var value;
-			    arr[0] = $("#sku1").val();
-			    for(var i =1;i < dynamicId; i++){
-			    	 value = $("#sku"+(i+1)).val();
-			    		arr[i] = value;
-			    	
-			    }
-			    	
-			    function isRepeat(arr){
-			    	var hash = {};
-			    	for(var i in arr) {
-			    	if(hash[arr[i]])
-			    	return true;
-			    	hash[arr[i]] = true;
-			    	}
-			    	return false;
-			    	}
-			    
+				 function isRepeat(){
+				    	
+			    	 
+				        var arr = new Array;
+				        
+				        for(var i =1;i <= dynamicId; i++){
+				        	
+				        	
+				        	 arr[0] = $("#sku1").val();
+				        	 //alert("0:"+arr[0])
+				        	 if($("#sku"+(i+1)).val() != null){
+				        			arr[i] = $("#sku"+(i+1)).val();
+				        			//alert(i+arr[i])
+				        	 }
+				        	
+				        	
+				        }
+				    	
+				    	 var sortArr = arr.sort();
+				    	    for(var i=0;i<sortArr.length;i++){
+				    	    	
+				    	    	if (sortArr[i]==sortArr[i+1]){
+				    	    	alert("sku重複："+sortArr[i]);
+				    	    	return true
+				    	    	}
+				    	    	
+				    	    	}
+				    }
 			 
 			         
-			    if(isRepeat(arr)){
-			    	alert("SKU重複，請重載頁面");
+			    if(isRepeat()){
+			    	alert("SKU重複");
 			    	
 			    }  else {
 			    	
 			        $('#submitButton').attr('disabled', 'disabled');
 			        warehouseChange();
-			        alert("此進貨單單號:"+realPurchaseId)
+			        alert("此轉倉單單號:"+realPurchaseId)
 			        form.submit();
 			    }
 				
@@ -326,7 +334,7 @@ function test() {
 	                        +'         	<div class="col-md-4 form-group ">'
 	                        +'             <div class="row">'
 	                        +'              <div class="col-md-4"><h5><label for="focusedInput " >原儲位：</label></h5></div>'
-	                        +'              <div class="col-md-8"><input class="form-control" style="width:88px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:88px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text"></div>'
+	                        +'              <div class="col-md-8"><input class="form-control" style="width:88px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text" readonly> - <input class="form-control" style="width:88px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text" readonly></div>'
 	                        +'            </div>'
 	                        +'                </div>'
 	                        

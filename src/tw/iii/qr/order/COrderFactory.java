@@ -493,6 +493,29 @@ public class COrderFactory extends COrders {
 		return detailList;
 
 	}
+	
+	public void updateOrderGuestInfo(HttpServletRequest request, Connection conn, String staffName, String QR_id)
+			throws SQLException {
+		String strSql = "update orders_guestinfo"
+				+ " set orderStatus = N'已完成', shippingDate = getdate() , trackingCode = ? " + " where QR_id = ? ";
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		ps.setString(1, request.getParameter("trackingCode"));
+		ps.setString(2, request.getParameter("QR_id"));
+		ps.executeUpdate();
+		
+	}
+	
+	public void updateOrderRecieverInfo(HttpServletRequest request, Connection conn, String staffName, String QR_id)
+			throws SQLException {
+		
+		
+	}
+	
+	public void updateOrderMaster(HttpServletRequest request, Connection conn, String staffName, String QR_id)
+			throws SQLException {
+		
+		
+	}
 
 	public void updateOrderDetail(HttpServletRequest request, Connection conn, String staffName, String QR_id)
 			throws SQLException {
@@ -663,6 +686,15 @@ public class COrderFactory extends COrders {
 	}
 
 	public void updateToFinished(HttpServletRequest request, Connection conn) throws Exception {
+		String strSql = "update orders_master"
+				+ " set orderStatus = N'已完成', shippingDate = getdate() , trackingCode = ? " + " where QR_id = ? ";
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		ps.setString(1, request.getParameter("trackingCode"));
+		ps.setString(2, request.getParameter("QR_id"));
+		ps.executeUpdate();
+	}
+	
+	public void updateNewToCompelete(HttpServletRequest request, Connection conn) throws Exception {
 		String strSql = "update orders_master"
 				+ " set orderStatus = N'已完成', shippingDate = getdate() , trackingCode = ? " + " where QR_id = ? ";
 		PreparedStatement ps = conn.prepareStatement(strSql);
@@ -1133,6 +1165,20 @@ public class COrderFactory extends COrders {
 		}
 		return guestAccounts;
 	}
+	
+	public LinkedList<String> getEbayAccounts(Connection conn) throws Exception {
+		
+		LinkedList<String> getEbayAccounts = new LinkedList<String>();
+		String strSql = "select ebayid" + " from ebayaccount" + " where status = 'ON'";
+
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		ResultSet rs = ps.executeQuery();
+
+		while (rs.next()) {
+			getEbayAccounts.add(rs.getString(1));
+		}
+		return getEbayAccounts;
+	}
 
 	public LinkedList<COrders> getSimilarOrders(HttpServletRequest request, Connection conn) throws Exception {
 
@@ -1192,6 +1238,43 @@ public class COrderFactory extends COrders {
 			}
 		}
 		return SimilarOrders;
+	}
+	
+	public String generateQR_Id04() throws IllegalAccessException, ClassNotFoundException, Exception {
+
+		String strsql = " select top 1 item, QR_id from  orders_master where QR_id like '%04ebay%' order by item desc ";
+		Connection conn = new DataBaseConn().getConn();
+		PreparedStatement ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+
+		String QR_idFromDatabase = null;
+		while (rs.next()) {
+			QR_idFromDatabase = rs.getString(2);
+		}
+		
+		java.util.Date date = Calendar.getInstance().getTime();
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		String formatted = formatter.format(date);
+		System.out.println(formatted);
+
+		DecimalFormat df = new DecimalFormat("000");
+		int serailNumber = 1;
+		
+		//System.out.println(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()));
+		String QR_id = "";
+		if (QR_idFromDatabase != null) {
+			if (serailNumber <= Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()))) {
+				int getSerailNumber = Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()));
+				serailNumber = getSerailNumber + 1;
+				QR_id = formatted + "04" + "ebay" + df.format(serailNumber);
+			}
+			
+		} else {
+			QR_id = formatted + "04" + "ebay" + "001";
+		}
+		System.out.println(QR_id);
+		return QR_id;
 	}
 
 }
