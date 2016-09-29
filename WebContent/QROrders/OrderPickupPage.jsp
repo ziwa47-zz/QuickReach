@@ -18,9 +18,11 @@
   COrderFactory.checkUrlToRemoveSession(request, session);
   Connection conn = new DataBaseConn().getConn();
   LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"揀貨中");
-  request.setAttribute("list", orderList);
+  LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts(conn);
+  session.setAttribute("list", orderList);
   request.setAttribute("begin", request.getParameter("begin"));
   request.setAttribute("end", request.getParameter("end"));
+  session.setAttribute("ebayAccounts", ebayAccounts);
 %>
 <div class="nav">
   <div class="container">
@@ -40,6 +42,7 @@
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
         <li><a href="ShipmentRecord.jsp?begin=0&end=10">訂單出貨記錄</a></li>
+        <li><a href="refundPage.jsp?begin=0&end=10" >退貨</a></li>
       </ul>
     </div>
   </div>
@@ -71,11 +74,9 @@
               <div class="col-md-8">
                 <select class="form-control" name="eBayAccount">
                   <option value="">請選擇</option>
-                  <option value="comenwin0903">comenwin0903</option>
-                  <option value="cyclistbike">cyclistbike</option>
-                  <option value="huangbowei">huangbowei</option>
-                  <option value="igrocery">igrocery</option>
-                  <option value="magicbike">magicbike</option>
+                  <c:forEach var="q" items="${ebayAccounts}" step="1" varStatus="check">
+                  <option value="">${q}</option>
+                  </c:forEach>
                 </select>
               </div>
             </div>

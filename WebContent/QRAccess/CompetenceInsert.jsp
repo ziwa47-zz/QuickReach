@@ -55,7 +55,7 @@
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>採購權限</h4></div>
                       <div class="col-md-5 well-sm">
                       	
-                      	<label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_0"  name="PurchaseManage" />管理採購</label>
+                      	<label style="display:none" class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_0"  name="PurchaseManage" />管理採購</label>
 					   
 					  </div>
                   </div>
@@ -64,7 +64,7 @@
                       <div class="col-md-5 well-sm">
                       	
                       	<label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_0"  name="InventoryManage" />管理庫存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-					 	<label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_1"  name="InventoryInfoEdit" />編輯庫存資料</label>
+					 	<label style="display:none" class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_1"  name="InventoryInfoEdit" />編輯庫存資料</label>
 					   
 					  </div>
                   </div>
@@ -80,7 +80,7 @@
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>訂單權限</h4></div>
                       <div class="col-md-5 well-sm">
                       	
-                      	<label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_0" name="EntireOrders" />所有狀態訂單</label>
+                      	<label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_0" name="EntireOrders" />日結表</label>
 					 	<label  style="display:none" class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_1"  name="OrdersInvoiceDownload" />下載所有訂單Invoice</label>
 					   
 					  </div>
@@ -89,7 +89,7 @@
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>&nbsp;</h4></div>
                       <div class="col-md-5 well-sm">
                       	
-                      	<label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_0"  name="PriceChange" />更改成本費用</label>
+                      	
 					 	<label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_1"  name="PendingOrdersEdit" /> 編輯待處理訂單</label>
 					   
 					  </div>
@@ -104,12 +104,12 @@
 					  </div>
                   </div>
                   <div class="row">
-                      <div class="col-md-3 text-right well-sm label-tag"  ><h4>報表權限</h4></div>
+                      <div class="col-md-3 text-right well-sm label-tag"  ><h4>成本權限</h4></div>
                       <div class="col-md-5 well-sm">
                       	
                       	<label  style="display:none" class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_0"  name="ChartView" />查看圖表&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-					 	<label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_1"  name="ProductProfitView" />查看商品利潤</label>
-					   
+					 	<label style="display:none" class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_1"  name="ProductProfitView" />查看商品利潤</label>
+					    <label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_0"  name="PriceChange" />更改成本費用</label>
 					  </div>
                   </div>
                   <div class="row">
@@ -135,7 +135,7 @@
                       <div class="col-md-5 well-sm">
                       	
                       	<label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_0"  name="ParamSettingEdit" />修改參數設定</label>
-					 	<label class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_1"  name="InventoryCostView" />查看庫存成本</label>
+					 	<label style="display:none" class="checkboxbox-inline"><input type="checkbox" id="id_fd-is_active_1"  name="InventoryCostView" />查看庫存成本</label>
 					   
 					  </div>
                   </div>

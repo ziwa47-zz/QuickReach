@@ -18,9 +18,11 @@
 	COrderFactory.checkUrlToRemoveSession(request, session);
 	Connection conn = new DataBaseConn().getConn();
 	LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"處理中");
+	LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts(conn);
 	session.setAttribute("list", orderList);
     request.setAttribute("begin", request.getParameter("begin"));
     request.setAttribute("end", request.getParameter("end"));
+    session.setAttribute("ebayAccounts", ebayAccounts);
 %>
 
 
@@ -42,6 +44,7 @@
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
         <li><a href="ShipmentRecord.jsp" >訂單出貨記錄</a></li>
+        <li><a href="refundPage.jsp?begin=0&end=10" >退貨</a></li>
       </ul>
     </div>
   </div>
@@ -71,11 +74,9 @@
               <div class="col-md-8">
                 <select class="form-control" name="eBayAccount">
                   <option value="">請選擇</option>
-                  <option value="comenwin0903">comenwin0903</option>
-                  <option value="cyclistbike">cyclistbike</option>
-                  <option value="huangbowei">huangbowei</option>
-                  <option value="igrocery">igrocery</option>
-                  <option value="magicbike">magicbike</option>
+                  <c:forEach var="q" items="${ebayAccounts}" step="1" varStatus="check">
+                  <option value="">${q}</option>
+                  </c:forEach>
                 </select>
               </div>
             </div>
@@ -459,7 +460,7 @@
                 </c:when>
                 <c:otherwise>
                   <tr>
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
+                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}" onchange=""></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getCOrderMaster().getEbayNO()}
                     <td>${i.getCOrderMaster().getPlatform()}</td>
@@ -483,7 +484,9 @@
                     <td colspan="3">
                     <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
                       <b>${k.getWarehouse()}</b>(倉別)<br/>
+                      <input type="hidden" name="warehouse" value="${k.getWarehouse()}">
                     </c:forEach>
+                    
                     </td>
                   </tr>
                   <tr>
@@ -512,6 +515,7 @@ function selectAllOrders(ele) {
     	$("input[name=QR_id]").prop("checked", false);
     }
 };
+
 function enableWarehouse(ele){
 	  var id = ele.value;
 	  if (ele.checked) {

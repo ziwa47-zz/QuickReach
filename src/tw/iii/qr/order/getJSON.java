@@ -47,10 +47,10 @@ public class getJSON {
 		JSONArray ja = new JSONArray();
 		Connection conn = new DataBaseConn().getConn();
 
-		String strSql = "select QR_id, d.SKU, brand, subBrand, productName, s.warehouse, warehousePosition1, warehousePosition2, d.qty"
-				+ " from orders_detail as d " + " inner join storage as s on d.SKU = s.SKU"
-				+ " inner join product as p on d.SKU = p.SKU" + " where d.QR_id = ? and s.warehouse =  ("
-				+ " select warehouse" + " from orders_detail" + " where QR_id = ?)";
+		String strSql = "select QR_id, d.SKU, brand, subBrand, productName, s.warehouse, warehousePosition1, warehousePosition2, d.qty,isnull(p.picturePath,'')"
+				+ " from orders_detail as d   inner join storage as s on d.SKU = s.SKU"
+				+ " inner join product as p on d.SKU = p.SKU  where d.QR_id = ? and s.warehouse =  ("
+				+ " select warehouse  from orders_detail  where QR_id = ?)";
 
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ps.setString(1, request.getParameter("QR_id"));
@@ -67,6 +67,7 @@ public class getJSON {
 			hm.put("warehousePosition1", rs.getString(7));
 			hm.put("warehousePosition2", rs.getString(8));
 			hm.put("Qty", rs.getString(9));
+			hm.put("pic", rs.getString(10));
 			JSONObject jo = new JSONObject(hm);
 			ja.put(jo);
 		}

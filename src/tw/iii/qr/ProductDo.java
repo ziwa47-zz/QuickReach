@@ -64,6 +64,9 @@ public class ProductDo extends HttpServlet {
 			case "getProcuct": //jenan's function
 				processSearchProductToAddOrderDetail(request, response);
 				break;
+			case "getProcuctNew":
+				processSearchProductToAddOrderDetailNew(request, response);
+				break;
 			default:
 				break;
 				
@@ -144,7 +147,20 @@ public class ProductDo extends HttpServlet {
 		conn.close();
 		
 		response.sendRedirect("/QROrders/selectProduct.jsp?QR_id=" + request.getParameter("QR_id"));
-		
 	}
 
+	private void processSearchProductToAddOrderDetailNew(HttpServletRequest request, HttpServletResponse response)
+			throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		HttpSession session = request.getSession(); 
+		conn = new DataBaseConn().getConn();
+		CProductFactory cpf = new CProductFactory();
+		LinkedList<CProduct> cp =cpf.searchProduct(request,conn);
+		session.setAttribute("productall", cp);
+		conn.close();
+		
+		response.sendRedirect("/QROrders/selectProductNew.jsp?QR_id=" + request.getParameter("QR_id"));
+	}
+	
 }
