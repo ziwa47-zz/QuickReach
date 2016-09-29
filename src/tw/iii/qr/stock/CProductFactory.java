@@ -1,5 +1,6 @@
 package tw.iii.qr.stock;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -9,6 +10,7 @@ import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.swing.filechooser.FileSystemView;
 
 import tw.iii.qr.DataBaseConn;
 
@@ -17,7 +19,14 @@ public class CProductFactory extends CProduct {
 	public CProductFactory() {
 
 	}
+	
+	
 
+	FileSystemView fsv = FileSystemView.getFileSystemView(); 
+	String path = fsv.getDefaultDirectory().getAbsolutePath()+"\\QuickReach\\pics\\";
+	
+	
+	
 	public LinkedList<CProduct> searchProduct(HttpServletRequest request, Connection conn) throws SQLException {
 		String strsql = " select distinct sku,brand,subbrand,p_name,spec,color from  product  where '1' = '1' ";
 		int param = 1;
@@ -120,8 +129,8 @@ public class CProductFactory extends CProduct {
 
 		String strsql = "SELECT  SKU ,  owner ,  productType ,  brand ,  subBrand ,"
 				+ "  EAN ,  productCode ,  P_name ,  spec ,  color ,"
-				+ "  securedQty ,  cost ,  comment ,  checkupdate ,  added , "
-				+ "  weight , packageMatrial,  vilumetricWeight ,  createDate, volume  FROM   product "
+				+ "  securedQty ,  cost ,  comment ,  checkupdate ,  added , " 
+				+ "  weight , packageMatrial,  vilumetricWeight ,  createDate, volume, picturePath  FROM   product "
 				+ " where 1 = 1 and sku = ? ";
 
 		PreparedStatement ps = null;
@@ -135,6 +144,10 @@ public class CProductFactory extends CProduct {
 		while (rs.next()) {
 			product.setSKU(rs.getString(1)); // sku
 			product.setOwner(rs.getString(2)); // owner
+			
+			
+			
+			System.out.println("a3s2d3sdsdddddddddddda:"+rs.getString(21));
 			product.setProductType(rs.getString(3)); // productType
 			product.setBrand(rs.getString(4)); // 廠牌
 			product.setSubBrand(rs.getString(5)); // 副廠牌
@@ -153,6 +166,7 @@ public class CProductFactory extends CProduct {
 			product.setVilumetricWeight(rs.getDouble(18));// 材積重
 			product.setCreateDate(rs.getDate(19));// 建檔日
 			product.setVolume(rs.getString(20));// 材積
+			product.setPicturePath(rs.getString(21)); // 路徑
 		}
 
 		return product;
@@ -163,11 +177,30 @@ public class CProductFactory extends CProduct {
 		String strsql = "UPDATE  product SET " + "owner  = ?," + "productType  = ?," + "brand  = ?," + "subBrand  = ?,"
 				+ "EAN  = ?," + "productCode  = ?," + "P_name  = ?," + "spec  = ?," + "color  = ?," + "cost  = ?,"
 				+ "comment  = ?," + "checkupdate  = ?," + "added  = ?," + "weight  = ?," + "packageMatrial  = ?,"
-				+ "vilumetricWeight  = ? ," + " volume = ? ,"+"securedQty = ? " + " WHERE  sku  = ? ";
+				+ "vilumetricWeight  = ? ," + " volume = ? ,"+"securedQty = ? ,"+"picturePath = ? " + " WHERE  sku  = ? ";
 		CProduct cp = new CProduct();
 
 		cp.setOwner(request.getParameter("owner"));
-		cp.setProductType(request.getParameter("producttype"));
+		
+
+		String productType ="" ;
+		switch(request.getParameter("productType")){
+	
+		case "1":
+			 productType = "單一商品";
+			break;
+		case "2":
+			 productType = "清倉類";
+			break;
+		case "3":
+			 productType = "調貨類";
+			break;
+		case "4":
+			 productType = "組合商品";
+			break;
+		}
+		System.out.println("a3s2d3a:"+request.getParameter("picturePath"));
+		cp.setProductType(productType);
 		cp.setBrand(request.getParameter("brand"));
 		cp.setSubBrand(request.getParameter("subbrand"));
 		cp.setEAN(request.getParameter("ean"));
@@ -185,6 +218,7 @@ public class CProductFactory extends CProduct {
 		cp.setVolume(request.getParameter("volume"));
 		cp.setSKU(request.getParameter("sku"));
 		cp.setSecuredQty(Integer.valueOf(request.getParameter("securedqty")));
+		cp.setPicturePath(request.getParameter("picturePath"));
 
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
@@ -207,7 +241,8 @@ public class CProductFactory extends CProduct {
 		ps.setDouble(16, cp.getVilumetricWeight()); // vilu
 		ps.setString(17, cp.getVolume()); // Volume
 		ps.setInt(18, cp.getSecuredQty());
-		ps.setString(19, cp.getSKU());
+		ps.setString(19, cp.getPicturePath());
+		ps.setString(20, cp.getSKU());
 		
 		int i = ps.executeUpdate();
 
@@ -217,7 +252,20 @@ public class CProductFactory extends CProduct {
 		String strsql = "INSERT INTO product(SKU,owner,productType,brand,subbrand,ean,productCode,p_name,spec"
 				+ ",color,securedQty,cost,comment,checkupdate,added,weight,packageMatrial,vilumetricWeight,createDate,picturePath,volume) "
 				+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; // (20個)，還未加入barCode
-
+		String productType ="" ;
+		switch(request.getParameter("productType")){
+	
+		case "1":
+			 productType = "單一商品";
+			break;
+		case "2":
+			 productType = "清倉類";
+			break;
+		case "3":
+			 productType = "調貨類";
+			break;
+		}
+		
 		PreparedStatement ps = null;
 		// System.out.print(strsql);
 		ps = conn.prepareStatement(strsql);
@@ -225,7 +273,10 @@ public class CProductFactory extends CProduct {
 		ps.setString(1, request.getParameter("SKU"));
 		// ps.setString(1, request.getParameter("barCode")); //此行未加入
 		ps.setString(2, request.getParameter("owner"));
-		ps.setString(3, request.getParameter("productType"));
+		
+		
+		System.out.println("產品類別~"+productType);
+		ps.setString(3, productType);
 		ps.setString(4, request.getParameter("brand"));
 		ps.setString(5, request.getParameter("subBrand"));
 		ps.setString(6, request.getParameter("EAN"));// (6)
@@ -242,6 +293,8 @@ public class CProductFactory extends CProduct {
 		ps.setString(17, request.getParameter("packageMatrial"));
 		ps.setDouble(18, Double.valueOf(request.getParameter("vilumetricWeight")));
 		ps.setDate(19, Date.valueOf(request.getParameter("createDate")));
+		
+		
 		ps.setString(20, request.getParameter("picturePath")); // picturePath(20)
 		ps.setString(21, request.getParameter("volume"));
 		int i = ps.executeUpdate();
