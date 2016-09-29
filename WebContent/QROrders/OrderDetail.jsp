@@ -23,8 +23,6 @@ COrders searchResult = COrderFactory.getOrderAllInfo(QR_id, conn);
 session.setAttribute("result", searchResult);
 LinkedList<COrderDetail> resultDetail = COrderFactory.getOrderDetails(QR_id, conn);
 session.setAttribute("resultDetail", resultDetail);
-LinkedList<String> warehouses = COrderFactory.getWarehouses(request,conn);
-session.setAttribute("warehouses", warehouses);
 conn.close();
 }else {
 	response.sendRedirect("QROrders/SearchOrder.jsp");	
@@ -321,6 +319,15 @@ conn.close();
 		             	 倉別:${i.getWarehouse()}<br/>
 		              <select name="warehouse">
                         <option></option>
+                        <c:set var="SKU" scope="session" value="${i.getSKU()}"/>
+                        <%
+                        if(session.getAttribute("SKU") != null){
+                        LinkedList<String> warehouses = COrderFactory.getWarehouses(request,session.getAttribute("SKU").toString());
+                        session.setAttribute("warehouses", warehouses);
+                        } else {
+                        	session.setAttribute("warehouses", "");
+                        }
+                        %>
                         <c:forEach var="w" items="${warehouses}">
                         <option value="${w}">${w}</option>
                         </c:forEach>

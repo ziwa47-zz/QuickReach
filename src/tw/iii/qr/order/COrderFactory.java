@@ -771,6 +771,25 @@ public class COrderFactory extends COrders {
 		ps.executeUpdate();
 	}
 	
+	public void updateToRefund(HttpServletRequest request, Connection conn) throws SQLException {
+
+		String[] strQR_ids = request.getParameterValues("QR_id");
+		// convert array to LinkedList
+		LinkedList<String> QR_ids = new LinkedList<String>(Arrays.asList(strQR_ids));
+		// iterate over each element in LinkedList and show what is in the list.
+		Iterator<String> iterator = QR_ids.iterator();
+		while (iterator.hasNext()) {
+			// Print element to console
+			System.out.println(iterator.next());
+		}
+		for (int i = 0; i < QR_ids.size(); i++) {
+			String strSql = "update orders_master" + " set orderStatus = N'退貨' " + " where QR_id = ? ";
+			PreparedStatement ps = conn.prepareStatement(strSql);
+			ps.setString(1, QR_ids.get(i));
+			ps.executeUpdate();
+		}
+	}
+	
 	public void updateNewToCompelete(HttpServletRequest request, Connection conn) throws Exception {
 		String strSql = "update orders_master"
 				+ " set orderStatus = N'已完成', shippingDate = getdate() , trackingCode = ? " + " where QR_id = ? ";
@@ -830,6 +849,83 @@ public class COrderFactory extends COrders {
 		ps.setString(3, request.getParameter("staffName"));
 
 		int x = ps.executeUpdate();
+
+	}
+	
+	public void isBundleAddBackToStock(HttpServletRequest request, Connection conn) throws Exception {
+
+		LinkedList<COrderDetail> condition = getCondition(request, conn);
+
+		for (int i = 0; i < condition.size(); i++) {
+
+			System.out.println(condition.get(i).getSKU());
+
+			if ("B00".equals(condition.get(i).getSKU().substring(0, 3))) {
+
+				System.out.println("bundle");
+				plusBundleAddBackToStock(request, conn, condition.get(i));
+
+			} else if (!"B00".equals(condition.get(i).getSKU().substring(0, 3))) {
+
+				System.out.println("single");
+				addBackToStock(request, conn, condition.get(i));
+			}
+		}
+
+	}
+	
+	public void plusBundleAddBackToStock(HttpServletRequest request, Connection conn, COrderDetail condition)
+			throws Exception {
+
+		LinkedList<String> skulist = new LinkedList<String>();
+		LinkedList<Integer> qty = new LinkedList<Integer>();
+		String strsql = " select p_sku,qty from bundles where '1' = '1' and m_sku = ? ";
+		PreparedStatement ps = conn.prepareStatement(strsql);
+		ps.setString(1, condition.getSKU());
+		ResultSet rs = ps.executeQuery();
+
+		while (rs.next()) {
+
+			skulist.add(rs.getString(1));
+			System.out.println(rs.getString(1));
+			qty.add(rs.getInt(2));
+			System.out.println(rs.getInt(2));
+		}
+
+		rs = null;
+		ps = null;
+		String strSql = "update  storage set qty = (select (isnull( (select qty from storage  where sku = ?  and warehouse = ? ),0) +  (? * ?))) where sku = ? and warehouse = ?";
+
+		for (int j = 0; j < skulist.size(); j++) {
+			ps = null;
+			ps = conn.prepareStatement(strSql);
+			ps.setString(1, skulist.get(j));
+			ps.setString(2, condition.getWarehouse());
+			ps.setInt(3, qty.get(j));
+			ps.setInt(4, condition.getQty());
+			ps.setString(5, skulist.get(j));
+			ps.setString(6, condition.getWarehouse());
+			ps.executeUpdate();
+
+		}
+
+		ps.close();
+
+	}
+
+	public void addBackToStock(HttpServletRequest request, Connection conn, COrderDetail condition) throws Exception {
+
+		String strSql = "update  storage set qty =(select qty from storage  where sku = ? and warehouse = ? ) +  ? "
+				+ " where sku = ? and warehouse = ?";
+		PreparedStatement ps = conn.prepareStatement(strSql);
+
+		ps.setString(1, condition.getSKU());
+		ps.setString(2, condition.getWarehouse());
+		ps.setInt(3, condition.getQty());
+		ps.setString(4, condition.getSKU());
+		ps.setString(5, condition.getWarehouse());
+
+		ps.executeUpdate();
 
 	}
 
@@ -1356,22 +1452,22 @@ public class COrderFactory extends COrders {
 	
 	
 	
-	public LinkedList<CStock> getWarehouses(HttpServletRequest request, Connection conn) throws SQLException {
+	public LinkedList<String> getWarehouses(HttpServletRequest request, String SKU) throws IllegalAccessException, ClassNotFoundException, Exception {
 		
-		LinkedList<CStock> warehouses = new LinkedList<CStock>();
+		Connection conn = new DataBaseConn().getConn();
+		LinkedList<String> warehouses = new LinkedList<String>();
 		CStock myCStock = new CStock();
 		String strSql = "select d.SKU, s.warehouse"
 				+ " from orders_detail as d left join storage s on d.sku = s.sku"
-				+ " where d.QR_id = ? ";
+				+ " where d.QR_id = ? and d.SKU = ?";
 
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ps.setString(1, request.getParameter("QR_id"));
+		ps.setString(2, SKU);
 		ResultSet rs = ps.executeQuery();
 		
 		while(rs.next()){
-			myCStock = new CStock();
-			myCStock.setWareHouse(rs.getString(2));
-			warehouses.add(myCStock);
+			warehouses.add(rs.getString(2));
 		}
 		return warehouses;
 	}
