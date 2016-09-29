@@ -70,13 +70,19 @@ function test() {
         dataType: "json", 
 
         success : function(response){       	
-                   
             	 $("#pName"+setValueId).val(response.pName);
                  $("#spec"+setValueId).val(response.spec);
                  $("#color"+setValueId).val(response.color);
                  
+                 
+                 
                  $("#warehousePositionOne"+setValueId).val(response.warehousePosition);
                  $("#warehousePositionTwo"+setValueId).val(response.warehousePosition2);   
+                 
+                 if((response.warehousePosition==null)&&(response.warehousePosition2==null)){
+                	 $("#warehousePositionOne"+setValueId).attr("readonly",false);
+                	 $("#warehousePositionTwo"+setValueId).attr("readonly",false);
+                 }
 
         },        
 	})
@@ -97,26 +103,37 @@ submitHandler: function (form)
 {
     
     
-    var arr = new Array;
-    var value;
-    arr[0] = $("#sku1").val();
-    for(var i =1;i < dynamicId; i++){
-    	 value = $("#sku"+(i+1)).val();
-    		arr[i] = value;
-    	
-    }
-    	
-    function isRepeat(arr){
-    	var hash = {};
-    	for(var i in arr) {
-    	if(hash[arr[i]])
-    	return true;
-    	hash[arr[i]] = true;
-    	}
-    	return false;
-    	}
+	 function isRepeat(){
+	    	
+    	 
+	        var arr = new Array;
+	        
+	        for(var i =1;i <= dynamicId; i++){
+	        	
+	        	
+	        	 arr[0] = $("#sku1").val();
+	        	 //alert("0:"+arr[0])
+	        	 if($("#sku"+(i+1)).val() != null){
+	        			arr[i] = $("#sku"+(i+1)).val();
+	        			//alert(i+arr[i])
+	        	 }
+	        	
+	        	
+	        }
+	    	
+	    	 var sortArr = arr.sort();
+	    	    for(var i=0;i<sortArr.length;i++){
+	    	    	
+	    	    	if (sortArr[i]==sortArr[i+1]){
+	    	    	alert("sku重複："+sortArr[i]);
+	    	    	return true
+	    	    	}
+	    	    	
+	    	    	}
+	    }
+	    
          
-    if(isRepeat(arr)){
+    if(isRepeat()){
     	alert("請確認SKU是否重複");
     	
     } else {
@@ -260,7 +277,7 @@ submitHandler: function (form)
 						  +'         	<div class="col-md-4 form-group ">'
 	                        +'             <div class="row">'
 	                        +'              <div class="col-md-4"><h5><label for="focusedInput " >儲位：</label></h5></div>'
-	                        +'              <div class="col-md-8"><input class="form-control" style="width:88px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text"> - <input class="form-control" style="width:88px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text"></div>'
+	                        +'              <div class="col-md-8"><input class="form-control" style="width:88px;"id="warehousePositionOne'+dynamicId+'" name="warehousePositionOne'+dynamicId+'" type="text" readonly> - <input class="form-control" style="width:88px;" id="warehousePositionTwo'+dynamicId+'" name="warehousePositionTwo'+dynamicId+'" type="text" readonly></div>'
 	                        +'            </div>'
 	                        +'                </div>'
 						
@@ -552,7 +569,7 @@ display: block;
                   <div class="row">
                     <div class="col-md-4"><h5><label for="focusedInput " >儲位：</label></h5></div>
                     
-                   <div class="col-md-8"><input class="form-control " style="width:88px;" id="warehousePositionOne1" name="warehousePositionOne1" type="text"> - <input class="form-control" style="width:88px;" id="warehousePositionTwo1" name="warehousePositionTwo1" type="text"></div>
+                   <div class="col-md-8"><input class="form-control " style="width:88px;" id="warehousePositionOne1" name="warehousePositionOne1" type="text" readonly> - <input class="form-control" style="width:88px;" id="warehousePositionTwo1" name="warehousePositionTwo1" type="text" readonly></div>
                   </div>
                 </div>
                   
