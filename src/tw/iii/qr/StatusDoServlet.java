@@ -128,6 +128,11 @@ public class StatusDoServlet extends HttpServlet {
 				conn.close();
 			}
 			break;
+		case "finished":
+			OFactory.updateToRefund(request, conn);
+			OFactory.isBundleAddBackToStock(request, conn);
+			response.sendRedirect("QROrders/refundPage.jsp?begin=0&end=10");
+			conn.close();
 		case "revertTo":
 			OFactory.revertTo(request, conn);
 			response.sendRedirect(request.getHeader("Referer"));

@@ -25,8 +25,7 @@ COrders searchResult = COrderFactory.getOrderAllInfo(QR_id, conn);
 session.setAttribute("result", searchResult);
 LinkedList<COrderDetail> resultDetail = COrderFactory.getOrderDetails(QR_id, conn);
 session.setAttribute("resultDetail", resultDetail);
-LinkedList<CStock> warehouses = COrderFactory.getWarehouses(request,conn);
-session.setAttribute("warehouses", warehouses);
+
 conn.close();
 }else {
 	response.sendRedirect("QROrders/SearchOrder.jsp");	
@@ -50,6 +49,7 @@ conn.close();
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
         <li><a href="ShipmentRecord.jsp?begin=0&end=10" >訂單出貨記錄</a></li>
+        <li><a href="refundPage.jsp?begin=0&end=10" >退貨</a></li>
       </ul>
     </div>
   </div>
@@ -313,12 +313,21 @@ conn.close();
 		            <td><input class="" type="text" name="price" value="${i.getPrice()}"></td>
 		            <td><input class="" type="text" name="invoicePrice" value="${i.getInvoicePrice()}"></td>
 		            <td>
-		              <input class="" type="text" name="qty" value="${i.getQty()}">
+		              <input class="" type="text" name="qty" value="${i.getQty()}"><br/>
 		             	 倉別:${i.getWarehouse()}<br/>
 		              <select name="warehouse">
                         <option></option>
+                        <c:set var="SKU" scope="session" value="${i.getSKU()}"/>
+                        <%
+                        if(session.getAttribute("SKU") != null){
+                        LinkedList<String> warehouses = COrderFactory.getWarehouses(request,session.getAttribute("SKU").toString());
+                        session.setAttribute("warehouses", warehouses);
+                        } else {
+                        	session.setAttribute("warehouses", "");
+                        }
+                        %>
                         <c:forEach var="w" items="${warehouses}">
-                        <option value="${w.getWareHouse()}">${w.getWareHouse()}</option>
+                        <option value="${w}">${w}</option>
                         </c:forEach>
                       </select>
 		            </td>
