@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -18,7 +19,8 @@ import org.apache.tomcat.util.net.SecureNio2Channel.ApplicationBufferHandler;
  */
 @WebListener
 public class daliy implements ServletContextListener {
-
+	boolean isContinued = true;
+	Timer t1 = new Timer();
 	/**
 	 * Default constructor.
 	 */
@@ -38,41 +40,54 @@ public class daliy implements ServletContextListener {
 	 */
 	public void contextInitialized(ServletContextEvent a) {
 
-		Timer t1 = new Timer();
+		getdailyandorders(a);
+
+	}
+
+	public void getdailyandorders(ServletContextEvent a) {
+		
 		t1.scheduleAtFixedRate(new TimerTask() {
-			
+
 			@Override
 			public void run() {
 				try {
-					
-					new Thread() {
-						@Override
-						public void run() {
+					while (isContinued) {
+						new Thread() {
+							@Override
+							public void run() {
 
-							try {
+								try {
+									while (isContinued) {
+										LinkedList<COrders> da = new DayliBalanceSheetFactory().dayliBalanceSheet();
+										a.getServletContext().setAttribute("ndbs", da);
+										System.out.println("da done");
+									}
+								} catch (ClassNotFoundException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} catch (Exception e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 
-								LinkedList<COrders> da = new DayliBalanceSheetFactory().dayliBalanceSheet();
-								a.getServletContext().setAttribute("ndbs", da);
-								System.out.println("da done");
-							} catch (ClassNotFoundException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
 							}
 
-						}
-					}.start();
-					
+						}.start();
+					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}				
+				}
 			}
-		} ,0,1800000);
-		
-	
+		}, 0, 900000);
 	}
 
+	public void terminate() {
+		isContinued = false;
+	}
+
+	public void restart() {
+		isContinued = true;
+
+	}
 }
