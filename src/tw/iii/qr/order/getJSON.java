@@ -109,6 +109,47 @@ public class getJSON {
 	
 		
 	}
+	
+	public JSONArray searchCollection(HttpServletRequest request) throws Exception {
+		Connection conn = new DataBaseConn().getConn();
+		
+		HashMap<String, String> hm = new HashMap<String, String>();
+		JSONArray ja = new JSONArray();
+		String strSql;
+		
+
+		strSql =" select d.sku,p.P_name,p.spec,p.color,p.brand,p.subBrand,isnull(p.picturePath,''),s.warehouse,s.warehousePosition1,s.warehousePosition2,orderStatus,sum(d.qty) from orders_detail d " 
+			+"	inner join orders_master m on d.QR_id = m.QR_id "
+			+"	inner join product p on d.sku = p.SKU "
+			+"	inner join storage s on p.sku = s.sku and d.warehouse = s.warehouse "
+			+" group by d.sku,p.P_name,p.spec,p.color,p.brand,p.subBrand,p.picturePath,s.warehouse,s.warehousePosition1,s.warehousePosition2,orderStatus "
+			+"having orderStatus = N'揀貨中' ";
+
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			hm.put("sku", rs.getString(1));
+			hm.put("pname", rs.getString(2));
+			hm.put("spec", rs.getString(3));
+			hm.put("color", rs.getString(4));
+			hm.put("brand", rs.getString(5));
+			hm.put("subbrand", rs.getString(6));
+			hm.put("pic", rs.getString(7));
+			hm.put("ware", rs.getString(8));
+			hm.put("ware1", rs.getString(9));
+			hm.put("ware2", rs.getString(10));
+			hm.put("qty", rs.getString(12));
+		
+			JSONObject jo = new JSONObject(hm);
+			ja.put(jo);
+		}
+		conn.close();
+		return ja;
+	
+		
+	}
+	
+	
 	public void updateToFinished(HttpServletRequest request) throws Exception {
 		Connection conn = new DataBaseConn().getConn();
 		
