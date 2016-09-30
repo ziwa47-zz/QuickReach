@@ -129,7 +129,7 @@
       </div>
       <br />
       <div class="row text-center">
-        <button type="submit" name="submit" value="getProcuct" class="btn-lg btn-success">搜尋</button>
+        <button type="submit" name="submit" value="getProcuctNew" class="btn-lg btn-success">搜尋</button>
         <button type="button" name="" class="btn-lg btn-success">清空</button>
       </div>
     </fieldset>

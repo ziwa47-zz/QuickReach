@@ -101,8 +101,8 @@ public class CGetEbay {
 					String strSql = "INSERT INTO orders_master (QR_id, order_id, outsideCode, platform, company,"
 							+ " eBayAccount, guestAccount, orderDate, payDate, logisticsId, logistics, orderStatus, paypal_id,"
 							+ " payment, ebayFees, paypalFees, totalPrice, currency, ebayPrice, paypalNet, ebayItemNO,"
-							+ " paypalmentId, ebayNO)"
-							+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+							+ " paypalmentId, ebayNO, payWay, shippingDate)"
+							+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 					PreparedStatement ps = conn.prepareStatement(strSql);
 					ps.setString(1, QR_id);
@@ -136,6 +136,8 @@ public class CGetEbay {
 					ps.setString(21, order.getTransactionArray().getTransaction()[0].getItem().getItemID().toString());
 					ps.setString(22, order.getTransactionArray().getTransaction()[0].getTransactionID());
 					ps.setString(23, order.getShippingDetails().getSellingManagerSalesRecordNumber().toString());
+					ps.setString(24, "paypal");
+					ps.setTimestamp(25, new java.sql.Timestamp((long) 0.0));
 					int x = ps.executeUpdate();
 
 					String strSql2 = "INSERT INTO order_recieverinfo (QR_id, order_id, recieverFirstName, recieverLastName,"
@@ -148,10 +150,10 @@ public class CGetEbay {
 					ps2.setString(4, order.getShippingAddress().getLastName());
 					ps2.setString(5, order.getShippingAddress().getPhone());
 					ps2.setString(6, order.getShippingAddress().getPhone2());
-					ps2.setString(7, order.getShippingAddress().getAddressID() + order.getShippingAddress().getStreet()
-							+ order.getShippingAddress().getStreet1() + order.getShippingAddress().getStreet2()
-							+ order.getShippingAddress().getCityName() + order.getShippingAddress().getStateOrProvince()
-							+ order.getShippingAddress().getCountryName() + order.getShippingAddress().getPostalCode());
+					ps2.setString(7, order.getShippingAddress().getAddressID() + ", " + order.getShippingAddress().getStreet() + ", " 
+							+ order.getShippingAddress().getStreet1() + ", "  + order.getShippingAddress().getStreet2() + ", " 
+							+ order.getShippingAddress().getCityName() + ", "  + order.getShippingAddress().getStateOrProvince() + ", " 
+							+ order.getShippingAddress().getCountryName() + ", "  + order.getShippingAddress().getPostalCode());
 					ps2.setString(8, order.getShippingAddress().getCountryName());
 					ps2.setString(9, order.getShippingAddress().getPostalCode());
 

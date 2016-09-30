@@ -78,9 +78,9 @@ public class OrdersServlet extends HttpServlet {
 			break;
 		case "updateOrder":
 			//OFactory.updateOrderDetail(request, conn);
-			String staffName = session.getAttribute("account").toString();
+			String staffName = session.getAttribute("staffName").toString();
 			OFactory.updateOrderDetail(request, conn, staffName, QR_id);
-			
+			OFactory.updateMainOrderDetail(request, conn, QR_id);
 			conn.close();
 			response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + request.getParameter("QR_id"));
 			break;
@@ -99,14 +99,15 @@ public class OrdersServlet extends HttpServlet {
 			response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + QR_id);
 		case "updateOrderNew":
 			//OFactory.updateOrderDetail(request, conn);
-			String staffName2 = session.getAttribute("account").toString();
+			String staffName2 = session.getAttribute("staffName").toString();
 			OFactory.updateOrderDetail(request, conn, staffName2, QR_id);
+			OFactory.updateMainOrderDetail(request, conn, QR_id);
 			conn.close();
-			response.sendRedirect("QROrders/NewOrder.jsp?QR_id=" + request.getParameter("QR_id"));
+			response.sendRedirect("QROrders/NewOrder.jsp?QR_id=" + QR_id);
 			break;
 		case "toGetProductsNew":
 			conn.close();
-			response.sendRedirect("QROrders/selectProductNew.jsp?QR_id=" + request.getParameter("QR_id"));
+			response.sendRedirect("QROrders/selectProductNew.jsp?QR_id=" + QR_id);
 			break;
 		case "insertSKUNew":
 			OFactory.insertOrderDetail(request, conn, QR_id);
@@ -119,6 +120,9 @@ public class OrdersServlet extends HttpServlet {
 			response.sendRedirect("QROrders/NewOrder.jsp?QR_id=" + QR_id);
 			break;
 		case "sendNewOrder":
+			OFactory.updateToPickUp(request, conn);
+			conn.close();
+			response.sendRedirect("QROrders/OrderPickupPage.jsp?begin=0&end=10");
 			break;
 		default:
 			conn.close();
