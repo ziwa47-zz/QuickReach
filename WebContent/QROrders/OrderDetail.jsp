@@ -23,7 +23,6 @@ COrders searchResult = COrderFactory.getOrderAllInfo(QR_id, conn);
 session.setAttribute("result", searchResult);
 LinkedList<COrderDetail> resultDetail = COrderFactory.getOrderDetails(QR_id, conn);
 session.setAttribute("resultDetail", resultDetail);
-
 conn.close();
 }else {
 	response.sendRedirect("QROrders/SearchOrder.jsp");	
@@ -85,55 +84,51 @@ conn.close();
               <div class="container-fluid form-horizontal">
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>客戶名子</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" name="" type="text" value="${result.getCOrderGuestInfo().getGuestFirstName()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="GuestFirstName" value="${result.getCOrderGuestInfo().getGuestFirstName()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>客戶姓氏</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getGuestLastName()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="GuestLastName" value="${result.getCOrderGuestInfo().getGuestLastName()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>訂購帳號</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getGuestAccount()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="GuestAccount" value="${result.getCOrderGuestInfo().getGuestAccount()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>電子郵件</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getEmail()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="Email" value="${result.getCOrderGuestInfo().getEmail()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>電話(日)</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getTel1()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="GTel1" value="${result.getCOrderGuestInfo().getTel1()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>電話(夜)</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getTel2()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="GTel2" value="${result.getCOrderGuestInfo().getTel2()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>行動電話</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getMobile()}"></div>
-		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>生日</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getBirthday()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="Mobile" value="${result.getCOrderGuestInfo().getMobile()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>公司/學校</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getCompany()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="Company" value="${result.getCOrderGuestInfo().getCompany()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>地址</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getAddress()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="GAddress" value="${result.getCOrderGuestInfo().getAddress()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>國家</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getCountry()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="GCountry" value="${result.getCOrderGuestInfo().getCountry()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>郵遞區號</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getPostcode()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="GPostcode" value="${result.getCOrderGuestInfo().getPostcode()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>性別</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderGuestInfo().getGender()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="Gender" value="${result.getCOrderGuestInfo().getGender()}"></div>
 		        </div>
 		      </div>
             </div>
@@ -148,31 +143,31 @@ conn.close();
               <div class="container-fluid form-horizontal">
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>收件人名字</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderReciever().getRecieverFirstName()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="RecieverFirstName" value="${result.getCOrderReciever().getRecieverFirstName()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>收件人姓氏</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderReciever().getRecieverLastName()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="RecieverLastName" value="${result.getCOrderReciever().getRecieverLastName()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>電話1</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderReciever().getTel1()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="RTel1" value="${result.getCOrderReciever().getTel1()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>電話2</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderReciever().getTel2()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="RTel2" value="${result.getCOrderReciever().getTel2()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>地址</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderReciever().getAddress()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="RAddress" value="${result.getCOrderReciever().getAddress()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>收件人國家</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderReciever().getCountry()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="RCountry" value="${result.getCOrderReciever().getCountry()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>郵遞區號</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderReciever().getPostCode()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="RPostCode" value="${result.getCOrderReciever().getPostCode()}"></div>
 		        </div>
 		      </div>
             </div>
@@ -187,107 +182,103 @@ conn.close();
               <div class="container-fluid form-horizontal">
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>外部訂單編號</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getOutsideCode()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="OutsideCode" value="${result.getCOrderMaster().getOutsideCode()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>訂單狀態</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getOrderStatus()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="OrderStatus" value="${result.getCOrderMaster().getOrderStatus()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>訂單編號</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="QR_id" value="${result.getCOrderMaster().getQR_id()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="EbayNO" value="${result.getCOrderMaster().getEbayNO()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>出貨編號</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getQR_id() }"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="QR_id" value="${result.getCOrderMaster().getQR_id() }"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>Tracking Code</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="TrackingCode" value="${result.getCOrderMaster().getTrackingCode() }"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>公司</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getCompany()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="MCompany" value="${result.getCOrderMaster().getCompany()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>平台</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getPlatform()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="Platform" value="${result.getCOrderMaster().getPlatform()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>ebay 帳號</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getEbayAccount()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="EbayAccount" value="${result.getCOrderMaster().getEbayAccount()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>購買日期</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getOrderDate()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="OrderDate" value="${result.getCOrderMaster().getOrderDate()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>付款日期</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getPayDate()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="PayDate" value="${result.getCOrderMaster().getPayDate()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>付款方式</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="PayWay" value="${result.getCOrderMaster().getPayWay()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>paypal 交易序號</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getPaypalId()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="PaypalId" value="${result.getCOrderMaster().getPaypalId()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>出貨日期</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getShippingDate()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="ShippingDate" value="${result.getCOrderMaster().getShippingDate()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>物流配送方式</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getLogistics()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="Logistics" value="${result.getCOrderMaster().getLogistics()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>運費</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getShippingFees()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="ShippingFees" value="${result.getCOrderMaster().getShippingFees()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>退運費</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="RefundShippingFees" value="${result.getCOrderMaster().getRefundShippingFees()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>其它費用</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getOtherFees()}"></div>
-		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>其它費用備註</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="OtherFees" value="${result.getCOrderMaster().getOtherFees()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>ebay成交費</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getEbayFees()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="EbayFees" value="${result.getCOrderMaster().getEbayFees()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>計算保價</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="InsuranceTotal" value="${result.getCOrderMaster().getInsuranceTotal()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>paypal費用</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getPaypalFees()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="PaypalFees" value="${result.getCOrderMaster().getPaypalFees()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>淨重(公克)</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="Weight" value="${result.getCOrderMaster().getWeight()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>毛重(公克)</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="TotalWeight" value="${result.getCOrderMaster().getTotalWeight()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>長/寛/高</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value=""></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="Size" value="${result.getCOrderMaster().getSize()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>備註</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getComment()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="Comment" value="${result.getCOrderMaster().getComment()}"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>總計</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getTotalPrice()}"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="TotalPrice" value="${result.getCOrderMaster().getTotalPrice()}"></div>
 		        </div>
 		      </div>
             </div>
@@ -328,8 +319,18 @@ conn.close();
 		             	 倉別:${i.getWarehouse()}<br/>
 		              <select name="warehouse">
                         <option></option>
-                        <option value="KH">KH</option>
-                        <option value="US">US</option>
+                        <c:set var="SKU" scope="session" value="${i.getSKU()}"/>
+                        <%
+                        if(session.getAttribute("SKU") != null){
+                        LinkedList<String> warehouses = COrderFactory.getWarehouses(request,session.getAttribute("SKU").toString());
+                        session.setAttribute("warehouses", warehouses);
+                        } else {
+                        	session.setAttribute("warehouses", "");
+                        }
+                        %>
+                        <c:forEach var="w" items="${warehouses}">
+                        <option value="${w}">${w}</option>
+                        </c:forEach>
                       </select>
 		            </td>
 		            <td>備註:<input class="" type="text" name="comment" value="${i.getComment()}">
@@ -339,7 +340,7 @@ conn.close();
 		        </tbody>
 		        </c:forEach>
 		      </table>
-	          <button type="submit" name="submit" value="toGetProducts" class="btn btn-sm btn-success">新增商品
+	          <button type="submit" name="submit" value="toGetProducts" class="btn btn-sm btn-success">新增商品</button>
             </div>
           </div>
         </div>

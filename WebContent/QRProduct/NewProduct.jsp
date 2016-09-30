@@ -128,9 +128,9 @@ session.setAttribute("today", today);
                       <div class="col-md-8  well-sm">
                       <select class="form-control" name = "productType">
                       
-                      <option value="單一商品">單一商品</option>
-                      <option value="清倉類">清倉類</option>
-                      <option value="調貨類">調貨類</option>
+                      <option value="1">單一商品</option>
+                      <option value="2">清倉類</option>
+                      <option value="3">調貨類</option>
                       
                       </select>
                       
@@ -230,6 +230,11 @@ session.setAttribute("today", today);
             <div class="panel-body">
               <input type="hidden">
               <div class="container-fluid form-horizontal">
+              
+              <div class="row">
+                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>材積</h4></div>
+                  <div class="col-md-8 well-sm"><input class="form-control"  type="text" name="volume" value="${resultDetail.getVolume()}" ></div>
+              </div>
                     <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>包裝材質</h4></div>
                   <div class="col-md-8  well-sm"><input class="form-control"    type="text" name="packageMatrial" value="" ></div>
