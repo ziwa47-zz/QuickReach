@@ -58,6 +58,7 @@ public class DayliBalanceSheetFactory extends COrders {
 		COrders order = new COrders();
 		int index = 0 ;
 		while (rs.next()) {
+			System.out.println(index+":"+rs.getString(2));
 			//System.out.println(index +":"+rs.getString(2));
 			order = new COrders();
 			order.COrderMaster.setOrderDate(rs.getDate(1));
@@ -118,6 +119,7 @@ public class DayliBalanceSheetFactory extends COrders {
 			order.COrderMaster.setPurchaseCost(myCProductFactory.isBundle(rs.getString(23)));
 
 			orderList.add(order);
+			index++;
 		}
 		rs.close();
 		ps.close();

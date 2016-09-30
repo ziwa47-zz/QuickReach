@@ -50,10 +50,10 @@ public class daliy implements ServletContextListener {
 						public void run() {
 
 							try {
-
+								new CGetEbay().CGetEbay1();
 								LinkedList<COrders> da = new DayliBalanceSheetFactory().dayliBalanceSheet();
 								a.getServletContext().setAttribute("ndbs", da);
-								//System.out.println("da done");
+								System.out.println("da done");
 							} catch (ClassNotFoundException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();

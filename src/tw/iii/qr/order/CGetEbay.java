@@ -63,19 +63,22 @@ public class CGetEbay {
 				// String[] orderIds = new String[1];
 				// orderIds[0]= "110183287995";
 				// oiat.setOrderID(orderIds);
-				OrderStatusCodeType status = OrderStatusCodeType.ALL;
+				OrderStatusCodeType status = OrderStatusCodeType.COMPLETED;
 				apiord.setOrderStatus(status);
-
+				
 				TradingRoleCodeType role = TradingRoleCodeType.SELLER;
 				apiord.setOrderRole(role);
 				apiord.setIncludeFinalValueFee(true);
+				
 				OrderType[] orders = apiord.getOrders();
-
+				
 				displayOrders(orders);
 				// other(orders);
 				// Handle the result returned
 				System.out.println("Official eBay Time : " + cal.getTime().toString());
+				
 			}
+			conn.close();
 		} // try
 		catch (Exception e) {
 
@@ -90,10 +93,11 @@ public class CGetEbay {
 		System.out.println(size);
 		for (int i = 0; i < size; i++) {
 			OrderType order = orders[i];
+			
 			Connection conn = new DataBaseConn().getConn();
 			System.out.println(order.getCheckoutStatus().getStatus().toString());
 			if ("COMPLETE".equals(order.getCheckoutStatus().getStatus().toString())) {
-				if (!checkExist(order)) {
+				if (!checkExist(order,conn)) {
 					ShippingServiceOptionsType sso = order.getShippingServiceSelected();
 
 					String QR_id = autoInsertData.generateQR_Id();
@@ -291,7 +295,9 @@ public class CGetEbay {
 					System.out.println(Utils.booleanToYesNo(order.isIsMultiLegShipping()));
 				}
 			}
+			conn.close();
 		}
+		
 	}
 
 	private static ApiContext getApiContext(String token) throws IOException {
@@ -335,7 +341,7 @@ public class CGetEbay {
 
 		LinkedList<String> outsideCode = new LinkedList<String>();
 
-		String strSql = "select outsideCode from orders_master";
+		String strSql = "select isnull(outsideCode,'') from orders_master";
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ResultSet rs = ps.executeQuery();
 
@@ -346,10 +352,9 @@ public class CGetEbay {
 		return outsideCode;
 	}
 
-	private static boolean checkExist(OrderType orders)
+	private static boolean checkExist(OrderType orders,Connection conn)
 			throws IllegalAccessException, ClassNotFoundException, Exception {
 
-		Connection conn = new DataBaseConn().getConn();
 		LinkedList<String> outsideCode = getOutsideCodeFromDatabase(conn);
 		for (int i = 0; i < outsideCode.size(); i++) {
 			if (outsideCode.get(i).equals(orders.getExtendedOrderID())) {
@@ -358,6 +363,7 @@ public class CGetEbay {
 			}
 		}
 		System.out.println("false");
+		
 		return false;
 	}
 

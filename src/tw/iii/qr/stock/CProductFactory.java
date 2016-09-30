@@ -391,6 +391,7 @@ public class CProductFactory extends CProduct {
 			}
 			rs.close();
 			ps.close();
+			conn.close();
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -416,6 +417,7 @@ public class CProductFactory extends CProduct {
 			}
 			rs.close();
 			ps.close();
+			conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
