@@ -133,9 +133,15 @@ public class StatusDoServlet extends HttpServlet {
 			OFactory.isBundleAddBackToStock(request, conn);
 			response.sendRedirect("QROrders/refundPage.jsp?begin=0&end=10");
 			conn.close();
+			break;
 		case "revertTo":
 			OFactory.revertTo(request, conn);
 			response.sendRedirect(request.getHeader("Referer"));
+			conn.close();
+			break;
+		case "deleteUndo":
+			OFactory.deleteUndoOrder(request, conn);
+			response.sendRedirect("QROrders/NewOrderSearch.jsp?begin=0&end=10");
 			conn.close();
 			break;
 		case "sendTrackingCodeSandbox":

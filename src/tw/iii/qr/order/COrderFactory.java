@@ -130,7 +130,8 @@ public class COrderFactory extends COrders {
 		String refund = request.getParameter("refund");
 		String others = request.getParameter("oothers");
 		String deducted = request.getParameter("deducted");
-
+		String undo = request.getParameter("undo");
+		
 		if (!checkboxAreUnchecked(waitProcess, processing, pickup, shipped, finished, refund, others, deducted, null,
 				null, null)) {
 			strSql += " and ( orderStatus is null ";
@@ -161,6 +162,9 @@ public class COrderFactory extends COrders {
 		}
 		if (!isNullorEmpty(deducted)) {
 			strSql += " or orderStatus = N'退貨中' ";
+		}
+		if (!isNullorEmpty(undo)) {
+			strSql += " or orderStatus = N'未完成' ";
 		}
 
 		String DHL = request.getParameter("DHL");
@@ -662,7 +666,7 @@ public class COrderFactory extends COrders {
 
 		for (int i = 0; i < SKUs.size(); i++) {
 			String strSql = "insert into orders_detail"
-					+ " (QR_id, SKU, productName, invoiceName, price, invoicePrice, qty, )"
+					+ " (QR_id, SKU, productName, invoiceName, price, invoicePrice, qty)"
 					+ " values( ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 
@@ -808,6 +812,18 @@ public class COrderFactory extends COrders {
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ps.setString(1, request.getParameter("status"));
 			ps.setString(2, QR_ids.get(i));
+			ps.executeUpdate();
+		}
+	}
+	
+	public void deleteUndoOrder(HttpServletRequest request, Connection conn) throws Exception {
+
+		String[] strQR_idArray = request.getParameterValues("QR_id");
+		LinkedList<String> QR_ids = new LinkedList<String>(Arrays.asList(strQR_idArray));
+		String strSql = "delete from orders_master" + " where QR_id = ? ";
+		for (int i = 0; i < QR_ids.size(); i++) {
+			PreparedStatement ps = conn.prepareStatement(strSql);
+			ps.setString(1, QR_ids.get(i));
 			ps.executeUpdate();
 		}
 	}
