@@ -161,12 +161,12 @@
 								</c:if>
 
 								<c:if test="${lv.getInventoryInfoEdit() == 1 }">
-									<label class="checkboxbox-inline"><input
+									<label style="display:none" class="checkboxbox-inline"><input
 										type="checkbox" id="id_fd-is_active_1"
 										name="InventoryInfoEdit" checked />編輯庫存資料</label>
 								</c:if>
 								<c:if test="${lv.getInventoryInfoEdit() == 0 }">
-									<label class="checkboxbox-inline"><input
+									<label style="display:none" class="checkboxbox-inline"><input
 										type="checkbox" id="id_fd-is_active_1"
 										name="InventoryInfoEdit" />編輯庫存資料</label>
 								</c:if>
@@ -198,11 +198,11 @@
 								<c:if test="${lv.getEntireOrders() == 1 }">
 									<label class="checkboxbox-inline"><input
 										type="checkbox" id="id_fd-is_active_0" name="EntireOrders"
-										checked />所有狀態訂單</label>
+										checked />日結表</label>
 								</c:if>
 								<c:if test="${lv.getEntireOrders() == 0 }">
 									<label class="checkboxbox-inline"><input
-										type="checkbox" id="id_fd-is_active_0" name="EntireOrders" />所有狀態訂單</label>
+										type="checkbox" id="id_fd-is_active_0" name="EntireOrders" />日結表</label>
 								</c:if>
 
 								<c:if test="${lv.getOrdersInvoiceDownload() == 1 }">
@@ -222,15 +222,7 @@
 								<h4>&nbsp;</h4>
 							</div>
 							<div class="col-md-5 well-sm">
-								<c:if test="${lv.getPriceChange() == 1 }">
-									<label class="checkboxbox-inline"><input
-										type="checkbox" id="id_fd-is_active_0" name="PriceChange"
-										checked />更改成本費用</label>
-								</c:if>
-								<c:if test="${lv.getPriceChange() == 0 }">
-									<label class="checkboxbox-inline"><input
-										type="checkbox" id="id_fd-is_active_0" name="PriceChange" />更改成本費用</label>
-								</c:if>
+								
 
 								<c:if test="${lv.getPendingOrdersEdit() == 1 }">
 									<label class="checkboxbox-inline"><input
@@ -272,7 +264,7 @@
 						</div>
 						<div class="row">
 							<div class="col-md-3 text-right well-sm label-tag">
-								<h4>報表權限</h4>
+								<h4>成本權限</h4>
 							</div>
 							<div class="col-md-5 well-sm">
 								<c:if test="${lv.getChartView() == 1 }">
@@ -286,14 +278,23 @@
 								</c:if>
 
 								<c:if test="${lv.getProductProfitView() == 1 }">
-									<label class="checkboxbox-inline"><input
+									<label style="display:none" class="checkboxbox-inline"><input
 										type="checkbox" id="id_fd-is_active_1"
 										name="ProductProfitView" checked />查看商品利潤</label>
 								</c:if>
 								<c:if test="${lv.getProductProfitView() == 0 }">
-									<label class="checkboxbox-inline"><input
+									<label style="display:none" class="checkboxbox-inline"><input
 										type="checkbox" id="id_fd-is_active_1"
 										name="ProductProfitView" />查看商品利潤</label>
+								</c:if>
+								<c:if test="${lv.getPriceChange() == 1 }">
+									<label class="checkboxbox-inline"><input
+										type="checkbox" id="id_fd-is_active_0" name="PriceChange"
+										checked />更改成本費用</label>
+								</c:if>
+								<c:if test="${lv.getPriceChange() == 0 }">
+									<label class="checkboxbox-inline"><input
+										type="checkbox" id="id_fd-is_active_0" name="PriceChange" />更改成本費用</label>
 								</c:if>
 							</div>
 						</div>
@@ -366,12 +367,12 @@
 								</c:if>
 
 								<c:if test="${lv.getInventoryCostView() == 1 }">
-									<label class="checkboxbox-inline"><input
+									<label style="display:none" class="checkboxbox-inline"><input
 										type="checkbox" id="id_fd-is_active_1"
 										name="InventoryCostView" checked />查看庫存成本</label>
 								</c:if>
 								<c:if test="${lv.getInventoryCostView() == 0 }">
-									<label class="checkboxbox-inline"><input
+									<label style="display:none" class="checkboxbox-inline"><input
 										type="checkbox" id="id_fd-is_active_1"
 										name="InventoryCostView" />查看庫存成本</label>
 								</c:if>
