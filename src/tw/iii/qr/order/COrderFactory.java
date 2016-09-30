@@ -662,7 +662,7 @@ public class COrderFactory extends COrders {
 
 		for (int i = 0; i < SKUs.size(); i++) {
 			String strSql = "insert into orders_detail"
-					+ " (QR_id, SKU, productName, invoiceName, price, invoicePrice, qty)"
+					+ " (QR_id, SKU, productName, invoiceName, price, invoicePrice, qty, )"
 					+ " values( ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement ps = conn.prepareStatement(strSql);
 
