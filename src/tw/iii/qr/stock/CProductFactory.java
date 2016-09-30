@@ -33,8 +33,7 @@ public class CProductFactory extends CProduct {
 	
 	
 
-	FileSystemView fsv = FileSystemView.getFileSystemView(); 
-	String path = fsv.getDefaultDirectory().getAbsolutePath()+"\\QuickReach\\pics\\";
+	
 	
 	
 	
