@@ -97,7 +97,7 @@ session.setAttribute("today", today);
 <div class="container" style="background: #9DDCD1; border-radius:20px;" >
   <form id="listForm" name="listForm" method="post" action="../ProductDo" 
   style="font-size: 100%; vertical-align: baseline; padding: 15px; " 
-  class=" container">
+  class=" container" enctype="multipart/form-data">
 
     <fieldset id="myfields" class="container-fluid" style="padding:0 30px 0 0;"><legend>新增產品</legend>
       <input type="hidden">
