@@ -130,7 +130,6 @@ public class ProductDo extends HttpServlet {
 		session.setAttribute("productall", cp);
 		conn.close();
 		
-		
 		response.sendRedirect("/QRProduct/SearchProductPage.jsp");
 		
 	}
