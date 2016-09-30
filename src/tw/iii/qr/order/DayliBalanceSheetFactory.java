@@ -112,7 +112,9 @@ public class DayliBalanceSheetFactory extends COrders {
 
 				orderList.add(order);
 				index++;
-				break;
+				//////////////////////////////////////
+				//break;
+				/////////////////////////////////////
 			}
 			tw.iii.qr.order.daliy.servletContext.setAttribute("ndbs", orderList);
 			rs.close();
