@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -377,5 +378,7 @@ public class CProductFactory extends CProduct {
 		}
 		return cost;
 	}
+	
+	
 
 }

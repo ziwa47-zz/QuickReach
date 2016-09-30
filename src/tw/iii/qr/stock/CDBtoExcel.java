@@ -209,7 +209,7 @@ public class CDBtoExcel {
 		String date = getDay();
 		
 		//FileOutputStream out = new FileOutputStream("C:/Users/Jenan/Desktop/" + date + "日出貨報表.xlsx");
-		FileOutputStream out = new FileOutputStream("C:/Users/Jenan/Desktop/" + date + "日出貨報表.xlsx");
+		FileOutputStream out = new FileOutputStream("C:/Users/Jenan/Desktop/" + date + "日出貨報表.pdf");
 		wb.write(out);
 		rs.close();
 		ps.close();
