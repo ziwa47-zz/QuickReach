@@ -1,5 +1,11 @@
 package tw.iii.qr.stock;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.Date;
@@ -9,9 +15,13 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import javax.swing.filechooser.FileSystemView;
+
+import org.apache.jasper.tagplugins.jstl.core.Otherwise;
 
 import tw.iii.qr.DataBaseConn;
 
@@ -184,6 +194,7 @@ public class CProductFactory extends CProduct {
 		cp.setOwner(request.getParameter("owner"));
 		
 
+		System.out.println("request.getParameter('productType')"+request.getParameter("productType"));
 		String productType ="" ;
 		switch(request.getParameter("productType")){
 	
@@ -199,6 +210,10 @@ public class CProductFactory extends CProduct {
 		case "4":
 			 productType = "組合商品";
 			break;
+			
+		default:
+			productType = "";
+			
 		}
 		System.out.println("a3s2d3a:"+request.getParameter("picturePath"));
 		cp.setProductType(productType);
@@ -249,11 +264,13 @@ public class CProductFactory extends CProduct {
 
 	}
 
-	public void InsertNewProduct(HttpServletRequest request, Connection conn) throws SQLException {
+	public void InsertNewProduct(HttpServletRequest request, Connection conn) throws SQLException, IOException, ServletException {
 		String strsql = "INSERT INTO product(SKU,owner,productType,brand,subbrand,ean,productCode,p_name,spec"
 				+ ",color,securedQty,cost,comment,checkupdate,added,weight,packageMatrial,vilumetricWeight,createDate,picturePath,volume) "
 				+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; // (20個)，還未加入barCode
 		String productType ="" ;
+		
+		System.out.println("request.getParameter('productType')"+request.getParameter("productType"));
 		switch(request.getParameter("productType")){
 	
 		case "1":
@@ -265,6 +282,8 @@ public class CProductFactory extends CProduct {
 		case "3":
 			 productType = "調貨類";
 			break;
+		default:
+			productType = "";
 		}
 		
 		PreparedStatement ps = null;
@@ -299,6 +318,30 @@ public class CProductFactory extends CProduct {
 		ps.setString(20, request.getParameter("picturePath")); // picturePath(20)
 		ps.setString(21, request.getParameter("volume"));
 		int i = ps.executeUpdate();
+		
+		//上傳圖片
+		
+		
+		//			Part part = request.getPart("multimedia");
+		//
+		//			if(!"".equals(request.getParameter("picturePath"))&& part.getContentType()!=null){
+		//			part.write(request.getParameter("picturePath"));
+		//			
+		//			}
+		//			
+		//
+		//			
+//		   FileInputStream fileInputStream = new FileInputStream(new File(request.getParameter("picturePath"))); 
+//	        FileOutputStream fileOutputStream = new FileOutputStream(new File("C:\\Users\\iii\\Documents\\QuickReach\\pics\\"+request.getParameter("picturePath"))); 
+//	        byte[] buffer = new byte[1024]; 
+//	        int idx = 0; 
+//	        while ((idx = fileInputStream.read(buffer)) != -1) { 
+//	                fileOutputStream.write(buffer, 0, idx); 
+//	        } 
+//	        fileInputStream.close(); 
+//	        fileOutputStream.close();
+				     
+		
 	}
 	
 	public Double isBundle(String sku){

@@ -208,6 +208,16 @@
 														<option value="組合商品" selected>組合商品</option>
 
 													</c:when>
+													
+													<c:otherwise>
+													<option value="" selected></option>
+													<option value="單一商品">單一商品</option>
+														<option value="清倉類">清倉類</option>
+														<option value="調貨類">調貨類</option>
+														<option value="組合商品" >組合商品</option>
+													
+													
+													</c:otherwise>
 												</c:choose>
 
 
@@ -392,16 +402,28 @@
 										<div class="col-md-8  well-sm">
 
 											<select class="form-control" name="added">
-												<c:if test="${resultDetail.getAdded() eq 'true'  }">
-													<option value="true" selected>是</option>
+											
+											<c:choose>
+											<c:when test="${resultDetail.getAdded() eq 'true'  }">
+											<option value="true" selected>是</option>
 													<option value="false">否</option>
-												</c:if>
-
-												<c:if test="${resultDetail.getAdded() eq 'false'  }">
-													<option value="true">是</option>
+											</c:when >
+											
+											<c:when test="${resultDetail.getAdded() eq 'false'  }">
+											<option value="true">是</option>
 													<option value="false" selected>否</option>
-												</c:if>
-
+											</c:when >
+											
+											<c:otherwise>
+											<option value="true" selected>是</option>
+													<option value="false" >否</option>
+											
+											
+											</c:otherwise>
+											
+											
+											</c:choose>
+											
 
 
 											</select>
