@@ -49,7 +49,7 @@ public class getJSON {
 		Connection conn = new DataBaseConn().getConn();
 
 		String strSql = "select QR_id, d.SKU, brand, subBrand, productName, s.warehouse, warehousePosition1, warehousePosition2, d.qty,isnull(p.picturePath,''),p.spec,p.color "
-				+ " from orders_detail as d   inner join storage as s on d.SKU = s.SKU "
+				+ " from orders_detail as d   inner join storage as s on d.SKU = s.SKU  and d.warehouse = s.warehouse "
 				+ " inner join product as p on d.SKU = p.SKU  where d.QR_id = ?  ";
 		
 		
