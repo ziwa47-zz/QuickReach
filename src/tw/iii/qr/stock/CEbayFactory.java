@@ -23,8 +23,8 @@ public class CEbayFactory extends CEbay {
 
 	
 	public void InsertNewEbayAccount (HttpServletRequest request, Connection conn) throws SQLException{
-		String strsql = "INSERT INTO  ebayaccount(ebayId,ebayToken,endToken,paypalAccount,correspondCompany,startTime,lastFixTime,status ,comment,systemFeedback)"
-					  + " VALUES (?,?,?,?,?,?,?,?,?,?)"; //(10個)
+		String strsql = "INSERT INTO  ebayaccount(ebayId,ebayToken,endToken,paypalAccount,correspondCompany,startTime,lastFixTime,status ,comment,systemFeedback,companyAddress,companyPhone,companyPost)"
+					  + " VALUES (?,?,?,?,?,SELECT DATEADD(HOUR,8,GetUTCDate()) ,SELECT DATEADD(HOUR,8,GetUTCDate()) ,?,?,?,?,?,?)"; //(13個)
 	
 		PreparedStatement ps = null;
 		System.out.print(strsql); 
@@ -35,11 +35,15 @@ public class CEbayFactory extends CEbay {
 		ps.setString(3, request.getParameter("endToken"));
 		ps.setString(4, request.getParameter("paypalAccount"));
 		ps.setString(5, request.getParameter("correspondCompany"));
-		ps.setString(6, request.getParameter("startTime")); //6th
-		ps.setString(7, request.getParameter("lastFixTime")); 
-		ps.setString(8, request.getParameter("status"));
-		ps.setString(9, request.getParameter("comment"));
-		ps.setString(10, request.getParameter("systemFeedback"));
+		//ps.setString(6, request.getParameter("startTime")); //6th
+		//ps.setString(7, request.getParameter("lastFixTime")); 
+		ps.setString(6, request.getParameter("status"));
+		ps.setString(7, request.getParameter("comment"));
+		ps.setString(8, request.getParameter("systemFeedback"));
+		
+		ps.setString(9, request.getParameter("companyAddress"));
+		ps.setString(10, request.getParameter("companyPhone"));
+		ps.setString(13, request.getParameter("companyPost")); 
 			
 		int i =ps.executeUpdate();
 	}
@@ -76,6 +80,9 @@ public class CEbayFactory extends CEbay {
 			ebayaccount.setcomment(rs.getString(9)); // comment
 			ebayaccount.setsystemFeedback(rs.getString(10)); // systemFeedback
 			
+			ebayaccount.setcompanyAddress(rs.getString(11));
+			ebayaccount.setcompanyPhone(rs.getString(12));
+			ebayaccount.setcompanyPost(rs.getString(13));
 			
 		}
 
@@ -93,9 +100,10 @@ public class CEbayFactory extends CEbay {
 		
 		String strsql = "UPDATE  ebayaccount SET "	
 				 + "ebayToken = ?," + "paypalAccount = ?,"
-				 + "correspondCompany = ?," + "startTime = ?," + "lastFixTime = ?,"	
-				 + "status = ?," + "comment = ?," + "systemFeedback = ? "
-				 + "where ebayId = ?"; //(10個)
+				 + "correspondCompany = ?,lastFixTime=(SELECT DATEADD(HOUR,8,GetUTCDate())) , " 	
+				 + "status = ?," + "comment = ?," + "systemFeedback = ? ,"
+				 + "companyAddress = ?,"+ "companyPhone = ?,"+ "companyPost = ? "
+				 + " where ebayId = ?"; //(10個)
 		
 	
 		PreparedStatement ps = null;
@@ -118,12 +126,18 @@ public class CEbayFactory extends CEbay {
 		ps.setString(1, request.getParameter("ebayToken")); 
 		ps.setString(2, request.getParameter("paypalAccount"));
 		ps.setString(3, request.getParameter("correspondCompany"));
-		ps.setString(4, request.getParameter("startTime"));
-		ps.setString(5, request.getParameter("lastFixTime"));  
-		ps.setString(6, request.getParameter("status"));
-		ps.setString(7, request.getParameter("comment"));
-		ps.setString(8, request.getParameter("systemFeedback"));
-		ps.setString(9, request.getParameter("ebayId")); 
+		
+		  
+		ps.setString(4, request.getParameter("status"));
+		ps.setString(5, request.getParameter("comment"));
+		ps.setString(6, request.getParameter("systemFeedback"));
+		
+		ps.setString(7, request.getParameter("companyAddress"));
+		ps.setString(8, request.getParameter("companyPhone"));
+		ps.setString(9, request.getParameter("companyPost")); 
+		ps.setString(10, request.getParameter("ebayId")); 
+		
+		
 		
 		int i =ps.executeUpdate();		
 							

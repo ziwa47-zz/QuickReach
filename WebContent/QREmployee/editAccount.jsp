@@ -11,6 +11,51 @@
 <head>
 <meta charset="utf-8">
 <title>修改員工帳號</title>
+<script src="../js/jquery-1.12.4.min.js"></script>
+
+
+
+<script type="text/javascript">
+
+function accountCompetenceLv(){
+	var accountCompetenceLv = $("#checkLv").val()
+	$("#competenceLv").val(accountCompetenceLv);
+}
+$(function(){
+
+	accountCompetenceLv();
+
+		$("#searchform").validate({
+			//debug:true,
+			rules:{
+					
+					checkPassword:{
+						equalTo:"#password"
+					}
+				},
+			ignore : [],
+			invalidHandler : function(form) {
+				
+
+			}
+	});
+	
+	
+})
+
+</script>
+
+
+<style type="text/css">
+#searchform label.error {
+font-size: 0.8em;
+color: #F00;
+font-weight: bold;
+display: block;
+
+
+}
+</style>
 </head>
 <body>
 <%@ include file="/href/navbar.jsp" %>
@@ -84,6 +129,17 @@ conn.close();
             <input class="form-control" name="password" type="password" value="${accountinfo.getPassword()}">
           </div>
         </div>
+        
+        <div class="row">
+          <div class="col-md-3 text-right well-sm label-tag "  >
+            <h4>確認密碼</h4>
+          </div>
+          <div class="col-md-5 well-sm">
+            <input class="form-control required" title="確認密碼錯誤" name="checkPassword" type="password"  value="${accountinfo.getPassword()}">
+          </div>
+        </div>
+        
+        
         <div class="row">
           <div class="col-md-3 text-right well-sm label-tag"  >
             <h4>姓氏</h4>
@@ -92,6 +148,9 @@ conn.close();
             <input class="form-control" name="lastName" type="text" value="${accountinfo.getLastName()}">
           </div>
         </div>
+        
+        
+        
         <div class="row">
           <div class="col-md-3 text-right well-sm label-tag"  >
             <h4>名字</h4>
@@ -122,14 +181,14 @@ conn.close();
             <h4>權限等級</h4>
           </div>
            <div class="col-md-5 well-sm">
-            <select class="form-control" name="competenceLv" >
+            <select class="form-control" name="competenceLv" id="competenceLv" >
               <c:forEach var="i" varStatus="check" items="${getCompetenceLv}" begin="0" step="1">
                 <option  value="${i.getCompetenceLv()}">${i.getCompetenceLv()}</option>
               </c:forEach>
             </select>
           </div>
         </div>
-        
+        <input type= "hidden" name="checkLv" id="checkLv" value="${accountinfo.getCompetenceLV()}">
         
      <div class="row">
           <div class="col-md-3 text-right well-sm label-tag"  >
