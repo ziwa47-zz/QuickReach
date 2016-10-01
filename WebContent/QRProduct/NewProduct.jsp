@@ -97,7 +97,7 @@ session.setAttribute("today", today);
 <div class="container" style="background: #9DDCD1; border-radius:20px;" >
   <form id="listForm" name="listForm" method="post" action="../ProductDo" 
   style="font-size: 100%; vertical-align: baseline; padding: 15px; " 
-  class=" container">
+  class=" container" enctype="multipart/form-data">
 
     <fieldset id="myfields" class="container-fluid" style="padding:0 30px 0 0;"><legend>新增產品</legend>
       <input type="hidden">
@@ -125,7 +125,17 @@ session.setAttribute("today", today);
                   </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>商品類別</h4></div>
-                      <div class="col-md-8  well-sm"><input class="form-control required"   title="請輸入正確商品類別" type="text" name="productType" value="" ></div>
+                      <div class="col-md-8  well-sm">
+                      <select class="form-control" name = "productType">
+                      
+                      <option value="1">單一商品</option>
+                      <option value="2">清倉類</option>
+                      <option value="3">調貨類</option>
+                      
+                      </select>
+                      
+                      
+                      </div>
                   </div>
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>廠牌</h4></div>
@@ -142,6 +152,11 @@ session.setAttribute("today", today);
                   <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>ProductCode</h4></div>
                       <div class="col-md-8  well-sm"><input class="form-control"    type="text" name="productCode" value="" ></div>
+                  </div>
+                  
+                      <div class="row">
+                      <div class="col-md-3 text-right well-sm label-tag"  ><h4>上傳圖片</h4></div>
+                      <div class="col-md-8 well-sm"><input class="form-control" type="file" name="picturePath" value="" ></div>
                   </div>
                   
                       
@@ -179,24 +194,27 @@ session.setAttribute("today", today);
               </div>
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>成本(TWD)</h4></div>
-                  <div class="col-md-8  well-sm"><input class="form-control digits required"     title="請輸入正確成本" type="text" name="cost" value="" ></div>
+                  <div class="col-md-8  well-sm"><input class="form-control number required"     title="請輸入正確成本" type="text" name="cost" value="" ></div>
               </div>
-              <div class="row">
-                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>備註</h4></div>
-                  <div class="col-md-8  well-sm"><input class="form-control"    type="text" name="comment" value=""></div>
-              </div>
+            
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>更新紀錄</h4></div>
                   <div class="col-md-8  well-sm"><input class="form-control  required yymmdd"    type="text" name="checkupdate" value="${today}" readonly></div>
               </div>
               	 <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>上架否</h4></div>
-                  <div class="col-md-8  well-sm"><input class="form-control required"     type="text" name="added" value="" ></div>
+                  <div class="col-md-8  well-sm">
+                  
+                  <select class="form-control" name = "added">
+                      
+                      <option value="true">是</option>
+                      <option value="false">否</option>
+                      
+                      </select>
+                  
+                  </div>
               </div>  
-                <div class="row">
-                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>重量(克)</h4></div>
-                  <div class="col-md-8  well-sm"><input class="form-control number "   title="請輸入正確重量  ex:8.7" type="text" name="weight" value="0" ></div>
-              </div>
+               
               </div>
 
             </div>
@@ -212,6 +230,11 @@ session.setAttribute("today", today);
             <div class="panel-body">
               <input type="hidden">
               <div class="container-fluid form-horizontal">
+              
+              <div class="row">
+                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>材積</h4></div>
+                  <div class="col-md-8 well-sm"><input class="form-control"  type="text" name="volume" value="${resultDetail.getVolume()}" ></div>
+              </div>
                     <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>包裝材質</h4></div>
                   <div class="col-md-8  well-sm"><input class="form-control"    type="text" name="packageMatrial" value="" ></div>
@@ -223,6 +246,15 @@ session.setAttribute("today", today);
               <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>建檔日</h4></div>
                   <div class="col-md-8  well-sm"><input class="form-control  required yymmdd"   type="text" name="createDate" value="${today}" readonly></div>
+              </div>
+              
+               <div class="row">
+                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>重量(克)</h4></div>
+                  <div class="col-md-8  well-sm"><input class="form-control number "   title="請輸入正確重量  ex:8.7" type="text" name="weight" value="0" ></div>
+              </div>
+                <div class="row">
+                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>備註</h4></div>
+                  <div class="col-md-8  well-sm"><input class="form-control"    type="text" name="comment" value=""></div>
               </div>
           
               </div>

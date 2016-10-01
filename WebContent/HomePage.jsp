@@ -64,6 +64,7 @@
       	<a href="/QROrders/OrderUploadTrackingCode.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">上傳追蹤碼</label></a>
       	<a href="/QROrders/OrderFinished.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">已完成</label></a>
       	<a href="/QROrders/ShipmentRecord.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">訂單出貨紀錄</label></a>
+      	<a href="/QROrders/NewOrderPre.jsp"><label class="btn btn-lg btn-primary">新增私下訂單</label></a>
       </div>
     </div>
     <div id="menu2" class="tab-pane fade">
@@ -120,6 +121,12 @@ $(document).ready(function(){
         $(".act span").text(x);
         $(".prev span").text(y);
     });
+});
+$('a').click(function() {
+    $('#spinner').show();
+});
+$('button').click(function() {
+    $('#spinner').show();
 });
 </script>
 <%@ include file="/href/footer.jsp"%>

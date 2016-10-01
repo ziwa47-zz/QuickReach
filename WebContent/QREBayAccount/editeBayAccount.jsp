@@ -10,6 +10,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>editAccount</title>
+
+<script src="../js/jquery-1.12.4.min.js"></script>
+
+
+<script type="text/javascript">
+	
+</script>
+
+
 </head>
 <body>
 <%@include file="../href/navbar.jsp"%>
@@ -56,7 +65,7 @@ System.out.println(ebayaccount.getebayId());
 %>
 
 <div class="container" style="background: #E9C2D0; border-radius:20px;">
-  <form name="searchform" method="post" action="../EbayAccountDo" class="form-inline container required" 
+  <form name="searchform" id="searchform" method="post" action="../EbayAccountDo" class="form-inline container required" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;">
       <legend>修改eBay帳號</legend>
@@ -102,13 +111,40 @@ System.out.println(ebayaccount.getebayId());
           <h4>對應公司</h4>
         </div>
         <div class="col-md-5 well-sm control-label">
-          <select class="form-control" name="correspondCompany" value = ${eBayAccount.getcorrespondCompany()} >
-            <option value="HUANG PO-WEI">HUANG PO-WEI</option>
-            <option value="YU CHIN WU">YU CHIN WU</option>
-            <option value="WHIRLWIND SPEED LIMITED">WHIRLWIND SPEED LIMITED</option>
-          </select>
+        <input class="form-control" type="text" name="correspondCompany" id="correspondCompany" value="${eBayAccount.getcorrespondCompany()}">
+         
         </div>
       </div>
+      
+        <div class="row">
+        <div class="col-md-3 well-sm">
+          <h4>對應公司電話</h4>
+        </div>
+        <div class="col-md-5 well-sm control-label">
+        <input class="form-control" type="text" name="companyPhone" id="companyPhone" value="${eBayAccount.getcompanyPhone()}">
+         
+        </div>
+      </div>
+        <div class="row">
+        <div class="col-md-3 well-sm">
+          <h4>對應公司郵遞區號</h4>
+        </div>
+        <div class="col-md-5 well-sm control-label">
+        <input class="form-control" type="text" name="companyPost" id="companyPost" value="${eBayAccount.getcompanyPost()}">
+         
+        </div>
+      </div>
+        <div class="row">
+        <div class="col-md-3 well-sm">
+          <h4>對應公司地址</h4>
+        </div>
+        <div class="col-md-5 well-sm control-label">
+        <input class="form-control" type="text" name="companyAddress" id="companyAddress" value="${eBayAccount.getcompanyAddress()}">
+         
+        </div>
+      </div>
+      
+      
       
       <div class="row">
         <div class="col-md-3 well-sm">
@@ -131,7 +167,7 @@ System.out.println(ebayaccount.getebayId());
           <h4>啟用時間</h4>          
         </div>                   
         <div class="col-md-5 well-sm ">
-         <input class="form-control" type="text" name="startTime" value="${eBayAccount.getstartTime()}" >     
+         <input class="form-control" type="text" name="startDate" value="${eBayAccount.getstartTime()}"  readonly>     
         </div>
       </div>
            
@@ -140,7 +176,7 @@ System.out.println(ebayaccount.getebayId());
           <h4>最後修改時間 </h4>
         </div>
         <div class="col-md-5 well-sm ">
-          <input class="form-control" type="text" name="lastFixTime" value="${eBayAccount.getlastFixTime() }" >
+          <input class="form-control" type="text" name="lastFixDate" value="${eBayAccount.getlastFixTime() }" readonly>
         </div>
       </div>
       

@@ -87,8 +87,8 @@ public class StatusDoServlet extends HttpServlet {
 			}
 			break;
 		case "processing":
-//			LinkedList<String> warehouses = OFactory.getWarehouse(request);
-//			
+			LinkedList<String> warehouses = OFactory.getWarehouse(request);
+			
 //			for(int i=0; i<warehouses.size(); i++){
 //				System.out.println("warehouse:" + warehouses.get(i));
 //				if(OFactory.isNullorEmpty(warehouses.get(i))){
@@ -128,6 +128,11 @@ public class StatusDoServlet extends HttpServlet {
 				conn.close();
 			}
 			break;
+		case "finished":
+			OFactory.updateToRefund(request, conn);
+			OFactory.isBundleAddBackToStock(request, conn);
+			response.sendRedirect("QROrders/refundPage.jsp?begin=0&end=10");
+			conn.close();
 		case "revertTo":
 			OFactory.revertTo(request, conn);
 			response.sendRedirect(request.getHeader("Referer"));

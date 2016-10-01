@@ -9,6 +9,16 @@
 <jsp:useBean id ="purchaseRecord" class= "tw.iii.purchase.purchaseFactory" scope="page"/>
 <html>
 <head>
+ <script src="http://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+<style type="text/css">
+/* Sortable tables */
+table.sortable thead {
+    background-color:#eee;
+    color:#666666;
+    font-weight: bold;
+    cursor: default;
+}
+</style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>庫存明細</title>
 </head>
@@ -133,7 +143,7 @@ conn1.close();
       <tbody>
         <tr>
           <td>${i.getWareHouse()}</td>
-          <td>${i.getPosition1()}->${i.getPosition2()}</td>
+          <td>${i.getPosition1()}-${i.getPosition2()}</td>
           <td>${i.getQty()}</td>
           <td>${i.getLastpurchasedate()}</td>
           <td>${i.getComment()}</td>
@@ -155,34 +165,35 @@ conn1.close();
 	<form name="searchform" method="post" action="#" style="font-size: 100%; vertical-align: baseline; 
   padding: 15px; " class="form-inline container">
 
-      <table class="table table-bordered table-hover table-condensed pull-left" 
+      <table class="table table-bordered table-hover table-condensed pull-left sortable" 
       style="margin:0 0 0 -15px" >
       <thead>
  	    <tr class="ListTitle2">
+          <th>日期</th>
           <th>單號</th>
           <th>類別</th>
-          <th>數量</th>
-          <th>日期</th>
           <th>倉別</th>
+          <th>數量</th>
           <th>儲位</th>
         
         </tr>
       </thead>
+      <tbody>
       <c:forEach var="d" items="${order}" begin="0" step="1" >
    
    
-      <tbody>
+      
         <tr>
+          <td>${d.getDate()}</td>
           <td>${d.getPurchaseId()}</td>
           <td>${d.getStockStatus()}</td>
-          <td>${d.getQty()}</td>
-          <td>${d.getDate()}</td>
           <td>${d.getWarehouse()}</td>
-         <td>${d.getWarehousePosition()}-${d.getWarehousePosition2()}</td>
+          <td>${d.getQty()}</td>
+          <td>${d.getWarehousePosition()}-${d.getWarehousePosition2()}</td>
         </tr>
-      </tbody>
+      
      </c:forEach>
-   
+   </tbody>
        </table>
       </form>
    </div>	

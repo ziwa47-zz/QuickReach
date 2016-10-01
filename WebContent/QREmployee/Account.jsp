@@ -9,6 +9,41 @@
 <head>
 <meta charset="utf-8">
 <title>新增帳號</title>
+
+<script src="../js/jquery-1.12.4.min.js"></script>
+
+
+<script type="text/javascript">
+	
+	$(function() {
+
+		$("#searchform").validate({
+			//debug:true,
+			rules:{
+					
+				checkPassword:{
+						equalTo:"#password"
+					}
+				},
+			ignore : [],
+			invalidHandler : function(form) {
+				
+
+			}
+		});
+	});
+</script>
+
+<style type="text/css">
+#searchform label.error {
+font-size: 0.8em;
+color: #F00;
+font-weight: bold;
+display: block;
+
+
+}
+</style>
 </head>
 
 <body><%@ include file="/href/navbar.jsp" %>
@@ -42,7 +77,7 @@ session.setAttribute("getCompetenceLv", list);
   </ol>
 </div>
 <div class="container" style="background: #E9C2D0; border-radius:20px;">
-  <form name="searchform" method="post" action="QRAccountServlet.do" class="form-inline container required" 
+  <form name="searchform" id="searchform" method="post" action="QRAccountServlet.do" class="form-inline container required" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;">
       <legend>輸入帳號資料</legend>
@@ -52,15 +87,24 @@ session.setAttribute("getCompetenceLv", list);
             <h4>登入帳號</h4>
           </div>
           <div class="col-md-5 well-sm">
-            <input class="form-control" name="account" type="text" >
+            <input class="form-control required" name="account" title="請輸入帳號" type="text" readonly>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-3 text-right well-sm label-tag"  >
+          <div class="col-md-3 text-right well-sm label-tag "  >
             <h4>密碼</h4>
           </div>
           <div class="col-md-5 well-sm">
-            <input class="form-control" name="password" type="password" >
+            <input class="form-control required" id="password" title="請輸入密碼" name="password" type="password" >
+          </div>
+        </div>
+        
+         <div class="row">
+          <div class="col-md-3 text-right well-sm label-tag "  >
+            <h4>確認密碼</h4>
+          </div>
+          <div class="col-md-5 well-sm">
+            <input class="form-control required" title="確認密碼錯誤" name="checkPassword" type="password" >
           </div>
         </div>
         <div class="row">
@@ -68,7 +112,7 @@ session.setAttribute("getCompetenceLv", list);
             <h4>姓氏</h4>
           </div>
           <div class="col-md-5 well-sm">
-            <input class="form-control" name="lastName" type="text" >
+            <input class="form-control required" title="請輸入姓氏" name="lastName" type="text" >
           </div>
         </div>
         <div class="row">
@@ -76,7 +120,7 @@ session.setAttribute("getCompetenceLv", list);
             <h4>名字</h4>
           </div>
           <div class="col-md-5 well-sm">
-            <input class="form-control" name="firstName" type="text" >
+            <input class="form-control required" name="firstName" title="請輸入名字" type="text" >
           </div>
         </div>
         <div class="row">
@@ -84,7 +128,7 @@ session.setAttribute("getCompetenceLv", list);
             <h4>E-mail</h4>
           </div>
           <div class="col-md-5 well-sm">
-            <input class="form-control" name="E-mail" type="text" >
+            <input class="form-control required" name="E-mail" title="請輸入E-mail" type="text" >
           </div>
         </div>
         <div class="row">
@@ -92,7 +136,7 @@ session.setAttribute("getCompetenceLv", list);
             <h4>英文名字</h4>
           </div>
           <div class="col-md-5 well-sm">
-            <input class="form-control" name="enName" type="text" >
+            <input class="form-control required" name="enName" title="請輸入英文名字" type="text" >
           </div>
         </div>
         
