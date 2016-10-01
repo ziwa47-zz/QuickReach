@@ -1,4 +1,5 @@
 <%@page import="tw.iii.qr.stock.*"%>
+<%@page import="tw.iii.qr.stock.CopySheetStyle"%>
 <%@page import="tw.iii.qr.DataBaseConn"%>
 <%@page import="tw.iii.qr.stock.CEbay"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -19,8 +20,10 @@
 
 <%
 //get.物流匯出格式();
-get.AP寄件單範本EMS();
+//get.AP寄件單範本EMS();
 //get.AP寄件單範本AP();
+
+get.getAP寄件單範本AP();
 //get.EMS160830(); <==先不做;
 //get.AP160830_1();
 

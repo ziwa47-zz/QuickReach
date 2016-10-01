@@ -18,7 +18,7 @@ import org.apache.tomcat.util.net.SecureNio2Channel.ApplicationBufferHandler;
  */
 @WebListener
 public class daliy implements ServletContextListener {
-
+	public static ServletContext servletContext;
 	/**
 	 * Default constructor.
 	 */
@@ -37,7 +37,7 @@ public class daliy implements ServletContextListener {
 	 * @see ServletContextListener#contextInitialized(ServletContextEvent)
 	 */
 	public void contextInitialized(ServletContextEvent a) {
-
+		servletContext = a.getServletContext();
 		Timer t1 = new Timer();
 		t1.scheduleAtFixedRate(new TimerTask() {
 			
@@ -50,13 +50,10 @@ public class daliy implements ServletContextListener {
 						public void run() {
 
 							try {
-
-								LinkedList<COrders> da = new DayliBalanceSheetFactory().dayliBalanceSheet();
-								a.getServletContext().setAttribute("ndbs", da);
-								//System.out.println("da done");
-							} catch (ClassNotFoundException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+								new CGetEbay().CGetEbay1();
+								new DayliBalanceSheetFactory().dayliBalanceSheet();
+							
+								System.out.println("da done");
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
