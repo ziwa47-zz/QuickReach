@@ -16,6 +16,9 @@
 
 <body>
 <%@include file="../href/navbar.jsp"%>
+<c:if test="${PageCompetence.getEbayPaypalAccountEdit() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 <%
 Connection conn1 = new DataBaseConn().getConn();
 LinkedList<CEbay> ebay1 = getebay.searchEbayAc(request,conn1);
