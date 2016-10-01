@@ -87,7 +87,7 @@ session.setAttribute("getCompetenceLv", list);
             <h4>登入帳號</h4>
           </div>
           <div class="col-md-5 well-sm">
-            <input class="form-control required" name="account" title="請輸入帳號" type="text" >
+            <input class="form-control required" name="account" title="請輸入帳號" type="text" readonly>
           </div>
         </div>
         <div class="row">
