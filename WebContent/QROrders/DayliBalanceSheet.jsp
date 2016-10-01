@@ -15,7 +15,12 @@
 </head>
 <body>
 <%@ include file = "/href/navbar.jsp"%>
-
+<c:if test="${PageCompetence.getOrdersManage() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
+<c:if test="${PageCompetence.getEntireOrders() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 <%
 %>
  <div class="nav">

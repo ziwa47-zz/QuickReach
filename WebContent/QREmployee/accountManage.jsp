@@ -13,6 +13,9 @@
 </head>
 <body>
 <%@include file="/href/navbar.jsp"%>
+<c:if test="${PageCompetence.getAccountInfoEdit() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 <%
 Connection conn1 = new DataBaseConn().getConn();
 LinkedList<QRAccount> account1 = getaccount.searchQRemployee(request,conn1);
