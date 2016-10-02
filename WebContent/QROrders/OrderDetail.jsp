@@ -13,6 +13,9 @@
 </head>
 <body>
   <%@ include file ="/href/navbar.jsp" %>
+<c:if test="${PageCompetence.getOrdersManage() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 <%
 String QR_id ;
 request.setCharacterEncoding("UTF-8");
@@ -33,7 +36,9 @@ conn.close();
     <div class="navbar-left" style="background-color:#F3CE9A;" >
       <ul class="nav nav-tabs">
         <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp" style="color:#FFFFFF">訂單管理</a></li>
-        <li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
+        <c:if test="${PageCompetence.getEntireOrders() == 1 }"> 
+        	<li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
+      	</c:if>
       </ul>
     </div>
   </div>
@@ -46,6 +51,7 @@ conn.close();
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
         <li><a href="ShipmentRecord.jsp?begin=0&end=10" >訂單出貨記錄</a></li>
+        <li><a href="refundPage.jsp?begin=0&end=10" >退貨</a></li>
       </ul>
     </div>
   </div>
@@ -62,15 +68,17 @@ conn.close();
   <div class="container table-responsive" style="background: #D9A56B; border-radius:20px;">
   	<form name="searchform" method="post" action="../OrdersServlet" class="form-inline container" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px;">
-  	<div class="row">
-      <label for="inputPassword" class="col-md-2 control-label text-left">編輯模式</label>
-      <div class="col-md-4">
-        <label class="radio-inline"><input type="checkbox" name="optionsRadios" id="optionsCheck" onchange="enableFields(this)">開關</label>
-    	<label class="radio-inline">
-    	<button type="submit" name="submit" value="updateOrder" class="btn btn-lg btn-success" id="btnCheck" disabled>更新商品資料</button>
-      	</label>
-      </div>
-    </div>
+	<c:if test="${PageCompetence.getPendingOrdersEdit() == 1}">  	
+	  	<div class="row">
+	      <label for="inputPassword" class="col-md-2 control-label text-left">編輯模式</label>
+	      <div class="col-md-4">
+	        <label class="radio-inline"><input type="checkbox" name="optionsRadios" id="optionsCheck" onchange="enableFields(this)">開關</label>
+	    	<label class="radio-inline">
+	    	<button type="submit" name="submit" value="updateOrder" class="btn btn-lg btn-success" id="btnCheck" disabled>更新商品資料</button>
+	      	</label>
+	      </div>
+	    </div>
+    </c:if>
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;" disabled><legend>訂單明細</legend>
       <div class="panel-group" id="accordion">
         <div class="panel panel-default" style="background-color:#E7D29F">
@@ -236,30 +244,58 @@ conn.close();
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>物流配送方式</h4></div>
 		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="Logistics" value="${result.getCOrderMaster().getLogistics()}"></div>
 		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>運費</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="ShippingFees" value="${result.getCOrderMaster().getShippingFees()}"></div>
-		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>退運費</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="RefundShippingFees" value="${result.getCOrderMaster().getRefundShippingFees()}"></div>
-		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>其它費用</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="OtherFees" value="${result.getCOrderMaster().getOtherFees()}"></div>
-		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>ebay成交費</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="EbayFees" value="${result.getCOrderMaster().getEbayFees()}"></div>
-		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>計算保價</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="InsuranceTotal" value="${result.getCOrderMaster().getInsuranceTotal()}"></div>
-		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>paypal費用</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="PaypalFees" value="${result.getCOrderMaster().getPaypalFees()}"></div>
-		        </div>
+			    <c:if test="${PageCompetence.getTotalAmountEdit() == 1}">
+			        <div class="row">
+			          <div class="col-md-3 text-right well-sm label-tag"><h4>運費</h4></div>
+			          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="ShippingFees" value="${result.getCOrderMaster().getShippingFees()}"></div>
+			        </div>
+			        <div class="row">
+			          <div class="col-md-3 text-right well-sm label-tag"><h4>退運費</h4></div>
+			          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="RefundShippingFees" value="${result.getCOrderMaster().getRefundShippingFees()}"></div>
+			        </div>
+			        <div class="row">
+			          <div class="col-md-3 text-right well-sm label-tag"><h4>其它費用</h4></div>
+			          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="OtherFees" value="${result.getCOrderMaster().getOtherFees()}"></div>
+			        </div>
+			        <div class="row">
+			          <div class="col-md-3 text-right well-sm label-tag"><h4>ebay成交費</h4></div>
+			          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="EbayFees" value="${result.getCOrderMaster().getEbayFees()}"></div>
+			        </div>
+			        <div class="row">
+			          <div class="col-md-3 text-right well-sm label-tag"><h4>計算保價</h4></div>
+			          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="InsuranceTotal" value="${result.getCOrderMaster().getInsuranceTotal()}"></div>
+			        </div>
+			        <div class="row">
+			          <div class="col-md-3 text-right well-sm label-tag"><h4>paypal費用</h4></div>
+			          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="PaypalFees" value="${result.getCOrderMaster().getPaypalFees()}"></div>
+			        </div>
+		        </c:if>
+		        <c:if test="${PageCompetence.getTotalAmountEdit() == 0}">
+			        <div class="row">
+			          <div class="col-md-3 text-right well-sm label-tag"><h4>運費</h4></div>
+			          <div class="col-md-5 well-sm"><input readonly class="form-control" type="text" name="ShippingFees" value="${result.getCOrderMaster().getShippingFees()}"></div>
+			        </div>
+			        <div class="row">
+			          <div class="col-md-3 text-right well-sm label-tag"><h4>退運費</h4></div>
+			          <div class="col-md-5 well-sm"><input readonly class="form-control" type="text" name="RefundShippingFees" value="${result.getCOrderMaster().getRefundShippingFees()}"></div>
+			        </div>
+			        <div class="row">
+			          <div class="col-md-3 text-right well-sm label-tag"><h4>其它費用</h4></div>
+			          <div class="col-md-5 well-sm"><input readonly class="form-control" type="text" name="OtherFees" value="${result.getCOrderMaster().getOtherFees()}"></div>
+			        </div>
+			        <div class="row">
+			          <div class="col-md-3 text-right well-sm label-tag"><h4>ebay成交費</h4></div>
+			          <div class="col-md-5 well-sm"><input readonly class="form-control" type="text" name="EbayFees" value="${result.getCOrderMaster().getEbayFees()}"></div>
+			        </div>
+			        <div class="row">
+			          <div class="col-md-3 text-right well-sm label-tag"><h4>計算保價</h4></div>
+			          <div class="col-md-5 well-sm"><input readonly class="form-control" type="text" name="InsuranceTotal" value="${result.getCOrderMaster().getInsuranceTotal()}"></div>
+			        </div>
+			        <div class="row">
+			          <div class="col-md-3 text-right well-sm label-tag"><h4>paypal費用</h4></div>
+			          <div class="col-md-5 well-sm"><input readonly class="form-control" type="text" name="PaypalFees" value="${result.getCOrderMaster().getPaypalFees()}"></div>
+			        </div>
+		        </c:if>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>淨重(公克)</h4></div>
 		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="Weight" value="${result.getCOrderMaster().getWeight()}"></div>
@@ -276,10 +312,18 @@ conn.close();
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>備註</h4></div>
 		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="Comment" value="${result.getCOrderMaster().getComment()}"></div>
 		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>總計</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="TotalPrice" value="${result.getCOrderMaster().getTotalPrice()}"></div>
-		        </div>
+		        <c:if test="${PageCompetence.getTotalAmountEdit() == 1}">
+			        <div class="row">
+			          <div class="col-md-3 text-right well-sm label-tag"><h4>總計</h4></div>
+			          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="TotalPrice" value="${result.getCOrderMaster().getTotalPrice()}"></div>
+			        </div>
+		      	</c:if>
+		      	<c:if test="${PageCompetence.getTotalAmountEdit() == 0}">
+			        <div class="row">
+			          <div class="col-md-3 text-right well-sm label-tag"><h4>總計</h4></div>
+			          <div class="col-md-5 well-sm"><input readonly class="form-control" type="text" name="TotalPrice" value="${result.getCOrderMaster().getTotalPrice()}"></div>
+			        </div>
+		      	</c:if>
 		      </div>
             </div>
           </div>
@@ -312,8 +356,14 @@ conn.close();
 		            <td>Product Name:<br/>${i.getProductName()}<br/>
 						Invoice Name:<br/><input class="" type="text" name="invoiceName" value="${i.getInvoiceName()}">
 		            </td>
-		            <td><input class="" type="text" name="price" value="${i.getPrice()}"></td>
-		            <td><input class="" type="text" name="invoicePrice" value="${i.getInvoicePrice()}"></td>
+		           	<c:if test="${PageCompetence.getTotalAmountEdit() == 1}">
+			            <td><input class="" type="text" name="price" value="${i.getPrice()}" ></td>
+			            <td><input class="" type="text" name="invoicePrice" value="${i.getInvoicePrice()}" ></td>
+			        </c:if>
+		            <c:if test="${PageCompetence.getTotalAmountEdit() == 0}">
+			            <td><input class="" type="text" name="price" value="${i.getPrice()}" readonly></td>
+			            <td><input class="" type="text" name="invoicePrice" value="${i.getInvoicePrice()}" readonly></td>
+		           	</c:if>
 		            <td>
 		              <input class="" type="text" name="qty" value="${i.getQty()}">
 		             	 倉別:${i.getWarehouse()}<br/>
@@ -333,7 +383,7 @@ conn.close();
                         </c:forEach>
                       </select>
 		            </td>
-		            <td>備註:<input class="" type="text" name="comment" value="${i.getComment()}">
+		            <td><input class="" type="text" name="comment" value="${i.getComment()}">
 		            <input type="hidden" name="item" value="${i.getItem()}">
 		            </td>
 		          </tr>

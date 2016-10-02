@@ -47,6 +47,9 @@ display: block;
 </head>
 
 <body><%@ include file="/href/navbar.jsp" %>
+<c:if test="${PageCompetence.getAccountInfoEdit() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 <%
 LinkedList<Competence> list= competence1.getCompetence();
 session.setAttribute("getCompetenceLv", list);

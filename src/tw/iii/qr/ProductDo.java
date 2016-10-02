@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import tw.iii.qr.stock.CStock;
 import tw.iii.qr.stock.CStockFactory;
 
 @WebServlet("/ProductDo")
+@MultipartConfig
 public class ProductDo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection conn;
