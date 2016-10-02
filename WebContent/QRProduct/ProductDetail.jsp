@@ -118,7 +118,8 @@
 		<form id="listForm" name="listForm" method="post"
 			action="../ProductDo"
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
-			class="container">
+			class="container"
+			enctype="multipart/form-data">
 			<div class="row">
 				<label for="inputPassword" class="col-md-2 control-label text-left">編輯模式</label>
 				<div class="col-md-4">
@@ -274,7 +275,7 @@
 												<h4>產品圖片</h4>
 											</div>
 											<div class="col-md-8 well-sm">
-												<img alt="" src="/pics/${resultDetail.getPicturePath()}">
+												<img alt="" height="100%" width="100%" src="/pics/${resultDetail.getPicturePath()}">
 											</div>
 
 										</div>

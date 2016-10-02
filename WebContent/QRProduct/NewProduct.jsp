@@ -27,8 +27,10 @@ $(function() {
 		}
 	});
 });
-
-
+function loadImageFile(event)
+{
+       document.getElementById('img1').src = URL.createObjectURL(event.target.files[0]);
+};
 </script>
 
 
@@ -99,7 +101,7 @@ session.setAttribute("today", today);
 
 
 <div class="container" style="background: #9DDCD1; border-radius:20px;" >
-  <form id="listForm" name="listForm" method="post" action="../ProductDo" 
+  <form id="listForm" name="listForm" method="post" action="/Product.do" 
   style="font-size: 100%; vertical-align: baseline; padding: 15px; " 
   class=" container" enctype="multipart/form-data">
 
@@ -160,7 +162,9 @@ session.setAttribute("today", today);
                   
                       <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>上傳圖片</h4></div>
-                      <div class="col-md-8 well-sm"><input class="form-control" type="file" name="picturePath" value="" ></div>
+                      <div class="col-md-8 well-sm"><input  class="form-control" type="file" name="picturePath" value="" onchange="loadImageFile(event)">
+                      <img id="img1" src="" width="100%" height="100%"></div>
+                     							
                   </div>
                   
                       
