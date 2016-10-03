@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 
@@ -27,8 +28,11 @@ import com.ebay.soap.eBLBaseComponents.OrderArrayType;
 import com.ebay.soap.eBLBaseComponents.OrderIDArrayType;
 import com.ebay.soap.eBLBaseComponents.OrderStatusCodeType;
 import com.ebay.soap.eBLBaseComponents.OrderType;
+import com.ebay.soap.eBLBaseComponents.PaginationResultType;
+import com.ebay.soap.eBLBaseComponents.PaginationType;
 import com.ebay.soap.eBLBaseComponents.ShippingDetailsType;
 import com.ebay.soap.eBLBaseComponents.ShippingServiceOptionsType;
+import com.ebay.soap.eBLBaseComponents.SortOrderCodeType;
 import com.ebay.soap.eBLBaseComponents.TradingRoleCodeType;
 
 import tw.iii.autoInsertData.autoInsertData;
@@ -45,37 +49,71 @@ public class CGetEbay {
 	}
 
 	public void CGetEbay1() {
+		
 		try {
 			// 110183287995
 			// Instantiate ApiContext and initialize with token and Trading API
 			// URL
+			
+			ArrayList<OrderType> od = new ArrayList<>();
 			Connection conn = new DataBaseConn().getConn();
-			for (int i = 0; i < getToken(conn).size(); i++) {
-				ApiContext apiContext = getApiContext(getToken(conn).get(i));
+			LinkedList<String> token = new LinkedList<String>();
+			token =  getToken(conn);
+			for (int i = 0; i < token.size(); i++) {
+				ApiContext apiContext = getApiContext(token.get(i));
 				// Create call object and execute the call
-				GeteBayOfficialTimeCall apiCall = new GeteBayOfficialTimeCall(apiContext);
-				Calendar cal = apiCall.geteBayOfficialTime();
+				//GeteBayOfficialTimeCall apiCall = new GeteBayOfficialTimeCall(apiContext);
 				GetOrdersCall apiord = new GetOrdersCall(apiContext);
 				apiord.setDetailLevel(new DetailLevelCodeType[] { DetailLevelCodeType.RETURN_ALL,
 						DetailLevelCodeType.ITEM_RETURN_DESCRIPTION, DetailLevelCodeType.ITEM_RETURN_ATTRIBUTES });
 				apiord.setNumberOfDays(30);
+				apiord.setPagination(new PaginationType());
+				apiord.setSortingOrder(SortOrderCodeType.DESCENDING);
 				// OrderIDArrayType oiat = new OrderIDArrayType();
 				// String[] orderIds = new String[1];
 				// orderIds[0]= "110183287995";
 				// oiat.setOrderID(orderIds);
-				OrderStatusCodeType status = OrderStatusCodeType.ALL;
+				OrderStatusCodeType status = OrderStatusCodeType.COMPLETED;
 				apiord.setOrderStatus(status);
-
+				
 				TradingRoleCodeType role = TradingRoleCodeType.SELLER;
 				apiord.setOrderRole(role);
 				apiord.setIncludeFinalValueFee(true);
+				
 				OrderType[] orders = apiord.getOrders();
-
-				displayOrders(orders);
+				PaginationResultType rpr = apiord.getReturnedPaginationResult();
+				System.out.println(apiord.getReturnedHasMoreOrders());//true
+				System.out.println(rpr.getTotalNumberOfEntries());//139
+				PaginationType p = new PaginationType();
+				for(int j = 1 ;j <= rpr.getTotalNumberOfPages();j++){
+					if(j !=1){
+						p.setPageNumber(j);
+						apiord.setPagination(p);
+					}					
+					
+					for(OrderType order :apiord.getOrders()){
+						od.add(order);
+						
+					}
+					System.out.println("odin "+od.size());
+				}
+				System.out.println("odout "+od.size());
+				
+				
+//				System.out.println(apiord.getReturnedHasMoreOrders());
+//				System.out.println(apiord.getReturnedReturnedOrderCountActual());
+//				System.out.println(rpr.getTotalNumberOfEntries());
+//				System.out.println(rpr.getTotalNumberOfPages());
+				
+				
 				// other(orders);
 				// Handle the result returned
-				System.out.println("Official eBay Time : " + cal.getTime().toString());
+				//System.out.println("Official eBay Time : " + cal.getTime().toString());
+				
 			}
+			displayOrders(od,conn);
+			System.out.println("oddone");
+			conn.close();
 		} // try
 		catch (Exception e) {
 
@@ -83,17 +121,18 @@ public class CGetEbay {
 		}
 	}
 
-	private static void displayOrders(OrderType[] orders)
+	private static void displayOrders(ArrayList<OrderType> od,Connection conn)
 			throws IllegalAccessException, ClassNotFoundException, Exception {
 
-		int size = orders != null ? orders.length : 0;
+		int size = od != null ? od.size() : 0;
 		System.out.println(size);
 		for (int i = 0; i < size; i++) {
-			OrderType order = orders[i];
-			Connection conn = new DataBaseConn().getConn();
+			OrderType order = od.get(i);
+			
+			
 			System.out.println(order.getCheckoutStatus().getStatus().toString());
 			if ("COMPLETE".equals(order.getCheckoutStatus().getStatus().toString())) {
-				if (!checkExist(order)) {
+				if (!checkExist(order,conn)) {
 					ShippingServiceOptionsType sso = order.getShippingServiceSelected();
 
 					String QR_id = autoInsertData.generateQR_Id();
@@ -138,6 +177,7 @@ public class CGetEbay {
 					ps.setString(23, order.getShippingDetails().getSellingManagerSalesRecordNumber().toString());
 					ps.setString(24, "paypal");
 					ps.setTimestamp(25, new java.sql.Timestamp((long) 0.0));
+				
 					int x = ps.executeUpdate();
 
 					String strSql2 = "INSERT INTO order_recieverinfo (QR_id, order_id, recieverFirstName, recieverLastName,"
@@ -239,7 +279,7 @@ public class CGetEbay {
 					System.out.println("客戶名稱:" + order.getBuyerUserID());
 					System.out.println("外部訂單編號:" + order.getExtendedOrderID());
 					System.out.println(
-							"訂單長度?:" + new Integer(order.getTransactionArray().getTransaction().length).toString());
+							"訂單長度:" + new Integer(order.getTransactionArray().getTransaction().length).toString());
 					System.out.println("總價:" + new Double(order.getTotal().getValue()).toString());
 					System.out.println("訂單建立時間:" + eBayUtil.toAPITimeString(order.getCreatedTime().getTime()));
 					// System.out.println
@@ -273,38 +313,31 @@ public class CGetEbay {
 								"Price:" + order.getTransactionArray().getTransaction()[l].getItem().getCeilingPrice());
 						System.out.println(
 								"itemid:" + order.getTransactionArray().getTransaction()[l].getItem().getItemID());
-
+						System.out.println("LineItemID"+order.getTransactionArray().getTransaction()[l].getOrderLineItemID());
+						System.out.println("paidtime"+order.getTransactionArray().getTransaction()[l].getPaidTime());
 					}
 
-					// ShippingServiceOptionsType sso =
-					// order.getShippingServiceSelected();
 					if (sso != null) {
 						System.out.println("客戶選擇的物流:" + sso.getShippingService().toString());
 					}
-					ShippingDetailsType shippingDetails = order.getShippingDetails();
-					Boolean insuranceWanted = shippingDetails.isInsuranceWanted();
-					if (insuranceWanted != null) {
-						System.out.println("保險?" + insuranceWanted.toString());
-					}
-
-					// MultiLegShipping (Added for SDK 777 Release)
-					System.out.println(Utils.booleanToYesNo(order.isIsMultiLegShipping()));
 				}
 			}
+			//////////////////////////
+			//break;
+			/////////////////////////
 		}
+		
 	}
 
 	private static ApiContext getApiContext(String token) throws IOException {
 		String input;
 		ApiContext apiContext = new ApiContext();
 
-		// set Api Token to access eBay Api Server
 		ApiCredential cred = apiContext.getApiCredential();
 		// input = ConsoleUtil.readString("Enter your eBay Authentication Token:
 		// ");
-		input = token;
 		// "AgAAAA**AQAAAA**aAAAAA**T+rgVw**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wFk4GjC5eBpgWdj6x9nY+seQ**++oDAA**AAMAAA**KrbpmpcD67VY0UO20Q/vbkLrLQChXpvs/xkUUPH7awJn4I72xqw6c/32ET17wrRFhsYsuScNi6NoD5GTFyM6lbJFWHDSZlrlz9+CGC7lPAUJA+72yEZ4ENAwEf1WlVIeKbmzrXYYogYTUpi6LKN6XmET9Lh0Yt6SxsoWMUaPK2wZ8RhUw8gu88PZGZ1wdLsaCmq6ykrYbXIxU7hzpaLH36YlSky4YJjvLrD0wFvMp2DZWbj/pYHWhLaMx9nrLGUl1fDQI/mAQMwi3q9kL2GedSY+cGXzP8ZXyMNrUvFjAh54xK6OX3P8Na2MCmV5gjz95u0Fv+OhgtvPl68/7yq6VZG7P6AghA5Klkn4VrYiMYc5YgpYYH+1+Ws00il4nmNm4nVLh04eFLQepyzi3cPdlakxGFl/fz8rhXd3NCjPPU42HjYWk54JrS8xasbg/4/yz2TOWxA3O9xQTF55bcrEnSMLy4bgPv/5xZC2SKqI70jmddJbne4VDEqRDBbuFugRWo+l6ztRXJU+u5fjtYDVrLFZTIIbVBPeXfaGsa6B8fvNpQk5wlwkpf7g0u0hTXeioDNy0diJzpJ06uNVPMNH70ujUxJX8ogAbUnkKCKdaim8cECfyJ0Ol9aMILrrKNlXczwIGyiBmLWTJZYN0IX0OFGsLurusiLIp6EtOQpgAkg9tTPbFY3BiizrUrggdDQ+cznG4SrRfylaP5qZVgLSkBzDy9tej9rPCwDHU5ubh0Pn5wg1YWatP1ZFUO1Dg9fo";
-		cred.seteBayToken(input);
+		cred.seteBayToken(token);
 
 		// set Api Server Url
 		// input = ConsoleUtil.readString("Enter eBay SOAP server URL (e.g.,
@@ -335,7 +368,7 @@ public class CGetEbay {
 
 		LinkedList<String> outsideCode = new LinkedList<String>();
 
-		String strSql = "select outsideCode from orders_master";
+		String strSql = "select isnull(outsideCode,'') from orders_master";
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ResultSet rs = ps.executeQuery();
 
@@ -346,10 +379,9 @@ public class CGetEbay {
 		return outsideCode;
 	}
 
-	private static boolean checkExist(OrderType orders)
+	private static boolean checkExist(OrderType orders,Connection conn)
 			throws IllegalAccessException, ClassNotFoundException, Exception {
 
-		Connection conn = new DataBaseConn().getConn();
 		LinkedList<String> outsideCode = getOutsideCodeFromDatabase(conn);
 		for (int i = 0; i < outsideCode.size(); i++) {
 			if (outsideCode.get(i).equals(orders.getExtendedOrderID())) {

@@ -59,7 +59,9 @@ display: block;
 </head>
 <body>
 <%@ include file="/href/navbar.jsp" %>
-
+<c:if test="${PageCompetence.getAccountInfoEdit() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 <div class="nav">
   <div class="container">
     <div class="navbar-left" style="background-color:#C7AAE4;" >
@@ -108,7 +110,7 @@ conn.close();
 %>  
 
 <div class="container" style="background: #E9C2D0; border-radius:20px;">
-  <form name="searchform" method="post" action="QRAccountServlet.do" class="form-inline container required" 
+  <form name="searchform" id="searchform" method="post" action="QRAccountServlet.do" class="form-inline container required" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;">
       <legend>帳號修改</legend>
@@ -118,7 +120,7 @@ conn.close();
             <h4>帳號資訊</h4>
           </div>
           <div class="col-md-5 well-sm">
-            <input class="form-control" name="account" type="text" value="${accountinfo.getAccount()}" readonly>
+            <input class="form-control required" name="account" type="text" title="請輸入帳號" value="${accountinfo.getAccount()}" >
           </div>
         </div>
         <div class="row">
@@ -126,7 +128,7 @@ conn.close();
             <h4>密碼</h4>
           </div>
           <div class="col-md-5 well-sm">
-            <input class="form-control" name="password" type="password" value="${accountinfo.getPassword()}">
+            <input class="form-control required" name="password" id="password" type="password" title="請輸入密碼" value="${accountinfo.getPassword()}">
           </div>
         </div>
         
@@ -145,7 +147,7 @@ conn.close();
             <h4>姓氏</h4>
           </div>
           <div class="col-md-5 well-sm">
-            <input class="form-control" name="lastName" type="text" value="${accountinfo.getLastName()}">
+            <input class="form-control required " name="lastName" title="請輸入姓氏" type="text" value="${accountinfo.getLastName()}">
           </div>
         </div>
         
@@ -156,7 +158,7 @@ conn.close();
             <h4>名字</h4>
           </div>
           <div class="col-md-5 well-sm">
-            <input class="form-control" name="firstName" type="text" value="${accountinfo.getFirstName()}">
+            <input class="form-control required" name="firstName" title="請輸入名字" type="text" value="${accountinfo.getFirstName()}">
           </div>
         </div>
         <div class="row">
@@ -164,7 +166,7 @@ conn.close();
             <h4>E-mail</h4>
           </div>
           <div class="col-md-5 well-sm">
-            <input class="form-control" name="E-mail" type="text" value="${accountinfo.getEmail()}">
+            <input class="form-control " name="E-mail" type="text" value="${accountinfo.getEmail()}">
           </div>
         </div>
         <div class="row">
