@@ -24,6 +24,9 @@ table.sortable thead {
 </head>
 <body>
 <%@ include file ="/href/navbar.jsp" %>
+<c:if test="${PageCompetence.getInventoryManage() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
       <%
 String sku1 ;
 request.setCharacterEncoding("UTF-8");
@@ -54,7 +57,9 @@ conn1.close();
 				<ul class="nav nav-tabs">
 					<li class="" style="background-color: #1CAF9A"><a
 						href="SearchStockPage.jsp" style="color: #FFFFFF">庫存</a></li>
-					<li><a href="SearchProductPage.jsp" style="color: #000000">商品</a></li>
+					<c:if test="${PageCompetence.getProductManage() == 1 }">  	
+						<li><a href="SearchProductPage.jsp" style="color: #000000">商品</a></li>
+					</c:if>
 				</ul>
 			</div>
 		</div>

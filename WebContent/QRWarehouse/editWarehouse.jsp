@@ -17,7 +17,9 @@
 
 
 <body><%@ include file="/href/navbar.jsp" %>
-
+<c:if test="${PageCompetence.getParamSettingEdit() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 <%
 
 Connection conn = new DataBaseConn().getConn();

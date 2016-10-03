@@ -11,10 +11,41 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>addAccount</title>
 
+<script src="../js/jquery-1.12.4.min.js"></script>
+
+
+<script type="text/javascript">
+	
+	$(function() {
+
+		$("#searchform").validate({
+			//debug:true,
+			ignore : [],
+			invalidHandler : function(form) {
+				
+
+			}
+		});
+	});
+</script>
+
+<style type="text/css">
+#searchform label.error {
+font-size: 0.8em;
+color: #F00;
+font-weight: bold;
+display: block;
+
+
+}
+</style>
 
 </head>
 <body>
 <%@include file="../href/navbar.jsp"%>
+<c:if test="${PageCompetence.getEbayPaypalAccountEdit() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 <div class="nav">
   <div class="container">
     <div class="navbar-left" style="background-color: #C7AAE4;">
@@ -43,28 +74,28 @@
 </div>
 
 <div class="container" style="background: #E9C2D0; border-radius:20px;">
-  <form name="searchform" method="post" action="../EbayAccountDo" class="form-inline container required" 
+  <form name="searchform" id="searchform" method="post" action="../EbayAccountDo" class="form-inline container required" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;">
       <legend>新增eBay帳號</legend>
      
       <div class="row">
-        <div class="col-md-3 well-sm">     
-        <h4><div class="control-label">ebay ID</div></h4>           
+        <div class="col-md-3 well-sm ">     
+        <h4>ebay ID</h4>           
    <!-- <h4 class="col-md-5 well-sm control-label">ebay ID</h4>   --> 
         </div>
-        <div class="col-md-5 well-sm">
-          <input class="form-control" type="text" name="ebayId" value="" required>
+        <div class="col-md-5 well-sm ">
+          <input class="form-control required" type="text" title="請輸入ebay ID" name="ebayId" value="" >
         </div>
       </div>
       
       <div class="row">
         <div class="col-md-3 well-sm">
-        	<h4><div class="control-label">ebay Token</div></h4>
+        	<h4>ebay Token</h4>
        <!-- <h4 class="col-md-5 well-sm control-label">ebayToken</h4> -->
         </div>
         <div class="col-md-5 well-sm ">
-          <textarea class="form-control" name="ebayToken"  rows="5"	cols="85"  required></textarea>
+          <textarea class="form-control required" name="ebayToken" title="請輸入ebayToken" rows="5"	cols="85"  ></textarea>
         </div>
       </div>
       
@@ -81,25 +112,49 @@
        
       <div class="row">
         <div class="col-md-3 well-sm">
-        	<h4><div class="control-label">paypal帳號(E-mail)</div></h4>	
+        	<h4>paypal帳號(E-mail)</h4>	
           <!--  <h4>paypal帳號(E-mail)</h4> -->
         </div>
         <div class="col-md-5 well-sm ">
-          <input class="form-control" type="text" name="paypalAccount" value="" required>
+          <input class="form-control required" type="text" title="請輸入paypal帳號(E-mail)" name="paypalAccount" value="" >
         </div>
       </div>
       
-      <div class="row">
+       <div class="row">
         <div class="col-md-3 well-sm">
-        	<h4><div class="control-label">對應公司</div></h4>	
-       <!-- <h4 class="col-md-5 well-sm control-label">對應公司</h4>  -->   
+          <h4>對應公司</h4>
         </div>
         <div class="col-md-5 well-sm ">
-          <select class="form-control" name="correspondCompany" requied>
-            <option value="HUANG PO-WEI">HUANG PO-WEI</option>
-            <option value="YU CHIN WU">YU CHIN WU</option>
-            <option value="WHIRLWIND SPEED LIMITED">WHIRLWIND SPEED LIMITED</option>
-          </select>
+        <input class="form-control required" type="text" title="請輸入對應公司" name="correspondCompany" id="correspondCompany" value="">
+         
+        </div>
+      </div>
+      
+        <div class="row">
+        <div class="col-md-3 well-sm">
+          <h4>對應公司電話</h4>
+        </div>
+        <div class="col-md-5 well-sm ">
+        <input class="form-control required" type="text" title="請輸入對應公司電話"  name="companyPhone" id="companyPhone" value="">
+         
+        </div>
+      </div>
+        <div class="row">
+        <div class="col-md-3 well-sm">
+          <h4>對應公司郵遞區號</h4>
+        </div>
+        <div class="col-md-5 well-sm ">
+        <input class="form-control required" type="text" title="請輸入對應公司郵遞區號"  name="companyPost" id="companyPost" value="">
+         
+        </div>
+      </div>
+        <div class="row">
+        <div class="col-md-3 well-sm">
+          <h4>對應公司地址</h4>
+        </div>
+        <div class="col-md-5 well-sm ">
+        <input class="form-control required" type="text" title="請輸入對應公司地址"  name="companyAddress" id="companyAddress" value="">
+         
         </div>
       </div>
       
@@ -112,25 +167,7 @@
           <input type="radio" name="status" class="" value="OFF"> 停用 </div>
       </div>
       
-      <div class="row">
-        <div class="col-md-3 well-sm">
-          <h4>啟用時間</h4>          
-        </div>                   
-        <div class="col-md-5 well-sm ">
-         <input class="form-control" type="text" name="startTime" value="" >     
-        </div>
-      </div>
       
-           
-       <div class="row" >
-        <div class="col-md-3 well-sm ">
-       
-          <h4>最後修改時間 </h4>
-        </div>
-        <div class="col-md-5 well-sm ">
-          <input class="form-control" type="text" name="lastFixTime" value="" >
-        </div>
-      </div>
       
  <!--     <div class="row">
         <div class="col-md-3 well-sm">

@@ -60,6 +60,9 @@
 </head>
 <body>
 	<%@ include file="/href/navbar.jsp"%>
+<c:if test="${PageCompetence.getProductManage() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 	<%
 		String sku;
 		request.setCharacterEncoding("UTF-8");
@@ -75,7 +78,9 @@
 		<div class="container">
 			<div class="navbar-left" style="background-color: #BCF1E5;">
 				<ul class="nav nav-tabs">
-					<li><a href="SearchStockPage.jsp" style="color: #000">庫存</a></li>
+					<c:if test="${PageCompetence.getInventoryManage() == 1 }">	
+              	<li ><a href="SearchStockPage.jsp" style="color:#000">庫存</a></li>
+              </c:if>
 					<li class="" style="background-color: #1CAF9A"><a
 						href="SearchProductPage.jsp" style="color: #fff">商品</a></li>
 				</ul>
@@ -113,7 +118,8 @@
 		<form id="listForm" name="listForm" method="post"
 			action="../ProductDo"
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
-			class="container">
+			class="container"
+			enctype="multipart/form-data">
 			<div class="row">
 				<label for="inputPassword" class="col-md-2 control-label text-left">編輯模式</label>
 				<div class="col-md-4">
@@ -208,6 +214,16 @@
 														<option value="組合商品" selected>組合商品</option>
 
 													</c:when>
+													
+													<c:otherwise>
+													<option value="" selected></option>
+													<option value="單一商品">單一商品</option>
+														<option value="清倉類">清倉類</option>
+														<option value="調貨類">調貨類</option>
+														<option value="組合商品" >組合商品</option>
+													
+													
+													</c:otherwise>
 												</c:choose>
 
 
@@ -259,7 +275,7 @@
 												<h4>產品圖片</h4>
 											</div>
 											<div class="col-md-8 well-sm">
-												<img alt="" src="/pics/${resultDetail.getPicturePath()}">
+												<img alt="" height="100%" width="100%" src="/pics/${resultDetail.getPicturePath()}">
 											</div>
 
 										</div>
@@ -392,16 +408,28 @@
 										<div class="col-md-8  well-sm">
 
 											<select class="form-control" name="added">
-												<c:if test="${resultDetail.getAdded() eq 'true'  }">
-													<option value="true" selected>是</option>
+											
+											<c:choose>
+											<c:when test="${resultDetail.getAdded() eq 'true'  }">
+											<option value="true" selected>是</option>
 													<option value="false">否</option>
-												</c:if>
-
-												<c:if test="${resultDetail.getAdded() eq 'false'  }">
-													<option value="true">是</option>
+											</c:when >
+											
+											<c:when test="${resultDetail.getAdded() eq 'false'  }">
+											<option value="true">是</option>
 													<option value="false" selected>否</option>
-												</c:if>
-
+											</c:when >
+											
+											<c:otherwise>
+											<option value="true" selected>是</option>
+													<option value="false" >否</option>
+											
+											
+											</c:otherwise>
+											
+											
+											</c:choose>
+											
 
 
 											</select>

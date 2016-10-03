@@ -12,6 +12,9 @@ public class CEbay {
 	private String status;
 	private String comment;
 	private String systemFeedback;
+	private String companyAddress;
+	private String companyPost;
+	private String companyPhone;
 	
 	
 	public String getebayId() {
@@ -38,12 +41,30 @@ public class CEbay {
 	public void setpaypalAccount(String paypalAccount) {
 		this.paypalAccount = paypalAccount;
 	}
-	public String getcorrespondCompany() {
+	public String getcompanyPhone() {
+		return companyPhone;
+	}
+	public void setcompanyPhone(String companyPhone) {
+		this.companyPhone = companyPhone;
+	}
+	
+	public String getcompanyAddress() {
+		return companyAddress;
+	}
+	public void setcompanyAddress(String companyAddress) {
+		this.companyAddress = companyAddress;
+	}public String getcompanyPost() {
+		return companyPost;
+	}
+	public void setcompanyPost(String companyPost) {
+		this.companyPost = companyPost;
+	}public String getcorrespondCompany() {
 		return correspondCompany;
 	}
 	public void setcorrespondCompany(String correspondCompany) {
 		this.correspondCompany = correspondCompany;
 	}
+	
 	public String getstartTime() {
 		return startTime;
 	}

@@ -224,7 +224,7 @@ public JSONArray iosstockDetail(HttpServletRequest request) throws IllegalAccess
 		JSONArray ja = new JSONArray();
 		Connection conn = new DataBaseConn().getConn();
 		
-		String strSql = "select p.sku,p.p_name,p.brand,p.subbrand,p.spec,p.color,s.warehouse,s.warehousePosition1,s.warehousePosition2,s.qty,(select isnull(sum(qty),0) as 待處理量  from orders_detail as d inner join orders_master as m on d.Qr_id = m.Qr_id  where sku = ? and (m.orderStatus = N'待處理' or m.orderStatus = N'處理中' or m.orderStatus = N'揀貨中')),company from  storage s inner join product p on p.sku = s.sku where p.sku = ?";
+		String strSql = "select p.sku,p.p_name,p.brand,p.subbrand,p.spec,p.color,s.warehouse,s.warehousePosition1,s.warehousePosition2,s.qty,(select isnull(sum(qty),0) as 待處理量  from orders_detail as d inner join orders_master as m on d.Qr_id = m.Qr_id  where sku = ? and (m.orderStatus = N'待處理' or m.orderStatus = N'處理中' or m.orderStatus = N'揀貨中')),company,isnull(picturePath,'') from  storage s inner join product p on p.sku = s.sku where p.sku = ?";
 				
 		
 		PreparedStatement ps = conn.prepareStatement(strSql);
@@ -246,6 +246,7 @@ public JSONArray iosstockDetail(HttpServletRequest request) throws IllegalAccess
 			hm.put("stock", rs.getString(10));
 			hm.put("wait", rs.getString(11));
 			hm.put("company", rs.getString(12));
+			hm.put("pic", rs.getString(13));
 			JSONObject jo = new JSONObject(hm);
 			ja.put(jo);
 		}

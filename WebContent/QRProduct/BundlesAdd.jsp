@@ -152,11 +152,16 @@
   </head>
   <body>
  <%@ include file = "/href/navbar.jsp"%>
+ <c:if test="${PageCompetence.getProductManage() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
   <div class="nav">
   	<div class="container">
     	<div class="navbar-left" style="background-color:#BCF1E5;" >
         	<ul class="nav nav-tabs">
-              <li ><a href="SearchStockPage.jsp" style="color:#000">庫存</a></li>
+              <c:if test="${PageCompetence.getInventoryManage() == 1 }">	
+              	<li ><a href="SearchStockPage.jsp" style="color:#000">庫存</a></li>
+              </c:if>
               <li class="" style="background-color:#1CAF9A"><a href="SearchProductPage.jsp" style="color:#fff">商品</a></li>
             </ul>
         </div>
