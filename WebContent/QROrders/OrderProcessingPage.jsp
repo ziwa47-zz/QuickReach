@@ -13,7 +13,9 @@
 </head>
 <body>
 <%@ include file = "/href/navbar.jsp"%>
-
+<c:if test="${PageCompetence.getOrdersManage() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 <%
 	COrderFactory.checkUrlToRemoveSession(request, session);
 	Connection conn = new DataBaseConn().getConn();
@@ -31,7 +33,9 @@
     <div class="navbar-left" style="background-color:#F3CE9A;" >
       <ul class="nav nav-tabs">
         <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp?begin=0&end=10" style="color:#FFFFFF">訂單管理</a></li>
-        <li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
+        <c:if test="${PageCompetence.getEntireOrders() == 1 }"> 
+        	<li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
+      	</c:if>
       </ul>
     </div>
   </div>
@@ -44,6 +48,7 @@
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
         <li><a href="ShipmentRecord.jsp" >訂單出貨記錄</a></li>
+        <li><a href="refundPage.jsp?begin=0&end=10" >退貨</a></li>
       </ul>
     </div>
   </div>
@@ -459,7 +464,7 @@
                 </c:when>
                 <c:otherwise>
                   <tr>
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
+                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}" onchange=""></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getCOrderMaster().getEbayNO()}
                     <td>${i.getCOrderMaster().getPlatform()}</td>
@@ -483,7 +488,9 @@
                     <td colspan="3">
                     <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
                       <b>${k.getWarehouse()}</b>(倉別)<br/>
+                      <input type="hidden" name="warehouse" value="${k.getWarehouse()}">
                     </c:forEach>
+                    
                     </td>
                   </tr>
                   <tr>
@@ -512,6 +519,7 @@ function selectAllOrders(ele) {
     	$("input[name=QR_id]").prop("checked", false);
     }
 };
+
 function enableWarehouse(ele){
 	  var id = ele.value;
 	  if (ele.checked) {

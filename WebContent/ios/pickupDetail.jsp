@@ -10,7 +10,11 @@ JSONArray pickupResults = getJSON.pickupDetail(request);
 out.print(pickupResults);
 } 
 if(request.getParameter("status")!=null){
-getJSON.searchalready(request);
-
+	JSONArray pickupResults  = getJSON.searchalready(request);
+out.print(pickupResults);
+}
+if(request.getParameter("cc")!=null){
+	JSONArray pickupResults  = getJSON.searchCollection(request);
+out.print(pickupResults);
 }
 %>

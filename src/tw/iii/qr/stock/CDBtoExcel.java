@@ -1,5 +1,6 @@
 package tw.iii.qr.stock;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,12 +10,20 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.filechooser.FileSystemView;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 
 import tw.iii.qr.DataBaseConn;
 
@@ -152,6 +161,480 @@ public class CDBtoExcel {
 		
 	}
 	
+	public void AP寄件單範本EMS()throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+	
+		XSSFWorkbook wb = new XSSFWorkbook();
+		XSSFSheet sheet = wb.createSheet("AP寄件單範本EMS");
+		String strsql = "select s.date, s.type, s.QR_id, d.SKU, d.productName, d.qty, m.eBayAccount,"
+				+ " r.country"
+				+ " from orders_master as m inner join shippinglog as s on m.QR_id = s.QR_id"
+				+ " inner join order_recieverinfo as r on m.QR_id = r.QR_id"
+				+ " inner join orders_detail as d on m.QR_id = d.QR_id"
+				+ " where m.orderStatus = N'撿貨中'";
+		
+		Connection conn = new DataBaseConn().getConn();
+		PreparedStatement ps = null;
+		ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+		int index = 1;
+		
+		
+		
+		XSSFRow myRow1 = sheet.createRow(4);
+		myRow1.createCell(4).setCellValue("訂單單號"); //訂單單號
+		myRow1.createCell(6).setCellValue("收件人");	//收件人
+		while (rs.next()) {
+			myRow1 = sheet.createRow(index);
+			myRow1.createCell(4).setCellValue(rs.getString(1));
+			myRow1.createCell(6).setCellValue(rs.getString(2));
+			index++;
+		}
+		
+		XSSFRow myRow2 = sheet.createRow(5);
+		myRow2.createCell(1).setCellValue("寄件人名字"); //寄件人名字
+		myRow2.createCell(6).setCellValue("收件人地址"); //收件人地址 
+		while (rs.next()) {
+			myRow2 = sheet.createRow(index);
+			myRow2.createCell(1).setCellValue(rs.getString(1));
+			myRow2.createCell(6).setCellValue(rs.getString(2));
+			index++;
+		}
+		
+		XSSFRow myRow3 = sheet.createRow(6);
+		myRow3.createCell(1).setCellValue("寄件人地址"); //寄件人地址 
+		while (rs.next()) {
+			myRow3 = sheet.createRow(index);
+			myRow3.createCell(1).setCellValue(rs.getString(1));
+			index++;
+		}
+	
+		XSSFRow myRow4 = sheet.createRow(7);
+		myRow4.createCell(7).setCellValue("國家"); //國 家
+		while (rs.next()) {
+			myRow4 = sheet.createRow(index);
+			myRow4.createCell(7).setCellValue(rs.getString(1));
+			index++;
+		}
+		
+		
+		XSSFRow myRow5 = sheet.createRow(8);
+		myRow5.createCell(2).setCellValue("寄件人郵遞區號"); //寄件人郵遞區號
+		myRow5.createCell(4).setCellValue("寄件人Mobile"); //寄件人Mobile
+		while (rs.next()) {
+			myRow5 = sheet.createRow(index);
+			myRow5.createCell(2).setCellValue(rs.getString(1));
+			myRow5.createCell(4).setCellValue(rs.getString(2));
+			index++;
+		}
+		
+		XSSFRow myRow6 = sheet.createRow(9);
+		myRow6.createCell(4).setCellValue("Check欄位");	//Check欄位	
+		while (rs.next()) {
+			myRow6 = sheet.createRow(index);
+			myRow6.createCell(4).setCellValue(rs.getString(1));
+			index++;
+		}
+		
+		XSSFRow myRow7 = sheet.createRow(11);
+		myRow7.createCell(4).setCellValue("品名"); //品名
+		myRow7.createCell(6).setCellValue("價錢"); //價錢
+		while (rs.next()) {
+			myRow7 = sheet.createRow(index);
+			myRow7.createCell(4).setCellValue(rs.getString(1));
+			myRow7.createCell(6).setCellValue(rs.getString(2));
+			index++;
+		}
+		
+		
+		XSSFRow myRow8 = sheet.createRow(14);
+		myRow8.createCell(5).setCellValue("日期");	//日期
+		while (rs.next()) {
+			myRow8 = sheet.createRow(index);
+			myRow8.createCell(5).setCellValue(rs.getString(1));
+			index++;
+		}
+		
+		
+		
+		String date = getDay();
+				
+		//FileOutputStream out = new FileOutputStream("C:/Users/iii/Documents/Excel_Data/" + date + "AP寄件單範本EMS.xlsx");
+		FileSystemView fsv = FileSystemView.getFileSystemView();
+		FileOutputStream out = new FileOutputStream(fsv.getHomeDirectory()+"\\"+ date +"AP寄件單範本EMS.xlsx");
+		wb.write(out);
+		rs.close();
+		ps.close();
+		conn.close();
+	}
+	
+	public void AP寄件單範本AP()throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+		
+		XSSFWorkbook wb = new XSSFWorkbook();
+		XSSFSheet sheet = wb.createSheet("AP寄件單範本AP");
+		String strsql = "select s.date, s.type, s.QR_id, d.SKU, d.productName, d.qty, m.eBayAccount,"
+				+ " r.country"
+				+ " from orders_master as m inner join shippinglog as s on m.QR_id = s.QR_id"
+				+ " inner join order_recieverinfo as r on m.QR_id = r.QR_id"
+				+ " inner join orders_detail as d on m.QR_id = d.QR_id"
+				+ " where m.orderStatus = N'撿貨中'";
+		
+		Connection conn = new DataBaseConn().getConn();
+		PreparedStatement ps = null;
+		ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+		int index = 1;
+		
+		
+		
+		XSSFRow myRow1 = sheet.createRow(1);
+		myRow1.createCell(4).setCellValue("訂單單號"); //訂單單號		
+		while (rs.next()) {
+			myRow1.createCell(4).setCellValue(rs.getString(1));				
+		}
+		
+		XSSFRow myRow2 = sheet.createRow(2);
+		myRow2.createCell(1).setCellValue("寄件人名字"); //寄件人名字		
+		while (rs.next()) {
+			myRow2 = sheet.createRow(index);
+			myRow2.createCell(1).setCellValue(rs.getString(1));
+			index++;
+		}
+		
+		XSSFRow myRow3 = sheet.createRow(3);
+		myRow3.createCell(1).setCellValue("寄件人地址"); //寄件人地址 
+		while (rs.next()) {
+			myRow3 = sheet.createRow(index);
+			myRow3.createCell(1).setCellValue(rs.getString(1));
+			index++;
+		}
+	
+		XSSFRow myRow4 = sheet.createRow(4);
+		myRow4.createCell(2).setCellValue("寄件人郵遞區號"); //寄件人郵遞區號
+		myRow4.createCell(4).setCellValue("寄件人Mobile"); //寄件人Mobile
+		myRow4.createCell(7).setCellValue("Check欄位"); //Check欄位
+		while (rs.next()) {
+			myRow4 = sheet.createRow(index);
+			myRow4.createCell(2).setCellValue(rs.getString(1));
+			myRow4.createCell(4).setCellValue(rs.getString(1));
+			myRow4.createCell(7).setCellValue(rs.getString(1));
+			index++;
+		}
+		
+		
+		XSSFRow myRow5 = sheet.createRow(5);
+		myRow5.createCell(2).setCellValue("收件人"); //收件人	
+		while (rs.next()) {
+			myRow5 = sheet.createRow(index);
+			myRow5.createCell(2).setCellValue(rs.getString(1));
+			index++;
+		}
+		
+		XSSFRow myRow6 = sheet.createRow(6);
+		myRow6.createCell(1).setCellValue("收件人地址");	//收件人地址	
+		while (rs.next()) {
+			myRow6 = sheet.createRow(index);
+			myRow6.createCell(1).setCellValue(rs.getString(1));
+			index++;
+		}
+		
+		XSSFRow myRow7 = sheet.createRow(7);
+		myRow7.createCell(2).setCellValue("國家"); //國家
+		while (rs.next()) {
+			myRow7 = sheet.createRow(index);
+			myRow7.createCell(2).setCellValue(rs.getString(1));
+			index++;
+		}
+		
+		
+		XSSFRow myRow8 = sheet.createRow(9);
+		myRow8.createCell(1).setCellValue("品名");	//品名
+		myRow8.createCell(3).setCellValue("數量");	//數量
+		myRow8.createCell(4).setCellValue("寄件國家");	//寄件國家
+		myRow8.createCell(7).setCellValue("價錢");	//價錢
+		while (rs.next()) {
+			myRow8 = sheet.createRow(index);
+			myRow8.createCell(1).setCellValue(rs.getString(1));
+			myRow8.createCell(3).setCellValue(rs.getString(1));
+			myRow8.createCell(4).setCellValue(rs.getString(1));
+			myRow8.createCell(7).setCellValue(rs.getString(1));			
+			index++;
+		}
+		
+		XSSFRow myRow9 = sheet.createRow(10);		
+		myRow9.createCell(1).setCellValue("Check欄位"); //Check欄位
+		while (rs.next()) {
+			myRow9 = sheet.createRow(index);
+			myRow9.createCell(1).setCellValue(rs.getString(1));
+			index++;
+		}
+		
+		XSSFRow myRow10 = sheet.createRow(13);		
+		myRow10.createCell(3).setCellValue("Check欄位"); //Check欄位
+		while (rs.next()) {
+			myRow10 = sheet.createRow(index);
+			myRow10.createCell(3).setCellValue(rs.getString(1));
+			index++;
+		}
+		
+		XSSFRow myRow11 = sheet.createRow(18);		
+		myRow11.createCell(5).setCellValue("日期"); //日期
+		while (rs.next()) {
+			myRow11 = sheet.createRow(index);
+			myRow11.createCell(5).setCellValue(rs.getString(1));
+			index++;
+		}
+		
+		String date = getDay();
+				
+		//FileOutputStream out = new FileOutputStream("C:/Users/iii/Documents/Excel_Data/" + date + "AP寄件單範本EMS.xlsx");
+		FileSystemView fsv = FileSystemView.getFileSystemView();
+		FileOutputStream out = new FileOutputStream(fsv.getHomeDirectory()+"\\"+ date +"AP寄件單範本AP.xlsx");
+		wb.write(out);
+		rs.close();
+		ps.close();
+		conn.close();
+	}
+public void getAP寄件單範本AP()throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+		String path = "C:\\Users\\ziwa\\Desktop\\AP寄件單範本1.xlsx"; 
+		
+		CopySheetStyle cs = new CopySheetStyle();
+		XSSFWorkbook wb = new XSSFWorkbook(path);
+		XSSFSheet fromSheet = wb.getSheet("A&P");
+		//cs.copyBookCellStyle(wb, wb1);
+		
+		
+		String strsql = "select s.date, s.type, s.QR_id, d.SKU, d.productName, d.qty, m.eBayAccount,"
+				+ " r.country"
+				+ " from orders_master as m inner join shippinglog as s on m.QR_id = s.QR_id"
+				+ " inner join order_recieverinfo as r on m.QR_id = r.QR_id"
+				+ " inner join orders_detail as d on m.QR_id = d.QR_id"
+				+ " where m.orderStatus = N'撿貨中'";
+		
+		Connection conn = new DataBaseConn().getConn();
+		PreparedStatement ps = null;
+		ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+		int index = 1;
+		while(rs.next()){
+			
+			XSSFSheet toSheet = wb.createSheet("AP"+index);
+			cs.copySheet(wb,fromSheet, toSheet);	
+			
+			
+			
+		XSSFRow myRow1 = toSheet.getRow(1);
+		myRow1.getCell(4).setCellValue("訂單單號"); //訂單單號		
+		while (rs.next()) {
+			myRow1.getCell(4).setCellValue(rs.getString(1));				
+		}
+		
+		XSSFRow myRow2 = toSheet.getRow(2);
+		myRow2.getCell(1).setCellValue("寄件人名字"); //寄件人名字		
+		while (rs.next()) {
+			myRow2.getCell(1).setCellValue(rs.getString(1));
+		}
+		
+		XSSFRow myRow3 = toSheet.getRow(3);
+		myRow3.getCell(1).setCellValue("寄件人地址"); //寄件人地址 
+		while (rs.next()) {
+			myRow3.getCell(1).setCellValue(rs.getString(1));
+		}
+	
+		XSSFRow myRow4 = toSheet.getRow(4);
+		myRow4.getCell(2).setCellValue("寄件人郵遞區號"); //寄件人郵遞區號
+		myRow4.getCell(4).setCellValue("寄件人Mobile"); //寄件人Mobile
+		myRow4.getCell(7).setCellValue("Check欄位"); //Check欄位
+		while (rs.next()) {
+			myRow4.getCell(2).setCellValue(rs.getString(1));
+			myRow4.getCell(4).setCellValue(rs.getString(1));
+			myRow4.getCell(7).setCellValue(rs.getString(1));
+		}
+		
+		
+		XSSFRow myRow5 = toSheet.getRow(5);
+		myRow5.getCell(2).setCellValue("收件人"); //收件人	
+		while (rs.next()) {
+			myRow5.getCell(2).setCellValue(rs.getString(1));
+		}
+		
+		XSSFRow myRow6 = toSheet.getRow(6);
+		myRow6.getCell(1).setCellValue("收件人地址");	//收件人地址	
+		while (rs.next()) {
+			myRow6.getCell(1).setCellValue(rs.getString(1));
+		}
+		
+		XSSFRow myRow7 = toSheet.getRow(7);
+		myRow7.getCell(2).setCellValue("國家"); //國家
+		while (rs.next()) {
+			myRow7.getCell(2).setCellValue(rs.getString(1));
+		}
+		
+		
+		XSSFRow myRow8 = toSheet.getRow(9);
+		myRow8.getCell(1).setCellValue("品名");	//品名
+		myRow8.getCell(3).setCellValue("數量");	//數量
+		myRow8.getCell(4).setCellValue("寄件國家");	//寄件國家
+		myRow8.getCell(7).setCellValue("價錢");	//價錢
+		while (rs.next()) {
+			myRow8.getCell(1).setCellValue(rs.getString(1));
+			myRow8.getCell(3).setCellValue(rs.getString(1));
+			myRow8.getCell(4).setCellValue(rs.getString(1));
+			myRow8.getCell(7).setCellValue(rs.getString(1));			
+		}
+		
+		XSSFRow myRow9 = toSheet.getRow(10);		
+		myRow9.getCell(1).setCellValue("Check欄位"); //Check欄位
+		while (rs.next()) {
+			myRow9.getCell(1).setCellValue(rs.getString(1));
+		}
+		
+		XSSFRow myRow10 = toSheet.getRow(13);		
+		myRow10.getCell(3).setCellValue("Check欄位"); //Check欄位
+		while (rs.next()) {
+			myRow10.getCell(3).setCellValue(rs.getString(1));
+		}
+		
+		XSSFRow myRow11 = toSheet.getRow(18);		
+		myRow11.getCell(5).setCellValue("日期"); //日期
+		while (rs.next()) {
+			myRow11.getCell(5).setCellValue(rs.getString(1));
+		}
+		
+		
+		}
+		
+		
+		
+		
+		
+		String date = getDay();
+		FileSystemView fsv = FileSystemView.getFileSystemView();
+		FileOutputStream out = new FileOutputStream(fsv.getHomeDirectory()+"\\"+ date +"AP.xlsx");
+		wb.write(out);
+		out.close();
+
+	}
+	public void EMS160830()throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+	
+		XSSFWorkbook wb = new XSSFWorkbook();
+		XSSFSheet sheet = wb.createSheet("EMS160830");
+		String strsql = "select s.date, s.type, s.QR_id, d.SKU, d.productName, d.qty, m.eBayAccount,"
+				+ " r.country"
+				+ " from orders_master as m inner join shippinglog as s on m.QR_id = s.QR_id"
+				+ " inner join order_recieverinfo as r on m.QR_id = r.QR_id"
+				+ " inner join orders_detail as d on m.QR_id = d.QR_id"
+				+ " where m.orderStatus = N'撿貨中'";
+		
+		Connection conn = new DataBaseConn().getConn();
+		PreparedStatement ps = null;
+		ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+		int index = 1;
+						
+		XSSFRow myRow1 = sheet.createRow(1);
+		myRow1.createCell(1).setCellValue("訂單單號"); //訂單單號		
+		while (rs.next()) {
+			myRow1 = sheet.createRow(index);
+			myRow1.createCell(1).setCellValue(rs.getString(1));			
+			index++;
+		}
+		
+		XSSFRow myRow2 = sheet.createRow(1);
+		myRow2.createCell(3).setCellValue("條碼"); //條碼		
+		while (rs.next()) {
+			myRow2 = sheet.createRow(index);
+			myRow2.createCell(3).setCellValue(rs.getString(1));			
+			index++;
+		}
+		
+		XSSFRow myRow3 = sheet.createRow(2);
+		myRow3.createCell(1).setCellValue("978"); //未確認		
+		while (rs.next()) {
+			myRow3 = sheet.createRow(index);
+			myRow3.createCell(1).setCellValue(rs.getString(1));			
+			index++;
+		}
+		
+		XSSFRow myRow4 = sheet.createRow(4);
+		myRow4.createCell(1).setCellValue("TO: "); //未確認		
+		while (rs.next()) {
+			myRow4 = sheet.createRow(index);
+			myRow4.createCell(1).setCellValue(rs.getString(1));			
+			index++;
+		}
+		
+		
+		String date = getDay();	
+		FileOutputStream out = new FileOutputStream("C:\\EC\\"+ date +"EMS160830.xlsx");
+		wb.write(out);
+		rs.close();
+		ps.close();
+		conn.close();
+	}
+	
+	public void AP160830_1()throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+	
+		
+		XSSFWorkbook wb = new XSSFWorkbook();
+		XSSFSheet sheet = wb.createSheet("EMS160830");
+		String strsql = "select s.date, s.type, s.QR_id, d.SKU, d.productName, d.qty, m.eBayAccount,"
+				+ " r.country"
+				+ " from orders_master as m inner join shippinglog as s on m.QR_id = s.QR_id"
+				+ " inner join order_recieverinfo as r on m.QR_id = r.QR_id"
+				+ " inner join orders_detail as d on m.QR_id = d.QR_id"
+				+ " where m.orderStatus = N'撿貨中'";
+		
+		Connection conn = new DataBaseConn().getConn();
+		PreparedStatement ps = null;
+		ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+		int index = 1;
+						
+		XSSFRow myRow1 = sheet.createRow(1);
+		myRow1.createCell(8).setCellValue("訂單單號"); //訂單單號		
+		while (rs.next()) {
+			myRow1 = sheet.createRow(index);
+			myRow1.createCell(8).setCellValue(rs.getString(1));			
+			index++;
+		}
+		
+			
+		CellRangeAddress region = new CellRangeAddress(20,21,3,10);		
+		XSSFCell cell = sheet.createRow(20).createCell(3);    
+		cell.setCellValue("合併儲存格");    
+		sheet.addMergedRegion(region);
+				
+//		
+//		while (rs.next()) {
+//			myRow2 = sheet.createRow(index);
+//			myRow2.createCell(20).setCellValue(rs.getString(1));			
+//			index++;
+//		}
+		
+		XSSFRow myRow3 = sheet.createRow(4);
+		myRow3.createCell(7).setCellValue("964"); //964未確認		
+		while (rs.next()) {
+			myRow3 = sheet.createRow(index);
+			myRow3.createCell(7).setCellValue(rs.getString(1));			
+			index++;
+		}
+		
+		XSSFRow myRow4 = sheet.createRow(5);
+		myRow1.createCell(3).setCellValue("寄件人地址"); //寄件人地址 		
+		while (rs.next()) {
+			myRow4 = sheet.createRow(index);
+			myRow4.createCell(3).setCellValue(rs.getString(1));			
+			index++;
+		}
+		
+		String date = getDay();	
+		FileOutputStream out = new FileOutputStream("C:\\EC\\"+ date +"AP160830_1.xlsx");
+		wb.write(out);
+		rs.close();
+		ps.close();
+		conn.close();
+	}
+	
 	public void 進出貨紀錄(){
 		
 	}
@@ -209,7 +692,7 @@ public class CDBtoExcel {
 		String date = getDay();
 		
 		//FileOutputStream out = new FileOutputStream("C:/Users/Jenan/Desktop/" + date + "日出貨報表.xlsx");
-		FileOutputStream out = new FileOutputStream("C:/Users/Jenan/Desktop/" + date + "日出貨報表.xlsx");
+		FileOutputStream out = new FileOutputStream("C:/Users/Jenan/Desktop/" + date + "日出貨報表.pdf");
 		wb.write(out);
 		rs.close();
 		ps.close();
@@ -218,6 +701,68 @@ public class CDBtoExcel {
 
 	
 	public void 物流匯出格式() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+		XSSFWorkbook wb = new XSSFWorkbook();
+		XSSFSheet sheet = wb.createSheet("物流匯出報表");
+		String strsql = "select s.date, s.type, s.QR_id, d.SKU, d.productName, d.qty, m.eBayAccount,"
+				+ " r.country"
+				+ " from orders_master as m inner join shippinglog as s on m.QR_id = s.QR_id"
+				+ " inner join order_recieverinfo as r on m.QR_id = r.QR_id"
+				+ " inner join orders_detail as d on m.QR_id = d.QR_id"
+				+ " where m.orderStatus = N'撿貨中'";
+		Connection conn = new DataBaseConn().getConn();
+		PreparedStatement ps = null;
+		ps = conn.prepareStatement(strsql);
+		ResultSet rs = ps.executeQuery();
+		int index = 1;
+		XSSFRow myRow = sheet.createRow(0);
+		
+		myRow.createCell(0).setCellValue("出貨日期");
+		myRow.createCell(1).setCellValue("寄件類型");
+		myRow.createCell(2).setCellValue("order no.");
+		myRow.createCell(3).setCellValue("SKU");
+		myRow.createCell(4).setCellValue("商品名稱");
+		myRow.createCell(5).setCellValue("數量");
+		myRow.createCell(6).setCellValue("寄件人資訊");//eBayAccount
+		myRow.createCell(7).setCellValue("幣別");  //master currency
+		myRow.createCell(8).setCellValue("E/B含運費");//
+		myRow.createCell(9).setCellValue("寄件材積");
+		myRow.createCell(10).setCellValue("寄件重量"); 
+		myRow.createCell(11).setCellValue("Trqacking No."); //trackingCode
+		myRow.createCell(12).setCellValue("運費(TWD)");
+		myRow.createCell(13).setCellValue("運費(USD)");
+		while (rs.next()) {
+			myRow = sheet.createRow(index);
+			myRow.createCell(0).setCellValue(rs.getString(1));
+			myRow.createCell(1).setCellValue(rs.getString(2));
+			myRow.createCell(2).setCellValue(rs.getString(3));
+			myRow.createCell(3).setCellValue(rs.getString(4));
+			myRow.createCell(4).setCellValue(rs.getString(5));
+			myRow.createCell(5).setCellValue(rs.getString(6));
+			myRow.createCell(6).setCellValue(rs.getString(7));
+			myRow.createCell(7).setCellValue(rs.getString(8));
+			
+			index++;
+		}
+		
+		XSSFRow myRow2 = sheet.createRow(4);
+		myRow2.createCell(4).setCellValue("出貨日期");
+		myRow2.createCell(6).setCellValue("寄件類型");
+		while (rs.next()) {
+			myRow2 = sheet.createRow(index);
+			myRow2.createCell(4).setCellValue(rs.getString(1));
+			myRow2.createCell(6).setCellValue(rs.getString(2));
+		}
+		String date = getDay();
+		
+		FileOutputStream out = new FileOutputStream("C:\\EC\\"+date+"物流匯出報表.xlsx");		
+		wb.write(out);
+		rs.close();
+		ps.close();
+		conn.close();
+	}
+	
+	
+	public void 物流匯出格式原複本() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
 		XSSFWorkbook wb = new XSSFWorkbook();
 		XSSFSheet sheet = wb.createSheet("物流匯出報表");
 		String strsql = "select s.date, s.type, s.QR_id, d.SKU, d.productName, d.qty, m.eBayAccount,"
@@ -261,14 +806,12 @@ public class CDBtoExcel {
 		}
 		String date = getDay();
 		
-		FileOutputStream out = new FileOutputStream("C:\\EC\\"+date+"物流匯出報表.xlsx");
-		//FileOutputStream out = new FileOutputStream("C:/Users/iii/Documents/Excel_Data/" + date + "報表.xlsx");
+		FileOutputStream out = new FileOutputStream("C:\\EC\\"+date+"物流匯出報表.xlsx");		
 		wb.write(out);
 		rs.close();
 		ps.close();
 		conn.close();
 	}
-	
 
 public void 出貨單(){
 		

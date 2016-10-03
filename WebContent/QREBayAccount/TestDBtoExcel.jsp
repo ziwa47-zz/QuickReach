@@ -1,4 +1,5 @@
 <%@page import="tw.iii.qr.stock.*"%>
+<%@page import="tw.iii.qr.stock.CopySheetStyle"%>
 <%@page import="tw.iii.qr.DataBaseConn"%>
 <%@page import="tw.iii.qr.stock.CEbay"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -6,7 +7,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.*" %>
 <jsp:useBean id="get" class="tw.iii.qr.stock.CDBtoExcel"  scope="page"/>
-<<jsp:setProperty property="*" name="get"/>
+<jsp:setProperty property="*" name="get"/>
 <!DOCTYPE>
 <html>
 <head>
@@ -18,8 +19,17 @@
 <body>
 
 <%
-get.物流匯出格式();
+//get.物流匯出格式();
+//get.AP寄件單範本EMS();
+//get.AP寄件單範本AP();
+
+get.getAP寄件單範本AP();
+//get.EMS160830(); <==先不做;
+//get.AP160830_1();
+
+
 %>
+
 
 </body>
 </html>

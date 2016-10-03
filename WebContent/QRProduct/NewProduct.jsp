@@ -27,8 +27,10 @@ $(function() {
 		}
 	});
 });
-
-
+function loadImageFile(event)
+{
+       document.getElementById('img1').src = URL.createObjectURL(event.target.files[0]);
+};
 </script>
 
 
@@ -54,14 +56,18 @@ session.setAttribute("today", today);
 %>
 
   <%@ include file ="/href/navbar.jsp" %> 
-
+<c:if test="${PageCompetence.getProductManage() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 
   
 <div class="nav">
   	<div class="container ">
     	<div class="navbar-left" style="background-color:#BCF1E5;" >
         	<ul class="nav nav-tabs">
-        	<li><a href="SearchStockPage.jsp" style="color:#000000">庫存</a></li>
+        	<c:if test="${PageCompetence.getInventoryManage() == 1 }">	
+              	<li ><a href="SearchStockPage.jsp" style="color:#000">庫存</a></li>
+              </c:if>
               <li class="" style="background-color:#1CAF9A"><a href="SearchProductPage.jsp" style="color:#FFFFFF">商品</a></li>
               
             </ul>
@@ -95,9 +101,9 @@ session.setAttribute("today", today);
 
 
 <div class="container" style="background: #9DDCD1; border-radius:20px;" >
-  <form id="listForm" name="listForm" method="post" action="../ProductDo" 
+  <form id="listForm" name="listForm" method="post" action="/Product.do" 
   style="font-size: 100%; vertical-align: baseline; padding: 15px; " 
-  class=" container">
+  class=" container" enctype="multipart/form-data">
 
     <fieldset id="myfields" class="container-fluid" style="padding:0 30px 0 0;"><legend>新增產品</legend>
       <input type="hidden">
@@ -128,9 +134,9 @@ session.setAttribute("today", today);
                       <div class="col-md-8  well-sm">
                       <select class="form-control" name = "productType">
                       
-                      <option value="單一商品">單一商品</option>
-                      <option value="清倉類">清倉類</option>
-                      <option value="調貨類">調貨類</option>
+                      <option value="1">單一商品</option>
+                      <option value="2">清倉類</option>
+                      <option value="3">調貨類</option>
                       
                       </select>
                       
@@ -156,7 +162,9 @@ session.setAttribute("today", today);
                   
                       <div class="row">
                       <div class="col-md-3 text-right well-sm label-tag"  ><h4>上傳圖片</h4></div>
-                      <div class="col-md-8 well-sm"><input class="form-control" type="file" name="picturePath" value="" ></div>
+                      <div class="col-md-8 well-sm"><input  class="form-control" type="file" name="picturePath" value="" onchange="loadImageFile(event)">
+                      <img id="img1" src="" width="100%" height="100%"></div>
+                     							
                   </div>
                   
                       
@@ -230,6 +238,11 @@ session.setAttribute("today", today);
             <div class="panel-body">
               <input type="hidden">
               <div class="container-fluid form-horizontal">
+              
+              <div class="row">
+                  <div class="col-md-3 text-right well-sm label-tag"  ><h4>材積</h4></div>
+                  <div class="col-md-8 well-sm"><input class="form-control"  type="text" name="volume" value="${resultDetail.getVolume()}" ></div>
+              </div>
                     <div class="row">
                   <div class="col-md-3 text-right well-sm label-tag"  ><h4>包裝材質</h4></div>
                   <div class="col-md-8  well-sm"><input class="form-control"    type="text" name="packageMatrial" value="" ></div>

@@ -15,6 +15,9 @@
 </head>
 <body>
 <%@ include file="/href/navbar.jsp" %>
+<c:if test="${PageCompetence.getOrdersManage() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 <%
 Connection conn = new DataBaseConn().getConn();
 LinkedList<COrders> similarOrders = COrderFactory.getSimilarOrders(request, conn);
@@ -26,7 +29,9 @@ request.setAttribute("list", similarOrders);
     <div class="navbar-left" style="background-color:#F3CE9A;" >
       <ul class="nav nav-tabs">
         <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp?begin=0&end=10" style="color:#FFFFFF">訂單管理</a></li>
-        <li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
+        <c:if test="${PageCompetence.getEntireOrders() == 1 }"> 
+        	<li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
+      	</c:if>
       </ul>
     </div>
   </div>
