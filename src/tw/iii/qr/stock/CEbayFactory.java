@@ -168,6 +168,9 @@ public class CEbayFactory extends CEbay {
 			ebay.setstatus(rs.getString(8));// status
 			ebay.setcomment(rs.getString(9));// comment
 			ebay.setsystemFeedback(rs.getString(10)); //systemFeefback
+			ebay.setcompanyAddress(rs.getString(11));
+			ebay.setcompanyPhone(rs.getString(12));
+			ebay.setcompanyPost(rs.getString(13));
 			
 			ebayall.add(ebay);			
 		}
