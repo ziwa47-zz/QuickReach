@@ -330,4 +330,20 @@ public class BundlesFactory {
 		return strQQ;
 	}
 	
+	public boolean SKUCheck(String sku) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+		
+		DataBaseConn dbc = new DataBaseConn();		
+		Connection conn = dbc.getConn() ;
+		state = conn.createStatement();
+
+		String sqlstr = "SELECT * FROM  product where sku='"+sku+"'";
+		ResultSet rs = state.executeQuery(sqlstr);
+		
+		while(rs.next()){
+			return true;
+		}
+		
+		return false;
+	}
+	
 }
