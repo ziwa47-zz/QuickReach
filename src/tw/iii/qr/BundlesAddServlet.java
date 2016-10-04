@@ -29,8 +29,9 @@ public class BundlesAddServlet extends HttpServlet {
 		session = request.getSession();
 		String submit = request.getParameter("smt");
 		
-		
-		if(submit.equals("insert")){
+		if("skuCheck".equals(submit)){
+			processSKUCheck(request,response);
+		}else if("insert".equals(submit)){
 			processBundlesInsert(request,response);
 		}else{
 			processDetailAdd(request,response);
@@ -41,6 +42,27 @@ public class BundlesAddServlet extends HttpServlet {
 	}
 
 	
+	private void processSKUCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		request.setCharacterEncoding("UTF-8");
+		String sku = request.getParameter("bdsku");
+		
+		try {
+			if(bdf.SKUCheck(sku)){
+				session.setAttribute("SKURepeat", 1);
+				response.sendRedirect("BundlesAdd.jsp");
+			}else{
+				session.setAttribute("SKURepeat", 0);
+				response.sendRedirect("BundlesAdd.jsp");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+
 	private void processDetailAdd(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		//新增子商品
 		request.setCharacterEncoding("UTF-8");
@@ -97,14 +119,18 @@ public class BundlesAddServlet extends HttpServlet {
 			session.removeAttribute("bdSKU");
 			session.removeAttribute("bdname");
 			session.removeAttribute("bdcomment");
+			session.setAttribute("insertSuccess", 1);
 			response.sendRedirect("BundlesAdd.jsp");
 			
 		} catch (Exception e) {
-			
+			session.setAttribute("SKURepeat", 1);
+			response.sendRedirect("BundlesAdd.jsp");
 			e.printStackTrace();
 		}
 		
 	}
+	
+	
 	
 	
 
