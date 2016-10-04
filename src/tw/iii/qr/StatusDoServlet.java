@@ -25,6 +25,7 @@ import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.order.COrderDetail;
 import tw.iii.qr.order.COrderFactory;
 import tw.iii.qr.order.CompleteSale;
+import tw.iii.qr.stock.CDBtoExcel;
 
 
 @WebServlet("/StatusDo")
@@ -85,6 +86,16 @@ public class StatusDoServlet extends HttpServlet {
 				out.write("</script>");
 				conn.close();
 			}
+		case "print":
+			String[] qrid = request.getParameterValues("QR_id");
+			for(String s : qrid){
+				System.out.println(s);
+			}
+			new CDBtoExcel().logisticsselect(qrid);
+			out.write("<script type='text/javascript'>");
+			out.write("alert('列印成功');");
+			out.write("window.location = 'QROrders/DayliBalanceSheet.jsp';");
+			out.write("</script>");
 			break;
 		case "processing":
 			LinkedList<String> warehouses = OFactory.getWarehouse(request);
