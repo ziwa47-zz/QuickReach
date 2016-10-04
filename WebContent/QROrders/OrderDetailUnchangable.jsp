@@ -12,7 +12,10 @@
 <title>訂單內容</title>
 </head>
 <body>
-  <%@ include file ="/href/navbar.jsp" %>
+<%@ include file ="/href/navbar.jsp" %>
+<c:if test="${PageCompetence.getOrdersManage() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 <%
 String QR_id ;
 request.setCharacterEncoding("UTF-8");
@@ -34,7 +37,9 @@ conn.close();
     <div class="navbar-left" style="background-color:#F3CE9A;" >
       <ul class="nav nav-tabs">
         <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp" style="color:#FFFFFF">訂單管理</a></li>
-        <li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
+        <c:if test="${PageCompetence.getEntireOrders() == 1 }"> 
+        	<li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
+      	</c:if>
       </ul>
     </div>
   </div>

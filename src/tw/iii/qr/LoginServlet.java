@@ -25,19 +25,20 @@ public class LoginServlet extends HttpServlet {
 	private String account="";
 	private String password="";
 	String competencelv="";
-	boolean ok = false;
+	boolean accountCheck = false;
+	boolean statusCheck = false;
 	String staffName="";
 	HttpSession session=null;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			processLogin(request,response);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println("NONO");
-			response.sendRedirect("/Login.jsp?p=0");
-		}
+//		try {
+//			processLogin(request,response);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			System.out.println("NONO");
+//			response.sendRedirect("/Login.jsp?p=0");
+//		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -47,17 +48,30 @@ public class LoginServlet extends HttpServlet {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("NONO");
-			response.sendRedirect("/Login.jsp?p=0");
+//			if(accountCheck){
+//				if(statusCheck){
+//					//response.sendRedirect("/Login.jsp?p=0");
+//				}else{
+//					request.setAttribute("statusError", 1);
+//					response.setContentType("text/html;charset=UTF-8");
+//					response.sendRedirect("/Login.jsp?p=0");
+//				}
+//			}else{
+//				//System.out.println("帳密打錯囉");
+//				request.setAttribute("accountError", 1);
+//				response.setContentType("text/html;charset=UTF-8");
+//				response.sendRedirect("/Login.jsp?p=0");
+//			}
 		}
-		
+//		
 		
 			
 	}
 
 	private void processLogin(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException, ClassNotFoundException, Exception {
 		
-		ok = false;
+		accountCheck = false;
+		statusCheck = false;
 		request.setCharacterEncoding("UTF-8");
 		account = request.getParameter("account");
 		password = request.getParameter("password");		
@@ -65,17 +79,24 @@ public class LoginServlet extends HttpServlet {
 		
 		checkLogin(account,password);
 		
-		if(ok){
+		if(accountCheck){
 			//Login true
-			System.out.println(competencelv);
-			session.setAttribute("account", account);
-			session.setAttribute("staffName",staffName);
-			competenceSession(request,competencelv);
-			response.sendRedirect("/HomePage.jsp");
-			
+			if(statusCheck){
+				System.out.println(competencelv);
+				session.setAttribute("account", account);
+				session.setAttribute("staffName",staffName);
+				competenceSession(request,competencelv);
+				response.sendRedirect("/HomePage.jsp");
+			}else{
+				System.out.println("帳號未啟用");
+				session.setAttribute("statusError", 1);
+				response.setContentType("text/html;charset=UTF-8");
+				response.sendRedirect("/Login.jsp?p=0");
+			}
 		}else{
 			//Login false
-			System.out.println("NO");
+			System.out.println("帳密打錯囉");
+			session.setAttribute("accountError", 1);
 			response.setContentType("text/html;charset=UTF-8");
 			response.sendRedirect("/Login.jsp?p=0");
 			
@@ -89,29 +110,23 @@ public class LoginServlet extends HttpServlet {
 		rs = state.executeQuery(sqlstr);
 		while (rs.next()) {
 			if(account.equals(rs.getString(1))){
-				System.out.println("acc");
+				//System.out.println("acc");
 				if(password.equals(rs.getString(2))){
-					System.out.println("pass");
+					//System.out.println("pass");
+					accountCheck = true;
 					if(rs.getInt(9)==1){
-						System.out.println("cv");
+						System.out.println("帳號狀態:"+rs.getInt(9));
 						staffName = rs.getString(3)+rs.getString(4);
 						System.out.println(staffName);
 						competencelv = rs.getString(8);
-						ok = true;
-						rs.close();
-						state.close();
-						conn.close();
+						
+						statusCheck = true;
+						
 						return ;
 					}
-					rs.close();
-					state.close();
-					conn.close();
-					
+										
 				}
-				rs.close();
-				state.close();
-				conn.close();
-				
+						
 			}
 
 		}

@@ -13,7 +13,9 @@
 </head>
 <body>
 <%@ include file = "/href/navbar.jsp"%>
-
+<c:if test="${PageCompetence.getOrdersManage() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 <%
   COrderFactory.checkUrlToRemoveSession(request, session);
   Connection conn = new DataBaseConn().getConn();
@@ -29,7 +31,9 @@
     <div class="navbar-left" style="background-color:#F3CE9A;" >
       <ul class="nav nav-tabs">
         <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp?begin=0&end=10" style="color:#FFFFFF">訂單管理</a></li>
-        <li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
+        <c:if test="${PageCompetence.getEntireOrders() == 1 }"> 
+        	<li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
+      	</c:if>
       </ul>
     </div>
   </div>
@@ -238,6 +242,7 @@
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
           <label class="btn btn-sm btn-info">
 		    <input type="checkbox" autocomplete="off" onchange="selectAllOrders(this)"> 選擇全部
+		    
 		  </label>
           <button type="submit" name="send" value="revertTo" class="btn btn-md btn-info">回復至</button>
 		  <select name="status" class="form-control">
@@ -245,6 +250,7 @@
 		    <option>待處理</option>
 		    <option>處理中</option>
 		  </select>
+		  <button type="submit"  name ="send"  value="print"> 列印出貨單</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
@@ -380,6 +386,7 @@
 		    <option>待處理</option>
 		    <option>處理中</option>
 		  </select>
+		  <button type="submit"  name ="send"  value="print"> 列印出貨單</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">

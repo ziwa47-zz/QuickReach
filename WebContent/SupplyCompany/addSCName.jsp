@@ -10,7 +10,9 @@
 </head>
 
 <body><%@ include file="/href/navbar.jsp" %>
-
+<c:if test="${PageCompetence.getParamSettingEdit() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 <div class="nav">
   <div class="container">
     <div class="navbar-left" style="background-color:#AC7ED3;" >
