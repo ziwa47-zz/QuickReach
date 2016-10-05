@@ -144,6 +144,31 @@
     });*/
        
     </script>
+    
+<c:if test="${SKURepeat==1 }">
+	<script type="text/javascript">
+	$(function(){
+		alert("SKU碼重複!");
+	});
+	
+	</script>
+<%
+session.removeAttribute("SKURepeat");
+%>
+</c:if> 
+
+<c:if test="${insertSuccess==1 }">
+	<script type="text/javascript">
+	$(function(){
+		alert("新增成功!");
+	});
+	
+	</script>
+<%
+session.removeAttribute("insertSuccess");
+%>
+</c:if>    
+    
 <style>
 .error{
 	color:red;
@@ -250,6 +275,7 @@ request.setAttribute("listSubBrand",listSubBrand);
               <div class="col-md-2"><h5><label for="focusedInput " >SKU：</label></h5></div>
               <div class="col-md-8">          	
               		<input class="form-control" type="text" id="bdsku" name="bdsku" value="${bdSKU}">
+              		<button type="submit" name="smt" value="skuCheck">確認</button>
               </div>
             </div>
           </div>
