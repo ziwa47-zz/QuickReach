@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>	
 <!DOCTYPE>
 <html>
 <head>
@@ -26,6 +27,28 @@
       background-color: #f9f9f9;
   }
   </style>
+<c:if test="${accountError==1 }">
+	<script type="text/javascript">
+	$(function(){
+		alert("帳號或密碼錯誤!");
+	});
+	
+	</script>
+<%
+session.removeAttribute("accountError");
+%>
+</c:if>
+<c:if test="${statusError==1 }">
+	<script type="text/javascript">
+	$(function(){
+		alert("此帳號未啟用!");
+	});
+	
+	</script>
+<%
+session.removeAttribute("statusError");
+%>
+</c:if>
 
 <%
 session.removeAttribute("account");
@@ -37,7 +60,8 @@ session.removeAttribute("staffName");
 
 <body>
 
-	<form action="LoginServlet.do" method="post" >
+	<form  action="LoginServlet.do" method="post" >
+	
 	<!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header" style="padding:35px 50px;">

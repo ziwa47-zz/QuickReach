@@ -243,7 +243,7 @@ if(request.getParameter("QQ") != null){
 		  <div class="col-md-8 form-group ">
             <div class="row">
               <div class="col-md-2"><h5><label for="focusedInput " >SKU：</label></h5></div>
-              	<div class="col-md-8"><input class="form-control" type="text" id="bdsku" name="bdsku" value="${bdsku}"></div>
+              	<div class="col-md-8"><input class="form-control" type="text" id="bdsku" name="bdsku" value="${bdsku}" readonly></div>
             </div>
           </div>
 		  <div class="col-md-8 form-group ">

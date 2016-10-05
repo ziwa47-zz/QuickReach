@@ -17,6 +17,12 @@
 
 <script type="text/javascript">
 
+function testDelete(){
+	
+	$("#editSubmit").val("deleteAccount");
+	alert($("#editSubmit").val());
+}
+
 function accountCompetenceLv(){
 	var accountCompetenceLv = $("#checkLv").val()
 	$("#competenceLv").val(accountCompetenceLv);
@@ -212,6 +218,7 @@ conn.close();
         <div class="" align="center">
           <button type="submit" name="submit" value="editAccount" class="btn-lg btn-success">修改送出</button>
           <a href="accountManage.jsp"><button type="button" value="取消" class="btn-lg btn-success">取消</button></a>
+         <button type="submit" name="submit" onclick="testDelete()" value="deleteAccount" class="btn-lg btn-success">暫訂刪除</button> 
         </div>
         
       </div>
