@@ -1,11 +1,8 @@
 ﻿package tw.iii.qr.stock;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,30 +15,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.filechooser.FileSystemView;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-
 import tw.iii.qr.DataBaseConn;
 
 public class CDBtoExcel {
 	public static void main(String[] args) {
+	
 	}
 
 	public CDBtoExcel() {
@@ -141,7 +126,9 @@ public class CDBtoExcel {
 //			PrintWriter out = response.getWriter();
 			String[] qrid = request.getParameterValues("QR_id");
 			Connection conn = new DataBaseConn().getConn();
-			String path = "C:\\Users\\iii\\Desktop\\AP寄件單範本1.xlsx";
+			FileSystemView fsv = FileSystemView.getFileSystemView();
+			
+			String path = fsv.getHomeDirectory()+File.separator +"QRexcel"+File.separator+"QRexcel"+File.separator+"範本"+File.separator+"寄件單範本.xlsx";
 			
 			for(int i = 0 ; i < qrid.length ; i++){
 				String logis ="select logistics from orders_master where qr_id = ? ";
@@ -348,23 +335,6 @@ public class CDBtoExcel {
 			e.printStackTrace();
 		}
 	}
-
-	public void getEMS(String qrid,String path,int index,Connection conn) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
-
-
-
-		
-	}
-
-
-	public void getAP(String qrid,String path,int index,Connection conn)
-
-			throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
-
-		
-
-	}
-
 	
 	public void get揀貨單(String[] qrid,String path,Connection conn)
 			throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
