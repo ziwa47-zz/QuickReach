@@ -1,4 +1,4 @@
-package tw.iii.qr.stock;
+﻿package tw.iii.qr.stock;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -167,6 +167,7 @@ public class CDBtoExcel {
 						if("RA".equals(rs.getString(1))){
 							
 						}
+						
 					}
 			}
 		} catch (Exception e) {
@@ -176,7 +177,12 @@ public class CDBtoExcel {
 		
 	
 	}
-	public void getEMS(String qrid,XSSFWorkbook wb,XSSFSheet fromSheet,int index,Connection conn) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+
+	
+	public void getEMS(String qrid,String path,int index,Connection conn) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+
+
+
 		CopySheetStyle cs = new CopySheetStyle();
 		String strsql = " select e.correspondCompany,e.companyAddress,e.companyPost,e.companyPhone,e.country,g.guestFirstName,g.guestLastName,r.address,r.country,d.invoiceName,d.invoicePrice,d.qty,convert(nvarchar,getDate(),106),m.currency "
 				+ " from ebayaccount e inner join orders_master m on e.ebayid = m.ebayAccount "
@@ -248,9 +254,9 @@ public class CDBtoExcel {
 			}
 	}
 
-	
 
-	public void getAP(String qrid,XSSFWorkbook wb,XSSFSheet fromSheet,int index,Connection conn)
+	public void getAP(String qrid,String path,int index,Connection conn)
+
 			throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
 
 		CopySheetStyle cs = new CopySheetStyle();
@@ -338,6 +344,68 @@ public class CDBtoExcel {
 		out.close();
 
 	}
+
+	
+	public void get揀貨單(String[] qrid,String path,Connection conn)
+			throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+		String date = getDay();
+		CopySheetStyle cs = new CopySheetStyle();
+		XSSFWorkbook wb = new XSSFWorkbook(path);
+		XSSFSheet fromSheet = wb.getSheet("撿貨單");
+		XSSFSheet toSheet = wb.createSheet("撿貨單"+date);
+		
+		System.out.println("qrid.length:"+qrid.length);
+		
+		int index = 0;
+		for(int i = 0 ; i < qrid.length ; i++){
+		String strsql = " select order_id, o.SKU, productType, brand, subBrand, productName, spec,qty"
+				+ " from orders_detail o inner join product p on  o.SKU = p.SKU"
+				+ " where QR_id = ?";
+		
+		PreparedStatement ps = null;
+		System.out.println("strsql:"+strsql);
+		
+		System.out.println("QRID:"+qrid[i]);
+		ps = conn.prepareStatement(strsql);
+		ps.setString(1, qrid[i]);
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			cs.copySheet(wb, fromSheet, toSheet);
+			
+			System.out.println("SKU:"+rs.getString(2));
+
+			XSSFRow myRow1 = toSheet.getRow(1);
+			//myRow1.getCell(1).setCellValue(rs.getString(1)); //訂單編號
+			
+			XSSFRow myRow2 = toSheet.getRow(3);			
+			myRow2.createCell(1).setCellValue("SKU:");
+			myRow2.getCell(2).setCellValue(rs.getString(2)); //SKU碼
+			
+			XSSFRow myRow3 = toSheet.getRow(4);
+			myRow3.getCell(1).setCellValue(rs.getString(3)); //產品類型
+			
+			XSSFRow myRow4 = toSheet.getRow(5);
+			myRow4.getCell(1).setCellValue(rs.getString(4) + rs.getString(5)); //廠牌&副廠牌
+		
+			XSSFRow myRow5 = toSheet.getRow(6);
+			myRow5.getCell(1).setCellValue(rs.getString(6) + " / " + rs.getString(7) ); //品名/規格
+		
+			
+			XSSFRow myRow7 = toSheet.getRow(7);
+			myRow7.getCell(1).setCellValue(rs.getString(8)); //數量
+			//index +=10;
+		}
+		}
+		
+		System.out.println("Done");
+		FileSystemView fsv = FileSystemView.getFileSystemView();
+		FileOutputStream out = new FileOutputStream(fsv.getHomeDirectory() + "\\" + date + "揀貨單.xlsx");
+		wb.write(out);
+		out.close();
+	}
+	
+
 
 
 	// 日出貨報表
