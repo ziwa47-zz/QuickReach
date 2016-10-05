@@ -1,6 +1,7 @@
 package tw.iii.qr.stock;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.sql.Connection;
@@ -11,6 +12,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.swing.filechooser.FileSystemView;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -29,6 +32,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 
@@ -171,8 +175,9 @@ public class CDBtoExcel {
 
 	}
 
-	public void logisticsselect(String[] qrid){
+	public void logisticsselect(HttpServletRequest request,HttpServletResponse response){
 		try {
+			String[] qrid = request.getParameterValues("QR_id");
 			Connection conn = new DataBaseConn().getConn();
 			String path = "C:\\Users\\iii\\Desktop\\AP寄件單範本1.xlsx";
 			for(int i = 0 ; i < qrid.length ; i++){
@@ -186,6 +191,7 @@ public class CDBtoExcel {
 							System.out.println("AP:"+ qrid[i]);
 							getAP(qrid[i], path, i,conn);
 							System.out.println("DONE");
+							
 						}
 						if ("EMS".equals(rs.getString(1))){
 							System.out.println("EMS"+ qrid[i]);
@@ -209,7 +215,7 @@ public class CDBtoExcel {
 		
 	
 	}
-	public void getEMS(String qrid,String path,int index,Connection conn) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+	public String getEMS(String qrid,String path,int index,Connection conn) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
 
 		CopySheetStyle cs = new CopySheetStyle();
 		XSSFWorkbook wb = new XSSFWorkbook(path);
@@ -292,17 +298,13 @@ public class CDBtoExcel {
 
 		String date = getDay();
 		FileSystemView fsv = FileSystemView.getFileSystemView();
-		FileOutputStream out = new FileOutputStream(fsv.getHomeDirectory() + "\\" + date + "EMS.xlsx");
+		
+		FileOutputStream out = new FileOutputStream(fsv.getHomeDirectory()+File.pathSeparator +"excel"+File.pathSeparator+ date + "EMS.xlsx");
 		wb.write(out);
 		out.close();
-		
-		  OutputStream dest = null;
-		//Initialize PDF writer
-		PdfDocument pdf = new PdfDocument(new PdfWriter(dest));
-		Document document = new Document(pdf);
-		
-     
-        document.close();
+		wb.close();
+		String link = fsv.getHomeDirectory()+File.pathSeparator +"excel"+File.pathSeparator+ date + "EMS.xlsx";
+		return link;
 	}
 
 	

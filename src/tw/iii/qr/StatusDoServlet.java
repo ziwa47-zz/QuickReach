@@ -91,7 +91,7 @@ public class StatusDoServlet extends HttpServlet {
 			for(String s : qrid){
 				System.out.println(s);
 			}
-			new CDBtoExcel().logisticsselect(qrid);
+			new CDBtoExcel().logisticsselect(request,response);
 			out.write("<script type='text/javascript'>");
 			out.write("alert('列印成功');");
 			out.write("window.location = 'QROrders/DayliBalanceSheet.jsp';");
