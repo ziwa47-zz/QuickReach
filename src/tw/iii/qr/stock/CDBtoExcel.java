@@ -1,6 +1,7 @@
-package tw.iii.qr.stock;
+﻿package tw.iii.qr.stock;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.sql.Connection;
@@ -11,6 +12,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.swing.filechooser.FileSystemView;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -29,6 +32,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 
@@ -171,8 +175,9 @@ public class CDBtoExcel {
 
 	}
 
-	public void logisticsselect(String[] qrid){
+	public void logisticsselect(HttpServletRequest request,HttpServletResponse response){
 		try {
+			String[] qrid = request.getParameterValues("QR_id");
 			Connection conn = new DataBaseConn().getConn();
 			String path = "C:\\Users\\iii\\Desktop\\AP寄件單範本1.xlsx";
 			for(int i = 0 ; i < qrid.length ; i++){
@@ -186,6 +191,7 @@ public class CDBtoExcel {
 							System.out.println("AP:"+ qrid[i]);
 							getAP(qrid[i], path, i,conn);
 							System.out.println("DONE");
+							
 						}
 						if ("EMS".equals(rs.getString(1))){
 							System.out.println("EMS"+ qrid[i]);
@@ -195,6 +201,7 @@ public class CDBtoExcel {
 						if("RA".equals(rs.getString(1))){
 							
 						}
+						
 					}
 				
 				
@@ -209,7 +216,10 @@ public class CDBtoExcel {
 		
 	
 	}
+
+	
 	public void getEMS(String qrid,String path,int index,Connection conn) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+
 
 		CopySheetStyle cs = new CopySheetStyle();
 		XSSFWorkbook wb = new XSSFWorkbook(path);
@@ -292,20 +302,14 @@ public class CDBtoExcel {
 
 		String date = getDay();
 		FileSystemView fsv = FileSystemView.getFileSystemView();
-		FileOutputStream out = new FileOutputStream(fsv.getHomeDirectory() + "\\" + date + "EMS.xlsx");
+		
+		FileOutputStream out = new FileOutputStream(fsv.getHomeDirectory()+File.pathSeparator +"excel"+File.pathSeparator+ date + "EMS.xlsx");
 		wb.write(out);
 		out.close();
-		
-		  OutputStream dest = null;
-		//Initialize PDF writer
-		PdfDocument pdf = new PdfDocument(new PdfWriter(dest));
-		Document document = new Document(pdf);
-		
-     
-        document.close();
+		wb.close();
+		String link = fsv.getHomeDirectory()+File.pathSeparator +"excel"+File.pathSeparator+ date + "EMS.xlsx";
+		return link;
 	}
-
-	
 
 	public void getAP(String qrid,String path,int index,Connection conn)
 			throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
@@ -397,7 +401,66 @@ public class CDBtoExcel {
 		out.close();
 
 	}
+	
+	public void get揀貨單(String[] qrid,String path,Connection conn)
+			throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+		String date = getDay();
+		CopySheetStyle cs = new CopySheetStyle();
+		XSSFWorkbook wb = new XSSFWorkbook(path);
+		XSSFSheet fromSheet = wb.getSheet("撿貨單");
+		XSSFSheet toSheet = wb.createSheet("撿貨單"+date);
+		
+		System.out.println("qrid.length:"+qrid.length);
+		
+		int index = 0;
+		for(int i = 0 ; i < qrid.length ; i++){
+		String strsql = " select order_id, o.SKU, productType, brand, subBrand, productName, spec,qty"
+				+ " from orders_detail o inner join product p on  o.SKU = p.SKU"
+				+ " where QR_id = ?";
+		
+		PreparedStatement ps = null;
+		System.out.println("strsql:"+strsql);
+		
+		System.out.println("QRID:"+qrid[i]);
+		ps = conn.prepareStatement(strsql);
+		ps.setString(1, qrid[i]);
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			cs.copySheet(wb, fromSheet, toSheet);
+			
+			System.out.println("SKU:"+rs.getString(2));
 
+			XSSFRow myRow1 = toSheet.getRow(1);
+			//myRow1.getCell(1).setCellValue(rs.getString(1)); //訂單編號
+			
+			XSSFRow myRow2 = toSheet.getRow(3);			
+			myRow2.createCell(1).setCellValue("SKU:");
+			myRow2.getCell(2).setCellValue(rs.getString(2)); //SKU碼
+			
+			XSSFRow myRow3 = toSheet.getRow(4);
+			myRow3.getCell(1).setCellValue(rs.getString(3)); //產品類型
+			
+			XSSFRow myRow4 = toSheet.getRow(5);
+			myRow4.getCell(1).setCellValue(rs.getString(4) + rs.getString(5)); //廠牌&副廠牌
+		
+			XSSFRow myRow5 = toSheet.getRow(6);
+			myRow5.getCell(1).setCellValue(rs.getString(6) + " / " + rs.getString(7) ); //品名/規格
+		
+			
+			XSSFRow myRow7 = toSheet.getRow(7);
+			myRow7.getCell(1).setCellValue(rs.getString(8)); //數量
+			//index +=10;
+		}
+		}
+		
+		System.out.println("Done");
+		FileSystemView fsv = FileSystemView.getFileSystemView();
+		FileOutputStream out = new FileOutputStream(fsv.getHomeDirectory() + "\\" + date + "揀貨單.xlsx");
+		wb.write(out);
+		out.close();
+	}
+	
 	public void EMS160830() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
 
 		XSSFWorkbook wb = new XSSFWorkbook();
@@ -516,9 +579,7 @@ public class CDBtoExcel {
 
 	}
 
-	public void 揀貨單() {
-
-	}
+	
 
 	// 日出貨報表
 	public void dailyBalanceSheetExcel()
