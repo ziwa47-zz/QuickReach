@@ -19,6 +19,19 @@ public class QRAccountFactory extends QRAccount{
 
 	}
 	
+	public void deleteAccount (HttpServletRequest request, Connection conn) throws SQLException{
+		String strsql ="delete accountinfo where account = ?";
+				
+		PreparedStatement ps = null;
+		System.out.print(strsql); 
+		ps = conn.prepareStatement(strsql);
+		
+		ps.setString(1, request.getParameter("account"));	
+		
+			
+		int i =ps.executeUpdate();
+	}
+	
 	public void insertQRAccount (QRAccount qra) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
 		
 		Connection conn = new DataBaseConn().getConn();

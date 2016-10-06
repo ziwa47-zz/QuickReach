@@ -94,9 +94,9 @@ public class StatusDoServlet extends HttpServlet {
 			  new CDBtoExcel().logisticsselect(request,response);
 			  
 			  //test撿貨
-			  String path = "C:\\Users\\iii\\Desktop\\庫存表 20160908v2 oliver(系統用).xlsx";
+			 // String path = "C:\\Users\\iii\\Desktop\\庫存表 20160908v2 oliver(系統用).xlsx";
 			  
-			  new CDBtoExcel().get揀貨單(qrid, path, conn);
+			 // new CDBtoExcel().get揀貨單(qrid, path, conn);
 			  //test結束
 
 
@@ -153,9 +153,15 @@ public class StatusDoServlet extends HttpServlet {
 			OFactory.isBundleAddBackToStock(request, conn);
 			response.sendRedirect("QROrders/refundPage.jsp?begin=0&end=10");
 			conn.close();
+			break;
 		case "revertTo":
 			OFactory.revertTo(request, conn);
 			response.sendRedirect(request.getHeader("Referer"));
+			conn.close();
+			break;
+		case "deleteUndo":
+			OFactory.deleteUndoOrder(request, conn);
+			response.sendRedirect("QROrders/NewOrderSearch.jsp?begin=0&end=10");
 			conn.close();
 			break;
 		case "sendTrackingCodeSandbox":
