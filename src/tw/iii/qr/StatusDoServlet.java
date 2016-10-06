@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Dictionary;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -88,16 +89,26 @@ public class StatusDoServlet extends HttpServlet {
 			}
 		case "print":
 			  String[] path = new CDBtoExcel().logisticsselect(request,response);
-			System.out.println(path[0]+path[1]);
-			  session.setAttribute("excelpath", path);
-			  response.sendRedirect("/href/toExcel.jsp?excel=4");
-		
-			  //test撿貨
-			 // String path = "C:\\Users\\iii\\Desktop\\庫存表 20160908v2 oliver(系統用).xlsx";
+			  System.out.println(1);
+			  String[] pathpick = new CDBtoExcel().collect(request, response);
+			  System.out.println(2);
+			  String[] pathcoll = new  CDBtoExcel().pickup(request, response);
+			  System.out.println(3);
 			  
-			 // new CDBtoExcel().get揀貨單(qrid, path, conn);
-			  //test結束
-
+			LinkedList<String[]> excelall = new LinkedList<>();
+			excelall.add(path);
+			System.out.println(4);
+			excelall.add(pathpick);
+			System.out.println(5);
+			excelall.add(pathcoll);
+			System.out.println(6);
+			  
+			  session.setAttribute("excelpath", excelall);
+			  System.out.println(7);
+			  response.sendRedirect("/href/toExcel.jsp?excel=4");
+			  System.out.println(8);
+			  
+			 
 
 			out.write("<script type='text/javascript'>");
 			out.write("alert('列印成功');");
