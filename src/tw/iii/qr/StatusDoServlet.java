@@ -87,23 +87,24 @@ public class StatusDoServlet extends HttpServlet {
 				conn.close();
 			}
 		case "print":
-			String[] qrid = request.getParameterValues("QR_id");
-			for(String s : qrid){
-				System.out.println(s);
-			}
+
+		
+
 
 			  new CDBtoExcel().logisticsselect(request,response);
 			  
 			  //test撿貨
-			  String path = "C:\\Users\\iii\\Desktop\\庫存表 20160908v2 oliver(系統用).xlsx";
+			 // String path = "C:\\Users\\iii\\Desktop\\庫存表 20160908v2 oliver(系統用).xlsx";
 			  
-			  new CDBtoExcel().get揀貨單(qrid, path, conn);
+			 // new CDBtoExcel().get揀貨單(qrid, path, conn);
 			  //test結束
+
 
 			out.write("<script type='text/javascript'>");
 			out.write("alert('列印成功');");
-			out.write("window.location = 'QROrders/DayliBalanceSheet.jsp';");
+			out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
 			out.write("</script>");
+			out.write("<a href=' '>");
 			break;
 		case "processing":
 			LinkedList<String> warehouses = OFactory.getWarehouse(request);
@@ -171,7 +172,7 @@ public class StatusDoServlet extends HttpServlet {
 			conn.close();
 			break;
 		}
-		
+		out.close();
 		conn.close();
 		
 	}
