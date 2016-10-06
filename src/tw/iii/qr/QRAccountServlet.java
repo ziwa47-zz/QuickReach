@@ -32,7 +32,7 @@ public class QRAccountServlet extends HttpServlet {
 		try {
 			request.setCharacterEncoding("UTF-8");
 			response.setContentType("text/html;charset=UTF-8");
-			String submitType = request.getParameter("submit");
+			String submitType = request.getParameter("submitType");
 			switch(submitType){
 			
 //			case "submitAccount":

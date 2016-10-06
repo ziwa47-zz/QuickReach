@@ -90,7 +90,7 @@ session.setAttribute("getCompetenceLv", list);
             <h4>登入帳號</h4>
           </div>
           <div class="col-md-5 well-sm">
-            <input class="form-control required" name="account" title="請輸入帳號" type="text" readonly>
+            <input class="form-control required" name="account" title="請輸入帳號" type="text" >
           </div>
         </div>
         <div class="row">
@@ -167,7 +167,7 @@ session.setAttribute("getCompetenceLv", list);
         </div>
         
         <div class="row" align="center">              
-         	 <button type="submit" name="submit" value="addAccount" class="btn-lg btn-success">新增</button>
+         	 <button type="submit" name="submitType" value="addAccount" class="btn-lg btn-success">新增</button>
        		 <a href="accountManage.jsp"><button type="button" value="取消" class="btn-lg btn-success">取消 </button></a>
         </div>
         

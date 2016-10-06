@@ -15,7 +15,14 @@ public class CEbay {
 	private String companyAddress;
 	private String companyPost;
 	private String companyPhone;
+	private String country;
 	
+	public String getcountry() {
+		return country;
+	}
+	public void setcountry(String country) {
+		this.country = country;
+	}	
 	
 	public String getebayId() {
 		return ebayId;
