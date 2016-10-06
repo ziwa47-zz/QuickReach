@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Dictionary;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -87,24 +88,34 @@ public class StatusDoServlet extends HttpServlet {
 				conn.close();
 			}
 		case "print":
-
-		
-
-
-			  new CDBtoExcel().logisticsselect(request,response);
+			  String[] path = new CDBtoExcel().logisticsselect(request,response);
+			  System.out.println(1);
+			  String[] pathpick = new CDBtoExcel().collect(request, response);
+			  System.out.println(2);
+			  String[] pathcoll = new  CDBtoExcel().pickup(request, response);
+			  System.out.println(3);
 			  
-			  //test撿貨
-			 // String path = "C:\\Users\\iii\\Desktop\\庫存表 20160908v2 oliver(系統用).xlsx";
+			LinkedList<String[]> excelall = new LinkedList<>();
+			excelall.add(path);
+			System.out.println(4);
+			excelall.add(pathpick);
+			System.out.println(5);
+			excelall.add(pathcoll);
+			System.out.println(6);
 			  
-			 // new CDBtoExcel().get揀貨單(qrid, path, conn);
-			  //test結束
-
+			  session.setAttribute("excelpath", excelall);
+			  System.out.println(7);
+			  response.sendRedirect("/href/toExcel.jsp?excel=4");
+			  System.out.println(8);
+			  
+			 
 
 			out.write("<script type='text/javascript'>");
 			out.write("alert('列印成功');");
 			out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
 			out.write("</script>");
 			out.write("<a href=' '>");
+			// session.removeAttribute("excelpath");
 			break;
 		case "processing":
 			LinkedList<String> warehouses = OFactory.getWarehouse(request);
@@ -153,9 +164,15 @@ public class StatusDoServlet extends HttpServlet {
 			OFactory.isBundleAddBackToStock(request, conn);
 			response.sendRedirect("QROrders/refundPage.jsp?begin=0&end=10");
 			conn.close();
+			break;
 		case "revertTo":
 			OFactory.revertTo(request, conn);
 			response.sendRedirect(request.getHeader("Referer"));
+			conn.close();
+			break;
+		case "deleteUndo":
+			OFactory.deleteUndoOrder(request, conn);
+			response.sendRedirect("QROrders/NewOrderSearch.jsp?begin=0&end=10");
 			conn.close();
 			break;
 		case "sendTrackingCodeSandbox":

@@ -189,8 +189,8 @@ public static void main(String[] args) {
 					PreparedStatement ps2 = conn.prepareStatement(strSql2);
 					ps2.setString(1, QR_id);
 					ps2.setString(2, order.getOrderID());
-					ps2.setString(3, order.getShippingAddress().getFirstName());
-					ps2.setString(4, order.getShippingAddress().getLastName());
+					ps2.setString(3, order.getShippingAddress().getName());
+					ps2.setString(4, "");
 					ps2.setString(5, order.getShippingAddress().getPhone());
 					ps2.setString(6, order.getShippingAddress().getPhone2());
 				
