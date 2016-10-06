@@ -87,23 +87,9 @@ public class StatusDoServlet extends HttpServlet {
 				out.write("</script>");
 				conn.close();
 			}
-		case "print":
+		case "printsent":
 			  String[] path = new CDBtoExcel().logisticsselect(request,response);
-			  System.out.println(1);
-			  String[] pathpick = new CDBtoExcel().collect(request, response);
-			  System.out.println(2);
-			  String[] pathcoll = new  CDBtoExcel().pickup(request, response);
-			  System.out.println(3);
-			  
-			LinkedList<String[]> excelall = new LinkedList<>();
-			excelall.add(path);
-			System.out.println(4);
-			excelall.add(pathpick);
-			System.out.println(5);
-			excelall.add(pathcoll);
-			System.out.println(6);
-			  
-			  session.setAttribute("excelpath", excelall);
+			  session.setAttribute("pathsent", path);
 			  System.out.println(7);
 			  response.sendRedirect("/href/toExcel.jsp?excel=4");
 			  System.out.println(8);
@@ -114,7 +100,57 @@ public class StatusDoServlet extends HttpServlet {
 			out.write("alert('列印成功');");
 			out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
 			out.write("</script>");
-			out.write("<a href=' '>");
+			// session.removeAttribute("excelpath");
+			break;
+		case "printpick":
+		  String[] pathpick = new CDBtoExcel().pickup(request, response);
+		  
+		  session.setAttribute("pathpick", pathpick);
+		  response.sendRedirect("/href/toExcel.jsp?excel=5");
+
+		out.write("<script type='text/javascript'>");
+		out.write("alert('列印成功');");
+		out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
+		out.write("</script>");
+		// session.removeAttribute("excelpath");
+		break;
+		
+		case "printcoll":
+		  String[] pathcoll = new CDBtoExcel().collect(request, response);
+		  session.setAttribute("pathcoll", pathcoll);
+		  response.sendRedirect("/href/toExcel.jsp?excel=6");
+
+		out.write("<script type='text/javascript'>");
+		out.write("alert('列印成功');");
+		out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
+		out.write("</script>");
+		// session.removeAttribute("excelpath");
+		break;
+		case "printlogistic":
+			  String[] pathlogistic = new CDBtoExcel().物流匯出格式();
+			  session.setAttribute("pathlogistic", pathlogistic);
+			  response.sendRedirect("/href/toExcel.jsp?excel=1");
+
+			out.write("<script type='text/javascript'>");
+			out.write("alert('列印成功');");
+			out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
+			out.write("</script>");
+			// session.removeAttribute("excelpath");
+			break;
+		case "printdaily":
+			  response.sendRedirect("/href/toExcel.jsp?excel=2");
+			out.write("<script type='text/javascript'>");
+			out.write("alert('列印成功');");
+			out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
+			out.write("</script>");
+			// session.removeAttribute("excelpath");
+			break;
+		case "printdailyreport":
+			  response.sendRedirect("/href/toExcel.jsp?excel=3");
+			out.write("<script type='text/javascript'>");
+			out.write("alert('列印成功');");
+			out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
+			out.write("</script>");
 			// session.removeAttribute("excelpath");
 			break;
 		case "processing":
@@ -134,6 +170,7 @@ public class StatusDoServlet extends HttpServlet {
 			response.sendRedirect("QROrders/OrderPickupPage.jsp?begin=0&end=10");
 			conn.close();
 			break;
+			
 		case "pickUp":
 			OFactory.updateToComplete(request, conn);
 			response.sendRedirect("QROrders/OrderUploadTrackingCode.jsp?begin=0&end=10");
