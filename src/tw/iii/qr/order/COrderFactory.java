@@ -702,7 +702,7 @@ public class COrderFactory extends COrders {
 	}
 
 	public void updateToProcessing(HttpServletRequest request, Connection conn) throws SQLException {
-
+		LinkedList<COrders> orderslist = (LinkedList<COrders>)tw.iii.qr.order.daliy.servletContext.getAttribute("ndbs");
 		String[] strQR_idArray = request.getParameterValues("QR_id");
 		String[] strLogisticsArray = request.getParameterValues("logistics");
 		// convert array to LinkedList
@@ -725,6 +725,13 @@ public class COrderFactory extends COrders {
 			ps.setString(1, Logistics.get(i));
 			ps.setString(2, QR_ids.get(i));
 			ps.executeUpdate();
+			for(int j = 0 ; j < orderslist.size();j++){
+				if (QR_ids.get(i).equals(orderslist.get(j).getCOrderMaster().getQR_id())){
+					orderslist.remove(j);
+					break;
+				}
+			}
+			tw.iii.qr.order.daliy.servletContext.setAttribute("ndbs",orderslist);
 		}
 	}
 
