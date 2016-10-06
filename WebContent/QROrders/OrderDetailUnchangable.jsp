@@ -243,7 +243,7 @@ conn.close();
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>退運費</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getRefundFees() }"></div>
+		          <div class="col-md-5 well-sm"><input class="form-control" type="text" value="${result.getCOrderMaster().getRefundShippingFees() }"></div>
 		        </div>
 		        <div class="row">
 		          <div class="col-md-3 text-right well-sm label-tag"><h4>其它費用</h4></div>
