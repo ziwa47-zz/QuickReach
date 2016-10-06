@@ -87,12 +87,11 @@ public class StatusDoServlet extends HttpServlet {
 				conn.close();
 			}
 		case "print":
-
+			  String[] path = new CDBtoExcel().logisticsselect(request,response);
+			System.out.println(path[0]+path[1]);
+			  session.setAttribute("excelpath", path);
+			  response.sendRedirect("/href/toExcel.jsp?excel=4");
 		
-
-
-			  new CDBtoExcel().logisticsselect(request,response);
-			  
 			  //test撿貨
 			 // String path = "C:\\Users\\iii\\Desktop\\庫存表 20160908v2 oliver(系統用).xlsx";
 			  
@@ -105,6 +104,7 @@ public class StatusDoServlet extends HttpServlet {
 			out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
 			out.write("</script>");
 			out.write("<a href=' '>");
+			// session.removeAttribute("excelpath");
 			break;
 		case "processing":
 			LinkedList<String> warehouses = OFactory.getWarehouse(request);
