@@ -1,4 +1,5 @@
 package tw.iii.PDF;
+import com.itextpdf.barcodes.Barcode128;
 import com.itextpdf.barcodes.BarcodeEAN;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -23,9 +24,9 @@ public class Barcodes {
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(dest));
         Document doc = new Document(pdfDoc);
  
-        Table table = new Table(1);
-        for (int i = 0; i < 4; i++) {
-            table.addCell(createBarcode("201603ebay001", pdfDoc));
+        Table table = new Table(4);
+        for (int i = 0; i < 12; i++) {
+            table.addCell(createBarcode(String.format("201603ebay001", i), pdfDoc));
         }
         doc.add(table);
  
@@ -34,7 +35,7 @@ public class Barcodes {
  
     public static Cell createBarcode(String code, PdfDocument pdfDoc) {
         BarcodeEAN barcode = new BarcodeEAN(pdfDoc);
-        barcode.setCodeType(BarcodeEAN.EAN8);
+        barcode.setCodeType(Barcode128.CODE128);
         barcode.setCode(code);
         Cell cell = new Cell().add(new Image(barcode.createFormXObject(null, null, pdfDoc)));
         cell.setPaddingTop(10);
