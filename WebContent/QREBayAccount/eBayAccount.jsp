@@ -73,7 +73,6 @@ conn1.close();
             <th>最後修改時間</th>
             <th>狀態</th>
         <!--    <th>Comment</th>    --> 
-            <th>SystemFeedback</th>
           </tr>
         </thead>
         <tbody>
@@ -104,7 +103,6 @@ conn1.close();
               <!-- status -->
         <!--  <td>${i.getcomment()}</td>   --> 
               <!-- comment -->
-              <td>${i.getsystemFeedback()}</td>
               <!-- systemFeedback --> 
             </tr>
             

@@ -65,6 +65,7 @@
       	<a href="/QROrders/OrderFinished.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">已完成</label></a>
       	<a href="/QROrders/ShipmentRecord.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">訂單出貨紀錄</label></a>
       	<a href="/QROrders/NewOrderPre.jsp"><label class="btn btn-lg btn-primary">新增私下訂單</label></a>
+      	<a href="/QROrders/NewOrderSearch.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">私下訂單搜尋</label></a>
       </div>
     </div>
     <div id="menu2" class="tab-pane fade">

@@ -15,13 +15,14 @@
 <%
 Connection conn = new DataBaseConn().getConn();
 String QR_id = COrderFactory.generateQR_Id04();
-String strSql = "INSERT INTO orders_master (QR_id, payDate, orderDate, shippingDate)"
-		+ " VALUES (?, ?, ?, ?)";
+String strSql = "INSERT INTO orders_master (QR_id, payDate, orderDate, shippingDate, orderStatus)"
+		+ " VALUES (?, ?, ?, ?, ?)";
 PreparedStatement ps = conn.prepareStatement(strSql);
 ps.setString(1, QR_id);
 ps.setTimestamp(2, new java.sql.Timestamp(Calendar.getInstance().getTimeInMillis()));
 ps.setTimestamp(3, new java.sql.Timestamp(Calendar.getInstance().getTimeInMillis()));
 ps.setTimestamp(4, new java.sql.Timestamp(Calendar.getInstance().getTimeInMillis()));
+ps.setString(5, "未完成");
 
 int x = ps.executeUpdate();
 
