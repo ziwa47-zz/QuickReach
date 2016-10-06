@@ -50,8 +50,8 @@ public class daliy implements ServletContextListener {
 						public void run() {
 
 							try {
-								//new CGetEbay().CGetEbay1();
-								//new DayliBalanceSheetFactory().dayliBalanceSheet();
+								new CGetEbay().CGetEbay1();
+								new DayliBalanceSheetFactory().dayliBalanceSheet();
 							
 								System.out.println("da done");
 							} catch (Exception e) {
