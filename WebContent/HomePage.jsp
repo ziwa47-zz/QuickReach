@@ -103,8 +103,7 @@
     <div id="menu5" class="tab-pane fade">
       <h3>獲取訂單</h3>
       <div class="row text-center" >
-      <a href="/QROrders/GetEbayOrders.jsp"><label class="btn btn-lg btn-primary" >實際訂單資料</label></a>
-      <a href="/QROrders/GetEbayOrdersFromSandbox.jsp"><label class="btn btn-lg btn-warning" id="button-upload">Sandbox訂單資料</label></a>
+      <a href="/QROrders/GetEbayOrders.jsp"><label class="btn btn-lg btn-primary" >撈取訂單資料並更新日結表</label></a>
     </div>
   </div>
 </div>

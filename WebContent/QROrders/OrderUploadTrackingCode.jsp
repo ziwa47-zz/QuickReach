@@ -90,9 +90,6 @@
 				</div>
 				<button type="submit" name="send" id="sendTrackingCode"
 					value="sendTrackingCode" class="btn btn-lg btn-primary" disabled>送出追蹤碼(真實)</button>
-				<button type="submit" name="send" id="sendTrackingCodeSandbox"
-					value="sendTrackingCodeSandbox" class="btn btn-lg btn-primary"
-					disabled>送出追蹤碼(沙盒)</button>
 				<ul class="pager pagination">
 					<c:choose>
 						<c:when test="${begin != 0}">
