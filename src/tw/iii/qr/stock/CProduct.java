@@ -27,6 +27,7 @@ public class CProduct {
 	private String picturePath;
 	private String volume;
 	private int AllStock;
+	private String company;
 	public String getItem() {
 		return item;
 	}
@@ -167,5 +168,13 @@ public class CProduct {
 	public void setAllStock(int allStock) {
 		AllStock = allStock;
 	}
+	public String getCompany() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void setCompany(String company) {
+		this.company = company;
+	}
+	
 }
 	
