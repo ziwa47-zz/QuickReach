@@ -8,11 +8,11 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.xpath.operations.Equals;
 
 import tw.iii.qr.DataBaseConn;
 
@@ -20,229 +20,383 @@ public class CExceltoDB {
 	public static void main(String[] args) {
 		try {
 			addProduct();
+			//addStorage();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public CExceltoDB() throws IOException {
-		
+
 	}
-	private static void addProduct()  throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
-String path = "C:\\Users\\ziwa\\Desktop\\庫存表 20160908v2 oliver(系統用).xlsx"; 
-		
+
+	private static void addProduct() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+		String path = "C:\\Users\\User\\Desktop\\庫存表 20160908v2.xlsx";
+
 		XSSFWorkbook wb = new XSSFWorkbook(path);
 		XSSFSheet sheet = wb.getSheetAt(0);
-		String[] strData= new String[26];
+		String[] strData = new String[26];
 		XSSFCell cell;
 		Connection conn = new DataBaseConn().getConn();
-		for(int i = 2 ; i<sheet.getPhysicalNumberOfRows();i++){
-			
+		for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
+
 			XSSFRow row = sheet.getRow(i);
-			for(int j = 0 ;j<26;j++ ){
+			for (int j = 0; j < 26; j++) {
 				cell = row.getCell(j);
-				strData[j]=cell.toString();
+				strData[j] = cell.toString();
 			}
 			CProduct p = new CProduct();
 			p.setOwner(strData[0]);
-			p.setAdded(strData[3]);
-			//p.setPicturePath(strData[4]);
+			p.setAdded("false");
+			// p.setPicturePath(strData[4]);
 			p.setSKU(strData[5]);
-//			p.setPosition1(strData[6]);
-//			p.setPosition2(strData[7]);
+			// p.setPosition1(strData[6]);
+			// p.setPosition2(strData[7]);
 			p.setEAN(strData[8]);
-			p.setProductType(strData[9]);
+
+			//
+			String x = strData[5].substring(0,3);
+		
+			System.out.println(x);
+
+			switch (x) {
+			case "B00":
+				p.setProductType("組合商品");
+				break;
+
+			case "ZZZ":
+				p.setProductType("調貨類");
+				break;
+
+			default:
+				p.setProductType("單一商品");
+				break;
+			}
+
+			//
+
 			p.setBrand(strData[11]);
 			p.setSubBrand(strData[12]);
 			p.setProductCode(strData[13]);
-			p.setSecuredQty(10);
-			
+			p.setSecuredQty(0);
+
 			p.setP_name(strData[14]);
 			p.setSpec(strData[15]);
+			p.setVolume(strData[16]);
 			p.setColor(strData[17]);
-//			p.setQTY(strData[18]);
-			
-			
-			
-			System.out.println("Sku:"+strData[5]+" Brand:"+strData[11]);
-			
-			try{
-			
-			p.setCost(Double.parseDouble(strData[19]));
-			
-			
-			}catch(Exception e){
+			// p.setQTY(strData[18]);
+
+			System.out.println("Sku:" + strData[5] + " Brand:" + strData[11]);
+			String toComment="";
+			try {
+
+				//請先確認excel裡cost欄位裡為USD幣別的cell皆是"USDXX.XX"  而非USD$XX.XX 
+				String y = strData[19].substring(0,2);
+				switch (y) {
+				case "USD":
+					String z = strData[19].substring(3);
+					p.setCost(Double.parseDouble(z));
+					toComment+="  USD";
+
+					break;
+				
+
+				default:
+					p.setCost(Double.parseDouble(strData[19]));
+
+					break;
+				}
+
+				
+			} catch (Exception e) {
 				p.setCost(0);
 			}
-			p.setComment(strData[20]);
-//			p.setWareHouse(strData[21]);
-			try{
-			p.setWeight(Double.parseDouble(strData[23]));
-			}catch(Exception e){
+			toComment += strData[20].toString();
+			p.setComment(toComment);
+			// p.setWareHouse(strData[21]);
+			try {
+				p.setWeight(Double.parseDouble(strData[23]));
+			} catch (Exception e) {
 				p.setWeight(0);
 			}
-			if("".equals(strData[24])){
+			if ("".equals(strData[24])) {
 				p.setPackageMatrial("");
-			}else{
+			} else {
 				p.setPackageMatrial(strData[24]);
 			}
-			try{
-			if("".equals(strData[23])){
+			try {
+				if ("".equals(strData[23])) {
+					p.setVilumetricWeight(0);
+				} else {
+					p.setVilumetricWeight(Double.parseDouble(strData[25]));
+				}
+			} catch (Exception e) {
 				p.setVilumetricWeight(0);
-			}else{
-				p.setVilumetricWeight(Double.parseDouble(strData[25]));
 			}
-			}catch(Exception e){
-				p.setVilumetricWeight(0);
+			
+
+			p.setPicturePath("");
+			
+			
+			try {
+				String strsql = "INSERT INTO product(SKU,owner,productType,brand,subbrand,ean,productCode,p_name,spec"
+						+ ",color,securedQty,cost,comment,checkupdate,added,weight,packageMatrial,volume,vilumetricWeight,createDate,picturePath) "
+						+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,getdate(),?)"; // (21個)，還未加入barCode
+																					// ,add
+																					// volume
+
+				PreparedStatement ps = null;
+				// System.out.print(strsql);
+
+				ps = conn.prepareStatement(strsql);
+
+				ps.setString(1, p.getSKU());
+				// ps.setString(1, request.getParameter("barCode")); //此行未加入
+				ps.setString(2, p.getOwner());
+				ps.setString(3, p.getProductType());
+				ps.setString(4, p.getBrand());
+				ps.setString(5, p.getSubBrand());
+				ps.setString(6, p.getEAN());// (6)
+				ps.setString(7, p.getProductCode());
+				ps.setString(8, p.getP_name());
+				ps.setString(9, p.getSpec());
+				ps.setString(10, p.getColor());
+				ps.setInt(11, p.getSecuredQty());// (11)
+				ps.setDouble(12, p.getCost());
+				ps.setString(13, p.getComment());
+				ps.setInt(14, 0);
+				ps.setString(15, p.getAdded());
+				ps.setDouble(16, p.getWeight());// (16)
+				ps.setString(17, p.getPackageMatrial());
+				ps.setString(18, p.getVolume());
+				ps.setDouble(19, p.getVilumetricWeight());
+				//ps.setDate(20, p.getCreateDate());
+				ps.setString(20, p.getPicturePath()); // picturePath(20)
+
+				int j = ps.executeUpdate();
+
 			}
-			try{
-			String strsql = "INSERT INTO product(SKU,owner,productType,brand,subbrand,ean,productCode,p_name,spec"
-					+ ",color,securedQty,cost,comment,checkupdate,added,weight,packageMatrial,vilumetricWeight,createDate,picturePath) "+
-				 " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; //(20個)，還未加入barCode
-		
-			PreparedStatement ps = null;
-			//System.out.print(strsql); 
-			
-			ps = conn.prepareStatement(strsql);
-			
-			ps.setString(1, p.getSKU());
-			//ps.setString(1, request.getParameter("barCode")); //此行未加入
-			ps.setString(2,p.getOwner());
-			ps.setString(3, p.getProductType());
-			ps.setString(4, p.getBrand());
-			ps.setString(5, p.getSubBrand());
-			ps.setString(6, p.getEAN());//(6)
-			ps.setString(7, p.getProductCode());
-			ps.setString(8, p.getP_name());
-			ps.setString(9, p.getSpec());
-			ps.setString(10, p.getColor());
-			ps.setInt(11, p.getSecuredQty());//(11)
-			ps.setDouble(12, p.getCost());
-			ps.setString(13, p.getComment());
-			ps.setDate(14, p.getCheckupdate());
-			ps.setString(15, p.getAdded());
-			ps.setDouble(16, p.getWeight());//(16)
-			ps.setString(17, p.getPackageMatrial());
-			ps.setDouble(18, p.getVilumetricWeight());
-			ps.setDate(19, p.getCreateDate());
-			ps.setString(20, p.getPicturePath()); //picturePath(20)
-			
-			
-			
-			}
-			//int j =ps.executeUpdate();
-			catch(Exception e){
+
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
-	public static void addBundle()
-			throws IOException, SQLException, Exception, IllegalAccessException, ClassNotFoundException {
-		String path = "C:\\Users\\ziwa\\Desktop\\庫存表 20160908v2 oliver(系統用).xlsx"; 
-		
+
+	private static void addStorage() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+		String path = "C:\\Users\\User\\Desktop\\庫存表 20160908v2.xlsx";
+
 		XSSFWorkbook wb = new XSSFWorkbook(path);
 		XSSFSheet sheet = wb.getSheetAt(0);
-		String[] strData= new String[26];
+		String[] strData = new String[26];
 		XSSFCell cell;
 		Connection conn = new DataBaseConn().getConn();
-		for(int i = 2 ; i<sheet.getPhysicalNumberOfRows();i++){
-			
+		for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
+
 			XSSFRow row = sheet.getRow(i);
-			for(int j = 0 ;j<26;j++ ){
+			for (int j = 0; j < 26; j++) {
 				cell = row.getCell(j);
-				strData[j]=cell.toString();
+				strData[j] = cell.toString();
 			}
+			CStock s = new CStock();
 			CProduct p = new CProduct();
 			p.setOwner(strData[0]);
 			p.setAdded(strData[3]);
-			//p.setPicturePath(strData[4]);
+			// p.setPicturePath(strData[4]);
 			p.setSKU(strData[5]);
-//			p.setPosition1(strData[6]);
-//			p.setPosition2(strData[7]);
+			if ("".equals(strData[6])) {
+				s.setPosition1("");
+			} else if ("0".equals(strData[6])) {
+				s.setPosition1("0");
+			} else if ("AM".equals(strData[6])) {
+				s.setPosition1("AM");
+			} else if ("ZZZ".equals(strData[6])) {
+				s.setPosition1("ZZZ");
+			} else {
+				s.setPosition1(String.valueOf((int) Math.floor(Double.valueOf(strData[6]))));
+			}
+
+			s.setPosition2(strData[7]);
 			p.setEAN(strData[8]);
 			p.setProductType(strData[9]);
 			p.setBrand(strData[11]);
 			p.setSubBrand(strData[12]);
 			p.setProductCode(strData[13]);
 			p.setSecuredQty(10);
+
+			p.setP_name(strData[14]);
+			p.setSpec(strData[15]);
+			p.setVolume(strData[16]);
+			p.setColor(strData[17]);
+			System.out.println(strData[5] + strData[18]);
+			if ("".equals(strData[18]) || "0.0".equals(strData[18])) {
+				s.setQty(0);
+			} else {
+				s.setQty((int) Math.floor(Double.valueOf(strData[18])));
+			}
+
+			// System.out.println("Sku:"+strData[5]+"
+			// warehouse:"+strData[21]+":"+String.valueOf((int)Math.floor(Double.valueOf(strData[6])))+"-"+strData[7]);
+
+			try {
+
+				p.setCost(Double.parseDouble(strData[19]));
+
+			} catch (Exception e) {
+				p.setCost(0);
+			}
+			p.setComment("備註:" + strData[20]);
+			s.setWareHouse(strData[21]);
+			try {
+				p.setWeight(Double.parseDouble(strData[23]));
+			} catch (Exception e) {
+				p.setWeight(0);
+			}
+			if ("".equals(strData[24])) {
+				p.setPackageMatrial("");
+			} else {
+				p.setPackageMatrial(strData[24]);
+			}
+			try {
+				if ("".equals(strData[23])) {
+					p.setVilumetricWeight(0);
+				} else {
+					p.setVilumetricWeight(Double.parseDouble(strData[25]));
+				}
+			} catch (Exception e) {
+				p.setVilumetricWeight(0);
+			}
 			
+			p.setCompany("");
+			try {
+				String strsql = "Insert into storage(SKU,warehouse,warehousePosition1,warehousePosition2,qty,comment,purchaseDate,company) "
+						+ "values(?,?,?,?,?,?,getdate(),?)";
+				PreparedStatement ps = null;
+				// System.out.print(strsql);
+
+				ps = conn.prepareStatement(strsql);
+
+				ps.setString(1, p.getSKU());
+				// ps.setString(1, request.getParameter("barCode")); //此行未加入
+				ps.setString(2, s.getWareHouse());
+				ps.setString(3, s.getPosition1());
+				ps.setString(4, s.getPosition2());
+				ps.setInt(5, s.getQty());
+				ps.setString(6, p.getComment());// (6)
+				ps.setString(7, p.getCompany());
+
+				int j = ps.executeUpdate();
+
+			}
+
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public static void addBundle()
+			throws IOException, SQLException, Exception, IllegalAccessException, ClassNotFoundException {
+		String path = "C:\\Users\\ziwa\\Desktop\\庫存表 20160908v2 oliver(系統用).xlsx";
+
+		XSSFWorkbook wb = new XSSFWorkbook(path);
+		XSSFSheet sheet = wb.getSheetAt(0);
+		String[] strData = new String[26];
+		XSSFCell cell;
+		Connection conn = new DataBaseConn().getConn();
+		for (int i = 2; i < sheet.getPhysicalNumberOfRows(); i++) {
+
+			XSSFRow row = sheet.getRow(i);
+			for (int j = 0; j < 26; j++) {
+				cell = row.getCell(j);
+				strData[j] = cell.toString();
+			}
+			CProduct p = new CProduct();
+			p.setOwner(strData[0]);
+			p.setAdded(strData[3]);
+			// p.setPicturePath(strData[4]);
+			p.setSKU(strData[5]);
+			// p.setPosition1(strData[6]);
+			// p.setPosition2(strData[7]);
+			p.setEAN(strData[8]);
+			p.setProductType(strData[9]);
+			p.setBrand(strData[11]);
+			p.setSubBrand(strData[12]);
+			p.setProductCode(strData[13]);
+			p.setSecuredQty(10);
+
 			p.setP_name(strData[14]);
 			p.setSpec(strData[15]);
 			p.setColor(strData[17]);
-//			p.setQTY(strData[18]);
-			
-			
-			
-			
-			
-			try{
-			
-			p.setCost(Double.parseDouble(strData[19]));
-			
-			
-			}catch(Exception e){
+			// p.setQTY(strData[18]);
+
+			try {
+
+				p.setCost(Double.parseDouble(strData[19]));
+
+			} catch (Exception e) {
 				p.setCost(0);
 			}
 			p.setComment(strData[20]);
-//			p.setWareHouse(strData[21]);
-			try{
-			p.setWeight(Double.parseDouble(strData[23]));
-			}catch(Exception e){
+			// p.setWareHouse(strData[21]);
+			try {
+				p.setWeight(Double.parseDouble(strData[23]));
+			} catch (Exception e) {
 				p.setWeight(0);
 			}
-			if("".equals(strData[24])){
+			if ("".equals(strData[24])) {
 				p.setPackageMatrial("");
-			}else{
+			} else {
 				p.setPackageMatrial(strData[24]);
 			}
-			try{
-			if("".equals(strData[23])){
+			try {
+				if ("".equals(strData[23])) {
+					p.setVilumetricWeight(0);
+				} else {
+					p.setVilumetricWeight(Double.parseDouble(strData[25]));
+				}
+			} catch (Exception e) {
 				p.setVilumetricWeight(0);
-			}else{
-				p.setVilumetricWeight(Double.parseDouble(strData[25]));
 			}
-			}catch(Exception e){
-				p.setVilumetricWeight(0);
-			}
-			try{
-			String strsql = "INSERT INTO bundles(m_SKU,bundles,qty,eap_name,spec"
-					+ ",color,securedQty,cost,comment,checkupdate,added,weight,packageMatrial,vilumetricWeight,createDate,picturePath) "+
-				 " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) where Sku like 'B01%'"; //(20個)，還未加入barCode
-		
-			PreparedStatement ps = null;
-			//System.out.print(strsql); 
-			
-			ps = conn.prepareStatement(strsql);
-			
-			ps.setString(1, p.getSKU());
-			//ps.setString(1, request.getParameter("barCode")); //此行未加入
-			ps.setString(2,p.getOwner());
-			ps.setString(3, p.getProductType());
-			ps.setString(4, p.getBrand());
-			ps.setString(5, p.getSubBrand());
-			ps.setString(6, p.getEAN());//(6)
-			ps.setString(7, p.getProductCode());
-			ps.setString(8, p.getP_name());
-			ps.setString(9, p.getSpec());
-			ps.setString(10, p.getColor());
-			ps.setInt(11, p.getSecuredQty());//(11)
-			ps.setDouble(12, p.getCost());
-			ps.setString(13, p.getComment());
-			ps.setDate(14, p.getCheckupdate());
-			ps.setString(15, p.getAdded());
-			ps.setDouble(16, p.getWeight());//(16)
-			ps.setString(17, p.getPackageMatrial());
-			ps.setDouble(18, p.getVilumetricWeight());
-			ps.setDate(19, p.getCreateDate());
-			ps.setString(20, p.getPicturePath()); //picturePath(20)
-			
-			int j =ps.executeUpdate();
-			
-			}
-			catch(Exception e){
+			try {
+				String strsql = "INSERT INTO bundles(m_SKU,bundles,qty,eap_name,spec"
+						+ ",color,securedQty,cost,comment,checkupdate,added,weight,packageMatrial,vilumetricWeight,createDate,picturePath) "
+						+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) where Sku like 'B01%'"; // (20個)，還未加入barCode
+
+				PreparedStatement ps = null;
+				// System.out.print(strsql);
+
+				ps = conn.prepareStatement(strsql);
+
+				ps.setString(1, p.getSKU());
+				// ps.setString(1, request.getParameter("barCode")); //此行未加入
+				ps.setString(2, p.getOwner());
+				ps.setString(3, p.getProductType());
+				ps.setString(4, p.getBrand());
+				ps.setString(5, p.getSubBrand());
+				ps.setString(6, p.getEAN());// (6)
+				ps.setString(7, p.getProductCode());
+				ps.setString(8, p.getP_name());
+				ps.setString(9, p.getSpec());
+				ps.setString(10, p.getColor());
+				ps.setInt(11, p.getSecuredQty());// (11)
+				ps.setDouble(12, p.getCost());
+				ps.setString(13, p.getComment());
+				//ps.setInt(14, p.getCheckupdate());
+				ps.setString(15, p.getAdded());
+				ps.setDouble(16, p.getWeight());// (16)
+				ps.setString(17, p.getPackageMatrial());
+				ps.setDouble(18, p.getVilumetricWeight());
+				ps.setDate(19, p.getCreateDate());
+				ps.setString(20, p.getPicturePath()); // picturePath(20)
+
+				int j = ps.executeUpdate();
+
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
