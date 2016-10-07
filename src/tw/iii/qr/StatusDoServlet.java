@@ -183,8 +183,8 @@ public class StatusDoServlet extends HttpServlet {
 				OFactory.isBundledeductStock(request, conn);
 				OFactory.insertIntoShippingLog(request, conn);
 				OFactory.insertIntoPurchaseLogFromOrders(request, conn);
-//				CompleteSale myCompleteSale = new CompleteSale();
-//				myCompleteSale.CompleteSale1(request);
+				CompleteSale myCompleteSale = new CompleteSale();
+				myCompleteSale.CompleteSale1(request);
 				response.sendRedirect("QROrders/OrderFinished.jsp?begin=0&end=10");
 				conn.close();
 			} else {
