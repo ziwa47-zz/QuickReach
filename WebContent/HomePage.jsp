@@ -50,6 +50,7 @@
 	      	<a href="/QRProduct/NewProduct.jsp"><label class="btn btn-lg btn-primary">新增單項商品</label></a>
 	      	<a href="/QRProduct/BundlesAdd.jsp"><label class="btn btn-lg btn-primary">新增組合商品</label></a>
 	      	<a href="/QRProduct/TotalBundles.jsp"><label class="btn btn-lg btn-primary">組合商品</label></a>
+	      	 <a href="/QRProduct/ImportStorage.jsp"><label class="btn btn-lg btn-primary" >匯入庫存表</label></a>
 	      </div>
 	    </div>
  	</c:if>  
