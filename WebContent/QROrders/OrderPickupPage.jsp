@@ -386,7 +386,10 @@
 		    <option>待處理</option>
 		    <option>處理中</option>
 		  </select>
-		  <button type="submit"  name ="send"  value="print"> 列印出貨單</button>
+		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printsent"> 列印出貨單</button>
+		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printpick"> 列印揀貨單</button>
+		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printcoll"> 列印集貨單</button>
+		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printlogistic"> 列印集貨單</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
