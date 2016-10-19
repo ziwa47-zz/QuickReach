@@ -2,6 +2,7 @@ package tw.iii.qr;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -39,7 +40,8 @@ public class EbayAccountDo extends HttpServlet {
 		try {
 			request.setCharacterEncoding("UTF-8");
 			response.setContentType("text/html;charset=UTF-8");
-			String submitType = request.getParameter("submit");
+			String submitType = request.getParameter("submitType");
+			System.out.println("submitType:"+submitType);
 			switch (submitType) {
 
 			// case "submitAccount":
@@ -51,6 +53,8 @@ public class EbayAccountDo extends HttpServlet {
 			case "updateEbayAccount":
 				processupdateAccount(request, response); // update Account
 				break;
+			case "deleteEbayAccount":
+				processDeleteAccount(request, response);//delete
 			default:
 				break;
 
@@ -61,6 +65,19 @@ public class EbayAccountDo extends HttpServlet {
 		}
 	}
 
+	private void processDeleteAccount(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		conn = new DataBaseConn().getConn();
+		CEbayFactory cef = new CEbayFactory();
+		System.out.println("deleteEbayID:"+request.getParameter("ebayId"));
+		System.out.println("hi!!!!!!");
+		cef.deleteEbayAccount(request, conn);
+
+		conn.close();
+		response.sendRedirect("QREBayAccount/eBayAccount.jsp");
+	}
+
 	// 以下為新增eBay 帳號
 	private void processaddAccount(HttpServletRequest request, HttpServletResponse response)
 			throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
@@ -68,7 +85,7 @@ public class EbayAccountDo extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		conn = new DataBaseConn().getConn();
 		CEbayFactory cef = new CEbayFactory();
-		System.out.println(request.getParameter("ebayId"));
+		System.out.println("add,"+request.getParameter("ebayId"));
 		cef.InsertNewEbayAccount(request, conn);
 
 		conn.close();
@@ -82,7 +99,7 @@ public class EbayAccountDo extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		conn = new DataBaseConn().getConn();
 		CEbayFactory cef = new CEbayFactory();
-		System.out.println(request.getParameter("ebayId") + "ttttt");
+		System.out.println("update:"+request.getParameter("ebayId") + "ttttt");
 		cef.updateEbayAccount(request, conn);
 
 		conn.close();

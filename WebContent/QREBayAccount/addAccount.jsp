@@ -109,6 +109,7 @@ display: block;
       </div>
   -->  
   
+  
        
       <div class="row">
         <div class="col-md-3 well-sm">
@@ -117,6 +118,15 @@ display: block;
         </div>
         <div class="col-md-5 well-sm ">
           <input class="form-control required" type="text" title="請輸入paypal帳號(E-mail)" name="paypalAccount" value="" >
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-3 well-sm">
+          <h4>國家</h4>
+        </div>
+        <div class="col-md-5 well-sm ">
+          <input class="form-control" type="text" name="country" value="" >
         </div>
       </div>
       
@@ -190,7 +200,7 @@ display: block;
       </div>
       
       <div class="" align="center">
-        <input type="submit" name="submit" value="newAccount" class="btn-lg btn-success">
+        <button type="submit" name="submitType" value="newAccount" class="btn-lg btn-success">新增</button>
         <a href="eBayAccount.jsp"><button type="button" value="取消" class="btn-lg btn-success">取消 </button></a>
       </div>
       

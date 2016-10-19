@@ -16,6 +16,42 @@
 
 
 <script type="text/javascript">
+//test
+function processDelete(){
+	
+}
+
+$(document).ready(function(){
+	
+	  $("#deleteSubmit").click(function(event){
+	    var account = $("#account").val();
+	    var r = confirm("是否刪除此帳號:"+account)
+	    if(r==true){
+	    	
+	    	
+	    	$("#searchform").submit();
+	    }else {
+	    	  return false
+	    }
+	  
+	    
+	  });
+	  
+	  $("#img").click(function(event){
+		  
+		    var account = $("#account").val();
+		    var r = confirm("是否刪除此帳號:"+account)
+		    if(r==true){
+		    	$("#img").before('<input type="hidden" name="submitType" value="deleteAccount">');
+		    	$("#searchform").submit();
+		    }else {
+		    	  return false
+		    }
+		  
+		    
+		  });
+	});
+
 
 function accountCompetenceLv(){
 	var accountCompetenceLv = $("#checkLv").val()
@@ -113,14 +149,23 @@ conn.close();
   <form name="searchform" id="searchform" method="post" action="QRAccountServlet.do" class="form-inline container required" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;">
-      <legend>帳號修改</legend>
+       <div class="panel-title row ">
+								<div class="col-md-11 form-group">
+									<h2>帳號修改</h2>
+									<br/>
+								</div>
+								<div align="right" class="col-md-1 form-group">
+									<button type="button" id="img" class="close" ><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+								</div>
+							</div>
+    
       <div class="container-fluid form-horizontal">
         <div class="row">
           <div class="col-md-3 text-right well-sm label-tag"  >
             <h4>帳號資訊</h4>
           </div>
           <div class="col-md-5 well-sm">
-            <input class="form-control required" name="account" type="text" title="請輸入帳號" value="${accountinfo.getAccount()}" >
+            <input class="form-control required" id="account" name="account" type="text" title="請輸入帳號" value="${accountinfo.getAccount()}" readonly>
           </div>
         </div>
         <div class="row">
@@ -210,8 +255,9 @@ conn.close();
           
         
         <div class="" align="center">
-          <button type="submit" name="submit" value="editAccount" class="btn-lg btn-success">修改送出</button>
+          <button type="submit" id="editSubmit" name="submitType" value="editAccount" class="btn-lg btn-success">修改送出</button>
           <a href="accountManage.jsp"><button type="button" value="取消" class="btn-lg btn-success">取消</button></a>
+         <button type="submit" id="deleteSubmit" name="submitType"  value="deleteAccount" class="btn-lg btn-success">刪除</button> 
         </div>
         
       </div>

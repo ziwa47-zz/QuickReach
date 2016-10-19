@@ -3,12 +3,15 @@ package tw.iii.qr;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.sql.Connection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import tw.iii.qr.stock.CEbayFactory;
 
 @WebServlet("/QREmployee/QRAccountServlet.do")
 public class QRAccountServlet extends HttpServlet {
@@ -17,6 +20,8 @@ public class QRAccountServlet extends HttpServlet {
 	QRAccountFactory qraf = new QRAccountFactory();
 
 	private PrintWriter out;
+
+	private Connection conn;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
@@ -27,7 +32,7 @@ public class QRAccountServlet extends HttpServlet {
 		try {
 			request.setCharacterEncoding("UTF-8");
 			response.setContentType("text/html;charset=UTF-8");
-			String submitType = request.getParameter("submit");
+			String submitType = request.getParameter("submitType");
 			switch(submitType){
 			
 //			case "submitAccount":
@@ -39,9 +44,11 @@ public class QRAccountServlet extends HttpServlet {
 			case "editAccount":
 				processEdit(request,response); // update Account
 				break;
+			case "deleteAccount":
+				processDeleteAccount(request, response);//delete
 			default:
 				break;
-				
+
 			}
 		
 		} catch (Exception e) {
@@ -50,6 +57,18 @@ public class QRAccountServlet extends HttpServlet {
 	}
 	
 	
+	private void processDeleteAccount(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		conn = new DataBaseConn().getConn();
+		System.out.println("deleteAccount:"+request.getParameter("account"));
+		System.out.println("hello!!!!!!");
+		qraf.deleteAccount(request, conn);
+
+		conn.close();
+		response.sendRedirect("accountManage.jsp");
+	}
+
 	private void processInsert(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		request.setCharacterEncoding("UTF-8");

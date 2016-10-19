@@ -23,8 +23,8 @@ public class CEbayFactory extends CEbay {
 
 	
 	public void InsertNewEbayAccount (HttpServletRequest request, Connection conn) throws SQLException{
-		String strsql = "INSERT INTO  ebayaccount(ebayId,ebayToken,endToken,paypalAccount,correspondCompany,startTime,lastFixTime,status ,comment,systemFeedback,companyAddress,companyPhone,companyPost)"
-					  + " VALUES (?,?,?,?,?,SELECT DATEADD(HOUR,8,GetUTCDate()) ,SELECT DATEADD(HOUR,8,GetUTCDate()) ,?,?,?,?,?,?)"; //(13個)
+		String strsql = "INSERT INTO  ebayaccount(ebayId,ebayToken,endToken,paypalAccount,correspondCompany,startTime,lastFixTime,status ,comment,systemFeedback,companyAddress,companyPhone,companyPost,country)"
+					  + " VALUES (?,?,?,?,?,convert(varchar,(SELECT DATEADD(HOUR,8,GetUTCDate())),111) ,convert(varchar,(SELECT DATEADD(HOUR,8,GetUTCDate())),111) ,?,?,?,?,?,?,?)"; //(14個)
 	
 		PreparedStatement ps = null;
 		System.out.print(strsql); 
@@ -43,10 +43,26 @@ public class CEbayFactory extends CEbay {
 		
 		ps.setString(9, request.getParameter("companyAddress"));
 		ps.setString(10, request.getParameter("companyPhone"));
-		ps.setString(13, request.getParameter("companyPost")); 
+		ps.setString(11, request.getParameter("companyPost")); 
+		
+		ps.setString(12, request.getParameter("country")); 
 			
 		int i =ps.executeUpdate();
 	}
+	
+	public void deleteEbayAccount (HttpServletRequest request, Connection conn) throws SQLException{
+		String strsql ="delete ebayaccount where ebayId = ?";
+				
+		PreparedStatement ps = null;
+		System.out.print(strsql); 
+		ps = conn.prepareStatement(strsql);
+		
+		ps.setString(1, request.getParameter("ebayId"));	
+		
+			
+		int i =ps.executeUpdate();
+	}
+
 
 	public CEbay searchDetail(String ebayId) throws IllegalAccessException, ClassNotFoundException, Exception {
 
@@ -83,6 +99,7 @@ public class CEbayFactory extends CEbay {
 			ebayaccount.setcompanyAddress(rs.getString(11));
 			ebayaccount.setcompanyPhone(rs.getString(12));
 			ebayaccount.setcompanyPost(rs.getString(13));
+			ebayaccount.setcountry(rs.getString(14));
 			
 		}
 
@@ -100,9 +117,9 @@ public class CEbayFactory extends CEbay {
 		
 		String strsql = "UPDATE  ebayaccount SET "	
 				 + "ebayToken = ?," + "paypalAccount = ?,"
-				 + "correspondCompany = ?,lastFixTime=(SELECT DATEADD(HOUR,8,GetUTCDate())) , " 	
+				 + "correspondCompany = ?,lastFixTime=convert(varchar,(SELECT DATEADD(HOUR,8,GetUTCDate())),111) , " 	
 				 + "status = ?," + "comment = ?," + "systemFeedback = ? ,"
-				 + "companyAddress = ?,"+ "companyPhone = ?,"+ "companyPost = ? "
+				 + "companyAddress = ?,"+ "companyPhone = ?,"+ "companyPost = ? ,"+ "country = ? "
 				 + " where ebayId = ?"; //(10個)
 		
 	
@@ -135,7 +152,8 @@ public class CEbayFactory extends CEbay {
 		ps.setString(7, request.getParameter("companyAddress"));
 		ps.setString(8, request.getParameter("companyPhone"));
 		ps.setString(9, request.getParameter("companyPost")); 
-		ps.setString(10, request.getParameter("ebayId")); 
+		ps.setString(10, request.getParameter("country"));
+		ps.setString(11, request.getParameter("ebayId")); 
 		
 		
 		
@@ -168,6 +186,9 @@ public class CEbayFactory extends CEbay {
 			ebay.setstatus(rs.getString(8));// status
 			ebay.setcomment(rs.getString(9));// comment
 			ebay.setsystemFeedback(rs.getString(10)); //systemFeefback
+			ebay.setcompanyAddress(rs.getString(11));
+			ebay.setcompanyPhone(rs.getString(12));
+			ebay.setcompanyPost(rs.getString(13));
 			
 			ebayall.add(ebay);			
 		}
