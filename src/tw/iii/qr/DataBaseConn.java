@@ -21,8 +21,8 @@ public class DataBaseConn {
 		
 	
 	//String urlstr = "jdbc:sqlserver://qrdata.database.windows.net:1433;database=qrdata;user=qruser;password=P@ssword;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
-	  String urlstr = "jdbc:sqlserver://"+tw.iii.qr.order.daliy.ip+":1433;database=qrdata;user=sa;password=as;loginTimeout=30;";
-
+	  //String urlstr = "jdbc:sqlserver://"+tw.iii.qr.order.daliy.ip+":1433;database=qrdata;user=sa;password=as;loginTimeout=30;";
+	  String urlstr = "jdbc:sqlserver://localhost:1433;database=qrdata;user=sa;password=as;loginTimeout=30;";
 		
 		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
