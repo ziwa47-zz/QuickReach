@@ -85,7 +85,17 @@
 <%-- 					 </c:forEach> --%>
 					 </select>
 				
+				<div class="container table-responsive" style=" border-radius:20px" id="theList">
+					
+				</div>
 				
+				$("#select").on("change", function(){
+				    $.ajax({
+					url: "theServlet",
+					success: function(result){
+					$("#theList").html(result);
+				    }});
+				});
 				
 <!-- 				<table -->
 <!-- 					class="table table-bordered table-hover table-condensed pull-left" -->
