@@ -273,5 +273,46 @@
 			response.setHeader("Refresh","3; /QROrders/OrderPickupPage.jsp?begin=0&end=10");
 		}
 	}
-	
+	if ("counting".equals(request.getParameter("excel"))) {
+		try {
+			String[] path = (String[]) session.getAttribute("pathcounting");
+			String pa = path[0];
+			String filename = path[1];
+			filename = new String(filename.getBytes("ISO-8859-1"), "ISO-8859-1");
+			File file = new File(pa + filename);
+			System.out.println("file");
+			if (file.exists()) {//檢驗檔案是否存在
+
+				out.println("exist");
+				response.setHeader("Content-Disposition",
+						"attachment; filename=\"" + URLEncoder.encode(filename, "UTF-8") + "\"");
+				OutputStream output = response.getOutputStream();
+				InputStream in = new FileInputStream(file);
+				byte[] b = new byte[2048];
+				int len;
+
+				while ((len = in.read(b)) > 0) {
+					output.write(b, 0, len);
+				}
+				in.close();
+				output.flush();
+				output.close(); //關閉串流
+				out.clear();
+				out = pageContext.pushBody();
+				System.out.println("done");
+
+			} else {
+				out.println(pa + filename + " : 此檔案不存在");
+				out.println("<br/>");
+				out.println("3秒後跳轉回查詢庫存頁面");
+				out.println("<br/>");
+				response.setHeader("Refresh","3; /QRProduct/SearchStockPage.jsp");
+			}
+		} catch (Exception ex) {
+			out.println("<br/>");
+			out.println("3秒後跳轉回查詢庫存頁面");
+			out.println("<br/>");
+			response.setHeader("Refresh","3; /QRProduct/SearchStockPage.jsp");
+		}
+	}
 %>

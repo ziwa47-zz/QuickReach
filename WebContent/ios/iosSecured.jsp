@@ -1,9 +1,9 @@
 <%@page import="org.json.JSONArray"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="tw.iii.qr.stock.CStockFactory,org.json.*"  %>
+<%@ page import="tw.iii.qr.stock.DTO.CStockFactory,org.json.*"  %>
 
-<jsp:useBean id="searchSecured" class="tw.iii.qr.stock.CStockFactory" scope="page"/>
+<jsp:useBean id="searchSecured" class="tw.iii.qr.stock.DTO.CStockFactory" scope="page"/>
 
 <% 
 if(request.getParameter("p")!=null){

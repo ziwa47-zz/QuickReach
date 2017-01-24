@@ -1,9 +1,9 @@
-<%@page import="tw.iii.qr.order.COrderDetail"%>
-<%@page import="tw.iii.qr.order.COrders"%>
+<%@page import="tw.iii.qr.order.DTO.COrderDetail"%>
+<%@page import="tw.iii.qr.order.DTO.COrders"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.*,tw.iii.qr.stock.CProduct" %>
+<%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.*,tw.iii.qr.stock.DTO.CProduct" %>
 <%@page import="tw.iii.qr.DataBaseConn"%>
-<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.COrderFactory" scope="page" />
+<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.DTO.COrderFactory" scope="page" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>

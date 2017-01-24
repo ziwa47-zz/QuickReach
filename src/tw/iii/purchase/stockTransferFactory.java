@@ -9,6 +9,10 @@ import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
 
+import tw.iii.purchase.DTO.Cpurchase;
+import tw.iii.purchase.DTO.Cpurchase_detail;
+import tw.iii.purchase.DTO.Cpurchase_master;
+
 public class stockTransferFactory {
 
 	public stockTransferFactory() {

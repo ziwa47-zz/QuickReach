@@ -10,9 +10,11 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.swing.filechooser.FileSystemView;
 
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -25,6 +27,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import tw.iii.qr.DataBaseConn;
+import tw.iii.qr.stock.DTO.CStock;
 
 public class CDBtoExcel {
 	public static void main(String[] args) {
@@ -218,7 +221,7 @@ public class CDBtoExcel {
 			XSSFWorkbook wbcoll = new XSSFWorkbook();
 			String[] qrid = request.getParameterValues("QR_id");
 			XSSFSheet sheet = wbcoll.createSheet("集貨單");
-			
+
 			String strsql = " select o.SKU,productType,brand, subBrand, productName, spec,count(*),s.warehouse,s.warehousePosition1,s.warehousePosition2 "
 					+ " from orders_detail o inner join product p on  o.SKU = p.SKU "
 					+ " inner join orders_master m on m.QR_id = o.QR_id "
@@ -264,7 +267,6 @@ public class CDBtoExcel {
 
 			conn.close();
 
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -313,7 +315,8 @@ public class CDBtoExcel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return pa = new String[] { fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator, date + "Sent.xlsx" };
+		return pa = new String[] { fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator,
+				date + "Sent.xlsx" };
 
 	}
 
@@ -610,4 +613,73 @@ public class CDBtoExcel {
 		System.out.println(dateFormat.format(date));
 		return time;
 	}
+
+	public String[] counting(HttpServletRequest request, HttpServletResponse response)
+			throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+
+		
+		
+		
+		String date = getDay();
+		FileSystemView fsv = FileSystemView.getFileSystemView();
+		XSSFWorkbook wb = new XSSFWorkbook();
+		XSSFSheet sheet = wb.createSheet("盤點單");
+		HttpSession session = request.getSession();
+		LinkedList<CStock> cs = (LinkedList<CStock>) session.getAttribute("countingall");
+		int index = 2;
+		
+		
+		
+		
+		XSSFRow myRow = sheet.createRow(0);
+		
+		CellRangeAddress region = new CellRangeAddress(0, 0, 0, 8);
+		sheet.addMergedRegion(region);
+		
+		CellStyle styleRow0 = wb.createCellStyle();
+		styleRow0.setBorderBottom((short) 2);
+		styleRow0.setBorderTop((short) 2);
+		styleRow0.setBorderLeft((short) 2);
+		styleRow0.setBorderRight((short) 2);
+		styleRow0.setAlignment(CellStyle.ALIGN_CENTER);
+		styleRow0.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		
+		myRow.createCell(0).setCellValue("盤點表");
+		myRow.getCell(0).setCellStyle(styleRow0);
+		myRow.setHeightInPoints(36);		
+		
+		myRow = sheet.createRow(1);
+		myRow.createCell(0).setCellValue("SKU");
+		myRow.createCell(1).setCellValue("儲位");
+		myRow.createCell(2).setCellValue("商品名稱");
+		myRow.createCell(3).setCellValue("規格");
+		myRow.createCell(4).setCellValue("顏色");
+		myRow.createCell(5).setCellValue("庫存數量");
+		myRow.createCell(6).setCellValue("實盤數量");
+		myRow.createCell(7).setCellValue("盤溢/盤損");
+		myRow.createCell(8).setCellValue("備註");
+
+		for(int i =0; i<cs.size();i++){
+			myRow = sheet.createRow(index);
+			myRow.createCell(0).setCellValue(cs.get(i).getSKU());
+			myRow.createCell(1).setCellValue(cs.get(i).getPosition1()+"-"+cs.get(i).getPosition2());
+			myRow.createCell(2).setCellValue(cs.get(i).getP_name());
+			myRow.createCell(3).setCellValue(cs.get(i).getSpec());
+			myRow.createCell(4).setCellValue(cs.get(i).getColor());
+			myRow.createCell(5).setCellValue(cs.get(i).getQty());
+			myRow.createCell(6).setCellValue("");
+			myRow.createCell(6).setCellValue("");
+			myRow.createCell(6).setCellValue("");
+
+			index++;
+		}
+
+		FileOutputStream out = new FileOutputStream(
+				fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator + date + "Counting.xlsx");
+		wb.write(out);
+
+		return new String[] { fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator,
+				date + "Counting.xlsx" };
+	}
+
 }
