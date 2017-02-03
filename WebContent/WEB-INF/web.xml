@@ -6,7 +6,7 @@
   </welcome-file-list>
   <servlet>
     <servlet-name>ProductDo</servlet-name>
-    <servlet-class>tw.iii.qr.ProductDo</servlet-class>
+    <servlet-class>tw.iii.qr.stock.ProductDo</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ProductDo</servlet-name>

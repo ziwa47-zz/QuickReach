@@ -2,10 +2,10 @@
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="tw.iii.qr.DataBaseConn"%>
-<%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.*,tw.iii.qr.stock.*,tw.iii.purchase.*" %>
+<%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.*,tw.iii.qr.stock.*,tw.iii.qr.stock.DTO.*,tw.iii.purchase.*,tw.iii.purchase.DTO.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<jsp:useBean id="stockDetail" class="tw.iii.qr.stock.CStockFactory" scope="page" />
-<jsp:useBean id = "productDetail" class="tw.iii.qr.stock.CProductFactory" scope="page" />
+<jsp:useBean id="stockDetail" class="tw.iii.qr.stock.DTO.CStockFactory" scope="page" />
+<jsp:useBean id = "productDetail" class="tw.iii.qr.stock.DTO.CProductFactory" scope="page" />
 <jsp:useBean id ="purchaseRecord" class= "tw.iii.purchase.purchaseFactory" scope="page"/>
 <html>
 <head>
@@ -137,8 +137,8 @@ conn1.close();
           <th>倉別</th>
           <th>儲位</th>
           <th>庫存數量</th>
-          <th>進貨日期</th>
-          <th>備註</th>
+          <th>最後進貨日期</th>
+          <th></th>
         </tr>
       </thead>
       <c:forEach var="i" items="${stock}" begin="0" step="1" >
@@ -151,14 +151,14 @@ conn1.close();
           <td>${i.getPosition1()}-${i.getPosition2()}</td>
           <td>${i.getQty()}</td>
           <td>${i.getLastpurchasedate()}</td>
-          <td>${i.getComment()}</td>
+          <td></td>
         </tr>
       </tbody>
      </c:forEach>
      <tr  style="background-color:#D5B6EA">
       <th></th>
           <th></th>
-          <th>庫存量 : ${total}</th>
+          <th>總庫存量 : ${total}</th>
           <th>待處理量 : ${sold}</th>
           <th>餘額 : ${total - sold}</th>
          

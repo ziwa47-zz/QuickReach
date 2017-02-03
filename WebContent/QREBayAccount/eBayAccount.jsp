@@ -1,10 +1,10 @@
 <%@page import="tw.iii.qr.DataBaseConn"%>
-<%@page import="tw.iii.qr.stock.CEbay"%>
+<%@page import="tw.iii.qr.stock.DTO.CEbay"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.*" %>
-<jsp:useBean id="getebay" class="tw.iii.qr.stock.CEbayFactory"  scope="page"/>
+<jsp:useBean id="getebay" class="tw.iii.qr.stock.DTO.CEbayFactory"  scope="page"/>
 
 <!DOCTYPE>
 <html>
