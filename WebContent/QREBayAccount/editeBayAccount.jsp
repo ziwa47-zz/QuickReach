@@ -2,8 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>	
-<%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.*,tw.iii.qr.stock.CEbay" %>
-<jsp:useBean id="getebay" class="tw.iii.qr.stock.CEbayFactory"  scope="page"/>
+<%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.*,tw.iii.qr.stock.DTO.CEbay" %>
+<jsp:useBean id="getebay" class="tw.iii.qr.stock.DTO.CEbayFactory"  scope="page"/>
 
 <!DOCTYPE>
 <html>
@@ -16,19 +16,41 @@
 
 <script type="text/javascript">
 
-function deleteEbay(){
+$(document).ready(function(){
 	
-	$("#editSubmit").val("deleteEbayAccount");
-	alert("delete,"+$("#editSubmit").val());
-	$("#searchform").submit();
+	  $("#deleteSubmit").click(function(event){
+	    var ebayId = $("#ebayId").val();
+	    var r = confirm("是否刪除此Ebay帳號:"+ebayId)
+	    if(r==true){
+	    	
+	    	$("#searchform").submit();
+	    }else {
+	    	  return false
+	    }
+	  
+	    
+	  });
+	  
+	  $("#img").click(function(event){
+		  
+		    var ebayId = $("#ebayId").val();
+		    var r = confirm("是否刪除此帳號:"+ebayId)
+		    if(r==true){
+		    	$("#img").before('<input type="hidden" name="submitType" value="deleteEbayAccount">');
+		    	$("#searchform").submit();
+		    }else {
+		    	  return false
+		    }
+		  
+		    
+		  });
+	  
 	
-}
+	});
 
-function testDelete(){
-	
-	$("#editSubmit").val("deleteEbayAccount");
-	alert($("#editSubmit").val());
-}
+
+
+
 	
 </script>
 
@@ -92,7 +114,7 @@ System.out.println(ebayaccount.getebayId());
 									<br/>
 								</div>
 								<div align="right" class="col-md-1 form-group">
-									<button type="button" class="close" onclick="deleteEbay()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+									<button type="button" id="img" class="close" ><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 								</div>
 							</div>
     
@@ -101,8 +123,8 @@ System.out.println(ebayaccount.getebayId());
         <div class="col-md-3 well-sm">
           <h4>ebay ID</h4>
         </div>
-        <div class="col-md-5 well-sm control-label">
-          <input class="form-control" type="text" name="ebayId" value="${eBayAccount.getebayId()}" readonly>
+        <div class="col-md-5 well-sm ">
+          <input class="form-control" id="ebayId" type="text" name="ebayId" value="${eBayAccount.getebayId()}" readonly>
         </div>
       </div>
       
@@ -110,7 +132,7 @@ System.out.println(ebayaccount.getebayId());
         <div class="col-md-3 well-sm">
           <h4>ebay Token</h4>
         </div>
-        <div class="col-md-5 well-sm control-label">
+        <div class="col-md-5 well-sm ">
           <textarea class="form-control" name="ebayToken"  rows="5"	cols="85" >${eBayAccount.getebayToken()}</textarea>
         </div>
       </div>
@@ -125,12 +147,24 @@ System.out.println(ebayaccount.getebayId());
       </div>
  -->  
        
+      
+      
+       
        <div class="row">
         <div class="col-md-3 well-sm">
           <h4>paypal 帳號(E-mail)</h4>
         </div>
-        <div class="col-md-5 well-sm control-label">
+        <div class="col-md-5 well-sm ">
           <input class="form-control" type="text" name="paypalAccount" value="${eBayAccount.getpaypalAccount() }" >
+        </div>
+      </div>
+      
+        <div class="row">
+        <div class="col-md-3 well-sm">
+          <h4>國家</h4>
+        </div>
+        <div class="col-md-5 well-sm ">
+          <input class="form-control" type="text" name="country" value="${eBayAccount.getcountry() }" >
         </div>
       </div>
       
@@ -138,7 +172,7 @@ System.out.println(ebayaccount.getebayId());
         <div class="col-md-3 well-sm">
           <h4>對應公司</h4>
         </div>
-        <div class="col-md-5 well-sm control-label">
+        <div class="col-md-5 well-sm ">
         <input class="form-control" type="text" name="correspondCompany" id="correspondCompany" value="${eBayAccount.getcorrespondCompany()}">
          
         </div>
@@ -148,7 +182,7 @@ System.out.println(ebayaccount.getebayId());
         <div class="col-md-3 well-sm">
           <h4>對應公司電話</h4>
         </div>
-        <div class="col-md-5 well-sm control-label">
+        <div class="col-md-5 well-sm ">
         <input class="form-control" type="text" name="companyPhone" id="companyPhone" value="${eBayAccount.getcompanyPhone()}">
          
         </div>
@@ -157,7 +191,7 @@ System.out.println(ebayaccount.getebayId());
         <div class="col-md-3 well-sm">
           <h4>對應公司郵遞區號</h4>
         </div>
-        <div class="col-md-5 well-sm control-label">
+        <div class="col-md-5 well-sm ">
         <input class="form-control" type="text" name="companyPost" id="companyPost" value="${eBayAccount.getcompanyPost()}">
          
         </div>
@@ -166,7 +200,7 @@ System.out.println(ebayaccount.getebayId());
         <div class="col-md-3 well-sm">
           <h4>對應公司地址</h4>
         </div>
-        <div class="col-md-5 well-sm control-label">
+        <div class="col-md-5 well-sm ">
         <input class="form-control" type="text" name="companyAddress" id="companyAddress" value="${eBayAccount.getcompanyAddress()}">
          
         </div>
@@ -222,16 +256,16 @@ System.out.println(ebayaccount.getebayId());
         <div class="col-md-3 well-sm">
           <h4>SystemFeedback</h4>
         </div>
-        <div class="col-md-5 well-sm control-label">
+        <div class="col-md-5 well-sm ">
           <textarea class="form-control" name="systemFeedback" rows="25" cols="95" >${eBayAccount.getsystemFeedback()}</textarea>
         </div>
       </div>
       
       <div class="" align="center">
    <!-- <input type="submit" name="submit" value="newAccount" class="btn-lg btn-success"> --> 
-        <button type="submit" id="editSubmit" name="submit" value="updateEbayAccount" class="btn-lg btn-success">修改送出</button> 
+        <button type="submit" id="editSubmit" name="submitType" value="updateEbayAccount" class="btn-lg btn-success">修改送出</button> 
     	<a href="eBayAccount.jsp"><button type="button" value="取消" class="btn-lg btn-success">取消 </button></a>
-    	 <button type="submit" name="submit" onclick="testDelete()" value="deleteEbayAccount" class="btn-lg btn-success">暫訂刪除</button> 
+    	 <button type="submit" id="deleteSubmit" name="submitType" value="deleteEbayAccount" class="btn-lg btn-success">刪除</button> 
      
       </div>
       

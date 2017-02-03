@@ -2,8 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page
-	import="java.sql.Connection,java.sql.ResultSet,java.util.*,tw.iii.qr.stock.CProduct"%>
-<jsp:useBean id="searchDetail" class="tw.iii.qr.stock.CProductFactory"
+	import="java.sql.Connection,java.sql.ResultSet,java.util.*,tw.iii.qr.stock.DTO.CProduct"%>
+<jsp:useBean id="searchDetail" class="tw.iii.qr.stock.DTO.CProductFactory"
 	scope="page" />
 <!doctype html>
 

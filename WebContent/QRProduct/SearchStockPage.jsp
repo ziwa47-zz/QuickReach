@@ -177,7 +177,8 @@
       <br />
       <div class="row text-center">
         <button type="submit" name="submit" value="submitstorage" class="btn-lg btn-success">搜尋</button>
-        <button type="button" name="" class="btn-lg btn-success">清空</button>
+        <button type="reset" name="" class="btn-lg btn-success">清空</button>
+        <button type="submit" name="submit" value="counting" class="btn-lg btn-success">匯出盤點</button>
       </div>
     </fieldset>
   </form>
@@ -225,8 +226,17 @@
               <td>${i.getP_name()}</td>
               <td>${i.getSpec()}</td>
               <td>${i.getColor()}</td>
-              <td>${i.getAllStock()}</td>
               
+              
+              <c:choose>
+              <c:when test="${i.getAllStock() < i.getSecuredQty()}">
+               <td style="color: red;">${i.getAllStock()}</td>
+              </c:when>
+              <c:otherwise>
+              <td >${i.getAllStock()}</td>
+              </c:otherwise>
+              </c:choose>
+             
             </tr>
             </tbody>
           </c:forEach>

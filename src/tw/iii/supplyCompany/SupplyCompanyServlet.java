@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import tw.iii.Maintain.QRAccount;
+import tw.iii.Maintain.QRAccountFactory;
 import tw.iii.qr.DataBaseConn;
-import tw.iii.qr.QRAccount;
-import tw.iii.qr.QRAccountFactory;
 
 
 @WebServlet("/SupplyCompanyServlet.do")

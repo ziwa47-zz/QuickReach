@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="tw.iii.qr.DataBaseConn"%>
-<%@ page import="tw.iii.qr.order.COrders"%>
+<%@ page import="tw.iii.qr.order.DTO.COrders"%>
 <%@ page
 	import="java.sql.Connection,java.sql.ResultSet,java.util.LinkedList,java.util.*,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse"%>
-<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.COrderFactory"
+<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.DTO.COrderFactory"
 	scope="page" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -89,10 +89,7 @@
 					</div>
 				</div>
 				<button type="submit" name="send" id="sendTrackingCode"
-					value="sendTrackingCode" class="btn btn-lg btn-primary" disabled>送出追蹤碼(真實)</button>
-				<button type="submit" name="send" id="sendTrackingCodeSandbox"
-					value="sendTrackingCodeSandbox" class="btn btn-lg btn-primary"
-					disabled>送出追蹤碼(沙盒)</button>
+					value="sendTrackingCode" class="btn btn-lg btn-primary" disabled>送出追蹤碼</button>
 				<ul class="pager pagination">
 					<c:choose>
 						<c:when test="${begin != 0}">
@@ -162,6 +159,9 @@
 									<td>${i.getCOrderMaster().getEbayNO()}
 									<td>${i.getCOrderMaster().getPlatform()}</td>
 									<td>${i.getCOrderMaster().getEbayAccount()}</td>
+									<td><input type="hidden" name="ebayaccount"
+										value="${i.getCOrderMaster().getEbayAccount()}">
+									</td>
 									<td>${i.getCOrderMaster().getGuestAccount()}</td>
 									<td>${i.getCOrderMaster().getPayDate()}</td>
 									<td><input type="hidden" name="ebayItemNO"

@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="tw.iii.qr.DataBaseConn"%>
-<%@ page import="tw.iii.qr.order.COrders"%>
+<%@ page import="tw.iii.qr.order.DTO.COrders"%>
 <%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.LinkedList,java.util.*,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse"%>
-<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.COrderFactory" scope="page" />
+<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.DTO.COrderFactory" scope="page" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -262,8 +262,12 @@
   <c:choose>
     <c:when test="${SearchFinishedResult != null}">
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
+      
         <form name="searchform" method="post" action="../StatusDo" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
+          
+           <button type="submit" name="send" value="printdaily" class="btn btn-md btn-info">列印日結表</button>
+     <button type="submit" name="send" value="printdailyreport" class="btn btn-md btn-info">列印日出貨報表</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
@@ -390,8 +394,8 @@
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
         <form name="searchform" method="post" action="../StatusDo" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
-		  <label class="btn btn-sm btn-info">
-		  </label>
+           <button type="submit" name="send" value="printdaily" class="btn btn-md btn-info">列印日結表</button>
+     <button type="submit" name="send" value="printdailyreport" class="btn btn-md btn-info">列印日出貨報表</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
@@ -510,6 +514,7 @@
           </table>
           <div class="row text-center" >
             <button type="submit" name="send" value="finished" class="btn btn-lg btn-primary">退貨</button>
+           
           </div>
         </form>
       </div>

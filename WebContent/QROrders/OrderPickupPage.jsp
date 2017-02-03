@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="tw.iii.qr.DataBaseConn"%>
-<%@ page import="tw.iii.qr.order.COrders"%>
+<%@ page import="tw.iii.qr.order.DTO.COrders"%>
 <%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.LinkedList,java.util.*,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse"%>
-<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.COrderFactory" scope="page" />
+<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.DTO.COrderFactory" scope="page" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -250,7 +250,10 @@
 		    <option>待處理</option>
 		    <option>處理中</option>
 		  </select>
-		  <button type="submit"  name ="send"  value="print"> 列印出貨單</button>
+		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printsent"> 列印出貨單</button>
+		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printpick"> 列印揀貨單</button>
+		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printcoll"> 列印集貨單</button>
+		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printlogistic"> 列印物流匯出報表</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
@@ -386,7 +389,10 @@
 		    <option>待處理</option>
 		    <option>處理中</option>
 		  </select>
-		  <button type="submit"  name ="send"  value="print"> 列印出貨單</button>
+		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printsent"> 列印出貨單</button>
+		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printpick"> 列印揀貨單</button>
+		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printcoll"> 列印集貨單</button>
+		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printlogistic"> 列印物流匯出報表</button>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
