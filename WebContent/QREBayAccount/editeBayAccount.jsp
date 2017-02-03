@@ -15,6 +15,20 @@
 
 
 <script type="text/javascript">
+
+function deleteEbay(){
+	
+	$("#editSubmit").val("deleteEbayAccount");
+	alert("delete,"+$("#editSubmit").val());
+	$("#searchform").submit();
+	
+}
+
+function testDelete(){
+	
+	$("#editSubmit").val("deleteEbayAccount");
+	alert($("#editSubmit").val());
+}
 	
 </script>
 
@@ -22,6 +36,9 @@
 </head>
 <body>
 <%@include file="../href/navbar.jsp"%>
+<c:if test="${PageCompetence.getEbayPaypalAccountEdit() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 <div class="nav">
   <div class="container">
     <div class="navbar-left" style="background-color: #C7AAE4;">
@@ -68,7 +85,18 @@ System.out.println(ebayaccount.getebayId());
   <form name="searchform" id="searchform" method="post" action="../EbayAccountDo" class="form-inline container required" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;">
-      <legend>修改eBay帳號</legend>
+    
+    <div class="panel-title row ">
+								<div class="col-md-11 form-group">
+									<h2>修改eBay帳號</h2>
+									<br/>
+								</div>
+								<div align="right" class="col-md-1 form-group">
+									<button type="button" class="close" onclick="deleteEbay()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+								</div>
+							</div>
+    
+      
       <div class="row">
         <div class="col-md-3 well-sm">
           <h4>ebay ID</h4>
@@ -201,8 +229,9 @@ System.out.println(ebayaccount.getebayId());
       
       <div class="" align="center">
    <!-- <input type="submit" name="submit" value="newAccount" class="btn-lg btn-success"> --> 
-        <button type="submit" name="submit" value="updateEbayAccount" class="btn-lg btn-success">修改送出</button> 
+        <button type="submit" id="editSubmit" name="submit" value="updateEbayAccount" class="btn-lg btn-success">修改送出</button> 
     	<a href="eBayAccount.jsp"><button type="button" value="取消" class="btn-lg btn-success">取消 </button></a>
+    	 <button type="submit" name="submit" onclick="testDelete()" value="deleteEbayAccount" class="btn-lg btn-success">暫訂刪除</button> 
      
       </div>
       

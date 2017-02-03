@@ -1,4 +1,4 @@
-package tw.iii.qr;
+﻿package tw.iii.qr;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,6 +25,7 @@ import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.order.COrderDetail;
 import tw.iii.qr.order.COrderFactory;
 import tw.iii.qr.order.CompleteSale;
+import tw.iii.qr.stock.CDBtoExcel;
 
 
 @WebServlet("/StatusDo")
@@ -85,6 +86,25 @@ public class StatusDoServlet extends HttpServlet {
 				out.write("</script>");
 				conn.close();
 			}
+		case "print":
+
+		
+
+
+			  new CDBtoExcel().logisticsselect(request,response);
+			  
+			  //test撿貨
+			 // String path = "C:\\Users\\iii\\Desktop\\庫存表 20160908v2 oliver(系統用).xlsx";
+			  
+			 // new CDBtoExcel().get揀貨單(qrid, path, conn);
+			  //test結束
+
+
+			out.write("<script type='text/javascript'>");
+			out.write("alert('列印成功');");
+			out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
+			out.write("</script>");
+			out.write("<a href=' '>");
 			break;
 		case "processing":
 			LinkedList<String> warehouses = OFactory.getWarehouse(request);
@@ -133,9 +153,15 @@ public class StatusDoServlet extends HttpServlet {
 			OFactory.isBundleAddBackToStock(request, conn);
 			response.sendRedirect("QROrders/refundPage.jsp?begin=0&end=10");
 			conn.close();
+			break;
 		case "revertTo":
 			OFactory.revertTo(request, conn);
 			response.sendRedirect(request.getHeader("Referer"));
+			conn.close();
+			break;
+		case "deleteUndo":
+			OFactory.deleteUndoOrder(request, conn);
+			response.sendRedirect("QROrders/NewOrderSearch.jsp?begin=0&end=10");
 			conn.close();
 			break;
 		case "sendTrackingCodeSandbox":
@@ -146,7 +172,7 @@ public class StatusDoServlet extends HttpServlet {
 			conn.close();
 			break;
 		}
-		
+		out.close();
 		conn.close();
 		
 	}

@@ -16,6 +16,9 @@
 
 <body>
 <%@include file="../href/navbar.jsp"%>
+<c:if test="${PageCompetence.getEbayPaypalAccountEdit() == 0 }">  
+<% response.sendRedirect("/HomePage.jsp"); %>   
+</c:if>
 <%
 Connection conn1 = new DataBaseConn().getConn();
 LinkedList<CEbay> ebay1 = getebay.searchEbayAc(request,conn1);
@@ -61,11 +64,15 @@ conn1.close();
         <!--    <th>Token 到期</th>  --> 
             <th>paypal 帳號</th>
             <th>對應公司</th>
+            
+            <th>對應公司地址</th>
+            <th>對應公司電話</th>
+            <th>對應公司郵遞區號</th>
+           
             <th>啟動時間</th>
             <th>最後修改時間</th>
             <th>狀態</th>
         <!--    <th>Comment</th>    --> 
-            <th>SystemFeedback</th>
           </tr>
         </thead>
         <tbody>
@@ -83,6 +90,11 @@ conn1.close();
               <!-- paypallAccount -->
               <td>${i.getcorrespondCompany()}</td>
               <!-- correspondCompany-->
+              
+              <td>${i.getcompanyAddress()}</td>
+              <td>${i.getcompanyPhone()}</td>
+              <td>${i.getcompanyPost()}</td>
+              
               <td>${i.getstartTime()}</td>
               <!-- startTime-->
               <td>${i.getlastFixTime()}</td>
@@ -91,7 +103,6 @@ conn1.close();
               <!-- status -->
         <!--  <td>${i.getcomment()}</td>   --> 
               <!-- comment -->
-              <td>${i.getsystemFeedback()}</td>
               <!-- systemFeedback --> 
             </tr>
             
