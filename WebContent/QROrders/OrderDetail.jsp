@@ -340,7 +340,7 @@ conn.close();
 		        </tbody>
 		        </c:forEach>
 		      </table>
-	          <button type="submit" name="submit" value="toGetProducts" class="btn btn-sm btn-success">新增商品
+	          <button type="submit" name="submit" value="toGetProducts" class="btn btn-sm btn-success">新增商品</button>
             </div>
           </div>
         </div>
