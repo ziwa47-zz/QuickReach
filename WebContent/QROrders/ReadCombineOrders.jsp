@@ -23,7 +23,7 @@
 	</c:if>
 	<%
 		Connection conn = new DataBaseConn().getConn();
-		LinkedList<GuestAccountAndOrder> list = CombineOrder.HasCombineOrderGuest();
+		LinkedList<GuestAccountAndOrder> list = CombineOrder.HasCombineOrderGuest(request,conn);
 
 		session.setAttribute("list", list);
 	%>
