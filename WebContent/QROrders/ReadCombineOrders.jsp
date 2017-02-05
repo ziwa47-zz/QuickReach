@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="tw.iii.qr.DataBaseConn"%>
-<%@ page import="tw.iii.qr.order.DTO.COrderCombine"%>
+<%@ page import="tw.iii.qr.order.DTO.*"%>
 <%@ page import="tw.iii.qr.order.*"%>
 <%@ page
 	import="java.sql.Connection,java.sql.ResultSet,java.util.LinkedList,java.util.*,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse"%>
@@ -23,11 +23,9 @@
 	</c:if>
 	<%
 		Connection conn = new DataBaseConn().getConn();
-		LinkedList<COrderCombine> list = CombineOrder.canCombine(request, conn);
+		LinkedList<GuestAccountAndOrder> list = CombineOrder.HasCombineOrderGuest();
 
 		session.setAttribute("list", list);
-		//request.setAttribute("begin", request.getParameter("begin"));
-		//request.setAttribute("end", request.getParameter("end"));
 	%>
 
 	<div class="nav">
@@ -67,121 +65,42 @@
 		</ol>
 	</div>
 	<div class="nav">
-
-
 		<br />
 		<div class="container table-responsive bg-warning"
 			style="border-radius: 20px">
 			<form name="searchform" method="post" action="../OrdersServlet"
 				class="form-inline container"
 				style="font-size: 100%; vertical-align: baseline; padding: 15px;">
-				<button class="btn btn-sm btn-info" type="submit" name="submit" value="GoOrderCombine"
-					 >回到合併訂單</button>
-					 <br/>
-					 <select id="select" class="styled-select" onchange = "onSelectGuest()" >
-					
-<%-- 					 <c:forEach var="i" items="${list}" begin="0" step="1" varStatus="check"> --%>
-<%-- 					 <option value="${i.getguestAccount()} }" >${i.getguestAccount()}</option> --%>
-<%-- 					 </c:forEach> --%>
-					 </select>
+				<button class="btn btn-sm btn-info" type="submit" name="submit"
+					value="GoOrderCombine">回到合併訂單</button>
+				<br /> 
+				<select id="select" class="styled-select"
+					onchange="onSelectGuest()">
+					<c:forEach var="i" items="${list}" step="1" varStatus="check">
+						<option value="${i.getOrder()}">${i.getOrder()}--${i.getGuestAccount()}</option>
+					</c:forEach>
+				</select>
+
 				
-				<div class="container table-responsive" style=" border-radius:20px" id="theList">
-					
-				</div>
 				
-				$("#select").on("change", function(){
-				    $.ajax({
-					url: "theServlet",
-					success: function(result){
-					$("#theList").html(result);
-				    }});
-				});
-				
-<!-- 				<table -->
-<!-- 					class="table table-bordered table-hover table-condensed pull-left" -->
-<!-- 					style="margin: 0 0 0 -15px"> -->
-<!-- 					<tr class="ListTitle"> -->
-<!-- 						<th>選取</th> -->
-<!-- 						<th>客戶帳號</th> -->
-<!-- 						<th>EBayNo1</th> -->
-<!-- 						<th>購買日期</th> -->
-<!-- 						<th>EBayNo2</th> -->
-<!-- 						<th>購買日期</th> -->
-
-<!-- 					</tr> -->
-<%-- 					<c:forEach var="i" items="${list}" begin="0" step="1" --%>
-<%-- 						varStatus="check"> --%>
-<%-- 						<c:choose> --%>
-<%-- 							<c:when test="${check.index%2 != 0}"> --%>
-<!-- 								<tr style="background-color: #D4F4D8"> -->
-<!-- 									<td rowspan="1" style="vertical-align: middle"><input -->
-<!-- 										type="checkbox" name="EbayNO" -->
-<%-- 										value="${i.getEbayNO1()},${i.getEbayNO2()},${i.getGuestAccount()},${i.getQR_Id1()},${i.getQR_Id2()}"></td> --%>
-<%-- 									<td>${i.getGuestAccount()}</td> --%>
-<%-- 									<td><a href="OrderDetail.jsp?QR_id=${i.getQR_Id1()}">${i.getEbayNO1()}</a></td> --%>
-<%-- 									<td>${i.getPayTime1()}</td> --%>
-<%-- 									<td><a href="OrderDetail.jsp?QR_id=${i.getQR_Id2()}">${i.getEbayNO2()}</a></td> --%>
-<%-- 									<td>${i.getPayTime2()}</td> --%>
-
-<!-- 								</tr> -->
-<%-- 							</c:when> --%>
-<%-- 							<c:otherwise> --%>
-<!-- 								<tr style="background-color: #D4F4D8"> -->
-<!-- 									<td rowspan="1" style="vertical-align: middle"><input -->
-<!-- 										type="checkbox" name="EbayNO" -->
-<%-- 										value="${i.getEbayNO1()},${i.getEbayNO2()},${i.getGuestAccount()},${i.getQR_Id1()},${i.getQR_Id2()}"></td> --%>
-<%-- 									<td>${i.getGuestAccount()}</td> --%>
-<%-- 									<td><a href="OrderDetail.jsp?QR_id=${i.getQR_Id1()}">${i.getEbayNO1()}</a></td> --%>
-<%-- 									<td>${i.getPayTime1()}</td> --%>
-<%-- 									<td><a href="OrderDetail.jsp?QR_id=${i.getQR_Id2()}">${i.getEbayNO2()}</a></td> --%>
-<%-- 									<td>${i.getPayTime2()}</td> --%>
-
-<!-- 								</tr> -->
-<%-- 							</c:otherwise> --%>
-<%-- 						</c:choose> --%>
-<%-- 					</c:forEach> --%>
-<!-- 				</table> -->
-
-				<div class="row text-center"></div>
-			
 			</form>
 		</div>
 	</div>
 
-	<script type="text/javascript">
-	jQuery.support.cors = true;
 
-
-	$.ajax({
-		   url: "../AjaxGetGuestAccount",
-		   type: "GET",
-		   dataType: 'JSON',
-		   success: function (msg) {
-		     var jsonObj = JSON.parse(msg);
-
-		     //放入一筆空白的清單
-		     $("[id$=select]").append($("<option></option>").attr("value", "").text(""));
-
-		     for (var i = 0; i < jsonObj.length; i++) {
-
-		     //將取得的Json一筆一筆放入清單
-		     $("[id$=select]").append($("<option></option>").attr("value", jsonObj[i].guestAccount).text(jsonObj[i].guestAccount));
-		     }
-		   },
-		   error: function (xhr, ajaxOptions, thrownError) {
-		     alert(xhr.status);
-		   }
-		});
-	 function onSelectGuest() {
-	     var sel_text = $("[id$=select]").find("option:selected").text()
-	     var sel_val = $("[id$=select]").val();
-	     alert(sel_text); //可以取得 select.text
-	     alert(sel_val);  //可以取得 select.value
-	   };
-	
-}
-	</script>
-
+<script type="text/javascript">
+				function onSelectGuest(){
+					$("#select").on("change", function() {
+						$.ajax({
+							url : "/AjaxGetGuestAccount",
+							
+							success : function(result) {
+								$("#theList").html(result);
+							}
+						});
+					});
+				}
+				</script>
 	<%@ include file="../href/footer.jsp"%>
 
 
