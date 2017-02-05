@@ -11,6 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import javax.servlet.http.HttpServletRequest;
 
+import tw.iii.purchase.DTO.Cpurchase_detail;
+import tw.iii.purchase.DTO.Cpurchase_master;
+
 public class purchaseFactory {
 
 	public purchaseFactory() {
@@ -458,7 +461,7 @@ public class purchaseFactory {
 			
 			rs.close();
 			
-			String strsq2 = "select a.stockTransferId,b.qty,a.date,b.oldwarehouse+'->'+b.newwarehouse,b.oldwarehousePosition1+'-'+b.oldwarehousePosition2,b.newwarehousePosition1+'-'+b.newwarehousePosition2 from stockTransferlog_master as a inner join stockTransferlog_detail as b  on a.stockTransferId=b.stockTransferId where 1 = 1 "
+			String strsq2 = "select a.stockTransferId,b.qty,a.date,b.oldwarehouse+'->'+b.newwarehouse,b.oldwarehousePosition1+'-'+b.oldwarehousePosition2,'>'+b.newwarehousePosition1+'-'+b.newwarehousePosition2 from stockTransferlog_master as a inner join stockTransferlog_detail as b  on a.stockTransferId=b.stockTransferId where 1 = 1 "
 					+ " and sku = ? ";
 
 				ps = conn.prepareStatement(strsq2);

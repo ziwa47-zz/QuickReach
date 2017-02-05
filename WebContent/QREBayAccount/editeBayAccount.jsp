@@ -2,8 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>	
-<%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.*,tw.iii.qr.stock.CEbay" %>
-<jsp:useBean id="getebay" class="tw.iii.qr.stock.CEbayFactory"  scope="page"/>
+<%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.*,tw.iii.qr.stock.DTO.CEbay" %>
+<jsp:useBean id="getebay" class="tw.iii.qr.stock.DTO.CEbayFactory"  scope="page"/>
 
 <!DOCTYPE>
 <html>
