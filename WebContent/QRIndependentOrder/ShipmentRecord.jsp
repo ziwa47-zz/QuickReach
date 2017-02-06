@@ -30,38 +30,40 @@
 %>
 <div class="nav">
   <div class="container">
-    <div class="navbar-left" style="background-color:#F3CE9A;" >
+    <div class="navbar-left" style="background-color:#3DFF81;" >
       <ul class="nav nav-tabs">
-        <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp?begin=0&end=10" style="color:#FFFFFF">訂單管理</a></li>
+        <li class="" style="background-color:#189B30"><a href="SearchOrder.jsp?begin=0&end=10" style="color:#FFFFFF">獨立出貨</a></li>
         <c:if test="${PageCompetence.getEntireOrders() == 1 }"> 
-        	<li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
+        	<li><a href="/QROrders/DayliBalanceSheet.jsp" >日結表</a></li>
       	</c:if>
       </ul>
     </div>
   </div>
   <div class="container">
-    <div class="nav" style="background-color:#A45A21;" >
+    <div class="nav" style="background-color:#189B30;" >
       <ul class="nav nav-tabs">
         <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
-        <li><a href="OrderProcessingPage.jsp?begin=0&end=10">處理中</a></li>
-        <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
-        <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
-        <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
-        <li><a href="ShipmentRecord.jsp?begin=0&end=10" style="color:#fff">訂單出貨記錄</a></li>
+        <li><a href="NewOrder.jsp?begin=0&end=10">新增訂單</a></li>
+        <li><a href="Pickup.jsp?begin=0&end=10">揀貨中</a></li>
+        <li><a href="UploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
+        <li><a href="Finished.jsp?begin=0&end=10">已完成訂單</a></li>
+        <li><a href="" style="color:#fff">訂單出貨記錄</a></li>
         <li><a href="refundPage.jsp?begin=0&end=10" >退貨</a></li>
       </ul>
     </div>
   </div>
 </div>
+
 <div class="container container-fluid breadcrumbBox">
   <ol class="breadcrumb" >
     <li><a href="/HomePage.jsp" >首頁</a></li>
     <li class="active" style="display:"><a href="SearchOrder.jsp?begin=0&end=10">訂單管理</a></li>
-    <li><a href="ShipmentRecord.jsp?begin=0&end=10">訂單出貨記錄</a></li>
+    <li><a href="ShipmentRecord.jsp?begin=0&end=10">出貨紀錄</a></li>
   </ol>
 </div>
+
 <div class="nav">
-  <div class="container" style="background: #D9A56B; border-radius:20px;">
+  <div class="container" style="background:#99C61D; border-radius:20px;">
     <form name="searchform" method="post" action="../ShipmentServlet" class="form-inline container"
     style="font-size: 100%; vertical-align: baseline; padding: 15px;">
       <fieldset class="font-weight" style="padding:0 30px 0 0;">
