@@ -1,6 +1,8 @@
 package tw.iii.qr.order.DTO;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class COrderCombine {
 	
@@ -11,6 +13,13 @@ public class COrderCombine {
 	private String QR_Id2;
 	private int EbayNO2 ;
 	private Date PayTime2 ;
+	private LinkedList<String> PicturePath1;
+	private LinkedList<String> PicturePath2;
+	
+	
+	private List<String> Orders;
+	private String Order;
+	
 	public String getGuestAccount() {
 		return guestAccount;
 	}
@@ -53,6 +62,33 @@ public class COrderCombine {
 	public void setQR_Id2(String qR_Id2) {
 		QR_Id2 = qR_Id2;
 	}
+	
+	public List<String> getOrders() {
+		return Orders;
+	}
+	public void setOrders(List<String> orders) {
+		Orders = orders;
+	}
+	public String getOrder() {
+		return Order;
+	}
+	public void setOrder(String order) {
+		Order = order;
+	}
+	public LinkedList<String> getPicturePath1() {
+		return PicturePath1;
+	}
+	public void setPicturePath1(LinkedList<String> picturePath1) {
+		PicturePath1 = picturePath1;
+	}
+	public LinkedList<String> getPicturePath2() {
+		return PicturePath2;
+	}
+	public void setPicturePath2(LinkedList<String> picturePath2) {
+		PicturePath2 = picturePath2;
+	}
+	
+	
 
 
 }
