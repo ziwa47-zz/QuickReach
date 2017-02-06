@@ -1,6 +1,6 @@
 <%@page import="tw.iii.qr.DataBaseConn"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"   pageEncoding="UTF-8"%>
-<jsp:useBean id="competence1" class= "tw.iii.qr.QRAccountFactory" scope="page"/>
+<jsp:useBean id="competence1" class= "tw.iii.Maintain.QRAccountFactory" scope="page"/>
 <%@ page  import=" tw.iii.supplyCompany.CSupplyCompany,java.util.*,tw.iii.qr.DataBaseConn"%>
 <!DOCTYPE html>
 <html>

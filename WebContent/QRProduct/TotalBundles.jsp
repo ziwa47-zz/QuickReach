@@ -1,4 +1,4 @@
-<%@ page import="tw.iii.qr.stock.CProduct"%>
+<%@ page import="tw.iii.qr.stock.DTO.CProduct"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ page import="java.io.*" %>
@@ -10,7 +10,7 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<jsp:useBean id="blf" scope="session" class="tw.iii.qr.stock.BundlesFactory" />
+<jsp:useBean id="blf" scope="session" class="tw.iii.Bundle.BundlesFactory" />
 <jsp:setProperty name="blf" property="*"/>   
 
 <html lang="en">

@@ -1,4 +1,4 @@
-<%@page import="tw.iii.qr.order.COrders"%>
+<%@page import="tw.iii.qr.order.DTO.COrders"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="tw.iii.qr.DataBaseConn"%>
 <%@ page

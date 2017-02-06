@@ -1,4 +1,4 @@
-<%@page import="tw.iii.qr.order.COrders"%>
+<%@page import="tw.iii.qr.order.DTO.COrders"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="tw.iii.qr.DataBaseConn"%>
 <%@ page
@@ -6,7 +6,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.COrderFactory" scope="page" />
+<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.DTO.COrderFactory" scope="page" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>

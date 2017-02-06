@@ -20,6 +20,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.xpath.operations.Equals;
 
 import tw.iii.qr.DataBaseConn;
+import tw.iii.qr.stock.DTO.CProduct;
+import tw.iii.qr.stock.DTO.CStock;
 
 public class CExceltoDB {
 
