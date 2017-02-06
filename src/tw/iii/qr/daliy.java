@@ -84,14 +84,11 @@ public class daliy implements ServletContextListener {
 						@Override
 						public void run() {
 
-							try {
+							
 								new CGetEbay().CGetEbay1();
 								new DayliBalanceSheetFactory().dayliBalanceSheet();
 								System.out.println("da done");
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+							
 
 						}
 					}.start();

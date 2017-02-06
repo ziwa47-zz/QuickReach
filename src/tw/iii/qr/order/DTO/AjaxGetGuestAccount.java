@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -52,15 +53,22 @@ public class AjaxGetGuestAccount extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		PreparedStatement ps = null;
-		HashMap<String, String> hm = new HashMap<String, String>();		
+		String Combineorder = request.getParameter("select");
+		System.out.println(Combineorder);
+		HashMap<String, String> hm = new HashMap<String, String>();
+		LinkedList<HashMap<String, String>> list= new LinkedList<>();
 		Connection conn = new DataBaseConn().getConn();
-		String strsql ="select distinct guestAccount from  comebineorder where DATEDIFF(Day,combineDate,GETDATE())<14";
+		String strsql ="select m.ebayNO,m.payDate,p.picturePath from orders_master m left join orders_detail d on m.QR_id=d.QR_id left join product p on p.SKU = d.SKU where  m.CombineSku = ?";
 		ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
 		while(rs.next()){
-			hm.put("guestAccount", rs.getString(1));
+			hm = new HashMap<>();
+			hm.put("ebayNO", rs.getString(1));
+			hm.put("payDate", rs.getString(2));
+			hm.put("picturePath", rs.getString(3));
+			list.add(hm);
 		}
-		JSONObject responseJSONObject = new JSONObject(hm);
+		JSONObject responseJSONObject = new JSONObject(list);
 		PrintWriter out = response.getWriter();
 		out.println(responseJSONObject);
 		out.close();

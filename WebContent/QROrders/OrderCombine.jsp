@@ -24,7 +24,7 @@
 	<%
 		Connection conn = new DataBaseConn().getConn();
 		LinkedList<COrderCombine> list = CombineOrder.canCombine(request, conn);
-
+		conn.close();
 		session.setAttribute("list", list);
 		//request.setAttribute("begin", request.getParameter("begin"));
 		//request.setAttribute("end", request.getParameter("end"));
