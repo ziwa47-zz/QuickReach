@@ -27,6 +27,21 @@
 
 		session.setAttribute("list", list);
 	%>
+	<script type="text/javascript">
+				function onSelectGuest(){
+					$("#select").on("click", function() {
+						$.ajax({
+							url : "/AjaxGetGuestAccount",
+							
+							success : function(result) {
+								$("#theList").html(result);
+							}
+						});
+					});
+				}
+				</script>
+				
+				
 
 	<div class="nav">
 		<div class="container">
@@ -86,21 +101,28 @@
 			</form>
 		</div>
 	</div>
+	
+	<div class="" id="select">
+		<label class="radio-inline"><input type="radio" name="optradio">7</label>
+		<label class="radio-inline"><input type="radio" name="optradio">14</label>
+		<label class="radio-inline"><input type="radio" name="optradio">all</label>
+	</div>
+			<label id="test">test</label>
+	
+
+		<div class="dropdown">
+		  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Guest Account
+		  <span class="caret"></span></button>
+		  <ul class="dropdown-menu">
+		    <li><a href="#">HTML</a></li>
+		    <li><a href="#">CSS</a></li>
+		    <li><a href="#">JavaScript</a></li>
+		  </ul>
+		</div>
+	
 
 
-<script type="text/javascript">
-				function onSelectGuest(){
-					$("#select").on("change", function() {
-						$.ajax({
-							url : "/AjaxGetGuestAccount",
-							
-							success : function(result) {
-								$("#theList").html(result);
-							}
-						});
-					});
-				}
-				</script>
+
 	<%@ include file="../href/footer.jsp"%>
 
 
