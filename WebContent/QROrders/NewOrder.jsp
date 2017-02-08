@@ -15,7 +15,7 @@ tw.iii.qr.stock.DTO.CStock" %>
 <body>
 <%@ include file ="/href/navbar.jsp" %>
 <c:if test="${PageCompetence.getOrdersManage() == 0 }">  
-<% response.sendRedirect("/HomePage.jsp"); %>   
+<% response.sendRedirect("/HomePage.jsp"); %>
 </c:if>
 <%
 String QR_id ;
