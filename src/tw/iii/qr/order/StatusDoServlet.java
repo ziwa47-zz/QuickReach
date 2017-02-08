@@ -195,7 +195,7 @@ public class StatusDoServlet extends HttpServlet {
 			throws Exception, ApiException, SdkException, SQLException, IOException {
 		if (!OFactory.checkOrderIdOrderStatus(request, conn) == false) {
 			System.out.println("checked true");
-			boolean isOK = new CompleteSale().CompleteSale1(request) ? true : false;
+			boolean isOK = new CompleteSale().CompleteSale1(request);
 			if (isOK) {
 				conn.setAutoCommit(false);
 				Savepoint sp1 = conn.setSavepoint();
