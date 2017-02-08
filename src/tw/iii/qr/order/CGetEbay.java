@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
+import java.util.TimerTask;
 
 import javax.swing.undo.AbstractUndoableEdit;
 
@@ -48,85 +49,65 @@ public class CGetEbay {
 
 	}
 
-	public void CGetEbay2() {
-
-		new MyThread().start();
-	}
-
 	public void CGetEbay1() {
-
+		System.out.println("開撈拉拉拉拉");
+		Connection conn;
+		ArrayList<OrderType> od = new ArrayList<>();
+		LinkedList<String> token = null;
 		try {
-			// 110183287995
-			// Instantiate ApiContext and initialize with token and Trading API
-			// URL
-
-			ArrayList<OrderType> od = new ArrayList<>();
-			Connection conn = new DataBaseConn().getConn();
-			LinkedList<String> token = new LinkedList<String>();
+			conn = new DataBaseConn().getConn();
 			token = getToken(conn);
 			for (int i = 0; i < token.size(); i++) {
-				ApiContext apiContext = getApiContext(token.get(i));
-				// Create call object and execute the call
-				// GeteBayOfficialTimeCall apiCall = new
-				// GeteBayOfficialTimeCall(apiContext);
-				GetOrdersCall apiord = new GetOrdersCall(apiContext);
-				apiord.setDetailLevel(new DetailLevelCodeType[] { DetailLevelCodeType.RETURN_ALL,
-						DetailLevelCodeType.ITEM_RETURN_DESCRIPTION, DetailLevelCodeType.ITEM_RETURN_ATTRIBUTES });
-				apiord.setNumberOfDays(30);
-				apiord.setPagination(new PaginationType());
-				apiord.setSortingOrder(SortOrderCodeType.DESCENDING);
-				// OrderIDArrayType oiat = new OrderIDArrayType();
-				// String[] orderIds = new String[1];
-				// orderIds[0]= "110183287995";
-				// oiat.setOrderID(orderIds);
-				OrderStatusCodeType status = OrderStatusCodeType.COMPLETED;
-				apiord.setOrderStatus(status);
-
-				TradingRoleCodeType role = TradingRoleCodeType.SELLER;
-				apiord.setOrderRole(role);
-				apiord.setIncludeFinalValueFee(true);
-
-				OrderType[] orders = apiord.getOrders();
-				PaginationResultType rpr = apiord.getReturnedPaginationResult();
-				System.out.println(apiord.getReturnedHasMoreOrders());// true
-				System.out.println(rpr.getTotalNumberOfEntries());// 139
-				PaginationType p = new PaginationType();
-				for (int j = 1; j <= rpr.getTotalNumberOfPages(); j++) {
-					if (j != 1) {
-						p.setPageNumber(j);
-						apiord.setPagination(p);
-					}
-
-					for (OrderType order : apiord.getOrders()) {
-						od.add(order);
-
-					}
-					System.out.println("odin " + od.size());
-				}
-				System.out.println("odout " + od.size());
-
-				// System.out.println(apiord.getReturnedHasMoreOrders());
-				// System.out.println(apiord.getReturnedReturnedOrderCountActual());
-				// System.out.println(rpr.getTotalNumberOfEntries());
-				// System.out.println(rpr.getTotalNumberOfPages());
-
-				// other(orders);
-				// Handle the result returned
-				// System.out.println("Official eBay Time : " +
-				// cal.getTime().toString());
-
+				RequestOrder(token.get(i), od);
 			}
+			System.out.println("odout " + od.size());
 			displayOrders(od, conn);
 			System.out.println("oddone");
+			System.out.println("撈完拉拉拉拉");
 			conn.close();
-		} // try
-		catch (Exception e) {
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 
-			e.printStackTrace();
+	}
+
+	private void RequestOrder(String token, ArrayList<OrderType> od) throws Exception {
+		ApiContext apiContext = getApiContext(token);
+		GetOrdersCall apiord = new GetOrdersCall(apiContext);
+		apiOrdSetting(apiord);
+		apiord.getOrders();
+		PaginationResultType rpr = apiord.getReturnedPaginationResult();
+
+		System.out.println("有沒有訂單啊 : "+apiord.getReturnedHasMoreOrders());
+		System.out.println("有幾筆 : "+rpr.getTotalNumberOfEntries());
+		PaginationType page = new PaginationType();
+
+		for (int pageNum = 1; pageNum <= rpr.getTotalNumberOfPages(); pageNum++) {
+			if (pageNum != 1) {
+				page.setPageNumber(pageNum);
+				apiord.setPagination(page);
+			}
+			for (OrderType order : apiord.getOrders()) {
+				od.add(order);
+			}
+			System.out.println("odin " + od.size());
 		}
 	}
 
-	private  void displayOrders(ArrayList<OrderType> od, Connection conn)
+	private void apiOrdSetting(GetOrdersCall apiord) {
+		apiord.setDetailLevel(new DetailLevelCodeType[] { DetailLevelCodeType.RETURN_ALL,
+				DetailLevelCodeType.ITEM_RETURN_DESCRIPTION, DetailLevelCodeType.ITEM_RETURN_ATTRIBUTES });
+		apiord.setNumberOfDays(30);
+		apiord.setPagination(new PaginationType());
+		apiord.setSortingOrder(SortOrderCodeType.DESCENDING);
+		OrderStatusCodeType status = OrderStatusCodeType.COMPLETED;
+		apiord.setOrderStatus(status);
+		TradingRoleCodeType role = TradingRoleCodeType.SELLER;
+		apiord.setOrderRole(role);
+		apiord.setIncludeFinalValueFee(true);
+	}
+
+	private void displayOrders(ArrayList<OrderType> od, Connection conn)
 			throws IllegalAccessException, ClassNotFoundException, Exception {
 
 		int size = od != null ? od.size() : 0;
@@ -134,18 +115,28 @@ public class CGetEbay {
 		for (int i = 0; i < size; i++) {
 			OrderType order = od.get(i);
 
-			System.out.println("-----");
-			System.out.println(order.getCheckoutStatus().getStatus().toString());
-			System.out.println(order.getShippingDetails().getSellingManagerSalesRecordNumber().toString());
-			System.out.println("Transaction"+order.getExternalTransaction()[0].getPaymentOrRefundAmount().getValue());
-			System.out.println("Transaction"+order.getExternalTransaction()[0].getPaymentOrRefundAmount().getValue());
-			System.out.println("Transaction"+order.getMonetaryDetails().getPayments().getPayment(0).getPaymentAmount().getValue());
+			System.out.println("**********");
+			System.out.println("訂單狀態: " + order.getCheckoutStatus().getStatus().toString());
+			System.out.println("EbayNo: " + order.getShippingDetails().getSellingManagerSalesRecordNumber().toString());
+
+			// 錢不相同(不知道為啥 有出現就要檢查)
+			if (order.getExternalTransaction()[0].getPaymentOrRefundAmount().getValue() != order.getMonetaryDetails()
+					.getPayments().getPayment(0).getPaymentAmount().getValue()) {
+				System.out.println("不一樣!");
+				System.out.println("$getExternalTransaction "
+						+ order.getExternalTransaction()[0].getPaymentOrRefundAmount().getValue());
+				System.out.println("$MonetaryDetails "
+						+ order.getMonetaryDetails().getPayments().getPayment(0).getPaymentAmount().getValue());
+			} else {
+				System.out.println("$$" + order.getExternalTransaction()[0].getPaymentOrRefundAmount().getValue());
+			}
+
+			// 已完成訂單才進去!
 			if ("COMPLETE".equals(order.getCheckoutStatus().getStatus().toString())) {
+				// 確認訂單是否存在資料庫
 				if (!checkExist(order, conn)) {
 					ShippingServiceOptionsType sso = order.getShippingServiceSelected();
-
 					String QR_id = CreateOrderId.generateQR_Id();
-
 					String strSql = "INSERT INTO orders_master (QR_id, order_id, outsideCode, platform, company,"
 							+ " eBayAccount, guestAccount, orderDate, payDate, logisticsId, logistics, orderStatus, paypal_id,"
 							+ " payment,  paypalFees,ebayFees, totalPrice, currency, ebayPrice, paypalNet, ebayItemNO,"
@@ -153,57 +144,51 @@ public class CGetEbay {
 							+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 
 					PreparedStatement ps = conn.prepareStatement(strSql);
-					ps.setString(1, QR_id);
-					ps.setString(2, order.getOrderID());
-					ps.setString(3, order.getExtendedOrderID());
-					ps.setString(4, "ebay");
-					ps.setString(5, order.getShippingAddress().getCompanyName());
-					ps.setString(6, order.getSellerUserID());
-					ps.setString(7, order.getMonetaryDetails().getPayments().getPayment()[0].getPayer().getValue());
-					ps.setTimestamp(8, new java.sql.Timestamp(order.getCreatedTime().getTimeInMillis()));
+					ps.setString(1, QR_id); // QRID
+					ps.setString(2, order.getOrderID()); // ORDERID
+					ps.setString(3, order.getExtendedOrderID()); // outsideCode
+					ps.setString(4, "ebay"); // 平台
+					ps.setString(5, order.getShippingAddress().getCompanyName()); // EBAY帳號所屬公司
+					ps.setString(6, order.getSellerUserID()); // EBAY帳號
+					ps.setString(7, order.getMonetaryDetails().getPayments().getPayment()[0].getPayer().getValue()); // 客戶帳號
+					ps.setTimestamp(8, new java.sql.Timestamp(order.getCreatedTime().getTimeInMillis())); // orderDate
 					ps.setTimestamp(9, (new java.sql.Timestamp(order.getMonetaryDetails().getPayments().getPayment()[0]
 							.getPaymentTime().getTimeInMillis()))); // payDate
-					ps.setString(10, "logisticsId");
-					ps.setString(11, sso.getShippingService().toString());
-					ps.setString(12, "待處理"); // order.getOrderStatus().toString()
-					ps.setString(13, order.getMonetaryDetails().getPayments().getPayment()[0].getPayer().getValue());
-					
-					//
+					ps.setString(10, "logisticsId"); // 其實沒用?
+					ps.setString(11, sso.getShippingService().toString()); // 內建選擇的物流
+					ps.setString(12, "待處理"); // 訂單初始狀態
+					ps.setString(13, order.getMonetaryDetails().getPayments().getPayment()[0].getPayer().getValue()); // 顧客PAYPALID
+
+					// 怪怪的金額! 有問題要重做
 					double payment1 = order.getExternalTransaction()[0].getPaymentOrRefundAmount().getValue();
-					double payment2 =order.getMonetaryDetails().getPayments().getPayment(0).getPaymentAmount().getValue();
+					double payment2 = order.getMonetaryDetails().getPayments().getPayment(0).getPaymentAmount()
+							.getValue();
 					double truepay = 0;
-					if(payment1==payment2){
-						truepay=payment1;
-					}else{
-						truepay= payment1-payment2;
+					if (payment1 == payment2) {
+						truepay = payment1;
+					} else {
+						truepay = payment1 - payment2;
 					}
-					//
-					ps.setDouble(14,
-							truepay);
-					
-					//System.out.println("MonetaryDetails"+order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentAmount().getValue());
-					//ps.setDouble(14,
-					//		order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentAmount().getValue());
-
-					ps.setDouble(15, order.getExternalTransaction()[0].getFeeOrCreditAmount().getValue());
-					ps.setDouble(16, order.getTransactionArray().getTransaction()[0].getFinalValueFee().getValue());
-					ps.setDouble(17,
-							truepay);
+					ps.setDouble(14, truepay); // payment
+					ps.setDouble(15, order.getExternalTransaction()[0].getFeeOrCreditAmount().getValue()); // paypalFees
+					ps.setDouble(16, order.getTransactionArray().getTransaction()[0].getFinalValueFee().getValue()); // ebayFees
+					ps.setDouble(17, truepay); // totalPrice
 					ps.setString(18, order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentAmount()
-							.getCurrencyID().value());
-					ps.setDouble(19, order.getTransactionArray().getTransaction()[0].getTransactionPrice().getValue());
-///////////					
-					System.out.println(order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentAmount().getCurrencyID().value());
-					
-					ps.setDouble(20,truepay-order.getExternalTransaction()[0].getFeeOrCreditAmount().getValue());
-///////////					
-					ps.setString(21, order.getTransactionArray().getTransaction()[0].getItem().getItemID().toString());
-					ps.setString(22, order.getTransactionArray().getTransaction()[0].getTransactionID());
-					ps.setString(23, order.getShippingDetails().getSellingManagerSalesRecordNumber().toString());
+							.getCurrencyID().value()); // 幣別
+					ps.setDouble(19, order.getTransactionArray().getTransaction()[0].getTransactionPrice().getValue()); // ebayPrice
+					///////////
+					System.out.println("幣別: " + order.getMonetaryDetails().getPayments().getPayment()[0]
+							.getPaymentAmount().getCurrencyID().value());
 
-					ps.setTimestamp(24, new java.sql.Timestamp((long) 0.0));
-
-					int x = ps.executeUpdate();
+					ps.setDouble(20, truepay - order.getExternalTransaction()[0].getFeeOrCreditAmount().getValue()); // paypalNet
+					///////////
+					ps.setString(21, order.getTransactionArray().getTransaction()[0].getItem().getItemID().toString()); // ebayItemNO
+					ps.setString(22, order.getTransactionArray().getTransaction()[0].getTransactionID()); // paypalmentId
+					ps.setString(23, order.getShippingDetails().getSellingManagerSalesRecordNumber().toString()); // ebayNO
+					ps.setTimestamp(24, new java.sql.Timestamp((long) 0.0)); // shippingDate
+																				// 預設0
+																				// 1970
+					ps.executeUpdate();
 
 					String strSql2 = "INSERT INTO order_recieverinfo (QR_id, order_id, recieverFirstName, recieverLastName,"
 							+ " tel1, tel2, address, country, postCode)" + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -226,15 +211,15 @@ public class CGetEbay {
 					String StateOrProvince = order.getShippingAddress().getStateOrProvince();
 					String CountryName = order.getShippingAddress().getCountryName();
 					String PostalCode = order.getShippingAddress().getPostalCode();
-					System.out.println(Street1 + " " + Street2 + "," + PostalCode + "," + CityName + ","
-							+ StateOrProvince + "," + CountryName);
 
-					ps2.setString(7, Street1 + " " + Street2 + "," + PostalCode + "," + CityName + "," + StateOrProvince
-							+ "," + CountryName);
+					String Address = Street1 + " " + Street2 + "," + PostalCode + "," + CityName + "," + StateOrProvince
+							+ "," + CountryName;
+					System.out.println(Address);
+
+					ps2.setString(7, Address);
 					ps2.setString(8, order.getShippingAddress().getCountryName());
 					ps2.setString(9, order.getShippingAddress().getPostalCode());
-					//
-					int y = ps2.executeUpdate();
+					ps2.executeUpdate();
 
 					for (int l = 0; l < order.getTransactionArray().getTransaction().length; l++) {
 						String strSql3 = "INSERT INTO orders_detail (QR_id, order_id, SKU, productName, invoiceName"
@@ -250,12 +235,11 @@ public class CGetEbay {
 						ps3.setDouble(7, order.getTotal().getValue());
 						ps3.setInt(8, order.getTransactionArray().getTransaction()[l].getQuantityPurchased());
 						ps3.setString(9, order.getBuyerCheckoutMessage());
-						int z = ps3.executeUpdate();
+						ps3.executeUpdate();
 					}
 
 					String strSql4 = "INSERT INTO orders_guestinfo (QR_id, order_id, guestFirstName, guestLastName, guestAccount"
-							+ ", email, tel1, tel2, mobile, birthday, company, address, country, postcode )"
-							+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+							+ ", email)" + " VALUES (?, ?, ?, ?, ?, ?)";
 
 					PreparedStatement ps4 = conn.prepareStatement(strSql4);
 					ps4.setString(1, QR_id);
@@ -264,143 +248,13 @@ public class CGetEbay {
 					ps4.setString(4, order.getTransactionArray().getTransaction()[0].getBuyer().getUserLastName());
 					ps4.setString(5, order.getBuyerUserID());
 					ps4.setString(6, order.getTransactionArray().getTransaction()[0].getBuyer().getEmail());
-					ps4.setString(7, null);
-					ps4.setString(8, null);
-					ps4.setString(9, null);
-					ps4.setString(10, null);
-					ps4.setString(11, null);
-					ps4.setString(12, null);
-					ps4.setString(13, null);
-					ps4.setString(14, null);
-					int q = ps4.executeUpdate();
 
+					ps4.executeUpdate();
 					System.out.println("訂單編號:" + order.getOrderID());
 
-					// System.out.println("款項調整:"+order.getAdjustmentAmount().getValue());
-					// System.out.println("款項調整:"+order.getAdjustmentAmount().getCurrencyID());
-					// System.out.println("已付款項:" +
-					// order.getAmountPaid().getValue());
-					// //
-					// System.out.println("已付款項:"+order.getTransactionArray().getTransaction()[0].getAmountPaid().getValue());
-					// System.out.println("已付款項:" +
-					// order.getAmountPaid().getCurrencyID());
-					// //
-					// System.out.println("款項調整2:"+order.getAmountSaved().getValue());
-					// //
-					// System.out.println("款項調整2:"+order.getAmountSaved().getCurrencyID());
-					// System.out.println("買方留言:" +
-					// order.getBuyerCheckoutMessage());
-					//
-					// System.out.println("付費狀態:" +
-					// order.getCheckoutStatus().getEBayPaymentStatus());
-					// System.out.println("付費方法:" +
-					// order.getCheckoutStatus().getPaymentMethod());
-					// System.out.println("狀態:" +
-					// order.getCheckoutStatus().getStatus());
-					//
-					// for (int k = 0; k <
-					// order.getMonetaryDetails().getPayments().getPayment().length;
-					// k++) {
-					// System.out.println("MonetaryDetails 賣家帳號:"
-					// +
-					// order.getMonetaryDetails().getPayments().getPayment()[k].getPayee().getValue());
-					// System.out.println("MonetaryDetails FeeOrCreditAmount:"
-					// +
-					// order.getMonetaryDetails().getPayments().getPayment()[k].getFeeOrCreditAmount()
-					// .getValue());
-					// System.out.println("MonetaryDetails 買家帳號:"
-					// +
-					// order.getMonetaryDetails().getPayments().getPayment()[k].getPayer().getValue());
-					// System.out.println(
-					// "MonetaryDetails 付費總額:" +
-					// order.getMonetaryDetails().getPayments().getPayment()[k]
-					// .getPaymentAmount().getValue());
-					// //
-					// System.out.println("MonetaryDetails:"+order.getMonetaryDetails().getPayments().getPayment()[k].getPaymentReferenceID()[0].getType());
-					// System.out.println("MonetaryDetails ebay與paypal交易狀態:"
-					// +
-					// order.getMonetaryDetails().getPayments().getPayment()[k].getPaymentStatus());
-					// System.out.println("MonetaryDetails 付費時間:"
-					// +
-					// order.getMonetaryDetails().getPayments().getPayment()[k].getPaymentTime().getTime());
-					// }
-					// for (int j = 0; j <
-					// order.getExternalTransaction().length; j++) {
-					// System.out.println("ExternalTransactionStatus:"
-					// +
-					// order.getExternalTransaction()[j].getExternalTransactionStatus());
-					// System.out.println("ExternalTransactionStatus:"
-					// +
-					// order.getExternalTransaction()[j].getFeeOrCreditAmount().getValue());
-					// }
-					// System.out.println("訂單狀態:" + order.getOrderStatus());
-					// System.out.println("客戶名稱:" + order.getBuyerUserID());
-					// System.out.println("外部訂單編號:" +
-					// order.getExtendedOrderID());
-					// System.out.println(
-					// "訂單長度:" + new
-					// Integer(order.getTransactionArray().getTransaction().length).toString());
-					// System.out.println("總價:" + new
-					// Double(order.getTotal().getValue()).toString());
-					// System.out.println("訂單建立時間:" +
-					// eBayUtil.toAPITimeString(order.getCreatedTime().getTime()));
-					// // System.out.println
-					// // ("訂單付款時間:"+order.getPaidTime().getTime());
-
-					// System.out.println("收件人國家getCounty:" +
-					// order.getShippingAddress().getCounty());
-					// System.out.println("收件人國家名getCountryName:" +
-					// order.getShippingAddress().getCountryName());
-					// System.out.println("收件人城市名getCityName:" +
-					// order.getShippingAddress().getCityName());
-					// System.out.println("收件人公司getCompanyName:" +
-					// order.getShippingAddress().getCompanyName());
-					// System.out.println("收件人getInternationalName:"+order.getShippingAddress().getInternationalName());
-					// System.out.println("收件人名getFirstName:"+order.getShippingAddress().getFirstName());
-					// System.out.println("收件人姓getLastName:"+order.getShippingAddress().getLastName());
-					// System.out.println("收件人getInternationalStateAndCity:"+order.getShippingAddress().getInternationalStateAndCity());
-					// System.out.println("收件人getInternationalStreet:"+order.getShippingAddress().getInternationalStreet());
-					// System.out.println("收件人getName:"+order.getShippingAddress().getName());
-					// System.out.println("收件人getPhone:"+order.getShippingAddress().getPhone());
-					// System.out.println("收件人Phone2:"+order.getShippingAddress().getPhone2());
-					// System.out.println("收件人getPhone2AreaOrCityCode:"+order.getShippingAddress().getPhone2AreaOrCityCode());
-					// System.out.println("收件人getPhone2LocalNumber:"+order.getShippingAddress().getPhone2LocalNumber());
-					// System.out.println("收件人getPhoneLocalNumber:"+order.getShippingAddress().getPhoneLocalNumber());
-					// System.out.println("收件人getPostalCode:"+order.getShippingAddress().getPostalCode());
-					// System.out.println("收件人getReferenceID:"+order.getShippingAddress().getReferenceID());
-					// System.out.println("收件人getStateOrProvince:"+order.getShippingAddress().getStateOrProvince());
-					// System.out.println("收件人getStreet:"+order.getShippingAddress().getStreet());
-					// System.out.println("收件人getStreet1:"+order.getShippingAddress().getStreet1());
-					// System.out.println("收件人getStreet2:"+order.getShippingAddress().getStreet2());
-
-					// for (int l = 0; l <
-					// order.getTransactionArray().getTransaction().length; l++)
-					// {
-					//
-					// System.out
-					// .println("商品名:" +
-					// order.getTransactionArray().getTransaction()[l].getItem().getTitle());
-					// System.out.println("SKU:" +
-					// order.getTransactionArray().getTransaction()[l].getItem().getSKU());
-					// System.out.println(
-					// "Price:" +
-					// order.getTransactionArray().getTransaction()[l].getItem().getCeilingPrice());
-					// System.out.println(
-					// "itemid:" +
-					// order.getTransactionArray().getTransaction()[l].getItem().getItemID());
-					// System.out.println("LineItemID"+order.getTransactionArray().getTransaction()[l].getOrderLineItemID());
-					// System.out.println("paidtime"+order.getTransactionArray().getTransaction()[l].getPaidTime());
-					// }
-
-					if (sso != null) {
-						System.out.println("客戶選擇的物流:" + sso.getShippingService().toString());
-					}
 				}
 			}
 			System.out.println("-----");
-			//////////////////////////
-			// break;
-			/////////////////////////
 		}
 
 	}
@@ -408,22 +262,11 @@ public class CGetEbay {
 	private static ApiContext getApiContext(String token) throws IOException {
 		String input;
 		ApiContext apiContext = new ApiContext();
-
 		ApiCredential cred = apiContext.getApiCredential();
-		// input = ConsoleUtil.readString("Enter your eBay Authentication Token:
-		// ");
-		// "AgAAAA**AQAAAA**aAAAAA**T+rgVw**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wFk4GjC5eBpgWdj6x9nY+seQ**++oDAA**AAMAAA**KrbpmpcD67VY0UO20Q/vbkLrLQChXpvs/xkUUPH7awJn4I72xqw6c/32ET17wrRFhsYsuScNi6NoD5GTFyM6lbJFWHDSZlrlz9+CGC7lPAUJA+72yEZ4ENAwEf1WlVIeKbmzrXYYogYTUpi6LKN6XmET9Lh0Yt6SxsoWMUaPK2wZ8RhUw8gu88PZGZ1wdLsaCmq6ykrYbXIxU7hzpaLH36YlSky4YJjvLrD0wFvMp2DZWbj/pYHWhLaMx9nrLGUl1fDQI/mAQMwi3q9kL2GedSY+cGXzP8ZXyMNrUvFjAh54xK6OX3P8Na2MCmV5gjz95u0Fv+OhgtvPl68/7yq6VZG7P6AghA5Klkn4VrYiMYc5YgpYYH+1+Ws00il4nmNm4nVLh04eFLQepyzi3cPdlakxGFl/fz8rhXd3NCjPPU42HjYWk54JrS8xasbg/4/yz2TOWxA3O9xQTF55bcrEnSMLy4bgPv/5xZC2SKqI70jmddJbne4VDEqRDBbuFugRWo+l6ztRXJU+u5fjtYDVrLFZTIIbVBPeXfaGsa6B8fvNpQk5wlwkpf7g0u0hTXeioDNy0diJzpJ06uNVPMNH70ujUxJX8ogAbUnkKCKdaim8cECfyJ0Ol9aMILrrKNlXczwIGyiBmLWTJZYN0IX0OFGsLurusiLIp6EtOQpgAkg9tTPbFY3BiizrUrggdDQ+cznG4SrRfylaP5qZVgLSkBzDy9tej9rPCwDHU5ubh0Pn5wg1YWatP1ZFUO1Dg9fo";
 		cred.seteBayToken(token);
-
-		// set Api Server Url
-		// input = ConsoleUtil.readString("Enter eBay SOAP server URL (e.g.,
-		// https://api.ebay.com/wsapi): ");
-
 		input = "https://api.ebay.com/wsapi";
-		// input = "https://api.sandbox.ebay.com/wsapi";
 		apiContext.setApiServerUrl(input);
 		return apiContext;
-
 	}
 
 	private static LinkedList<String> getToken(Connection conn) throws SQLException {
@@ -455,63 +298,17 @@ public class CGetEbay {
 		return outsideCode;
 	}
 
-	private static boolean checkExist(OrderType orders, Connection conn)
-			throws IllegalAccessException, ClassNotFoundException, Exception {
+	private static boolean checkExist(OrderType orders, Connection conn) throws Exception {
 
 		LinkedList<String> outsideCode = getOutsideCodeFromDatabase(conn);
 		for (int i = 0; i < outsideCode.size(); i++) {
 			if (outsideCode.get(i).equals(orders.getExtendedOrderID())) {
-				System.out.println("true");
+				System.out.println("資料庫已有 檢查!");
 				return true;
 			}
 		}
-		System.out.println("false");
+		System.out.println("資料庫沒有 新增!");
 		return false;
 	}
-
-	class MyThread extends Thread {
-		CGetEbay c = new CGetEbay();
-
-		@Override
-		public void run() {
-			c.CGetEbay1();
-		}
-	}
-
-	class MyThread2 extends Thread {
-		CGetEbay c = new CGetEbay();
-
-		@Override
-		public void run() {
-			c.CGetEbay1();
-		}
-	}
-
-//	private static void other(OrderType[] orders)
-//			throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
-//
-//		int size = orders != null ? orders.length : 0;
-//		System.out.println(size);
-//		for (int i = 0; i < size; i++) {
-//			OrderType order = orders[i];
-//			Connection conn = new DataBaseConn().getConn();
-//			String QR_id = CreateOrderId.generateQR_Id();
-//			String strSql = "INSERT INTO orders_master (QR_id, order_id, outsideCode, platform, totalPrice, ebayItemNO)"
-//					+ " VALUES (?, ?, ?, ?, ?, ?)";
-//
-//			PreparedStatement ps = conn.prepareStatement(strSql);
-//			ps.setString(1, QR_id);
-//			ps.setString(2, order.getOrderID());
-//			ps.setString(3, order.getExtendedOrderID());
-//			ps.setString(4, "ebay");
-//			ps.setDouble(5, order.getMonetaryDetails().getPayments().getPayment()[0].getPaymentAmount().getValue());
-//			ps.setString(6, order.getTransactionArray().getTransaction()[0].getItem().getItemID().toString());
-//			int x = ps.executeUpdate();
-//
-//			System.out.println("orderId" + order.getOrderID());
-//
-//		}
-//
-//	}
 
 }
