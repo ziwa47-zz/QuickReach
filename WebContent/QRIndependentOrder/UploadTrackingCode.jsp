@@ -4,8 +4,8 @@
 <%@ page import="tw.iii.qr.order.DTO.COrders"%>
 <%@ page
 	import="java.sql.Connection,java.sql.ResultSet,java.util.LinkedList,java.util.*,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse"%>
-<jsp:useBean id="COrderFactory"
-	class="tw.iii.qr.order.DTO.COrderFactory" scope="page" />
+<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.DTO.COrderFactory"
+	scope="page" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -31,27 +31,26 @@
 
 	<div class="nav">
 		<div class="container">
-			<div class="navbar-left" style="background-color: #F3CE9A;">
+			<div class="navbar-left" style="background-color: #3DFF81;">
 				<ul class="nav nav-tabs">
-					<li class="" style="background-color: #A45A21"><a
-						href="SearchOrder.jsp?begin=0&end=10" style="color: #FFFFFF">訂單管理</a></li>
+					<li class="" style="background-color: #189B30"><a
+						href="SearchOrder.jsp?begin=0&end=10" style="color: #FFFFFF">獨立出貨</a></li>
 					<c:if test="${PageCompetence.getEntireOrders() == 1 }">
-						<li><a href="DayliBalanceSheet.jsp">日結表</a></li>
+						<li><a href="/QROrders/DayliBalanceSheet.jsp">日結表</a></li>
 					</c:if>
 				</ul>
 			</div>
 		</div>
 		<div class="container">
-			<div class="nav" style="background-color: #A45A21;">
+			<div class="nav" style="background-color: #189B30;">
 				<ul class="nav nav-tabs">
-					<li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
-					<li><a href="OrderProcessingPage.jsp?begin=0&end=10">處理中</a></li>
-					<li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
-					<li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10"
-						style="color: #fff">上傳追蹤碼</a></li>
-					<li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
-					<li><a href="ShipmentRecord.jsp?begin=0&end=10">訂單出貨記錄</a></li>
-					<li><a href="refundPage.jsp?begin=0&end=10">退貨</a></li>
+			        <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
+			        <li><a href="NewOrder.jsp?begin=0&end=10">新增訂單</a></li>
+			        <li><a href="Pickup.jsp?begin=0&end=10" >揀貨中</a></li>
+			        <li><a href="" style="color:#fff">上傳追蹤碼</a></li>
+			        <li><a href="Finished.jsp?begin=0&end=10">已完成訂單</a></li>
+			        <li><a href="ShipmentRecord.jsp?begin=0&end=10">訂單出貨記錄</a></li>
+			        <li><a href="refundPage.jsp?begin=0&end=10" >退貨</a></li>
 				</ul>
 			</div>
 		</div>
@@ -61,7 +60,7 @@
 			<li><a href="/HomePage.jsp">首頁</a></li>
 			<li class="active" style="display:"><a
 				href="SearchOrder.jsp?begin=0&end=10">訂單管理</a></li>
-			<li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
+			<li><a href="UploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
 		</ol>
 	</div>
 	<div class="nav">
@@ -83,8 +82,7 @@
 							</div>
 							<div class="col-md-10">
 								<input class="form-control" id="trackingCode"
-									name="trackingCode" type="text" onchange="trackingCodeValie()"
-									readonly>
+									name="trackingCode" type="text" onchange="trackingCodeValie()" readonly>
 							</div>
 						</div>
 					</div>
@@ -161,12 +159,14 @@
 									<td>${i.getCOrderMaster().getPlatform()}</td>
 									<td>${i.getCOrderMaster().getEbayAccount()}</td>
 									<td><input type="hidden" name="ebayaccount"
-										value="${i.getCOrderMaster().getEbayAccount()}"></td>
+										value="${i.getCOrderMaster().getEbayAccount()}">
+									</td>
 									<td>${i.getCOrderMaster().getGuestAccount()}</td>
 									<td>${i.getCOrderMaster().getPayDate()}</td>
-									<td>
-									
-									<input type="text" name="Order_id" value="${i.getCOrderMaster().getOrder_id()}"></td>
+									<td><input type="hidden" name="ebayItemNO"
+										value="${i.getCOrderMaster().getEbayItemNO()}"> <input
+										type="hidden" name="paypalmentId"
+										value="${i.getCOrderMaster().getPaypalmentId()}"></td>
 									<td>${i.getCOrderMaster().getLogistics()}<input
 										type="hidden" name="${i.getCOrderMaster().getQR_id()}"
 										value="${i.getCOrderMaster().getLogistics()}"><input
@@ -257,35 +257,36 @@
 			var id = ele.value;
 			if (ele.checked) {
 				$("input[name=QR_id]").prop("disabled", true);
-				$("#trackingCode").prop("readonly", false)
+				$("#trackingCode").prop("readonly",false)
 				$(ele).prop("disabled", false);
 				whichLogistics = $("input[name=" + id + "]").val();
 				alert('接著輸入追蹤碼--' + whichLogistics);
 			} else {
 				$("input[name=QR_id]").prop("disabled", false);
-				$("#trackingCode").prop("readonly", true)
+				$("#trackingCode").prop("readonly",true)
 				$("#sendTrackingCodeSandbox").prop('disabled', true);
 				$("#sendTrackingCode").prop('disabled', true);
-
+				
 			}
 		};
 
 		function trackingCodeValie() {
 
 			var checkTrackingCode = $("#trackingCode").val();
-			//	alert(checkTrackingCode)
+		//	alert(checkTrackingCode)
+		
+		var front = checkTrackingCode.substring(0, 2);
+				var tw = checkTrackingCode.slice(-2);
+				var nu = checkTrackingCode.substring(2,11);
 
-			var front = checkTrackingCode.substring(0, 2);
-			var tw = checkTrackingCode.slice(-2);
-			var nu = checkTrackingCode.substring(2, 11);
-
+		
 			switch (whichLogistics) {
 
+			
 			case "EMS":
-
-				if ((front == "EE") && (tw == "TW") && (!isNaN(nu))
-						&& checkTrackingCode.length == 13) {
-					//	alert("驗證成功" + ee + tw + "\n" + checkTrackingCode);
+								
+				if ((front == "EE") && (tw == "TW")&& (!isNaN(nu)) && checkTrackingCode.length == 13) {
+				//	alert("驗證成功" + ee + tw + "\n" + checkTrackingCode);
 					$("#sendTrackingCodeSandbox").prop('disabled', false);
 					$("#sendTrackingCode").prop('disabled', false);
 				} else {
@@ -300,16 +301,16 @@
 				break;
 			case "AP":
 
-				if ((front == "CC") && (tw == "TW") && !isNaN(nu)
-						&& checkTrackingCode.length == 13) {
-					//	alert("驗證成功" + cc + "," + tw + "\n" + checkTrackingCode);
+				
+
+				if ((front == "CC") && (tw == "TW")&& !isNaN(nu) && checkTrackingCode.length == 13) {
+				//	alert("驗證成功" + cc + "," + tw + "\n" + checkTrackingCode);
 					$("#sendTrackingCodeSandbox").prop('disabled', false);
 					$("#sendTrackingCode").prop('disabled', false);
 				} else {
 					$("#sendTrackingCodeSandbox").prop('disabled', true);
 					$("#sendTrackingCode").prop('disabled', true);
-					alert("須為CC開頭TW結尾\n ex.CC290035010TW\n當前輸入:"
-							+ checkTrackingCode);
+					alert("須為CC開頭TW結尾\n ex.CC290035010TW\n當前輸入:" + checkTrackingCode);
 					//$("input[name=trackingCode]").focus();
 				}
 
@@ -318,16 +319,14 @@
 			case "RA":
 				//郵局
 
-				if ((front == "RA") && (tw == "TW") && !isNaN(nu)
-						&& checkTrackingCode.length == 13) {
+				if ((front == "RA") && (tw == "TW")&& !isNaN(nu) && checkTrackingCode.length == 13) {
 					alert("驗證成功" + ra + "," + tw + "\n" + checkTrackingCode);
 					$("#sendTrackingCodeSandbox").prop('disabled', false);
 					$("#sendTrackingCode").prop('disabled', false);
 				} else {
 					$("#sendTrackingCodeSandbox").prop('disabled', true);
 					$("#sendTrackingCode").prop('disabled', true);
-					alert("須為RA開頭TW結尾 \n ex.RA042574668TW \n當前輸入:"
-							+ checkTrackingCode);
+					alert("須為RA開頭TW結尾 \n ex.RA042574668TW \n當前輸入:" + checkTrackingCode);
 					//$("input[name=trackingCode]").focus();
 				}
 
@@ -337,14 +336,13 @@
 						&& checkTrackingCode.length == 10) {
 					$("#sendTrackingCodeSandbox").prop('disabled', false);
 					$("#sendTrackingCode").prop('disabled', false);
-					/*	alert("驗證成功" + "checkTrackingCode.length="
-								+ checkTrackingCode.length + "\n"
-								+ checkTrackingCode);*/
+				/*	alert("驗證成功" + "checkTrackingCode.length="
+							+ checkTrackingCode.length + "\n"
+							+ checkTrackingCode);*/
 				} else {
 					$("#sendTrackingCodeSandbox").prop('disabled', true);
 					$("#sendTrackingCode").prop('disabled', true);
-					alert("須輸入10碼數字 \n ex.7388710921 \n當前輸入:"
-							+ checkTrackingCode);
+					alert("須輸入10碼數字 \n ex.7388710921 \n當前輸入:" + checkTrackingCode);
 				}
 
 				break;
@@ -353,14 +351,13 @@
 						&& checkTrackingCode.length == 22) {
 					$("#sendTrackingCodeSandbox").prop('disabled', false);
 					$("#sendTrackingCode").prop('disabled', false);
-					// 					alert("ok,checkTrackingCode.length="
-					// 							+ checkTrackingCode.length + "\n"
-					// 							+ checkTrackingCode);
+// 					alert("ok,checkTrackingCode.length="
+// 							+ checkTrackingCode.length + "\n"
+// 							+ checkTrackingCode);
 				} else {
 					$("#sendTrackingCodeSandbox").prop('disabled', true);
 					$("#sendTrackingCode").prop('disabled', true);
-					alert("須輸入22碼數字 \n ex.9405510298370033498220 \n當前輸入:"
-							+ checkTrackingCode);
+					alert("須輸入22碼數字 \n ex.9405510298370033498220 \n當前輸入:" + checkTrackingCode);
 				}
 
 				break;
@@ -375,20 +372,19 @@
 				} else {
 					$("#sendTrackingCodeSandbox").prop('disabled', true);
 					$("#sendTrackingCode").prop('disabled', true);
-					alert("須輸入22碼數字 \n ex.9405510298370033498220 \n當前輸入:"
-							+ checkTrackingCode);
-
+					alert("須輸入22碼數字 \n ex.9405510298370033498220 \n當前輸入:" + checkTrackingCode);
+					
 				}
 
 				break;
-
+				
 			case "Fedex":
 
 				//alert("ex.尚未給格式" + checkTrackingCode);
 				$("#sendTrackingCodeSandbox").prop('disabled', false);
 				$("#sendTrackingCode").prop('disabled', false);
 				break;
-
+		
 			default:
 				$("#sendTrackingCodeSandbox").prop('disabled', false);
 				$("#sendTrackingCode").prop('disabled', false);

@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,9 +16,12 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.swing.filechooser.FileSystemView;
 
 import org.apache.catalina.core.ApplicationContext;
+import org.apache.jasper.tagplugins.jstl.core.Out;
 import org.apache.tomcat.util.net.SecureNio2Channel.ApplicationBufferHandler;
 
 import tw.iii.qr.order.CGetEbay;
@@ -50,56 +56,81 @@ public class daliy implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent a) {
 
 		servletContext = a.getServletContext();
+		GETIP();
+		StartGetEbayOrderAndDailyBalance();
+	}
+
+	private static void StartGetEbayOrderAndDailyBalance() {
+
+		Timer t1 = new Timer();
+		TimerTask myTask = new TimerTask() {
+			@Override
+			public void run() {
+				new CGetEbay().CGetEbay1();
+				new DayliBalanceSheetFactory().dayliBalanceSheet();
+				System.out.println("da done");
+			}
+		};
+
+		t1.scheduleAtFixedRate(myTask, 0, 1800000);
+		
+	}
+
+	public static void ClickGetEbayOrderAndDailyBalance(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		response.setContentType("text/html;charset=UTF-8");
+		PrintWriter out;
+		out = response.getWriter();
+		TimerTask myTask = new TimerTask() {
+			@Override
+			public void run() {
+				new CGetEbay().CGetEbay1();
+				new DayliBalanceSheetFactory().dayliBalanceSheet();
+				System.out.println("da done");
+				out.write("<script type='text/javascript'>");
+				out.write("alert('Complete');");
+				out.write("window.location = '../HomePage.jsp';");
+				out.write("</script>");
+			}
+		};
+		myTask.run();
+		
+	}
+
+	private void GETIP() {
+		FileSystemView fsv = FileSystemView.getFileSystemView();
+		String iptxt = fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator + "Setting" + File.separator
+				+ "IP.txt";
+		Boolean isGETIP = false;
+		BufferedReader in;
 		try {
-			FileSystemView fsv = FileSystemView.getFileSystemView();
-			String iptxt = fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator + "Setting"
-					+ File.separator + "IP.txt";
-			BufferedReader in;
-
 			in = new BufferedReader(new FileReader(iptxt));
-
 			String line = "";
-
 			while ((line = in.readLine()) != null) {
 				if (line.contains("ip=")) {
 					ip = line.substring(3, line.length()).trim();
+					if (ip == "") {
+						throw new Exception("沒有輸入伺服器ip");
+					}
 					System.out.println(ip);
+				} else {
+					throw new Exception("沒有輸入 ip= 這一行 , ex: ip=1.1.1.1");
 				}
 			}
+			isGETIP = true;
 			in.close();
-
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			System.out.println(e1);
+			System.out.println("使用本機IP");
 		}
-
-		Timer t1 = new Timer();
-		t1.scheduleAtFixedRate(new TimerTask() {
-
-			@Override
-			public void run() {
-				try {
-
-					new Thread() {
-						@Override
-						public void run() {
-
-							
-								new CGetEbay().CGetEbay1();
-								new DayliBalanceSheetFactory().dayliBalanceSheet();
-								System.out.println("da done");
-							
-
-						}
-					}.start();
-
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		if (!isGETIP) {
+			InetAddress myComputer = null;
+			try {
+				myComputer = InetAddress.getLocalHost();
+				System.out.println(myComputer.getHostAddress());
+			} catch (UnknownHostException e) {
+				System.out.println("取得本機IP失敗。");
 			}
-		}, 0, 1800000);
-
+		}
 	}
-
 }
