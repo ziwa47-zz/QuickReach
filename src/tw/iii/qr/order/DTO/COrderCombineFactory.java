@@ -36,11 +36,11 @@ public class COrderCombineFactory {
 		// DATEDIFF(MONTH,m1.orderDate,GETDATE()) <1 order by m1.orderDate Desc
 
 		// 一個月裡面 同一個人兩周內下了兩次以上的訂單 而且尚未合併
-		String sqlstr = " select  m1.guestAccount,m1.QR_id, m1.ebayNO,m1.payDate,m2.QR_id,m2.ebayNO,m2.orderDate "
+		String sqlstr = " select  m1.guestAccount,m1.QR_id, m1.ebayNO,m1.payDate,m2.QR_id,m2.ebayNO,m2.payDate "
 				+ "from orders_master m1 inner join orders_master m2 on m1.guestAccount=m2.guestAccount "
 				+ "where m1.QR_id<m2.QR_id  " + "and isnull(m1.isCombine,0) !=1 " + "and isnull(m2.isCombine,0) !=1 "
 				+ "and DATEDIFF(Day,m1.orderDate,m2.orderDate)<14 " + "and DATEDIFF(Day,m1.orderDate,m2.orderDate)>-14 "
-				+ "and DATEDIFF(MONTH,m1.orderDate,GETDATE()) <5 " + "order  by m1.orderDate Desc";
+				+ "and DATEDIFF(MONTH,m1.orderDate,GETDATE()) <5 " + "order  by m1.payDate Desc";
 		PreparedStatement ps = conn.prepareStatement(sqlstr);
 		ResultSet rs = ps.executeQuery();
 
@@ -66,7 +66,7 @@ public class COrderCombineFactory {
 	public LinkedList<String> GetPic(String qrid, Connection conn) throws Exception {
 		LinkedList<String> pic = new LinkedList<>();
 		String strsql2 = "select p.picturePath from product p inner join orders_detail d on p.SKU=d.SKU"
-				+ "where  d.QR_id =  ?";
+				+ " where  d.QR_id =  ?";
 		PreparedStatement ps2 = conn.prepareStatement(strsql2);
 		ps2.setString(1, qrid);
 		ResultSet rs2 = ps2.executeQuery();
