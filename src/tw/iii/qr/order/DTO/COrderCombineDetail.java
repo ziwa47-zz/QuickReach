@@ -5,6 +5,7 @@ import java.util.Date;
 public class COrderCombineDetail {
 	String m_cqrid;
 	String d_qrid;
+	String d_ebayno;
 	String guestAccount;
 	Date combineDate;
 	
@@ -19,6 +20,12 @@ public class COrderCombineDetail {
 	}
 	public void setD_qrid(String d_qrid) {
 		this.d_qrid = d_qrid;
+	}
+	public String getD_ebayno() {
+		return d_ebayno;
+	}
+	public void setD_ebayno(String d_ebayno) {
+		this.d_ebayno = d_ebayno;
 	}
 	public String getGuestAccount() {
 		return guestAccount;

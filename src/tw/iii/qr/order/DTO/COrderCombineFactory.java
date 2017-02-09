@@ -211,7 +211,7 @@ public class COrderCombineFactory {
 		String datecount = request.getParameter("DATECOUNT");
 		PreparedStatement ps=null;
 		String sqlstr="";
-		
+		System.out.println("in" + request.getParameter("DATECOUNT"));
 		//radio button value 7 14 -1 預設7天
 		if(Integer.parseInt(datecount)>0){
 			//如果選7或14天
@@ -253,8 +253,9 @@ public class COrderCombineFactory {
 		while (rs.next()) {
 			cocd.setM_cqrid(rs.getString(1));
 			cocd.setD_qrid(rs.getString(2));
-			cocd.setGuestAccount(rs.getString(3));
-			cocd.setCombineDate(rs.getDate(4));
+			cocd.setD_ebayno(rs.getString(3));
+			cocd.setGuestAccount(rs.getString(4));
+			cocd.setCombineDate(rs.getDate(5));
 			list.add(cocd);
 		}
 		return list;
