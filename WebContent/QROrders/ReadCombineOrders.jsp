@@ -5,8 +5,7 @@
 <%@ page import="tw.iii.qr.order.*"%>
 <%@ page
 	import="java.sql.Connection,java.sql.ResultSet,java.util.LinkedList,java.util.*,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse"%>
-<jsp:useBean id="CombineOrder"
-	class="tw.iii.qr.order.DTO.COrderCombineFactory" scope="page" />
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -21,27 +20,51 @@
 			response.sendRedirect("/HomePage.jsp");
 		%>
 	</c:if>
-	<%
-		Connection conn = new DataBaseConn().getConn();
-		LinkedList<GuestAccountAndOrder> list = CombineOrder.HasCombineOrderGuest(request,conn);
 
-		session.setAttribute("list", list);
-	%>
 	<script type="text/javascript">
-				function onSelectGuest(){
-					$("#select").on("click", function() {
-						$.ajax({
-							url : "/AjaxGetGuestAccount",
-							
-							success : function(result) {
-								$("#theList").html(result);
-							}
-						});
-					});
+	function onSelectGuest(){
+		
+		$.ajax({
+			type:"GET",
+			url : "../AjaxServletGuestAccount",
+			data: {
+				DATECOUNT: $( "input[type=radio]:checked" ).val()
+			},
+			success : function(result) {
+				$("#guestAccount").html(result);
 				}
-				</script>
+			});
+	}
+	function onCombineOrder(){
+		$.ajax({
+			type:"GET",
+			url : "../AjaxServletCombineOrder",
+			data: {
+				CQRID: $("#guestAccount :selected").val().split(":")[0]
+			},
+			success : function(result) {
+				$("#orderDetail").html(result);
+				}
+			});
+	}
+	
+	function selectDays(){
+		var text = $( "input[type=radio]:checked" ).val();
+	    alert(text);
+	}
+		/*function selectDays(){
+		    $("#select").click(function() {
+		    	$("input[type=radio]:checked").each(function(){
+		        	$("#test").empty();
+					var number = $(this).attr("id");
+		            var text = $("label[for="+number+"]").text();
+		            $("#test").append("<li><a href='#'>" + text + "</a></li>");
+		        });
+			});
+		}	*/
+	</script>
 				
-				
+		
 
 	<div class="nav">
 		<div class="container">
@@ -79,48 +102,68 @@
 			<li><a href="OrderCombine.jsp">合併訂單</a></li>
 		</ol>
 	</div>
+	
 	<div class="nav">
 		<br />
-		<div class="container table-responsive bg-warning"
-			style="border-radius: 20px">
-			<form name="searchform" method="post" action="../OrdersServlet"
-				class="form-inline container"
-				style="font-size: 100%; vertical-align: baseline; padding: 15px;">
-				<button class="btn btn-sm btn-info" type="submit" name="submit"
-					value="GoOrderCombine">回到合併訂單</button>
-				<br /> 
-				<select id="select" class="styled-select"
-					onchange="onSelectGuest()">
-					<c:forEach var="i" items="${list}" step="1" varStatus="check">
-						<option value="${i.getOrder()}">${i.getOrder()}--${i.getGuestAccount()}</option>
-					</c:forEach>
-				</select>
-
-				
-				
-			</form>
+		<div class="container table-responsive bg-warning" style="border-radius: 20px">
+			<div class="row">
+				<div class="col-md-8 form-group ">
+					<div class="row">
+						<div class="col-md-2">
+							<h5><label>有效期限：</label></h5>
+						</div>
+						<div class="col-md-4">
+							<div class="form-control" id="validDays" >
+								<label class="radio-inline" for="7"><input type="radio" name="optradio"  id="7" value="7" onchange="onSelectGuest()">7</label>
+								<label class="radio-inline" for="14"><input type="radio" name="optradio"  id="14" value="14" onchange="onSelectGuest()">14</label>
+								<label class="radio-inline" for="all"><input type="radio" name="optradio"  id="all" value="-1" onchange="onSelectGuest()">all</label>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2">
+							<h5><label>客戶帳號：</label></h5>
+						</div>
+						<div class="col-md-4">
+							<select multiple class="form-control" id="guestAccount" onchange="onCombineOrder()">
+							  <option>1</option>
+							  <option>2</option>
+							  <option>3</option>
+							  <option>4</option>
+							  <option>5</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+					  <h2>來個表格標題吧</h2>
+					  <p>可以輸入附標</p>
+					  <table class="table">
+					    <thead>
+					      <tr>
+					        <th>m_cqrid</th>
+					        <th>d_qrid</th>
+					        <th>d_ebayno</th>
+					        <th>guestAccount</th>
+					        <th>combineDate</th>
+					      </tr>
+					    </thead>
+					    <tbody id="orderDetail">
+					      <tr>
+					        <td>Default</td>
+					        <td>Defaultson</td>
+					        <td>def@somemail.com</td>
+					      </tr>
+					    </tbody>
+					  </table>
+					</div>		
+				</div>
+			</div>
 		</div>
 	</div>
+			
 	
-	<div class="" id="select">
-		<label class="radio-inline"><input type="radio" name="optradio">7</label>
-		<label class="radio-inline"><input type="radio" name="optradio">14</label>
-		<label class="radio-inline"><input type="radio" name="optradio">all</label>
-	</div>
-			<label id="test">test</label>
 	
-
-		<div class="dropdown">
-		  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Guest Account
-		  <span class="caret"></span></button>
-		  <ul class="dropdown-menu">
-		    <li><a href="#">HTML</a></li>
-		    <li><a href="#">CSS</a></li>
-		    <li><a href="#">JavaScript</a></li>
-		  </ul>
-		</div>
-	
-
+<div id="test"></div>
 
 
 	<%@ include file="../href/footer.jsp"%>
