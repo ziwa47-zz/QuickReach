@@ -73,15 +73,20 @@ public class AjaxServletCombineOrder extends HttpServlet {
 		
 		LinkedList<COrderCombineDetail> combineDetail = new LinkedList<>();
 		combineDetail = OCFactory.ReadCombineOrder(request, conn);
+		LinkedList<String> pic = new LinkedList<>();
 
 		for(int i=0; i<combineDetail.size(); i++){
 			System.out.println(combineDetail.get(i).getGuestAccount());
-			out.println("<tr>");
+			out.println("<tr class='success'>");
 			out.println("<td>" + combineDetail.get(i).getM_cqrid() + "</td>");
 			out.println("<td>" + combineDetail.get(i).getD_qrid() + "</td>");
 			out.println("<td>" + combineDetail.get(i).getD_ebayno() + "</td>");
-			out.println("<td>" + combineDetail.get(i).getGuestAccount() + "</td>");
 			out.println("<td>" + combineDetail.get(i).getCombineDate() + "</td>");
+			String qrid = combineDetail.get(i).getD_qrid();
+			pic = OCFactory.GetPic(qrid, conn);
+			for(int j=0; j<pic.size(); j++){
+				out.println("<td><a href='#' class='pop'><img src='" + pic.get(j) + "' class='img-responsive' style='width: 50px; height: 50px;'></a></td>");
+			}
 			out.println("</tr>");
 		}
 	}
