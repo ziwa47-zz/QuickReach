@@ -68,11 +68,11 @@ public class daliy implements ServletContextListener {
 			public void run() {
 				new CGetEbay().CGetEbay1();
 				new DayliBalanceSheetFactory().dayliBalanceSheet();
-				System.out.println("da done");
+				System.out.println("撈完訂單+上日結表");
 			}
 		};
 
-		t1.scheduleAtFixedRate(myTask, 0, 1800000);
+		t1.scheduleAtFixedRate(myTask, 5000, 1800000);
 		
 	}
 

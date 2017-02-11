@@ -65,8 +65,10 @@
       	<a href="/QROrders/OrderUploadTrackingCode.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">上傳追蹤碼</label></a>
       	<a href="/QROrders/OrderFinished.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">已完成訂單</label></a>
       	<a href="/QROrders/ShipmentRecord.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">訂單出貨紀錄</label></a>
+      	<a href="/QROrders/OrderCombine.jsp"><label class="btn btn-lg btn-primary">合併訂單</label></a>
+      	<a href="/QROrders/ReadCombineOrders.jsp"><label class="btn btn-lg btn-primary">查詢合併訂單</label></a>
       </div>
-      <br/	>
+      <br/>
       <h3>獨立出貨</h3>
       <div class="row" style="font-size:24px; padding:10px">
         <a href="/QRIndependentOrder/SearchOrder.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">查詢訂單</label></a>
