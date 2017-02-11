@@ -64,7 +64,7 @@ public class AjaxServletGuestAccount extends HttpServlet {
 		
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
-		System.out.println(request.getParameter("DATECOUNT"));
+		//System.out.println(request.getParameter("DATECOUNT"));
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession();
 		Connection conn = new DataBaseConn().getConn();

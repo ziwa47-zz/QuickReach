@@ -159,23 +159,20 @@
 											src="../img/compose-4.png"></a></td>
 									<td>${i.getCOrderMaster().getEbayNO()}
 									<td>${i.getCOrderMaster().getPlatform()}</td>
-									<td>${i.getCOrderMaster().getEbayAccount()}</td>
-									<td><input type="hidden" name="ebayaccount"
-										value="${i.getCOrderMaster().getEbayAccount()}"></td>
+									<td>${i.getCOrderMaster().getEbayAccount()}
+										<input type="hidden" name="ebayaccount" value="${i.getCOrderMaster().getEbayAccount()}">
+										<input type="hidden" name="Order_id" value="${i.getCOrderMaster().getOrder_id()}">
+										<input type="hidden" name="logistics" value="${i.getCOrderMaster().getLogistics()}">
+										<input type="hidden" name="status" 	value="${i.getCOrderMaster().getOrderStatus()}">
+										<input type="hidden" name="${i.getCOrderMaster().getQR_id()}" value="${i.getCOrderMaster().getLogistics()}">
+										</td>
+									
 									<td>${i.getCOrderMaster().getGuestAccount()}</td>
 									<td>${i.getCOrderMaster().getPayDate()}</td>
-									<td>
-									
-									<input type="text" name="Order_id" value="${i.getCOrderMaster().getOrder_id()}"></td>
-									<td>${i.getCOrderMaster().getLogistics()}<input
-										type="hidden" name="${i.getCOrderMaster().getQR_id()}"
-										value="${i.getCOrderMaster().getLogistics()}"><input
-										type="hidden" name="logistics"
-										value="${i.getCOrderMaster().getLogistics()}"></td>
+									<td></td>
+									<td>${i.getCOrderMaster().getLogistics()}</td>
 									<td>${i.getCOrderReciever().getCountry()}</td>
-									<td>${i.getCOrderMaster().getOrderStatus()}<input
-										type="hidden" name="status"
-										value="${i.getCOrderMaster().getOrderStatus()}"></td>
+									<td>${i.getCOrderMaster().getOrderStatus()}</td>
 									<td>${i.getCOrderMaster().getTotalPrice()}${i.getCOrderMaster().getCurrency()}</td>
 									<td>${i.getCOrderMaster().getStaffName()}</td>
 								</tr>
@@ -207,22 +204,21 @@
 											src="../img/compose-4.png"></a></td>
 									<td>${i.getCOrderMaster().getEbayNO()}
 									<td>${i.getCOrderMaster().getPlatform()}</td>
-									<td>${i.getCOrderMaster().getEbayAccount()}</td>
+									<td>${i.getCOrderMaster().getEbayAccount()}
+										<input type="hidden" name="ebayaccount" value="${i.getCOrderMaster().getEbayAccount()}">
+										<input type="hidden" name="Order_id" value="${i.getCOrderMaster().getOrder_id()}">
+										<input type="hidden" name="logistics" value="${i.getCOrderMaster().getLogistics()}">
+										<input type="hidden" name="status" 	value="${i.getCOrderMaster().getOrderStatus()}">
+										<input type="hidden" name="QR_id" 	value="${i.getCOrderMaster().getLogistics()}">
+										<input type="hidden" name="${i.getCOrderMaster().getQR_id()}" value="${i.getCOrderMaster().getLogistics()}">
+										</td>
+									
 									<td>${i.getCOrderMaster().getGuestAccount()}</td>
 									<td>${i.getCOrderMaster().getPayDate()}</td>
-									<td><input type="hidden" name="ebayItemNO"
-										value="${i.getCOrderMaster().getEbayItemNO()}"> <input
-										type="hidden" name="paypalmentId"
-										value="${i.getCOrderMaster().getPaypalmentId()}"></td>
-									<td>${i.getCOrderMaster().getLogistics()}<input
-										type="hidden" name="${i.getCOrderMaster().getQR_id()}"
-										value="${i.getCOrderMaster().getLogistics()}"><input
-										type="hidden" name="logistics"
-										value="${i.getCOrderMaster().getLogistics()}"></td>
+									<td></td>
+									<td>${i.getCOrderMaster().getLogistics()}</td>
 									<td>${i.getCOrderReciever().getCountry()}</td>
-									<td>${i.getCOrderMaster().getOrderStatus()}<input
-										type="hidden" name="status"
-										value="${i.getCOrderMaster().getOrderStatus()}"></td>
+									<td>${i.getCOrderMaster().getOrderStatus()}</td>
 									<td>${i.getCOrderMaster().getTotalPrice()}${i.getCOrderMaster().getCurrency()}</td>
 									<td>${i.getCOrderMaster().getStaffName()}</td>
 								</tr>
@@ -348,39 +344,39 @@
 				}
 
 				break;
-			case "USPS(寄倉)":
-				if ((!isNaN(checkTrackingCode))
-						&& checkTrackingCode.length == 22) {
-					$("#sendTrackingCodeSandbox").prop('disabled', false);
-					$("#sendTrackingCode").prop('disabled', false);
-					// 					alert("ok,checkTrackingCode.length="
-					// 							+ checkTrackingCode.length + "\n"
-					// 							+ checkTrackingCode);
-				} else {
-					$("#sendTrackingCodeSandbox").prop('disabled', true);
-					$("#sendTrackingCode").prop('disabled', true);
-					alert("須輸入22碼數字 \n ex.9405510298370033498220 \n當前輸入:"
-							+ checkTrackingCode);
-				}
+// 			case "USPS(寄倉)":
+// 				if ((!isNaN(checkTrackingCode))
+// 						&& checkTrackingCode.length == 22) {
+// 					$("#sendTrackingCodeSandbox").prop('disabled', false);
+// 					$("#sendTrackingCode").prop('disabled', false);
+// 					// 					alert("ok,checkTrackingCode.length="
+// 					// 							+ checkTrackingCode.length + "\n"
+// 					// 							+ checkTrackingCode);
+// 				} else {
+// 					$("#sendTrackingCodeSandbox").prop('disabled', true);
+// 					$("#sendTrackingCode").prop('disabled', true);
+// 					alert("須輸入22碼數字 \n ex.9405510298370033498220 \n當前輸入:"
+// 							+ checkTrackingCode);
+// 				}
 
-				break;
-			case "USPS(集運)":
-				if ((!isNaN(checkTrackingCode))
-						&& checkTrackingCode.length == 22) {
-					$("#sendTrackingCodeSandbox").prop('disabled', false);
-					$("#sendTrackingCode").prop('disabled', false);
-					alert("ok,checkTrackingCode.length="
-							+ checkTrackingCode.length + "\n"
-							+ checkTrackingCode);
-				} else {
-					$("#sendTrackingCodeSandbox").prop('disabled', true);
-					$("#sendTrackingCode").prop('disabled', true);
-					alert("須輸入22碼數字 \n ex.9405510298370033498220 \n當前輸入:"
-							+ checkTrackingCode);
+// 				break;
+// 			case "USPS(集運)":
+// 				if ((!isNaN(checkTrackingCode))
+// 						&& checkTrackingCode.length == 22) {
+// 					$("#sendTrackingCodeSandbox").prop('disabled', false);
+// 					$("#sendTrackingCode").prop('disabled', false);
+// 					alert("ok,checkTrackingCode.length="
+// 							+ checkTrackingCode.length + "\n"
+// 							+ checkTrackingCode);
+// 				} else {
+// 					$("#sendTrackingCodeSandbox").prop('disabled', true);
+// 					$("#sendTrackingCode").prop('disabled', true);
+// 					alert("須輸入22碼數字 \n ex.9405510298370033498220 \n當前輸入:"
+// 							+ checkTrackingCode);
 
-				}
+// 				}
 
-				break;
+// 				break;
 
 			case "Fedex":
 

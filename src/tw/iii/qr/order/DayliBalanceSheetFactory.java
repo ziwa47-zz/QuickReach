@@ -41,14 +41,14 @@ public class DayliBalanceSheetFactory extends COrders {
 					+ " order_recieverinfo as r on m.QR_id = r.QR_id"
 					+ " where m.orderstatus = N'待處理'"
 					+ " order by payDate desc";
-			System.out.println(strSql);
+//			System.out.println(strSql);
 			
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ResultSet rs = ps.executeQuery();
 			
 			LinkedList<COrders> orderList = SetOrders(rs,conn);
 			tw.iii.qr.daliy.servletContext.setAttribute("ndbs", orderList);
-			System.out.println("撈完丟到上去!");
+			System.out.println("撈完丟上去!");
 			rs.close();
 			ps.close();
 			conn.close();
@@ -75,7 +75,7 @@ public class DayliBalanceSheetFactory extends COrders {
 			if(orderPre.equals(orderNext))
 				continue;
 			
-			System.out.println(index+":"+rs.getString(2));
+//			System.out.println(index+":"+rs.getString(2));
 			//System.out.println(index +":"+rs.getString(2));
 			order = new COrders();
 			order.COrderMaster.setOrderDate(rs.getDate(1));
