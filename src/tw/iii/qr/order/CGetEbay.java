@@ -60,9 +60,9 @@ public class CGetEbay {
 			for (int i = 0; i < token.size(); i++) {
 				RequestOrder(token.get(i), od);
 			}
-			System.out.println("odout " + od.size());
+//			System.out.println("odout " + od.size());
 			displayOrders(od, conn);
-			System.out.println("oddone");
+//			System.out.println("oddone");
 			System.out.println("撈完拉拉拉拉");
 			conn.close();
 		} catch (Exception e) {
@@ -78,7 +78,7 @@ public class CGetEbay {
 		apiord.getOrders();
 		PaginationResultType rpr = apiord.getReturnedPaginationResult();
 
-		System.out.println("有沒有訂單啊 : "+apiord.getReturnedHasMoreOrders());
+		System.out.println("有沒有大於100張訂單啊 : "+apiord.getReturnedHasMoreOrders());
 		System.out.println("有幾筆 : "+rpr.getTotalNumberOfEntries());
 		PaginationType page = new PaginationType();
 
@@ -90,7 +90,7 @@ public class CGetEbay {
 			for (OrderType order : apiord.getOrders()) {
 				od.add(order);
 			}
-			System.out.println("odin " + od.size());
+//			System.out.println("odin " + od.size());
 		}
 	}
 
@@ -111,13 +111,13 @@ public class CGetEbay {
 			throws IllegalAccessException, ClassNotFoundException, Exception {
 
 		int size = od != null ? od.size() : 0;
-		System.out.println(size);
+//		System.out.println(size);
 		for (int i = 0; i < size; i++) {
 			OrderType order = od.get(i);
 
-			System.out.println("**********");
-			System.out.println("訂單狀態: " + order.getCheckoutStatus().getStatus().toString());
-			System.out.println("EbayNo: " + order.getShippingDetails().getSellingManagerSalesRecordNumber().toString());
+//			System.out.println("**********");
+//			System.out.println("訂單狀態: " + order.getCheckoutStatus().getStatus().toString());
+//			System.out.println("EbayNo: " + order.getShippingDetails().getSellingManagerSalesRecordNumber().toString());
 
 			// 錢不相同(不知道為啥 有出現就要檢查)
 			if (order.getExternalTransaction()[0].getPaymentOrRefundAmount().getValue() != order.getMonetaryDetails()
@@ -128,7 +128,7 @@ public class CGetEbay {
 				System.out.println("$MonetaryDetails "
 						+ order.getMonetaryDetails().getPayments().getPayment(0).getPaymentAmount().getValue());
 			} else {
-				System.out.println("$$" + order.getExternalTransaction()[0].getPaymentOrRefundAmount().getValue());
+//				System.out.println("$$" + order.getExternalTransaction()[0].getPaymentOrRefundAmount().getValue());
 			}
 
 			// 已完成訂單才進去!
@@ -254,7 +254,7 @@ public class CGetEbay {
 
 				}
 			}
-			System.out.println("-----");
+//			System.out.println("-----");
 		}
 
 	}
@@ -303,7 +303,7 @@ public class CGetEbay {
 		LinkedList<String> outsideCode = getOutsideCodeFromDatabase(conn);
 		for (int i = 0; i < outsideCode.size(); i++) {
 			if (outsideCode.get(i).equals(orders.getExtendedOrderID())) {
-				System.out.println("資料庫已有 檢查!");
+//				System.out.println("資料庫已有 ");
 				return true;
 			}
 		}

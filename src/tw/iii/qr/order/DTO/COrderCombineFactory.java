@@ -40,7 +40,7 @@ public class COrderCombineFactory {
 				+ "from orders_master m1 inner join orders_master m2 on m1.guestAccount=m2.guestAccount "
 				+ "where m1.QR_id<m2.QR_id  " + "and isnull(m1.isCombine,0) !=1 " + "and isnull(m2.isCombine,0) !=1 "
 				+ "and DATEDIFF(Day,m1.orderDate,m2.orderDate)<14 " + "and DATEDIFF(Day,m1.orderDate,m2.orderDate)>-14 "
-				+ "and DATEDIFF(MONTH,m1.orderDate,GETDATE()) <5 " + "order  by m1.payDate Desc";
+				+ "and DATEDIFF(MONTH,m1.orderDate,GETDATE()) <5  "  + "order  by m1.payDate Desc";
 
 		// // 同一個人1周內下了兩次以上的訂單 而且尚未合併 (正確篩選 但先註解)
 		// String sqlstr = " select m1.guestAccount,m1.QR_id,
@@ -51,7 +51,8 @@ public class COrderCombineFactory {
 		// "and isnull(m2.isCombine,0) !=1 "
 		// + "and DATEDIFF(Day,m1.orderDate,m2.orderDate)<7 " + "and
 		// DATEDIFF(Day,m1.orderDate,m2.orderDate)>-7 "
-		// + "order by m1.payDate Desc";
+		// + " and m1.orderStatus != '待處理' and m2.orderStatus != '待處理' "  + 
+		// "order by m1.payDate Desc";
 
 		PreparedStatement ps = conn.prepareStatement(sqlstr);
 		ResultSet rs = ps.executeQuery();
@@ -84,7 +85,7 @@ public class COrderCombineFactory {
 		ResultSet rs2 = ps2.executeQuery();
 		while (rs2.next()) {
 			pic.add(rs2.getString(1));
-			System.out.println(rs2.getString(1));
+			// System.out.println(rs2.getString(1));
 		}
 		return pic;
 	}
@@ -102,7 +103,6 @@ public class COrderCombineFactory {
 
 		conn.setAutoCommit(false);
 		Savepoint sp = null;
-
 		// 檢查guestAccount是否大於1 超過就回家
 
 		// 處理前端傳過來的 EBAYNO,EBAYNO,GuestACCOUNT陣列
@@ -151,12 +151,15 @@ public class COrderCombineFactory {
 
 			// 給 CQRID
 			String CQRID = "C" + CreateOrderId.generateCQR_Id();
+
 			PreparedStatement ps = null;
+
 			sp = conn.setSavepoint();
+
 			for (int i = 0; i < specEbayNO.size(); i++) {
 				// 新增合併訂單
 				String sqlstr = "insert into comebineorder values(?,?,?,?,?)";
-				System.out.println(sqlstr);
+				// System.out.println(sqlstr);
 				ps = conn.prepareStatement(sqlstr);
 
 				ps.setString(1, CQRID);
@@ -176,13 +179,17 @@ public class COrderCombineFactory {
 			param.put("DATE", new java.sql.Date(date));
 
 			// 新增合併訂單的Detail
-			InsertCombineDetail(param, conn);
+			Boolean isInsert = InsertCombineDetail(param, conn);
+			if (!isInsert) {
+				throw new Exception("寫入ORDERDETAIL失敗");
+			}
+
 			// 修改合併狀態
 
 			// 修改狀態跟補上CQRID
 			for (int i = 0; i < specqrId.size(); i++) {
 				String sqlstr2 = " update orders_master set isCombine=1 ,CombineSku=? where QR_id = ?";
-				System.out.println(specqrId.get(i));
+				// System.out.println(specqrId.get(i));
 				ps = conn.prepareStatement(sqlstr2);
 				ps.setString(1, CQRID);
 				ps.setString(2, specqrId.get(i));
@@ -194,6 +201,7 @@ public class COrderCombineFactory {
 			System.out.println(CQRID + " success");
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			conn.rollback(sp);
 			return "Failed 取消";
 		}
@@ -262,7 +270,7 @@ public class COrderCombineFactory {
 		LinkedList<COrderCombineDetail> list = new LinkedList<>();
 		COrderCombineDetail cocd = new COrderCombineDetail();
 		while (rs.next()) {
-			cocd = new  COrderCombineDetail();
+			cocd = new COrderCombineDetail();
 			cocd.setM_cqrid(rs.getString(1));
 			cocd.setD_qrid(rs.getString(2));
 			cocd.setD_ebayno(rs.getString(3));
@@ -273,7 +281,7 @@ public class COrderCombineFactory {
 		return list;
 	}
 
-	private void InsertCombineDetail(HashMap<String, Object> param, Connection conn) {
+	private Boolean InsertCombineDetail(HashMap<String, Object> param, Connection conn) throws Exception {
 		// 其實還是寫到原本的Orders_Detail 不過 QRID 是 C開頭所以沒影響
 
 		// param.put("CQRID", CQRID);
@@ -285,7 +293,7 @@ public class COrderCombineFactory {
 		// 先準備參數
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		COrderDetail od= new COrderDetail();
+		COrderDetail od = new COrderDetail();
 		String cQrId = (String) param.get("CQRID");
 		LinkedList<String> qRIDs = (LinkedList<String>) param.get("QRID");
 		LinkedList<String> eBayNos = (LinkedList<String>) param.get("EBAYNO");
@@ -293,27 +301,66 @@ public class COrderCombineFactory {
 		java.sql.Date date = (java.sql.Date) param.get("DATE");
 
 		// 先找出各個QRID的DETAIL SKU
-		try {
-			for (int i = 0; i < qRIDs.size(); i++) {
-				String strsqlDetail = "select SKU,productName,invoiceName,price,invoicePrice,qty,warehouse,comment from  orders_detail where QR_id = ?";
-				ps = conn.prepareStatement(strsqlDetail);
-				ps.setString(1, qRIDs.get(i));
-				
-				rs = ps.executeQuery();
-				
-				while(rs.next()){
-					od.setSKU(rs.getString(1));
-					
-				}
+		LinkedList<COrderDetail> ods = getInsertDataToOrderDetail(conn, cQrId, qRIDs);
+
+		return insertCOrderDetail(conn, ods) ? true : false;
+
+	}
+
+	private boolean insertCOrderDetail(Connection conn, LinkedList<COrderDetail> ods) throws Exception {
+
+		String strSql = "INSERT INTO orders_detail (QR_id, SKU, productName, invoiceName"
+				+ ", price, invoicePrice, qty, comment )" + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		PreparedStatement ps = null;
+
+		for (COrderDetail od : ods) {
+			try {
+				ps = conn.prepareStatement(strSql);
+				ps.setString(1, od.getQR_id());
+				ps.setString(2, od.getSKU());
+				ps.setString(3, od.getProductName());
+				ps.setString(4, od.getInvoiceName());
+				ps.setDouble(5, od.getPrice());
+				ps.setDouble(6, od.getInvoicePrice());
+				ps.setInt(7, od.getQty());
+				ps.setString(8, od.getComment());
+				ps.executeUpdate();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
 			}
-		} catch (Exception e) {
-
 		}
+		System.out.println("ODetail寫入成功!");
+		return true;
+	}
 
-		// 寫入Orders_Detail
-		String strSql = "INSERT INTO orders_detail (QR_id, order_id, SKU, productName, invoiceName"
-				+ ", price, invoicePrice, qty, comment )" + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+	private LinkedList<COrderDetail> getInsertDataToOrderDetail(Connection conn, String cQrId, LinkedList<String> qRIDs)
+			throws SQLException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		LinkedList<COrderDetail> ods = new LinkedList<>();
+		String strsqlDetail = "select SKU,productName,invoiceName,price,invoicePrice,qty,comment from  orders_detail where QR_id = ?";
+		for (int i = 0; i < qRIDs.size(); i++) {
+			ps = conn.prepareStatement(strsqlDetail);
+			ps.setString(1, qRIDs.get(i));
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				COrderDetail od = new COrderDetail();
+				od.setQR_id(cQrId);
+				od.setSKU(rs.getString(1));
+				od.setProductName(rs.getString(2));
+				od.setInvoiceName(rs.getString(3));
+				od.setPrice(rs.getDouble(4));
+				od.setInvoicePrice(rs.getDouble(5));
+				od.setQty(rs.getInt(6));
+				od.setComment(rs.getString(7));
+				ods.add(od);
+			}
+		}
+		rs.close();
+		ps.close();
+		return ods;
 	}
 
 }
