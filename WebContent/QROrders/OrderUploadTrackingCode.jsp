@@ -344,39 +344,39 @@
 				}
 
 				break;
-			case "USPS(寄倉)":
-				if ((!isNaN(checkTrackingCode))
-						&& checkTrackingCode.length == 22) {
-					$("#sendTrackingCodeSandbox").prop('disabled', false);
-					$("#sendTrackingCode").prop('disabled', false);
-					// 					alert("ok,checkTrackingCode.length="
-					// 							+ checkTrackingCode.length + "\n"
-					// 							+ checkTrackingCode);
-				} else {
-					$("#sendTrackingCodeSandbox").prop('disabled', true);
-					$("#sendTrackingCode").prop('disabled', true);
-					alert("須輸入22碼數字 \n ex.9405510298370033498220 \n當前輸入:"
-							+ checkTrackingCode);
-				}
+// 			case "USPS(寄倉)":
+// 				if ((!isNaN(checkTrackingCode))
+// 						&& checkTrackingCode.length == 22) {
+// 					$("#sendTrackingCodeSandbox").prop('disabled', false);
+// 					$("#sendTrackingCode").prop('disabled', false);
+// 					// 					alert("ok,checkTrackingCode.length="
+// 					// 							+ checkTrackingCode.length + "\n"
+// 					// 							+ checkTrackingCode);
+// 				} else {
+// 					$("#sendTrackingCodeSandbox").prop('disabled', true);
+// 					$("#sendTrackingCode").prop('disabled', true);
+// 					alert("須輸入22碼數字 \n ex.9405510298370033498220 \n當前輸入:"
+// 							+ checkTrackingCode);
+// 				}
 
-				break;
-			case "USPS(集運)":
-				if ((!isNaN(checkTrackingCode))
-						&& checkTrackingCode.length == 22) {
-					$("#sendTrackingCodeSandbox").prop('disabled', false);
-					$("#sendTrackingCode").prop('disabled', false);
-					alert("ok,checkTrackingCode.length="
-							+ checkTrackingCode.length + "\n"
-							+ checkTrackingCode);
-				} else {
-					$("#sendTrackingCodeSandbox").prop('disabled', true);
-					$("#sendTrackingCode").prop('disabled', true);
-					alert("須輸入22碼數字 \n ex.9405510298370033498220 \n當前輸入:"
-							+ checkTrackingCode);
+// 				break;
+// 			case "USPS(集運)":
+// 				if ((!isNaN(checkTrackingCode))
+// 						&& checkTrackingCode.length == 22) {
+// 					$("#sendTrackingCodeSandbox").prop('disabled', false);
+// 					$("#sendTrackingCode").prop('disabled', false);
+// 					alert("ok,checkTrackingCode.length="
+// 							+ checkTrackingCode.length + "\n"
+// 							+ checkTrackingCode);
+// 				} else {
+// 					$("#sendTrackingCodeSandbox").prop('disabled', true);
+// 					$("#sendTrackingCode").prop('disabled', true);
+// 					alert("須輸入22碼數字 \n ex.9405510298370033498220 \n當前輸入:"
+// 							+ checkTrackingCode);
 
-				}
+// 				}
 
-				break;
+// 				break;
 
 			case "Fedex":
 
