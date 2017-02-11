@@ -1,4 +1,4 @@
-package tw.iii.qr.order;
+package tw.iii.qr;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,8 +12,6 @@ import javax.swing.filechooser.FileSystemView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import tw.iii.qr.DataBaseConn;
 
 public class getJSON {
 

@@ -14,8 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import tw.iii.qr.DataBaseConn;
-import tw.iii.qr.order.DTO.COrderCombineFactory;
-import tw.iii.qr.order.DTO.COrderFactory;
 import tw.iii.qr.order.DTO.COrders;
 import tw.iii.qr.order.DTO.SessionRecord;
 

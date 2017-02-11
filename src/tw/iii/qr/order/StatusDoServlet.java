@@ -26,7 +26,6 @@ import com.ebay.sdk.SdkException;
 import com.mysql.fabric.xmlrpc.base.Data;
 
 import tw.iii.qr.DataBaseConn;
-import tw.iii.qr.order.DTO.COrderFactory;
 import tw.iii.qr.order.DTO.COrderMaster;
 import tw.iii.qr.stock.CDBtoExcel;
 

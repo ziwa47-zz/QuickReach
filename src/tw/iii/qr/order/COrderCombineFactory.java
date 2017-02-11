@@ -1,4 +1,4 @@
-package tw.iii.qr.order.DTO;
+package tw.iii.qr.order;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -18,8 +18,15 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import tw.iii.qr.CreateOrderId;
 import tw.iii.qr.DataBaseConn;
-import tw.iii.qr.order.CreateOrderId;
+import tw.iii.qr.order.DTO.COrderCombine;
+import tw.iii.qr.order.DTO.COrderCombineDetail;
+import tw.iii.qr.order.DTO.COrderDetail;
+import tw.iii.qr.order.DTO.COrderGuestInfo;
+import tw.iii.qr.order.DTO.COrderMaster;
+import tw.iii.qr.order.DTO.COrderReciever;
+import tw.iii.qr.order.DTO.GuestAccountAndOrder;
 
 public class COrderCombineFactory {
 	public COrderCombineFactory() {

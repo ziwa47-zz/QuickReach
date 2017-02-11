@@ -1,4 +1,4 @@
-﻿package tw.iii.qr.order.DTO;
+﻿package tw.iii.qr.order;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -24,7 +24,9 @@ import com.mysql.fabric.Response;
 import tw.iii.purchase.DTO.Cpurchase_detail;
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.order.DTO.COrderDetail;
+import tw.iii.qr.order.DTO.COrderMaster;
 import tw.iii.qr.order.DTO.COrders;
+import tw.iii.qr.order.DTO.ShipmentRecord;
 import tw.iii.qr.stock.DTO.CProduct;
 import tw.iii.qr.stock.DTO.CStock;
 

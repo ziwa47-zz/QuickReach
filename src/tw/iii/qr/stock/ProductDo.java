@@ -21,9 +21,7 @@ import javax.servlet.http.HttpSession;
 
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.stock.DTO.CProduct;
-import tw.iii.qr.stock.DTO.CProductFactory;
 import tw.iii.qr.stock.DTO.CStock;
-import tw.iii.qr.stock.DTO.CStockFactory;
 
 @WebServlet("/ProductDo")
 @MultipartConfig

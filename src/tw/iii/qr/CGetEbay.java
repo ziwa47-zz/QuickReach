@@ -1,4 +1,4 @@
-package tw.iii.qr.order;
+package tw.iii.qr;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -36,9 +36,6 @@ import com.ebay.soap.eBLBaseComponents.ShippingDetailsType;
 import com.ebay.soap.eBLBaseComponents.ShippingServiceOptionsType;
 import com.ebay.soap.eBLBaseComponents.SortOrderCodeType;
 import com.ebay.soap.eBLBaseComponents.TradingRoleCodeType;
-
-import tw.iii.qr.order.CreateOrderId;
-import tw.iii.qr.DataBaseConn;
 
 public class CGetEbay {
 	public static void main(String[] args) {
