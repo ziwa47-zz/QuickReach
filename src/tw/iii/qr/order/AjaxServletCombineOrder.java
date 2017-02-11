@@ -87,7 +87,6 @@ public class AjaxServletCombineOrder extends HttpServlet {
 			for(int j=0; j<pic.size(); j++){
 				out.println("<td><a href='#' class='pop'><img src='/pics/"+ pic.get(j) +"'  style='width: 100px; height: 100px;'></a></td>");
 			}
-			out.println("<td><a href='#' class='pop'><img src='../img/clipboard-2.png' style='width: 50px; height: 50px;'></a></td>");
 			//class='img-responsive'z
 			out.println("</tr>");
 		}

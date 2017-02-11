@@ -27,6 +27,7 @@ import com.mysql.fabric.xmlrpc.base.Data;
 
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.order.DTO.COrderFactory;
+import tw.iii.qr.order.DTO.COrderMaster;
 import tw.iii.qr.stock.CDBtoExcel;
 
 @WebServlet("/StatusDo")
@@ -166,7 +167,7 @@ public class StatusDoServlet extends HttpServlet {
 			conn.close();
 			break;
 		case "sendTrackingCode":
-			DoSendTrackingCode(request, response, out, conn, OFactory);
+			DoSendTrackingCode(request, response, out, conn);
 			break;
 		case "finished":
 			OFactory.updateToRefund(request, conn);
@@ -191,35 +192,43 @@ public class StatusDoServlet extends HttpServlet {
 	}
 
 	private void DoSendTrackingCode(HttpServletRequest request, HttpServletResponse response, PrintWriter out,
-			Connection conn, COrderFactory OFactory)
-			throws Exception, ApiException, SdkException, SQLException, IOException {
-		if (!OFactory.checkOrderIdOrderStatus(request, conn) == false) {
-			System.out.println("checked true");
-			boolean isOK = new CompleteSale().CompleteSale1(request);
+			Connection conn) throws Exception, ApiException, SdkException, SQLException, IOException {
+
+		COrderMaster Origincdm = new COrderMaster();
+		Origincdm.setEbayAccount(request.getParameter("ebayaccount"));
+		Origincdm.setOrder_id(request.getParameter("Order_id"));
+		Origincdm.setTrackingCode(request.getParameter("trackingCode"));
+		Origincdm.setLogistics(request.getParameter("logistics"));
+		Origincdm.setQR_id(request.getParameter("QR_id"));
+		Origincdm.setStaffName(request.getParameter("staffName"));
+		COrderFactory OFactory = new COrderFactory();
+		LinkedList<COrderMaster> TrueOrders = OFactory.checkOrderIdOrderStatus(Origincdm, conn);
+		
+		conn.setAutoCommit(false);
+		Savepoint sp1 = conn.setSavepoint();
+		for (COrderMaster corder : TrueOrders) {
+			boolean isOK = new CompleteSale().CompleteSale1(corder);
 			if (isOK) {
-				conn.setAutoCommit(false);
-				Savepoint sp1 = conn.setSavepoint();
 				try {
-					OFactory.updateToFinished(request, conn);
-					OFactory.isBundledeductStock(request, conn);
-					OFactory.insertIntoShippingLog(request, conn);
-					OFactory.insertIntoPurchaseLogFromOrders(request, conn);
+					OFactory.updateToFinished(corder, conn);
+					OFactory.isBundledeductStock(corder, conn);
+					OFactory.insertIntoShippingLog(corder, conn);
+					OFactory.insertIntoPurchaseLogFromOrders(corder, conn);
 					System.out.println("sendTrackingCode success");
-					conn.commit();
 				} catch (Exception e) {
+					System.out.println("sendTrackingCode fail");
 					conn.rollback(sp1);
 				}
 			} else {
-				System.out.println("sendTrackingCode fail");
+				System.out.println("checked false");
+				out.write("<script type='text/javascript'>");
+				out.write("alert('not matched');");
+				out.write("window.location = 'QROrders/OrderUploadTrackingCode.jsp';");
+				out.write("</script>");
+				conn.rollback(sp1);
 			}
-			response.sendRedirect("QROrders/OrderFinished.jsp?begin=0&end=10");
-		} else {
-			System.out.println("checked false");
-			out.write("<script type='text/javascript'>");
-			out.write("alert('not matched');");
-			out.write("window.location = 'QROrders/OrderUploadTrackingCode.jsp';");
-			out.write("</script>");
 		}
+		conn.commit();
 		conn.close();
 	}
 
