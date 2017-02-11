@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+<!-- 	<bean id="config" class="empty.web.config.Config"> -->
+<!-- 		<property name="serverPath" value="C:/ASUS_pic"/> -->
+<!-- 		<property name="webPath" value="/asus_pic"/> -->
+<!-- 		<property name="defaultLicenseDesc" value="預設版權宣告" /> -->
+<!-- 	</bean> -->
+	
+	<!-- 
+	<bean id="mailConfig" class="asus.web.emarket.config.MailConfig">
+		<property name="mailServer" value="192.168.153.31" />
+		<property name="mailServerPort" value="25" />
+		<property name="mailTransportProtocol" value="smtp" />
+		<property name="mailFrom" value="amartnotify@edm.fe-amart.com.tw" />
+		<property name="defaultSubject" value="Amart" />
+		<property name="linkAddress" value="" />
+	</bean>
+	 -->
+</beans>
