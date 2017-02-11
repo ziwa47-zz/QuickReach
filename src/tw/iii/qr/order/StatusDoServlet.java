@@ -63,7 +63,13 @@ public class StatusDoServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Connection conn = new DataBaseConn().getConn();
 		COrderFactory OFactory = new COrderFactory();
-
+		COrderMaster Origincdm = new COrderMaster();
+		Origincdm.setEbayAccount(request.getParameter("ebayaccount"));
+		Origincdm.setOrder_id(request.getParameter("Order_id"));
+		Origincdm.setTrackingCode(request.getParameter("trackingCode"));
+		Origincdm.setLogistics(request.getParameter("logistics"));
+		Origincdm.setQR_id(request.getParameter("QR_id"));
+		Origincdm.setStaffName(request.getParameter("staffName"));
 		String send = request.getParameter("send");
 
 		switch (send) {
@@ -167,11 +173,11 @@ public class StatusDoServlet extends HttpServlet {
 			conn.close();
 			break;
 		case "sendTrackingCode":
-			DoSendTrackingCode(request, response, out, conn);
+			DoSendTrackingCode(Origincdm, response, out, conn);
 			break;
 		case "finished":
 			OFactory.updateToRefund(request, conn);
-			OFactory.isBundleAddBackToStock(request, conn);
+			OFactory.isBundleAddBackToStock(Origincdm, conn);
 			response.sendRedirect("QROrders/refundPage.jsp?begin=0&end=10");
 			conn.close();
 			break;
@@ -191,18 +197,12 @@ public class StatusDoServlet extends HttpServlet {
 
 	}
 
-	private void DoSendTrackingCode(HttpServletRequest request, HttpServletResponse response, PrintWriter out,
+	private void DoSendTrackingCode(COrderMaster origincdm, HttpServletResponse response, PrintWriter out,
 			Connection conn) throws Exception, ApiException, SdkException, SQLException, IOException {
 
-		COrderMaster Origincdm = new COrderMaster();
-		Origincdm.setEbayAccount(request.getParameter("ebayaccount"));
-		Origincdm.setOrder_id(request.getParameter("Order_id"));
-		Origincdm.setTrackingCode(request.getParameter("trackingCode"));
-		Origincdm.setLogistics(request.getParameter("logistics"));
-		Origincdm.setQR_id(request.getParameter("QR_id"));
-		Origincdm.setStaffName(request.getParameter("staffName"));
+		
 		COrderFactory OFactory = new COrderFactory();
-		LinkedList<COrderMaster> TrueOrders = OFactory.checkOrderIdOrderStatus(Origincdm, conn);
+		LinkedList<COrderMaster> TrueOrders = OFactory.checkOrderIdOrderStatus(origincdm, conn);
 		
 		conn.setAutoCommit(false);
 		Savepoint sp1 = conn.setSavepoint();

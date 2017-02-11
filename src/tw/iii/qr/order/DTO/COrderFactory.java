@@ -912,7 +912,7 @@ public class COrderFactory extends COrders {
 		}
 	}
 
-	public void insertIntoShippingLog(tw.iii.qr.order.DTO.COrderMaster corder, Connection conn) throws SQLException {
+	public void insertIntoShippingLog(COrderMaster corder, Connection conn) throws SQLException {
 
 		// LinkedList<ShipmentRecord> ShippingLog = new
 		// LinkedList<ShipmentRecord>();
@@ -938,18 +938,18 @@ public class COrderFactory extends COrders {
 			if ("B00".equals(condition.get(i).getSKU().substring(0, 3))) {
 
 				System.out.println("bundle");
-				plusBundleAddBackToStock(corder, conn, condition.get(i));
+				plusBundleAddBackToStock(conn, condition.get(i));
 
 			} else if (!"B00".equals(condition.get(i).getSKU().substring(0, 3))) {
 
 				System.out.println("single");
-				addBackToStock(corder, conn, condition.get(i));
+				addBackToStock(conn, condition.get(i));
 			}
 		}
 
 	}
 
-	public void plusBundleAddBackToStock(COrderMaster corder, Connection conn, COrderDetail condition)
+	public void plusBundleAddBackToStock(Connection conn, COrderDetail condition)
 			throws Exception {
 
 		LinkedList<String> skulist = new LinkedList<String>();
@@ -988,7 +988,7 @@ public class COrderFactory extends COrders {
 
 	}
 
-	public void addBackToStock(COrderMaster corder, Connection conn, COrderDetail condition) throws Exception {
+	public void addBackToStock(Connection conn, COrderDetail condition) throws Exception {
 
 		String strSql = "update  storage set qty =(select qty from storage  where sku = ? and warehouse = ? ) +  ? "
 				+ " where sku = ? and warehouse = ?";
