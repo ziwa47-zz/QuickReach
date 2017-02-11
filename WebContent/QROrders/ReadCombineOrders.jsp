@@ -44,6 +44,7 @@
 				}
 			});
 	}
+
 	</script>
 <div class="nav">
   <div class="container">
@@ -91,7 +92,7 @@
           </div>
           <div class="col-md-4">
             <div class="form-control" id="validDays" onclick="onSelectGuest()">
-              <label class="radio-inline" for="7"><input type="radio" name="optradio" value="7">7</label>
+              <label class="radio-inline" for="7"><input type="radio" name="optradio" value="7" checked="checked">7</label>
               <label class="radio-inline" for="14"><input type="radio" name="optradio" value="14">14</label>
               <label class="radio-inline" for="all"><input type="radio" name="optradio" value="-1">不限</label>
             </div>
