@@ -1,4 +1,4 @@
-package tw.iii.qr.stock.DTO;
+package tw.iii.qr.stock;
 
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
 
 import tw.iii.qr.DataBaseConn;
+import tw.iii.qr.stock.DTO.CStock;
 
 public class CStockFactory extends CStock {
 	public CStockFactory() {

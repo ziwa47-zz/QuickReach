@@ -1,4 +1,4 @@
-package tw.iii.qr.stock.DTO;
+package tw.iii.qr.stock;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,6 +25,7 @@ import javax.swing.filechooser.FileSystemView;
 import org.apache.jasper.tagplugins.jstl.core.Otherwise;
 
 import tw.iii.qr.DataBaseConn;
+import tw.iii.qr.stock.DTO.CProduct;
 public class CProductFactory extends CProduct {
 
 	public CProductFactory() {

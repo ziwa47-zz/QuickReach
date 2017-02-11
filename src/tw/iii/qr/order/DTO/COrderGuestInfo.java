@@ -2,6 +2,7 @@ package tw.iii.qr.order.DTO;
 
 public class COrderGuestInfo {
 
+	private String QR_id;
 	private String order_id;
 	private String guestFirstName;
 	private String guestLastName;
@@ -100,6 +101,12 @@ public class COrderGuestInfo {
 	}
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+	public String getQR_id() {
+		return QR_id;
+	}
+	public void setQR_id(String qr_id) {
+		QR_id = qr_id;
 	}
 	
 }

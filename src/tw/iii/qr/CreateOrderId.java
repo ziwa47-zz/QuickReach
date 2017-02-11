@@ -1,4 +1,4 @@
-package tw.iii.qr.order;
+package tw.iii.qr;
 // Welcome1.java
 
 // A first program in Java
@@ -13,9 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Random;
-
-import tw.iii.qr.DataBaseConn;
-
 import java.util.Calendar;
 
 public class CreateOrderId {
