@@ -67,7 +67,7 @@ conn.close();
 
   <div class="container table-responsive" style="background: #D9A56B; border-radius:20px;">
   	<form name="searchform" method="post" action="../OrdersServlet" class="form-inline container" 
-  	style="font-size: 100%; vertical-align: baseline; padding: 15px;">
+  	style="font-size: 100%; vertical-align: baseline; padding: 15px;" onsubmit="return isLessTotalPrice()">
 	<c:if test="${PageCompetence.getPendingOrdersEdit() == 1}">  	
 	  	<div class="row">
 	      <label for="inputPassword" class="col-md-2 control-label text-left">編輯模式</label>
@@ -315,7 +315,7 @@ conn.close();
 		        <c:if test="${PageCompetence.getTotalAmountEdit() == 1}">
 			        <div class="row">
 			          <div class="col-md-3 text-right well-sm label-tag"><h4>總計</h4></div>
-			          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="TotalPrice" value="${result.getCOrderMaster().getTotalPrice()}"></div>
+			          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="TotalPrice" id="TotalPrice" value="${result.getCOrderMaster().getTotalPrice()}"></div>
 			        </div>
 		      	</c:if>
 		      	<c:if test="${PageCompetence.getTotalAmountEdit() == 0}">
@@ -419,7 +419,25 @@ $(function () {
 		  $("#btnCheck").prop("disabled", true);
  	  }
    };
-  
+
+   function isLessTotalPrice() {
+		var sum = 0;
+	    $('input[name="price"]').each(function(){
+	        sum += +$(this).val();
+	    });
+	    var total = $('#TotalPrice').val();
+	    if (sum>total || sum <=0)
+	    {
+	    	alert("請注意,修改後金額小於原始金額");
+	        return false;
+	    } else if (sum>total || sum <=0)
+	    {
+	    	alert("請注意,修改後金額小於等於0");
+	        return false;
+	    } else {
+	        return true;
+	    }
+	}
 </script>  
 
 </body>

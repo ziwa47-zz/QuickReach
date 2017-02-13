@@ -138,6 +138,13 @@ $(function() {
 			$('#imagemodal').modal('show');   
 		});		
 });
+//AjaxModal
+function AjaxModal() {
+	$('.pop').on('click', function() {
+		$('.imagepreview').attr('src', $(this).find('img').attr('src'));
+		$('#imagemodal').modal('show');   
+	});		
+}
 
 </script>
 </head>
