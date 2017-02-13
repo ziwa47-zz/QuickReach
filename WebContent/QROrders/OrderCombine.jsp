@@ -89,16 +89,16 @@
                 <td><a href="OrderDetail.jsp?QR_id=${i.getQR_Id1()}">${i.getEbayNO1()}</a></td>
               
                 <td>
-                	 <c:forEach var="pic" items="${i.getPicturePath1()}" begin="0" step="1">
-                	<a href='#' class='pop' ><img src='/pics/${pic}' style='width: 100px; height: 100px;'></a><br/>
-                	</c:forEach>
+                <c:forEach var="pic" items="${i.getPicturePath1()}" begin="0" step="1">
+                  <a href='#' class='pop' ><img src='/pics/${pic}' style='width: 100px; height: 100px;'></a><br/>
+                </c:forEach>
                 </td>
                 <td>${i.getPayTime1()}</td>
                 <td><a href="OrderDetail.jsp?QR_id=${i.getQR_Id2()}">${i.getEbayNO2()}</a></td>
-				 <td>
-                 	<c:forEach var="pic2" items="${i.getPicturePath2()}" begin="0" step="1">
-                	<a href='#' class='pop' ><img src='/pics/${pic2}' style='width: 100px; height: 100px;'></a><br/>
-                	</c:forEach>
+				<td>
+                  <c:forEach var="pic2" items="${i.getPicturePath2()}" begin="0" step="1">
+               	  <a href='#' class='pop' ><img src='/pics/${pic2}' style='width: 100px; height: 100px;'></a><br/>
+               	  </c:forEach>
                 </td>
                 <td>${i.getPayTime2()}</td>
               </tr>
