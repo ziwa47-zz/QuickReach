@@ -3,7 +3,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="tw.iii.qr.DataBaseConn,org.json.*,java.sql.Connection,java.sql.PreparedStatement,java.util.Calendar"  %>
 
-<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.DTO.COrderFactory" scope="page"/>
+<jsp:useBean id="CreateOrderId" class="tw.iii.qr.CreateOrderId" scope="page"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -14,7 +14,7 @@
 <div class="loader text-center" id="spinner"></div>
 <%
 Connection conn = new DataBaseConn().getConn();
-String QR_id = COrderFactory.generateQR_Id04();
+String QR_id = CreateOrderId.generateQR_Id04();
 String strSql = "INSERT INTO orders_master (QR_id, payDate, orderDate, shippingDate, orderStatus)"
 		+ " VALUES (?, ?, ?, ?, ?)";
 PreparedStatement ps = conn.prepareStatement(strSql);

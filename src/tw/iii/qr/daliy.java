@@ -24,7 +24,6 @@ import org.apache.catalina.core.ApplicationContext;
 import org.apache.jasper.tagplugins.jstl.core.Out;
 import org.apache.tomcat.util.net.SecureNio2Channel.ApplicationBufferHandler;
 
-import tw.iii.qr.order.CGetEbay;
 import tw.iii.qr.order.DayliBalanceSheetFactory;
 
 /**

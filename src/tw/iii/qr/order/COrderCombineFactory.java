@@ -1,4 +1,4 @@
-package tw.iii.qr.order.DTO;
+package tw.iii.qr.order;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -18,8 +18,15 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import tw.iii.qr.CreateOrderId;
 import tw.iii.qr.DataBaseConn;
-import tw.iii.qr.order.CreateOrderId;
+import tw.iii.qr.order.DTO.COrderCombine;
+import tw.iii.qr.order.DTO.COrderCombineDetail;
+import tw.iii.qr.order.DTO.COrderDetail;
+import tw.iii.qr.order.DTO.COrderGuestInfo;
+import tw.iii.qr.order.DTO.COrderMaster;
+import tw.iii.qr.order.DTO.COrderReciever;
+import tw.iii.qr.order.DTO.GuestAccountAndOrder;
 
 public class COrderCombineFactory {
 	public COrderCombineFactory() {
@@ -40,7 +47,7 @@ public class COrderCombineFactory {
 				+ "from orders_master m1 inner join orders_master m2 on m1.guestAccount=m2.guestAccount "
 				+ "where m1.QR_id<m2.QR_id  " + "and isnull(m1.isCombine,0) !=1 " + "and isnull(m2.isCombine,0) !=1 "
 				+ "and DATEDIFF(Day,m1.orderDate,m2.orderDate)<14 " + "and DATEDIFF(Day,m1.orderDate,m2.orderDate)>-14 "
-				+ "and DATEDIFF(MONTH,m1.orderDate,GETDATE()) <5  "  + "order  by m1.payDate Desc";
+				+ "and DATEDIFF(MONTH,m1.orderDate,GETDATE()) <5  " + "order  by m1.payDate Desc";
 
 		// // 同一個人1周內下了兩次以上的訂單 而且尚未合併 (正確篩選 但先註解)
 		// String sqlstr = " select m1.guestAccount,m1.QR_id,
@@ -51,7 +58,7 @@ public class COrderCombineFactory {
 		// "and isnull(m2.isCombine,0) !=1 "
 		// + "and DATEDIFF(Day,m1.orderDate,m2.orderDate)<7 " + "and
 		// DATEDIFF(Day,m1.orderDate,m2.orderDate)>-7 "
-		// + " and m1.orderStatus != '待處理' and m2.orderStatus != '待處理' "  + 
+		// + " and m1.orderStatus != '待處理' and m2.orderStatus != '待處理' " +
 		// "order by m1.payDate Desc";
 
 		PreparedStatement ps = conn.prepareStatement(sqlstr);
@@ -92,18 +99,9 @@ public class COrderCombineFactory {
 
 	// create
 	public String CombineOrders(HttpServletRequest request, Connection conn) throws Exception {
-		// 新增合併訂單
-		// insert into comebineorder values('合併001','2016121603ebay015')
-		// insert into comebineorder values('合併001','2016121603ebay104')
-		// 修改合併狀態
-		// update orders_master set isCombine=1 where QR_id =
-		// '2016121603ebay015'
-		// update orders_master set isCombine=1 where QR_id =
-		// '2016121603ebay104'
 
 		conn.setAutoCommit(false);
 		Savepoint sp = null;
-		// 檢查guestAccount是否大於1 超過就回家
 
 		// 處理前端傳過來的 EBAYNO,EBAYNO,GuestACCOUNT陣列
 		String[] EbayNOs = request.getParameterValues("EbayNO");
@@ -178,10 +176,26 @@ public class COrderCombineFactory {
 			param.put("GUESTACCOUNT", specguestAccount);
 			param.put("DATE", new java.sql.Date(date));
 
+			// 新增合併訂單的Master
+			boolean isInsertMaster = InsertCombineMaster(param, conn);
+			if (!isInsertMaster) {
+				throw new Exception("寫入ORDERMaster失敗");
+			}
+
 			// 新增合併訂單的Detail
-			Boolean isInsert = InsertCombineDetail(param, conn);
-			if (!isInsert) {
-				throw new Exception("寫入ORDERDETAIL失敗");
+			boolean isInsertDetail = InsertCombineDetail(param, conn);
+			if (!isInsertDetail) {
+				throw new Exception("寫入ORDERDetail失敗");
+			}
+			// 新增合併訂單的Reciver
+			boolean isInsertReciverInfo = InsertCombineReciverInfo(param, conn);
+			if (!isInsertReciverInfo) {
+				throw new Exception("寫入ORDERReciver失敗");
+			}
+			// 新增合併訂單的Guest
+			boolean isInsertGuestInfo = InsertCombineGuestInfo(param, conn);
+			if (!isInsertGuestInfo) {
+				throw new Exception("寫入ORDERGuest失敗");
 			}
 
 			// 修改合併狀態
@@ -208,19 +222,265 @@ public class COrderCombineFactory {
 		return "success";
 	}
 
-	// update
-	public void UpdateCombineOrder(HttpServletRequest request, Connection conn) {
+	private boolean InsertCombineReciverInfo(HashMap<String, Object> param, Connection conn) {
+		// 其實還是寫到原本的Orders_Detail 不過 QRID 是 C開頭所以沒影響
 
-		// 選許已合併訂單以修改
-		String strsql = "select * from orders_master where isCombine =1";
-		// 合併訂單內容
-		String strsql2 = "select * from orders_master m inner join comebineorder c on m.combinesku = c.m_sku";
+		// param.put("CQRID", CQRID);
+		// param.put("QRID", specqrId);
+		// param.put("EBAYNO", specEbayNO);
+		// param.put("GUESTACCOUNT", specguestAccount);
+		// param.put("DATE", new java.sql.Date(date));
+
+		// 先準備參數
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		COrderReciever cor = new COrderReciever();
+		String cQrId = (String) param.get("CQRID");
+		LinkedList<String> qRIDs = (LinkedList<String>) param.get("QRID");
+		LinkedList<String> eBayNos = (LinkedList<String>) param.get("EBAYNO");
+		String guestAccount = (String) param.get("GUESTACCOUNT");
+		java.sql.Date date = (java.sql.Date) param.get("DATE");
+
+		// 先找出各個QRID的DETAIL SKU
+		cor = getInsertDataToOrderReciever(conn, cQrId, qRIDs);
+
+		return insertCOrderReciever(conn, cor) ? true : false;
+
 	}
 
-	// Delete
-	public void DeCombine(HttpServletRequest request, Connection conn) {
-		// 解除合併
-		String sqlstr = " update orders_master set isCombine=0 where QR_id = ?";
+	private boolean InsertCombineGuestInfo(HashMap<String, Object> param, Connection conn) {
+		// 其實還是寫到原本的Orders_Detail 不過 QRID 是 C開頭所以沒影響
+
+		// param.put("CQRID", CQRID);
+		// param.put("QRID", specqrId);
+		// param.put("EBAYNO", specEbayNO);
+		// param.put("GUESTACCOUNT", specguestAccount);
+		// param.put("DATE", new java.sql.Date(date));
+
+		// 先準備參數
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		COrderGuestInfo og = new COrderGuestInfo();
+		String cQrId = (String) param.get("CQRID");
+		LinkedList<String> qRIDs = (LinkedList<String>) param.get("QRID");
+		LinkedList<String> eBayNos = (LinkedList<String>) param.get("EBAYNO");
+		String guestAccount = (String) param.get("GUESTACCOUNT");
+		java.sql.Date date = (java.sql.Date) param.get("DATE");
+
+		// 先找出各個QRID的DETAIL SKU
+		og = getInsertDataToOrderGuest(conn, cQrId, qRIDs);
+
+		return insertCOrderGuest(conn, og) ? true : false;
+
+	}
+
+	private boolean insertCOrderGuest(Connection conn, COrderGuestInfo og) {
+		String strSql = "INSERT INTO orders_guestinfo (QR_id,guestFirstName, guestLastName, guestAccount, email)"
+				+ " VALUES (?, ?, ?, ?, ?)";
+		PreparedStatement ps = null;
+
+		try {
+			ps = conn.prepareStatement(strSql);
+			ps.setString(1, og.getQR_id());
+			ps.setString(2, og.getGuestFirstName());
+			ps.setString(3, og.getGuestLastName());
+			ps.setString(4, og.getGuestAccount());
+			ps.setString(5, og.getEmail());
+
+			ps.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		System.out.println("OGuest寫入成功!");
+		return true;
+	}
+
+	private COrderGuestInfo getInsertDataToOrderGuest(Connection conn, String cQrId, LinkedList<String> qRIDs) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		COrderGuestInfo og = new COrderGuestInfo();
+		String strsqlDetail = " select guestFirstName, guestLastName, guestAccount, email from orders_guestinfo where QR_id = ?";
+		try {
+			for (int i = 0; i < qRIDs.size(); i++) {
+				ps = conn.prepareStatement(strsqlDetail);
+				ps.setString(1, qRIDs.get(i));
+				rs = ps.executeQuery();
+				while (rs.next()) {
+					og = new COrderGuestInfo();
+					og.setQR_id(cQrId);
+					og.setGuestFirstName(rs.getString(1));
+					og.setGuestLastName(rs.getString(2));
+					og.setGuestAccount(rs.getString(3));
+					og.setEmail(rs.getString(4));
+				}
+			}
+			return og;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private boolean insertCOrderReciever(Connection conn, COrderReciever cor) {
+		String strSql = "INSERT INTO order_recieverinfo (QR_id, recieverFirstName, tel1, address, country, postCode)"
+				+ " VALUES (?, ?, ?, ?, ?, ?)";
+		PreparedStatement ps = null;
+
+		try {
+			ps = conn.prepareStatement(strSql);
+			ps.setString(1, cor.getQR_id());
+			ps.setString(2, cor.getRecieverFirstName());
+			ps.setString(3, cor.getTel1());
+			ps.setString(4, cor.getAddress());
+			ps.setString(5, cor.getCountry());
+			ps.setString(6, cor.getPostCode());
+
+			ps.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		System.out.println("OReciever寫入成功!");
+		return true;
+	}
+
+	private COrderReciever getInsertDataToOrderReciever(Connection conn, String cQrId, LinkedList<String> qRIDs) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		COrderReciever cor = new COrderReciever();
+		String strsqlDetail = " select recieverFirstName,tel1,address,country,postCode from order_recieverinfo where QR_id = ?";
+		try {
+			for (int i = 0; i < qRIDs.size(); i++) {
+				ps = conn.prepareStatement(strsqlDetail);
+				ps.setString(1, qRIDs.get(i));
+				rs = ps.executeQuery();
+				while (rs.next()) {
+					COrderDetail od = new COrderDetail();
+					cor.setQR_id(cQrId);
+					cor.setRecieverFirstName(rs.getString(1));
+					cor.setTel1(rs.getString(2));
+					cor.setAddress(rs.getString(3));
+					cor.setCountry(rs.getString(4));
+					cor.setPostCode(rs.getString(5));
+				}
+			}
+			return cor;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private boolean InsertCombineMaster(HashMap<String, Object> param, Connection conn) {
+		// 其實還是寫到原本的Orders_Master 不過 QRID 是 C開頭所以沒影響
+
+		// param.put("CQRID", CQRID);
+		// param.put("QRID", specqrId);
+		// param.put("EBAYNO", specEbayNO);
+		// param.put("GUESTACCOUNT", specguestAccount);
+		// param.put("DATE", new java.sql.Date(date));
+
+		// 先準備參數
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		COrderMaster om = new COrderMaster();
+		String cQrId = (String) param.get("CQRID");
+		LinkedList<String> qRIDs = (LinkedList<String>) param.get("QRID");
+		LinkedList<String> eBayNos = (LinkedList<String>) param.get("EBAYNO");
+		String guestAccount = (String) param.get("GUESTACCOUNT");
+		java.sql.Date date = (java.sql.Date) param.get("DATE");
+
+		// 先找出各個QRID的Master SKU
+		om = getInsertDataToOrderMaster(conn, cQrId, qRIDs);
+
+		return insertCOrderMaster(conn, om) ? true : false;
+	}
+
+	private boolean insertCOrderMaster(Connection conn, COrderMaster om) {
+		String strSql = "INSERT INTO orders_master(QR_id, platform,eBayAccount, guestAccount, "
+				+ " orderStatus,paypal_id,payment,paypalFees, "
+				+ " ebayFees, totalPrice, currency, ebayPrice, paypalNet,isCombine )"
+				+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		PreparedStatement ps = null;
+
+		try {
+			ps = conn.prepareStatement(strSql);
+			ps.setString(1, om.getQR_id());
+			ps.setString(2, "ebay");
+			ps.setString(3, om.getEbayAccount());
+			ps.setString(4, om.getGuestAccount());
+			ps.setString(5, om.getOrderStatus());
+			ps.setString(6, om.getPaypalId());
+			ps.setDouble(7, om.getPayment());
+			ps.setDouble(8, om.getPaypalFees());
+			ps.setDouble(9, om.getEbayFees());
+			ps.setDouble(10, om.getTotalPrice());
+			ps.setString(11, om.getCurrency());
+			ps.setDouble(12, om.getEbayPrice());
+			ps.setDouble(13, om.getPaypalNet());
+			ps.setString(14, "2");
+
+			ps.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		System.out.println("OMaster寫入成功!");
+		return true;
+	}
+
+	private COrderMaster getInsertDataToOrderMaster(Connection conn, String cQrId, LinkedList<String> qRIDs) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		COrderMaster om = new COrderMaster();
+		Double payment = 0.0;
+		Double paypalFees = 0.0;
+		Double ebayFees = 0.0;
+		Double totalPrice = 0.0;
+		Double ebayPrice = 0.0;
+		Double paypalNet = 0.0;
+
+		String strsqlMaster = "select QR_id, eBayAccount, guestAccount,paypal_id,payment,paypalFees,ebayFees, totalPrice, currency, ebayPrice, paypalNet from orders_master where QR_id = ?";
+		try {
+			for (int i = 0; i < qRIDs.size(); i++) {
+				ps = conn.prepareStatement(strsqlMaster);
+				ps.setString(1, qRIDs.get(i));
+				rs = ps.executeQuery();
+				while (rs.next()) {
+					om = new COrderMaster();
+					om.setEbayAccount(rs.getString(2));
+					om.setGuestAccount(rs.getString(3));
+					om.setPaypalId(rs.getString(4));
+					payment += rs.getDouble(5);
+					paypalFees += rs.getDouble(6);
+					ebayFees += rs.getDouble(7);
+					totalPrice += rs.getDouble(8);
+					om.setCurrency(rs.getString(9));
+					ebayPrice += rs.getDouble(10);
+					paypalNet += rs.getDouble(11);
+				}
+			}
+			om.setQR_id(cQrId);
+			om.setPayment(payment);
+			om.setPaypalFees(paypalFees);
+			om.setEbayFees(ebayFees);
+			om.setTotalPrice(totalPrice);
+			om.setEbayPrice(ebayPrice);
+			om.setPaypalNet(paypalNet);
+
+			return om;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
 	}
 
 	public LinkedList<GuestAccountAndOrder> HasCombineOrderGuest(HttpServletRequest request, Connection conn)

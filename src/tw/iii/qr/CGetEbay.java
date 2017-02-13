@@ -1,4 +1,4 @@
-package tw.iii.qr.order;
+package tw.iii.qr;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -36,9 +36,6 @@ import com.ebay.soap.eBLBaseComponents.ShippingDetailsType;
 import com.ebay.soap.eBLBaseComponents.ShippingServiceOptionsType;
 import com.ebay.soap.eBLBaseComponents.SortOrderCodeType;
 import com.ebay.soap.eBLBaseComponents.TradingRoleCodeType;
-
-import tw.iii.qr.order.CreateOrderId;
-import tw.iii.qr.DataBaseConn;
 
 public class CGetEbay {
 	public static void main(String[] args) {
@@ -138,7 +135,7 @@ public class CGetEbay {
 					ShippingServiceOptionsType sso = order.getShippingServiceSelected();
 					String QR_id = CreateOrderId.generateQR_Id();
 					String strSql = "INSERT INTO orders_master (QR_id, order_id, outsideCode, platform, company,"
-							+ " eBayAccount, guestAccount, orderDate, payDate, logisticsId, logistics, orderStatus, paypal_id,"
+							+ " eBayAccount, guestAccount, ate, payDate, logisticsId, logistics, orderStatus, paypal_id,"
 							+ " payment,  paypalFees,ebayFees, totalPrice, currency, ebayPrice, paypalNet, ebayItemNO,"
 							+ " paypalmentId, ebayNO, shippingDate)"
 							+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
@@ -148,10 +145,10 @@ public class CGetEbay {
 					ps.setString(2, order.getOrderID()); // ORDERID
 					ps.setString(3, order.getExtendedOrderID()); // outsideCode
 					ps.setString(4, "ebay"); // 平台
-					ps.setString(5, order.getShippingAddress().getCompanyName()); // EBAY帳號所屬公司
+					ps.setString(5, ""); // EBAY帳號所屬公司
 					ps.setString(6, order.getSellerUserID()); // EBAY帳號
 					ps.setString(7, order.getMonetaryDetails().getPayments().getPayment()[0].getPayer().getValue()); // 客戶帳號
-					ps.setTimestamp(8, new java.sql.Timestamp(order.getCreatedTime().getTimeInMillis())); // orderDate
+					ps.setTimestamp(8, new java.sql.Timestamp(order.getCreatedTime().getTimeInMillis())); // OederDate
 					ps.setTimestamp(9, (new java.sql.Timestamp(order.getMonetaryDetails().getPayments().getPayment()[0]
 							.getPaymentTime().getTimeInMillis()))); // payDate
 					ps.setString(10, "logisticsId"); // 其實沒用?

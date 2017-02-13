@@ -1,4 +1,4 @@
-package tw.iii.qr.stock.DTO;
+package tw.iii.qr.stock;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import javax.servlet.http.HttpServletRequest;
 
 import tw.iii.qr.DataBaseConn;
+import tw.iii.qr.stock.DTO.CEbay;
 
 
 

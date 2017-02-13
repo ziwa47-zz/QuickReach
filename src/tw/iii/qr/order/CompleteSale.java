@@ -30,6 +30,7 @@ import com.ebay.soap.eBLBaseComponents.ShipmentTrackingDetailsType;
 import com.ebay.soap.eBLBaseComponents.ShipmentType;
 
 import tw.iii.qr.DataBaseConn;
+import tw.iii.qr.order.DTO.COrderMaster;
 
 public class CompleteSale {
 
@@ -37,16 +38,22 @@ public class CompleteSale {
 
 	}
 
-	public Boolean CompleteSale1(HttpServletRequest request) throws ApiException, SdkException, Exception {
+	public Boolean CompleteSale1(COrderMaster corder) throws ApiException, SdkException, Exception {
+		// 可用參數
+		// Origincdm.setEbayAccount(request.getParameter("ebayaccount"));
+		// Origincdm.setOrder_id(request.getParameter("Order_id"));
+		// Origincdm.setTrackingCode(request.getParameter("trackingCode"));
+		// Origincdm.setLogistics(request.getParameter("logistics"));
+		// Origincdm.setQR_id(request.getParameter("QR_id"));
+		// Origincdm.setStaffName(request.getParameter("staffName"));
 
-		
-			String ebayaccount = request.getParameter("ebayaccount"); //ebay帳號
-			String token = GetToken(ebayaccount);  //token
-			String orderid = request.getParameter("Order_id"); //orderid ItemID-TransactionID
-			String trackingCode = request.getParameter("trackingCode"); //追蹤馬
-			String[] transaionAndItem = orderid.split("-");  // ItemID,TransactionID
-			String logistic = checklogistic(request.getParameter("logistics"));  //手選物流 轉 EBAY物流
-			try {
+		String ebayaccount = corder.getEbayAccount(); // ebay帳號
+		String token = GetToken(ebayaccount); // token
+		String orderid = corder.getOrder_id(); // orderid ItemID-TransactionID
+		String trackingCode = corder.getTrackingCode(); // 追蹤馬
+		String[] transaionAndItem = orderid.split("-"); // ItemID,TransactionID
+		String logistic = checklogistic(corder.getLogistics()); // 手選物流 轉 EBAY物流
+		try {
 			ApiCredential credential = new ApiCredential();
 			credential.seteBayToken(token);
 			ApiContext context = new ApiContext();
@@ -62,19 +69,18 @@ public class CompleteSale {
 			ShipmentType1.setShipmentTrackingNumber(trackingCode);
 			ShipmentType1.setShippingCarrierUsed(logistic);
 			rq.setShipment(ShipmentType1);
-			
-			AbstractResponseType response =call.execute(rq);
-			
+
+			AbstractResponseType response = call.execute(rq);
+
 			AckCodeType isOk = response.getAck();
-			if(isOk==AckCodeType.SUCCESS){
+			if (isOk == AckCodeType.SUCCESS) {
 				System.out.println("上傳追蹤碼成功 Upload Success");
 				return true;
 			}
 			ErrorType[] error = response.getErrors();
-			System.out.println("錯誤原因: "+error[0]+" : "+error[1]);
+			System.out.println("錯誤原因: " + error[0] + " : " + error[1]);
 			return false;
-			
-			
+
 		} catch (Exception e) {
 			System.out.println("fail " + e);
 			return false;

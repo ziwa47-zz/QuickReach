@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ page
 	import="java.sql.Connection,java.sql.ResultSet,java.util.*,tw.iii.qr.stock.DTO.CProduct"%>
-<jsp:useBean id="searchDetail" class="tw.iii.qr.stock.DTO.CProductFactory"
+<jsp:useBean id="searchDetail" class="tw.iii.qr.stock.CProductFactory"
 	scope="page" />
 <!doctype html>
 

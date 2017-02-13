@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import tw.iii.qr.DataBaseConn;
-import tw.iii.qr.stock.DTO.CEbayFactory;
+import tw.iii.qr.stock.CEbayFactory;
 
 @WebServlet("/QREmployee/QRAccountServlet.do")
 public class QRAccountServlet extends HttpServlet {

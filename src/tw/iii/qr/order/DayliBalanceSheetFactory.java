@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.order.DTO.COrderDetail;
 import tw.iii.qr.order.DTO.COrders;
-import tw.iii.qr.stock.DTO.CProductFactory;
+import tw.iii.qr.stock.CProductFactory;
 
 public class DayliBalanceSheetFactory extends COrders {
 	
