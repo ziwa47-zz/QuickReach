@@ -63,10 +63,20 @@
       	<a href="/QROrders/OrderProcessingPage.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">處理中</label></a>
       	<a href="/QROrders/OrderPickupPage.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">揀貨中</label></a>
       	<a href="/QROrders/OrderUploadTrackingCode.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">上傳追蹤碼</label></a>
-      	<a href="/QROrders/OrderFinished.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">已完成</label></a>
+      	<a href="/QROrders/OrderFinished.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">已完成訂單</label></a>
       	<a href="/QROrders/ShipmentRecord.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">訂單出貨紀錄</label></a>
-      	<a href="/QROrders/NewOrderPre.jsp"><label class="btn btn-lg btn-primary">新增私下訂單</label></a>
-      	<a href="/QROrders/NewOrderSearch.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">私下訂單搜尋</label></a>
+      	<a href="/QROrders/OrderCombine.jsp"><label class="btn btn-lg btn-primary">合併訂單</label></a>
+      	<a href="/QROrders/ReadCombineOrders.jsp"><label class="btn btn-lg btn-primary">查詢合併訂單</label></a>
+      </div>
+      <br/>
+      <h3>獨立出貨</h3>
+      <div class="row" style="font-size:24px; padding:10px">
+        <a href="/QRIndependentOrder/SearchOrder.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">查詢訂單</label></a>
+      	<a href="/QRIndependentOrder/NewOrder.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">新增訂單</label></a>
+      	<a href="/QRIndependentOrder/Pickup.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">揀貨中</label></a>
+      	<a href="/QRIndependentOrder/UploadTrackingCode.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">上傳追蹤碼</label></a>
+      	<a href="/QRIndependentOrder/Finished.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">已完成訂單</label></a>
+      	<a href="/QRIndependentOrder/ShipmentRecord.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">訂單出貨紀錄</label></a>
       </div>
     </div>
     <div id="menu2" class="tab-pane fade">

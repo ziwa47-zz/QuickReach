@@ -37,21 +37,26 @@ public class CreateOrderId {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		String formatted = formatter.format(date);
 		System.out.println(formatted);
-
+		Boolean isQRidValid = false;
+		Boolean isToday = false;
+		if(QR_idFromDatabase!="" && QR_idFromDatabase!=null){
+			isQRidValid =true;
+			isToday = formatted.equals(QR_idFromDatabase.substring(1, 9));
+		}
 		DecimalFormat df = new DecimalFormat("000");
 		int serailNumber = 1;
 
-		
 		String QR_id = "";
-		if (QR_idFromDatabase != null) {
-			if (serailNumber <= Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()))) {
+		if (isQRidValid) {
+			if (serailNumber <= Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()))
+					&& isToday) {
 				int getSerailNumber = Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()));
 				serailNumber = getSerailNumber + 1;
 				QR_id = formatted + "03" + "ebay" + df.format(serailNumber);
 			} else {
 				QR_id = formatted + "03" + "ebay" + "001";
 			}
-		}else {
+		} else {
 			QR_id = formatted + "03" + "ebay" + "001";
 		}
 		System.out.println(QR_id);
@@ -75,6 +80,12 @@ public class CreateOrderId {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		String formatted = formatter.format(date);
 		System.out.println(formatted);
+		Boolean isQRidValid = false;
+		Boolean isToday = false;
+		if(QR_idFromDatabase!="" && QR_idFromDatabase!=null){
+			isQRidValid =true;
+			isToday = formatted.equals(QR_idFromDatabase.substring(1, 9));
+		}
 
 		DecimalFormat df = new DecimalFormat("000");
 		int serailNumber = 1;
@@ -82,14 +93,17 @@ public class CreateOrderId {
 		// System.out.println(QR_idFromDatabase.substring(14,
 		// QR_idFromDatabase.length()));
 		String QR_id = "";
-		if (QR_idFromDatabase != null) {
-			if (serailNumber <= Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()))) {
+		if (isQRidValid) {
+			if (serailNumber <= Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()))
+					&& isToday) {
 				int getSerailNumber = Integer.valueOf(QR_idFromDatabase.substring(14, QR_idFromDatabase.length()));
 				serailNumber = getSerailNumber + 1;
 				QR_id = formatted + "04" + "ebay" + df.format(serailNumber);
 			} else {
 				QR_id = formatted + "04" + "ebay" + "001";
 			}
+		} else {
+			QR_id = formatted + "04" + "ebay" + "001";
 		}
 		System.out.println(QR_id);
 		return QR_id;
@@ -112,41 +126,59 @@ public class CreateOrderId {
 		return formatted;
 	}
 
-	public static String generateCQR_Id() throws Exception{
-		String strsql = " select Top 1  item, combinesku from  orders_master   order by combinesku desc ";
-		Connection conn = new DataBaseConn().getConn();
-		PreparedStatement ps = conn.prepareStatement(strsql);
-		ResultSet rs = ps.executeQuery();
-
-		String QR_idFromDatabase = null;
-		while (rs.next()) {
-			QR_idFromDatabase = rs.getString(2);
-		}
-
-		java.util.Date date = Calendar.getInstance().getTime();
-
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-		String formatted = formatter.format(date);
-		System.out.println(formatted);
-
-		DecimalFormat df = new DecimalFormat("000");
-		int serailNumber = 1;
-
-		
+	public static String generateCQR_Id() throws Exception {
 		String QR_id = "";
-		if (QR_idFromDatabase != null) {
-			if (serailNumber <= Integer.valueOf(QR_idFromDatabase.substring(15, QR_idFromDatabase.length()))) {
-				int getSerailNumber = Integer.valueOf(QR_idFromDatabase.substring(15, QR_idFromDatabase.length()));
-				serailNumber = getSerailNumber + 1;
-				QR_id = formatted + "03" + "ebay" + df.format(serailNumber);
+		try {
+			String strsql = " select  top 1 combinesku from  orders_master   order by combinesku desc  ";
+			Connection conn = new DataBaseConn().getConn();
+			PreparedStatement ps = conn.prepareStatement(strsql);
+			ResultSet rs = ps.executeQuery();
+
+			String QR_idFromDatabase = null;
+			while (rs.next()) {
+				QR_idFromDatabase = rs.getString(1);
+			}
+			
+			java.util.Date date = Calendar.getInstance().getTime();
+
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+			String formatted = formatter.format(date);
+			System.out.println(formatted);
+			Boolean isQRidValid = false;
+			Boolean isToday = false;
+			if(QR_idFromDatabase!="" && QR_idFromDatabase!=null){
+				isQRidValid =true;
+				isToday = formatted.equals(QR_idFromDatabase.substring(1, 9));
+			}
+		
+
+			DecimalFormat df = new DecimalFormat("000");
+			int serailNumber = 1;
+			
+				
+			
+			
+			if (isQRidValid) {
+				if (serailNumber <= Integer.valueOf(QR_idFromDatabase.substring(15, QR_idFromDatabase.length()))
+						&& isToday) {
+					int getSerailNumber = Integer.valueOf(QR_idFromDatabase.substring(15, QR_idFromDatabase.length()));
+					serailNumber = getSerailNumber + 1;
+					QR_id = formatted + "03" + "ebay" + df.format(serailNumber);
+				} else {
+					QR_id = formatted + "03" + "ebay" + "001";
+				}
 			} else {
 				QR_id = formatted + "03" + "ebay" + "001";
 			}
-		}else {
-			QR_id = formatted + "03" + "ebay" + "001";
+			System.out.println(QR_id);
+			return QR_id;
+		} catch (
+
+		Exception e) {
+			e.printStackTrace();
+			throw new Exception("創立訂單號失敗");
 		}
-		System.out.println(QR_id);
-		return QR_id;
+
 	}
 
 }

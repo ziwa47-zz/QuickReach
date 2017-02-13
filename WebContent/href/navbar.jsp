@@ -63,63 +63,63 @@ position:absolute; width:70%; height:280px;
 }
 </style>
 <script type="text/javascript">
-	$(function() {
-		//日期選擇器
-	 	$(".yymmdd").datepicker({
-			dateFormat : 'yy-mm-dd',
-			
-		}); 
+$(function() {
+	//日期選擇器
+ 	$(".yymmdd").datepicker({
+		dateFormat : 'yy-mm-dd',
 		
-		$("input[name=checkupdate]").datepicker({
-			dateFormat : 'yy-mm-dd',
-		});
-		$("input[name=cdate]").datepicker({
-			dateFormat : 'yy-mm-dd',
-		});
-		$("input[name=dateMin]").datepicker({
-			dateFormat : 'yy-mm-dd',
-		});
-		$("input[name=dateMax]").datepicker({
-			dateFormat : 'yy-mm-dd',
-
-		});
-		 $("input[name=date1]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=date2]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=payDateMin]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=payDateMax]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=shippingDateMin]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=shippingDateMax]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=startTime]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=lastFixTime]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=OrderDate]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=PayDate]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=ShippingDate]").datepicker({dateFormat : 'yy-mm-dd'});
-	   });
+	}); 
 	
-	    function checkAllOrders(ele) {
-    	//select all
-		if (ele.checked) {
-			$("input[name=all]").prop("checked", true);
-	        $("input[name=waitProcess]").prop("checked", true);
-	        $("input[name=processing]").prop("checked", true);
-	        $("input[name=pickup]").prop("checked", true);
-	        $("input[name=finished]").prop("checked", true);
-	        $("input[name=refund]").prop("checked", true);
-	        $("input[name=oothers]").prop("checked", true);
-	        $("input[name=deducted]").prop("checked", true);
-	    } else {
-	    	$("input[name=all]").prop("checked", false);
-	        $("input[name=waitProcess]").prop("checked", false);
-	        $("input[name=processing]").prop("checked", false);
-	        $("input[name=pickup]").prop("checked", false);
-	        $("input[name=finished]").prop("checked", false);
-	        $("input[name=refund]").prop("checked", false);
-	        $("input[name=oothers]").prop("checked", false);
-	        $("input[name=deducted]").prop("checked", false);
-	    }
+	$("input[name=checkupdate]").datepicker({
+		dateFormat : 'yy-mm-dd',
+	});
+	$("input[name=cdate]").datepicker({
+		dateFormat : 'yy-mm-dd',
+	});
+	$("input[name=dateMin]").datepicker({
+		dateFormat : 'yy-mm-dd',
+	});
+	$("input[name=dateMax]").datepicker({
+		dateFormat : 'yy-mm-dd',
+
+	});
+	 $("input[name=date1]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=date2]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=payDateMin]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=payDateMax]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=shippingDateMin]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=shippingDateMax]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=startTime]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=lastFixTime]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=OrderDate]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=PayDate]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=ShippingDate]").datepicker({dateFormat : 'yy-mm-dd'});
+   });
+
+    function checkAllOrders(ele) {
+   	//select all
+	if (ele.checked) {
+		$("input[name=all]").prop("checked", true);
+        $("input[name=waitProcess]").prop("checked", true);
+        $("input[name=processing]").prop("checked", true);
+        $("input[name=pickup]").prop("checked", true);
+        $("input[name=finished]").prop("checked", true);
+        $("input[name=refund]").prop("checked", true);
+        $("input[name=oothers]").prop("checked", true);
+        $("input[name=deducted]").prop("checked", true);
+    } else {
+    	$("input[name=all]").prop("checked", false);
+        $("input[name=waitProcess]").prop("checked", false);
+        $("input[name=processing]").prop("checked", false);
+        $("input[name=pickup]").prop("checked", false);
+        $("input[name=finished]").prop("checked", false);
+        $("input[name=refund]").prop("checked", false);
+        $("input[name=oothers]").prop("checked", false);
+        $("input[name=deducted]").prop("checked", false);
+    }
 };
 
-	$(function () {
+$(function () {
 	$("button[name=send]").click(function() {
 		bool = confirm("確認是否送出訂單");
 		if(!bool){
@@ -131,8 +131,13 @@ position:absolute; width:70%; height:280px;
 $( document ).ready(function() {
 $('body').css({'font-family': 'Noto Sans TC'});
 	});
-
-
+//Modal
+$(function() {
+		$('.pop').on('click', function() {
+			$('.imagepreview').attr('src', $(this).find('img').attr('src'));
+			$('#imagemodal').modal('show');   
+		});		
+});
 
 </script>
 </head>
@@ -189,8 +194,17 @@ $('body').css({'font-family': 'Noto Sans TC'});
 	</div>
 	</nav>
 	<div class="loader text-center" id="spinner" hidden></div>
-<script type="text/javascript">
-    
-</script>
+	
+<!-- Modal -->
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">              
+      <div class="modal-body">
+      	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <img src="" class="imagepreview" style="width: 100%;" >
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
