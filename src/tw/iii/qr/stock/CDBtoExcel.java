@@ -42,9 +42,9 @@ public class CDBtoExcel {
 
 		XSSFWorkbook wb = new XSSFWorkbook();
 		XSSFSheet sheet = wb.createSheet("日結表");
-		String strsql = "select distinct m.ebayNO, m.ebayItemNO , d.SKU, d.productName,d.qty, m.guestAccount,"
-				+ " r.country, m.currency, m.ebayprice, m.ebayTotal, m.payDate,"
-				+ " m.paypalmentId, m.totalPrice, m.paypalFees,m.paypalNet, "
+		String strsql = "select distinct m.ebayNO, d.SKU, d.productName,d.qty, m.guestAccount,"
+				+ " r.country, m.currency, m.ebayprice,  m.payDate,"
+				+ "  m.totalPrice, m.paypalFees,m.paypalNet, "
 				+ " p.cost, shippingdate, m.logistics, m.ebayFees, r.tel1, m.trackingCode,"
 				+ " m.shippingFees, m.packageFees,d.comment, p.owner"
 
@@ -64,31 +64,28 @@ public class CDBtoExcel {
 		XSSFRow myRow = sheet.createRow(index);
 		myRow.createCell(0).setCellValue("項次");
 		myRow.createCell(1).setCellValue("E/B.NO");
-		myRow.createCell(2).setCellValue("E/B ITEM NO.");
-		myRow.createCell(3).setCellValue("SKU");
-		myRow.createCell(4).setCellValue("品名");
-		myRow.createCell(5).setCellValue("數量");
-		myRow.createCell(6).setCellValue("E/B ID");
-		myRow.createCell(7).setCellValue("國家");
-		myRow.createCell(8).setCellValue("幣別");
-		myRow.createCell(9).setCellValue("E/B 成交價");
-		myRow.createCell(10).setCellValue("E/B 含運費");
-		myRow.createCell(11).setCellValue("P/P DATE");
-		myRow.createCell(12).setCellValue("P/P PAYMENT ID");
-		myRow.createCell(13).setCellValue("P/P TOTAL");
-		myRow.createCell(14).setCellValue("P/P FEE");
-		myRow.createCell(15).setCellValue("P/P NET");
-		myRow.createCell(16).setCellValue("進貨成本 NTD");
-		myRow.createCell(17).setCellValue("寄件日");
-		myRow.createCell(18).setCellValue("遞交方式");
-		myRow.createCell(19).setCellValue("EBAY FEE (US)");
-		myRow.createCell(20).setCellValue("TEL");
-		myRow.createCell(21).setCellValue("TRACKING NO.");
-		myRow.createCell(22).setCellValue("運費 USD");
-		myRow.createCell(23).setCellValue("運費 NTD");
-		myRow.createCell(24).setCellValue("包材 NTD");
-		myRow.createCell(25).setCellValue("REMARK");
-		myRow.createCell(26).setCellValue("商品持有人");
+		myRow.createCell(2).setCellValue("SKU");
+		myRow.createCell(3).setCellValue("品名");
+		myRow.createCell(4).setCellValue("數量");
+		myRow.createCell(5).setCellValue("E/B ID");
+		myRow.createCell(6).setCellValue("國家");
+		myRow.createCell(7).setCellValue("幣別");
+		myRow.createCell(8).setCellValue("E/B 成交價");
+		myRow.createCell(9).setCellValue("P/P DATE");
+		myRow.createCell(10).setCellValue("P/P TOTAL");
+		myRow.createCell(11).setCellValue("P/P FEE");
+		myRow.createCell(12).setCellValue("P/P NET");
+		myRow.createCell(13).setCellValue("進貨成本 NTD");
+		myRow.createCell(14).setCellValue("寄件日");
+		myRow.createCell(15).setCellValue("遞交方式");
+		myRow.createCell(16).setCellValue("EBAY FEE (US)");
+		myRow.createCell(17).setCellValue("TEL");
+		myRow.createCell(18).setCellValue("TRACKING NO.");
+		myRow.createCell(19).setCellValue("運費 USD");
+		myRow.createCell(20).setCellValue("運費 NTD");
+		myRow.createCell(21).setCellValue("包材 NTD");
+		myRow.createCell(22).setCellValue("REMARK");
+		myRow.createCell(23).setCellValue("商品持有人");
 		while (rs.next()) {
 
 			// 以下為每筆訂單取到的值
@@ -112,14 +109,12 @@ public class CDBtoExcel {
 			myRow.createCell(16).setCellValue(rs.getString(16));
 			myRow.createCell(17).setCellValue(rs.getString(17));
 			myRow.createCell(18).setCellValue(rs.getString(18));
+			myRow.createCell(22).setCellValue(" ");
 			myRow.createCell(19).setCellValue(rs.getString(19));
 			myRow.createCell(20).setCellValue(rs.getString(20));
 			myRow.createCell(21).setCellValue(rs.getString(21));
-			myRow.createCell(22).setCellValue(" ");
 			myRow.createCell(23).setCellValue(rs.getString(22));
-			myRow.createCell(24).setCellValue(rs.getString(23));
-			myRow.createCell(25).setCellValue(rs.getString(24));
-			myRow.createCell(26).setCellValue(rs.getString(25));
+		
 
 			index++;
 			index2++;
