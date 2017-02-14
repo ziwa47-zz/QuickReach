@@ -227,7 +227,7 @@ public class CDBtoExcel {
 					+ " inner join orders_master m on m.QR_id = o.QR_id "
 					+ "	 inner join storage s on s.warehouse = o.warehouse and s.SKU = o.SKU"
 					+ " group by o.SKU,productType,brand, subBrand,s.warehouse,s.warehousePosition1,s.warehousePosition2, productName, spec,m.orderStatus"
-					+ " having m.orderStatus = N'揀貨中' and qr_id = ?";
+					+ " having m.orderStatus = N'揀貨中' and m.qr_id = ?";
 
 			Connection conn = new DataBaseConn().getConn();
 			int index = 1;
@@ -288,6 +288,7 @@ public class CDBtoExcel {
 
 			String path = fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator + "sample"
 					+ File.separator + "寄件單範本.xlsx";
+			
 			System.out.println(path);
 			XSSFWorkbook wb = new XSSFWorkbook(path);
 			for (int i = 0; i < qrid.length; i++) {
@@ -550,10 +551,10 @@ public class CDBtoExcel {
 
 		XSSFWorkbook wb = new XSSFWorkbook();
 		XSSFSheet sheet = wb.createSheet("物流匯出報表");
-		String strsql = "select s.date, s.type, s.QR_id, d.SKU, d.productName, d.qty, m.eBayAccount," + " r.country"
+		String strsql = "select s.date, s.type, s.QR_id, d.SKU, d.productName, d.qty, m.eBayAccount," + " m.currency"
 				+ " from orders_master as m left join shippinglog as s on m.QR_id = s.QR_id"
 				+ " inner join order_recieverinfo as r on m.QR_id = r.QR_id"
-				+ " inner join orders_detail as d on m.QR_id = d.QR_id" + " where m.orderStatus = N'撿貨中'";
+				+ " inner join orders_detail as d on m.QR_id = d.QR_id" + " where m.orderStatus = N'揀貨中'";
 		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
