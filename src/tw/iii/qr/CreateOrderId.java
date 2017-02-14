@@ -19,7 +19,7 @@ public class CreateOrderId {
 
 	public static String generateQR_Id() throws IllegalAccessException, ClassNotFoundException, Exception {
 
-		String strsql = " select Top 1  item, QR_id from  orders_master where QR_id like 'C%03ebay%' order by item desc ";
+		String strsql = " select Top 1  item, QR_id from  orders_master where QR_id not like 'C%03ebay%' order by item desc ";
 		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -76,7 +76,7 @@ public class CreateOrderId {
 
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		String formatted = formatter.format(date);
-		System.out.println(formatted);
+		//System.out.println(formatted);
 		Boolean isQRidValid = false;
 		Boolean isToday = false;
 		if(QR_idFromDatabase!="" && QR_idFromDatabase!=null){
@@ -102,7 +102,7 @@ public class CreateOrderId {
 		} else {
 			QR_id = formatted + "04" + "ebay" + "001";
 		}
-		System.out.println(QR_id);
+		//System.out.println(QR_id);
 		return QR_id;
 	}
 

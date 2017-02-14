@@ -69,7 +69,7 @@ public class COrderFactory extends COrders {
 				+ " m.QR_id, m.currency, r.country, m.ebayItemNO, m.paypalmentId, ebayNO"
 				+ " FROM  orders_master as m inner join  orders_detail as d on m.QR_id = d.QR_id"
 				+ " left join  orders_guestinfo as g on m.QR_id = g.QR_id"
-				+ " inner join  order_recieverinfo as r on m.QR_id = r.QR_id" + " where '1' = '1' ";
+				+ " inner join  order_recieverinfo as r on m.QR_id = r.QR_id" + " where '1' = '1'  ";
 
 		String eBayAccount = request.getParameter("eBayAccount");
 		if (!isNullorEmpty(eBayAccount)) {
@@ -335,7 +335,7 @@ public class COrderFactory extends COrders {
 				+ " FROM  orders_master as m left join  orders_detail as d on m.QR_id = d.QR_id"
 				+ " left join  orders_guestinfo as g on m.QR_id = g.QR_id"
 				+ " left join  order_recieverinfo as r on m.QR_id = r.QR_id"
-				+ " where '1' = '1' and orderstatus = ? and isCombine != 1" + " order by QR_id desc";
+				+ " where '1' = '1' and orderstatus = ? and (isCombine != '1' or isCombine is null) " + " order by QR_id desc";
 
 		System.out.println(status);
 		PreparedStatement ps = conn.prepareStatement(strSql);
@@ -856,6 +856,7 @@ public class COrderFactory extends COrders {
 
 		String strSql = "select QR_id, orderStatus from  orders_master where QR_id = ?";
 		PreparedStatement ps = conn.prepareStatement(strSql);
+		ps.setString(1, origincdm.getQR_id());
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {
 			order = new COrderMaster();
@@ -904,11 +905,11 @@ public class COrderFactory extends COrders {
 		ResultSet rs3 = ps3.executeQuery();
 		while (rs3.next()) {
 			corder = new COrderMaster();
-			corder.setQR_id(rs.getString(1));
-			corder.setEbayAccount(rs.getString(2));
-			corder.setOrder_id(rs.getString(3));
-			corder.setLogistics(rs.getString(4));
-			corder.setStaffName(rs.getString(5));
+			corder.setQR_id(rs3.getString(1));
+			corder.setEbayAccount(rs3.getString(2));
+			corder.setOrder_id(rs3.getString(3));
+			corder.setLogistics(rs3.getString(4));
+			corder.setStaffName(rs3.getString(5));
 			corder.setTrackingCode(origincdm.getTrackingCode());
 			CombineOrders.add(corder);
 		}
@@ -1012,16 +1013,16 @@ public class COrderFactory extends COrders {
 
 		for (int i = 0; i < condition.size(); i++) {
 
-			System.out.println(condition.get(i).getSKU());
+			//System.out.println(condition.get(i).getSKU());
 
 			if ("B00".equals(condition.get(i).getSKU().substring(0, 3))) {
 
-				System.out.println("bundle");
+				//System.out.println("bundle");
 				plusBundledeductStock(conn, condition.get(i));
 
 			} else if (!"B00".equals(condition.get(i).getSKU().substring(0, 3))) {
 
-				System.out.println("single");
+				//System.out.println("single");
 				deductStock(conn, condition.get(i));
 			}
 		}
@@ -1040,9 +1041,9 @@ public class COrderFactory extends COrders {
 		while (rs.next()) {
 
 			skulist.add(rs.getString(1));
-			System.out.println(rs.getString(1));
+			//System.out.println(rs.getString(1));
 			qty.add(rs.getInt(2));
-			System.out.println(rs.getInt(2));
+			//System.out.println(rs.getInt(2));
 		}
 
 		rs = null;
@@ -1093,7 +1094,7 @@ public class COrderFactory extends COrders {
 
 		ps.setString(1, corder.getQR_id());
 
-		System.out.println(strSql);
+		//System.out.println(strSql);
 		ResultSet rs = ps.executeQuery();
 		COrderDetail detail = new COrderDetail();
 
@@ -1142,7 +1143,7 @@ public class COrderFactory extends COrders {
 
 		String strSql = "insert into purchaselog_master (purchaseId, date, staffName, comment, stockStatus)"
 				+ " values( ?, getdate(), ?, ?, ?)";
-		System.out.println(strSql);
+		//System.out.println(strSql);
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ps.setString(1, orderInfo.getCOrderMaster().getQR_id());
 		ps.setString(2, orderInfo.getCOrderMaster().getStaffName());
@@ -1226,8 +1227,8 @@ public class COrderFactory extends COrders {
 
 		if (!(referer.substring(0, referer.lastIndexOf("p")) + "p").equals(request.getRequestURL().toString())) {
 
-			System.out.println(referer.substring(0, referer.lastIndexOf("p")) + "p");
-			System.out.println(request.getRequestURL().toString());
+			//System.out.println(referer.substring(0, referer.lastIndexOf("p")) + "p");
+			//System.out.println(request.getRequestURL().toString());
 			session.removeAttribute("SearchOrdersResult");
 		}
 	}
@@ -1375,7 +1376,7 @@ public class COrderFactory extends COrders {
 			param++;
 		}
 
-		System.out.println(strSql);
+		//System.out.println(strSql);
 
 		ResultSet rs = ps.executeQuery();
 

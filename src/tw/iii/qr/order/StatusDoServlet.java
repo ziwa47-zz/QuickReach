@@ -173,6 +173,7 @@ public class StatusDoServlet extends HttpServlet {
 			break;
 		case "sendTrackingCode":
 			DoSendTrackingCode(Origincdm, response, out, conn);
+			response.sendRedirect("QROrders/OrderUploadTrackingCode.jsp?begin=0&end=10");
 			break;
 		case "finished":
 			OFactory.updateToRefund(request, conn);
@@ -227,8 +228,13 @@ public class StatusDoServlet extends HttpServlet {
 				conn.rollback(sp1);
 			}
 		}
+		OFactory.updateToFinished(origincdm, conn);
 		conn.commit();
 		conn.close();
+		out.write("<script type='text/javascript'>");
+		out.write("alert('上傳成功! 導回上傳追蹤碼頁');");
+		out.write("window.location = 'QROrders/OrderUploadTrackingCode.jsp';");
+		out.write("</script>");
 	}
 
 }

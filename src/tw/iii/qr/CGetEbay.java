@@ -211,7 +211,7 @@ public class CGetEbay {
 
 					String Address = Street1 + " " + Street2 + "," + PostalCode + "," + CityName + "," + StateOrProvince
 							+ "," + CountryName;
-					System.out.println(Address);
+					//System.out.println(Address);
 
 					ps2.setString(7, Address);
 					ps2.setString(8, order.getShippingAddress().getCountryName());
