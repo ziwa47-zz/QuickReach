@@ -172,8 +172,12 @@ public class StatusDoServlet extends HttpServlet {
 			conn.close();
 			break;
 		case "sendTrackingCode":
-			DoSendTrackingCode(Origincdm, response, out, conn);
-			response.sendRedirect("QROrders/OrderUploadTrackingCode.jsp?begin=0&end=10");
+			String result = DoSendTrackingCode(Origincdm, response, out, conn) ;
+			out.println(result);
+			out.println("1秒後跳轉回上傳追蹤碼頁面");
+			out.println("<br/>");
+			response.setHeader("Refresh", "1; /QROrders/OrderUploadTrackingCode.jsp?begin=0&end=10");
+			
 			break;
 		case "finished":
 			OFactory.updateToRefund(request, conn);
@@ -191,22 +195,25 @@ public class StatusDoServlet extends HttpServlet {
 			response.sendRedirect("QROrders/NewOrderSearch.jsp?begin=0&end=10");
 			conn.close();
 			break;
+			
 		}
 		out.close();
 		conn.close();
 
 	}
 
-	private void DoSendTrackingCode(COrderMaster origincdm, HttpServletResponse response, PrintWriter out,
+	private String DoSendTrackingCode(COrderMaster origincdm, HttpServletResponse response, PrintWriter out,
 			Connection conn) throws Exception, ApiException, SdkException, SQLException, IOException {
 
 		
 		COrderFactory OFactory = new COrderFactory();
+		//找出真正的訂單號 單筆 size =1 合併size >1
 		LinkedList<COrderMaster> TrueOrders = OFactory.checkOrderIdOrderStatus(origincdm, conn);
 		
 		conn.setAutoCommit(false);
 		Savepoint sp1 = conn.setSavepoint();
 		for (COrderMaster corder : TrueOrders) {
+			//如果上傳OK就繼續寫資料庫 中間失敗就回家並rollback 
 			boolean isOK = new CompleteSale().CompleteSale1(corder);
 			if (isOK) {
 				try {
@@ -218,6 +225,7 @@ public class StatusDoServlet extends HttpServlet {
 				} catch (Exception e) {
 					System.out.println("sendTrackingCode fail");
 					conn.rollback(sp1);
+					return "Fail";
 				}
 			} else {
 				System.out.println("checked false");
@@ -226,15 +234,16 @@ public class StatusDoServlet extends HttpServlet {
 				out.write("window.location = 'QROrders/OrderUploadTrackingCode.jsp';");
 				out.write("</script>");
 				conn.rollback(sp1);
+				return "Fail";
 			}
 		}
+		//如果訂單超過一筆表示是合併訂單 應該另外處理把合併訂單送到已完成 與 把狀態修改成已完成
+		if(TrueOrders.size()>1)
 		OFactory.updateToFinished(origincdm, conn);
 		conn.commit();
 		conn.close();
-		out.write("<script type='text/javascript'>");
-		out.write("alert('上傳成功! 導回上傳追蹤碼頁');");
-		out.write("window.location = 'QROrders/OrderUploadTrackingCode.jsp';");
-		out.write("</script>");
+		return "Success";
+		
 	}
 
 }
