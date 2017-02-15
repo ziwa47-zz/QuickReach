@@ -1,34 +1,23 @@
 ﻿package tw.iii.qr.order;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.mysql.fabric.Response;
-
-import tw.iii.purchase.DTO.Cpurchase_detail;
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.order.DTO.COrderDetail;
 import tw.iii.qr.order.DTO.COrderMaster;
 import tw.iii.qr.order.DTO.COrders;
 import tw.iii.qr.order.DTO.ShipmentRecord;
-import tw.iii.qr.stock.DTO.CProduct;
-import tw.iii.qr.stock.DTO.CStock;
 
 //orderdate paydate shippingdate schema confirm
 public class COrderFactory extends COrders {
@@ -36,22 +25,9 @@ public class COrderFactory extends COrders {
 	public COrderFactory() {
 	}
 
-	public boolean isNullorEmpty(String s) {
+	
 
-		if (s == null || s.length() == 0)
-			return true;
-
-		return false;
-	}
-
-	public boolean checkboxIsNullorEmpty(String a, String b, String c, String d) {
-
-		if (isNullorEmpty(a) && isNullorEmpty(b) && isNullorEmpty(c) && isNullorEmpty(d))
-			return true;
-
-		return false;
-	}
-
+	
 	public boolean checkboxAreUnchecked(String a, String b, String c, String d, String e, String f, String g, String h,
 			String i, String j, String k) {
 		if (isNullorEmpty(a) && isNullorEmpty(b) && isNullorEmpty(c) && isNullorEmpty(d) && isNullorEmpty(e)
@@ -1549,6 +1525,20 @@ public class COrderFactory extends COrders {
 			warehouses.add(rs.getString(2));
 		}
 		return warehouses;
+	}
+	private boolean isNullorEmpty(String s) {
+
+		if (s == null || s.length() == 0)
+			return true;
+
+		return false;
+	}
+	public boolean checkboxIsNullorEmpty(String a, String b, String c, String d) {
+
+		if (isNullorEmpty(a) && isNullorEmpty(b) && isNullorEmpty(c) && isNullorEmpty(d))
+			return true;
+
+		return false;
 	}
 
 }

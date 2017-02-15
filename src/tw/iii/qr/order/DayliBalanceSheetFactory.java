@@ -54,7 +54,8 @@ public class DayliBalanceSheetFactory extends COrders {
 			conn.close();
 			
 		} catch (Exception e) {
-			System.out.println("撈失敗哪招?"+e);
+			System.out.println("撈失敗哪招?");
+			e.printStackTrace();
 		}
 
 		

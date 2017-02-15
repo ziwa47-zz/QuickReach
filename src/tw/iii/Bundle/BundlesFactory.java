@@ -62,7 +62,7 @@ public class BundlesFactory {
 		
 		rs.close();
 		state.close();
-		dbc.connclose(conn);
+		conn.close();
 		return lcp;
 	}
 	
@@ -89,7 +89,7 @@ public class BundlesFactory {
 		
 		rs.close();
 		state.close();	
-		dbc.connclose(conn);
+		conn.close();
 		return lcp;
 	}
 	
@@ -121,7 +121,7 @@ public class BundlesFactory {
 		
 		rs.close();
 		state.close();
-		dbc.connclose(conn);
+		conn.close();
 		return lcp;
 	}
 	
@@ -148,7 +148,7 @@ public class BundlesFactory {
 		
 		rs.close();
 		state.close();
-		dbc.connclose(conn);
+		conn.close();
 		return lcp;
 	}
 	
@@ -202,7 +202,7 @@ public class BundlesFactory {
 		
 		preparedState.execute();
 		preparedState.close();
-		dbc.connclose(conn);
+		conn.close();
 	
 	}
 	
@@ -226,7 +226,7 @@ public class BundlesFactory {
 			preparedState.execute();
 			preparedState.close();
 			
-			dbc.connclose(conn);
+			conn.close();
 		}
 		
 								
@@ -254,7 +254,7 @@ public class BundlesFactory {
 		
 		rs.close();
 		state.close();
-		dbc.connclose(conn);
+		conn.close();
 //		return bundlesList;
 	}
 	
@@ -270,7 +270,7 @@ public class BundlesFactory {
 		
 		state.executeUpdate(sqlstr);
 		state.close();
-		dbc.connclose(conn);
+		conn.close();
 	}
 	
 	public void bundlesDeleteFormBundles(String sku) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
@@ -283,7 +283,7 @@ public class BundlesFactory {
 		
 		state.executeUpdate(sqlstr);
 		state.close();
-		dbc.connclose(conn);
+		conn.close();
 	}
 	
 	public int getStock(String sku) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
@@ -302,7 +302,7 @@ public class BundlesFactory {
 		
 		rs.close();
 		state.close();	
-		dbc.connclose(conn);
+		conn.close();
 		return 0;
 	}
 	
@@ -327,7 +327,7 @@ public class BundlesFactory {
 		
 		rs.close();
 		state.close();
-		dbc.connclose(conn);
+		conn.close();
 		return strQQ;
 	}
 	

@@ -2,17 +2,10 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
-import java.util.Dictionary;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +16,6 @@ import javax.servlet.http.HttpSession;
 
 import com.ebay.sdk.ApiException;
 import com.ebay.sdk.SdkException;
-import com.mysql.fabric.xmlrpc.base.Data;
 
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.order.DTO.COrderMaster;
