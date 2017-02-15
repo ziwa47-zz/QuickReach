@@ -19,7 +19,7 @@ public class CreateOrderId {
 
 	public static String generateQR_Id() throws IllegalAccessException, ClassNotFoundException, Exception {
 
-		String strsql = " select Top 1  item, QR_id from  orders_master where QR_id like '%03ebay%' order by item desc ";
+		String strsql = " select Top 1  item, QR_id from  orders_master where QR_id not like 'C%03ebay%' order by item desc ";
 		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -38,7 +38,7 @@ public class CreateOrderId {
 		Boolean isToday = false;
 		if(QR_idFromDatabase!="" && QR_idFromDatabase!=null){
 			isQRidValid =true;
-			isToday = formatted.equals(QR_idFromDatabase.substring(1, 9));
+			isToday = formatted.equals(QR_idFromDatabase.substring(0, 8));
 		}
 		DecimalFormat df = new DecimalFormat("000");
 		int serailNumber = 1;
@@ -62,7 +62,7 @@ public class CreateOrderId {
 
 	public String generateQR_Id04() throws IllegalAccessException, ClassNotFoundException, Exception {
 
-		String strsql = " select Top 1  item, QR_id from  orders_master where QR_id like '%04ebay%' order by item desc ";
+		String strsql = " select Top 1  item, QR_id from  orders_master where QR_id  like '%04ebay%' order by item desc ";
 		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
@@ -76,12 +76,12 @@ public class CreateOrderId {
 
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		String formatted = formatter.format(date);
-		System.out.println(formatted);
+		//System.out.println(formatted);
 		Boolean isQRidValid = false;
 		Boolean isToday = false;
 		if(QR_idFromDatabase!="" && QR_idFromDatabase!=null){
 			isQRidValid =true;
-			isToday = formatted.equals(QR_idFromDatabase.substring(1, 9));
+			isToday = formatted.equals(QR_idFromDatabase.substring(0, 8));
 		}
 
 		DecimalFormat df = new DecimalFormat("000");
@@ -102,7 +102,7 @@ public class CreateOrderId {
 		} else {
 			QR_id = formatted + "04" + "ebay" + "001";
 		}
-		System.out.println(QR_id);
+		//System.out.println(QR_id);
 		return QR_id;
 	}
 
@@ -126,7 +126,7 @@ public class CreateOrderId {
 	public static String generateCQR_Id() throws Exception {
 		String QR_id = "";
 		try {
-			String strsql = " select  top 1 combinesku from  orders_master   order by combinesku desc  ";
+			String strsql = " select  top 1 combinesku from  orders_master order by combinesku desc  ";
 			Connection conn = new DataBaseConn().getConn();
 			PreparedStatement ps = conn.prepareStatement(strsql);
 			ResultSet rs = ps.executeQuery();

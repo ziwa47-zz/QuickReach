@@ -135,7 +135,7 @@ public class CGetEbay {
 					ShippingServiceOptionsType sso = order.getShippingServiceSelected();
 					String QR_id = CreateOrderId.generateQR_Id();
 					String strSql = "INSERT INTO orders_master (QR_id, order_id, outsideCode, platform, company,"
-							+ " eBayAccount, guestAccount, ate, payDate, logisticsId, logistics, orderStatus, paypal_id,"
+							+ " eBayAccount, guestAccount, orderdate, payDate, logisticsId, logistics, orderStatus, paypal_id,"
 							+ " payment,  paypalFees,ebayFees, totalPrice, currency, ebayPrice, paypalNet, ebayItemNO,"
 							+ " paypalmentId, ebayNO, shippingDate)"
 							+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
@@ -211,7 +211,7 @@ public class CGetEbay {
 
 					String Address = Street1 + " " + Street2 + "," + PostalCode + "," + CityName + "," + StateOrProvince
 							+ "," + CountryName;
-					System.out.println(Address);
+					//System.out.println(Address);
 
 					ps2.setString(7, Address);
 					ps2.setString(8, order.getShippingAddress().getCountryName());
