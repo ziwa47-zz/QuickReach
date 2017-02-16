@@ -133,12 +133,12 @@
 						<th>編輯</th>
 						<th>訂單編號</th>
 						<th>平台</th>
-						<th>Ebay Account</th>
+						<th>可填入</th>
 						<th>客戶帳號</th>
 						<th>購買日期</th>
 						<th>出貨日期</th>
 						<th>物流</th>
-						<th>國家</th>
+						<th>可填入</th>
 						<th>訂單狀態</th>
 						<th>總金額</th>
 						<th>使用者</th>

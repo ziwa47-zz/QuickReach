@@ -2,13 +2,10 @@ package tw.iii.qr;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,10 +16,6 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.filechooser.FileSystemView;
-
-import org.apache.catalina.core.ApplicationContext;
-import org.apache.jasper.tagplugins.jstl.core.Out;
-import org.apache.tomcat.util.net.SecureNio2Channel.ApplicationBufferHandler;
 
 import tw.iii.qr.order.DayliBalanceSheetFactory;
 

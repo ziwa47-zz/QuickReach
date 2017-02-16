@@ -414,7 +414,7 @@ public class COrderCombineFactory {
 			ps.setString(2, "ebay");
 			ps.setString(3, om.getEbayAccount());
 			ps.setString(4, om.getGuestAccount());
-			ps.setString(5, om.getOrderStatus());
+			ps.setString(5, "處理中");
 			ps.setString(6, om.getPaypalId());
 			ps.setDouble(7, om.getPayment());
 			ps.setDouble(8, om.getPaypalFees());

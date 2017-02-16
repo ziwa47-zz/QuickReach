@@ -17,13 +17,13 @@
 <% response.sendRedirect("/HomePage.jsp"); %>   
 </c:if>
 <%
-  Connection conn = new DataBaseConn().getConn();
+  /*Connection conn = new DataBaseConn().getConn();
   LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"已完成");
   LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts(conn);
   session.setAttribute("list", orderList);
   request.setAttribute("begin", request.getParameter("begin"));
   request.setAttribute("end", request.getParameter("end"));
-  session.setAttribute("ebayAccounts", ebayAccounts);
+  session.setAttribute("ebayAccounts", ebayAccounts);*/
 %>
 <div class="nav">
   <div class="container">
@@ -303,12 +303,12 @@
               <th>編輯</th>
               <th>訂單編號</th>
               <th>平台</th>
-              <th>Ebay Account</th>
+              <th>可填入</th>
               <th>客戶帳號</th>
               <th>購買日期</th>
               <th>出貨日期</th>
               <th>物流</th>
-              <th>國家</th>
+              <th>可填入</th>
               <th>訂單狀態</th>
               <th>總金額</th>
               <th>使用者</th>
@@ -431,12 +431,12 @@
               <th>編輯</th>
               <th>訂單編號</th>
               <th>平台</th>
-              <th>Ebay Account</th>
+              <th>可填入</th>
               <th>客戶帳號</th>
               <th>購買日期</th>
               <th>出貨日期</th>
               <th>物流</th>
-              <th>國家</th>
+              <th>可填入</th>
               <th>訂單狀態</th>
               <th>總金額</th>
               <th>使用者</th>

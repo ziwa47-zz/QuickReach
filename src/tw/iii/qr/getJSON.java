@@ -5,10 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.filechooser.FileSystemView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -147,20 +145,4 @@ public class getJSON {
 		
 	}
 	
-	
-	public void updateToFinished(HttpServletRequest request) throws Exception {
-		Connection conn = new DataBaseConn().getConn();
-		
-		HashMap<String, String> hm = new HashMap<String, String>();
-		JSONArray ja = new JSONArray();
-		String strSql;
-		
-		
-		
-
-		
-	
-		
-	}
-
 }

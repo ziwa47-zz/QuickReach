@@ -5,34 +5,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.LinkedList;
-import java.util.TimerTask;
-
-import javax.swing.undo.AbstractUndoableEdit;
-
-import java.sql.Date;
 
 import com.ebay.sdk.ApiContext;
 import com.ebay.sdk.ApiCredential;
 import com.ebay.sdk.call.GetOrdersCall;
-import com.ebay.sdk.call.GetSellerTransactionsCall;
-import com.ebay.sdk.call.GeteBayOfficialTimeCall;
-import com.ebay.sdk.helper.ConsoleUtil;
-import com.ebay.sdk.helper.Utils;
-import com.ebay.sdk.helper.ui.ControlEntryTypes;
-import com.ebay.sdk.util.eBayUtil;
 import com.ebay.soap.eBLBaseComponents.DetailLevelCodeType;
-import com.ebay.soap.eBLBaseComponents.OrderArrayType;
-import com.ebay.soap.eBLBaseComponents.OrderIDArrayType;
 import com.ebay.soap.eBLBaseComponents.OrderStatusCodeType;
 import com.ebay.soap.eBLBaseComponents.OrderType;
 import com.ebay.soap.eBLBaseComponents.PaginationResultType;
 import com.ebay.soap.eBLBaseComponents.PaginationType;
-import com.ebay.soap.eBLBaseComponents.ShipmentTrackingDetailsType;
-import com.ebay.soap.eBLBaseComponents.ShippingDetailsType;
 import com.ebay.soap.eBLBaseComponents.ShippingServiceOptionsType;
 import com.ebay.soap.eBLBaseComponents.SortOrderCodeType;
 import com.ebay.soap.eBLBaseComponents.TradingRoleCodeType;
@@ -57,9 +40,7 @@ public class CGetEbay {
 			for (int i = 0; i < token.size(); i++) {
 				RequestOrder(token.get(i), od);
 			}
-//			System.out.println("odout " + od.size());
 			displayOrders(od, conn);
-//			System.out.println("oddone");
 			System.out.println("撈完拉拉拉拉");
 			conn.close();
 		} catch (Exception e) {
@@ -135,7 +116,7 @@ public class CGetEbay {
 					ShippingServiceOptionsType sso = order.getShippingServiceSelected();
 					String QR_id = CreateOrderId.generateQR_Id();
 					String strSql = "INSERT INTO orders_master (QR_id, order_id, outsideCode, platform, company,"
-							+ " eBayAccount, guestAccount, ate, payDate, logisticsId, logistics, orderStatus, paypal_id,"
+							+ " eBayAccount, guestAccount, orderdate, payDate, logisticsId, logistics, orderStatus, paypal_id,"
 							+ " payment,  paypalFees,ebayFees, totalPrice, currency, ebayPrice, paypalNet, ebayItemNO,"
 							+ " paypalmentId, ebayNO, shippingDate)"
 							+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
@@ -211,7 +192,7 @@ public class CGetEbay {
 
 					String Address = Street1 + " " + Street2 + "," + PostalCode + "," + CityName + "," + StateOrProvince
 							+ "," + CountryName;
-					System.out.println(Address);
+					//System.out.println(Address);
 
 					ps2.setString(7, Address);
 					ps2.setString(8, order.getShippingAddress().getCountryName());
