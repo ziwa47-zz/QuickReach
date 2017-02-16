@@ -344,9 +344,11 @@ public class COrderFactory extends COrders {
 			orderDetails = new LinkedList<>();
 			while (rs2.next()) {
 				COrderDetail COrderDetail = new COrderDetail();
+				
 				COrderDetail.setSKU(rs2.getString(1));
 				COrderDetail.setProductName(rs2.getString(2));
 				COrderDetail.setWarehouse(rs2.getString(3));
+				getPicAndLocation(COrderDetail,conn);
 				orderDetails.add(COrderDetail);
 			}
 
@@ -362,6 +364,25 @@ public class COrderFactory extends COrders {
 			orderList.add(order);
 		}
 		return orderList;
+	}
+
+	private void getPicAndLocation(tw.iii.qr.order.DTO.COrderDetail cOrderDetail, Connection conn) {
+		String strsql ="select p.picturePath,s.warehousePosition1,s.warehousePosition2 "+
+					" from product p inner join storage s on p.SKU =s.SKU inner join orders_detail od on p.sku= od.SKU and od.warehouse = s.warehouse "+
+					" where p.sku= ? and od.warehouse = ? ";
+		try{
+		PreparedStatement ps = conn.prepareStatement(strsql);
+		ps.setString(1, cOrderDetail.getSKU());
+		ps.setString(2, cOrderDetail.getWarehouse());
+		
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()){
+			cOrderDetail.setPicPath(rs.getString(1));
+			cOrderDetail.setWarehouseLocation(rs.getString(2)+"-"+(rs.getString(3)));
+		}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
 	}
 
 	public COrders getOrderAllInfo(String QR_id, Connection conn) throws SQLException {
