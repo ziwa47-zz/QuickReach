@@ -336,23 +336,7 @@ public class COrderFactory extends COrders {
 			order.COrderMaster.setCurrency(rs.getString(14));
 			order.COrderReciever.setCountry(rs.getString(15));
 
-			String strSql2 = "SELECT SKU, productName, warehouse" + " FROM  orders_detail" + " where QR_id = ?";
-
-			PreparedStatement ps2 = conn.prepareStatement(strSql2);
-			ps2.setString(1, rs.getString(13));
-			ResultSet rs2 = ps2.executeQuery();
-			orderDetails = new LinkedList<>();
-			while (rs2.next()) {
-				COrderDetail COrderDetail = new COrderDetail();
-				
-				COrderDetail.setSKU(rs2.getString(1));
-				COrderDetail.setProductName(rs2.getString(2));
-				COrderDetail.setWarehouse(rs2.getString(3));
-				getPicAndLocation(COrderDetail,conn);
-				orderDetails.add(COrderDetail);
-			}
-
-			order.setCOrderDetail(orderDetails);
+			order.setCOrderDetail(getOrderDetail(conn, rs.getString(13)));
 			order.COrderMaster.setComment(rs.getString(10));
 			order.COrderMaster.setEbayAccount(rs.getString(11));
 			order.COrderMaster.setPayDate(rs.getDate(12));
@@ -364,6 +348,26 @@ public class COrderFactory extends COrders {
 			orderList.add(order);
 		}
 		return orderList;
+	}
+
+
+
+
+	private LinkedList<COrderDetail> getOrderDetail(Connection conn,String qrid) throws SQLException {
+		LinkedList<COrderDetail> orderDetails = new LinkedList<>();
+		String strSql2 = "SELECT SKU, productName, warehouse" + " FROM  orders_detail" + " where QR_id = ?";
+		PreparedStatement ps2 = conn.prepareStatement(strSql2);
+		ps2.setString(1, qrid);
+		ResultSet rs2 = ps2.executeQuery();
+		while (rs2.next()) {
+			COrderDetail COrderDetail = new COrderDetail();
+			COrderDetail.setSKU(rs2.getString(1));
+			COrderDetail.setProductName(rs2.getString(2));
+			COrderDetail.setWarehouse(rs2.getString(3));
+			getPicAndLocation(COrderDetail,conn);
+			orderDetails.add(COrderDetail);
+		}
+		return orderDetails;
 	}
 
 	private void getPicAndLocation(tw.iii.qr.order.DTO.COrderDetail cOrderDetail, Connection conn) {
