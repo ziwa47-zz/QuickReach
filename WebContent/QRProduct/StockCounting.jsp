@@ -3,8 +3,8 @@
 	<%@page import="java.util.*,javax.servlet.*"%>
 	<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="tw.iii.qr.stock.DTO.CProductFactory" %>
-<jsp:useBean id="counting" class="tw.iii.qr.stock.DTO.CStockFactory" scope="session"/>
+<%@ page import="tw.iii.qr.stock.CProductFactory" %>
+<jsp:useBean id="counting" class="tw.iii.qr.stock.CStockFactory" scope="session"/>
 <html lang="en">
 <head>
 <meta charset="utf-8">

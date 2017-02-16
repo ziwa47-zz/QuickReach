@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import tw.iii.qr.DataBaseConn;
-import tw.iii.qr.order.DTO.COrderFactory;
 import tw.iii.qr.order.DTO.SessionRecord;
 import tw.iii.qr.order.DTO.ShipmentRecord;
 

@@ -3,7 +3,7 @@
 <%@ page import="tw.iii.qr.DataBaseConn"%>
 <%@ page import="tw.iii.qr.order.DTO.COrders"%>
 <%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.LinkedList,java.util.*,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse"%>
-<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.DTO.COrderFactory" scope="page" />
+<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.COrderFactory" scope="page" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -30,9 +30,6 @@
     <div class="navbar-left" style="background-color:#3DFF81;" >
       <ul class="nav nav-tabs">
         <li class="" style="background-color:#189B30"><a href="SearchOrder.jsp?begin=0&end=10" style="color:#FFFFFF">獨立出貨</a></li>
-        <c:if test="${PageCompetence.getEntireOrders() == 1 }"> 
-        	<li><a href="/QROrders/DayliBalanceSheet.jsp" >日結表</a></li>
-      	</c:if>
       </ul>
     </div>
   </div>
@@ -44,7 +41,7 @@
         <li><a href="Pickup.jsp?begin=0&end=10">揀貨中</a></li>
         <li><a href="UploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="Finished.jsp?begin=0&end=10">已完成訂單</a></li>
-        <li><a href="ShipmentRecord?begin=0&end=10">訂單出貨記錄</a></li>
+        <li><a href="ShipmentRecord.jsp?begin=0&end=10">訂單出貨記錄</a></li>
         <li><a href="" style="color:#fff">退貨</a></li>
       </ul>
     </div>

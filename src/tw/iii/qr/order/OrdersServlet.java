@@ -14,8 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import tw.iii.qr.DataBaseConn;
-import tw.iii.qr.order.DTO.COrderCombineFactory;
-import tw.iii.qr.order.DTO.COrderFactory;
 import tw.iii.qr.order.DTO.COrders;
 import tw.iii.qr.order.DTO.SessionRecord;
 
@@ -149,16 +147,16 @@ public class OrdersServlet extends HttpServlet {
 			Rcoc.canCombine(request, conn);
 			response.sendRedirect("QROrders/ReadCombineOrders.jsp");
 			break;
-		case "UpdateCombineOrders":
-			COrderCombineFactory Ucoc = new COrderCombineFactory();
-			Ucoc.UpdateCombineOrder(request, conn);
-			response.sendRedirect("QROrders/OrderCombine.jsp");
-			break;
-		case "DeleteCombineOrders":
-			COrderCombineFactory Dcoc = new COrderCombineFactory();
-			Dcoc.DeCombine(request, conn);
-			response.sendRedirect("QROrders/OrderCombine.jsp");
-			break;
+//		case "UpdateCombineOrders":
+//			COrderCombineFactory Ucoc = new COrderCombineFactory();
+//			Ucoc.UpdateCombineOrder(request, conn);
+//			response.sendRedirect("QROrders/OrderCombine.jsp");
+//			break;
+//		case "DeleteCombineOrders":
+//			COrderCombineFactory Dcoc = new COrderCombineFactory();
+//			Dcoc.DeCombine(request, conn);
+//			response.sendRedirect("QROrders/OrderCombine.jsp");
+//			break;
 		default:
 			conn.close();
 			response.sendRedirect("QROrders/SearchOrder.jsp?begin=0&end=10");
