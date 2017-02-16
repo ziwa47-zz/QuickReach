@@ -15,6 +15,8 @@ public class COrderDetail {
 	private String warehouse;
 	private int item;
 	private String QR_id;
+	private String picPath;
+	private String warehouseLocation;
 	
 	public String getOrder_id() {
 		return order_id;
@@ -87,6 +89,18 @@ public class COrderDetail {
 	}
 	public void setQR_id(String qR_id) {
 		QR_id = qR_id;
+	}
+	public String getPicPath() {
+		return picPath;
+	}
+	public void setPicPath(String picPath) {
+		this.picPath = picPath;
+	}
+	public String getWarehouseLocation() {
+		return warehouseLocation;
+	}
+	public void setWarehouseLocation(String warehouseLocation) {
+		this.warehouseLocation = warehouseLocation;
 	}
 
 }

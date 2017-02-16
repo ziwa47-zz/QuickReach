@@ -323,45 +323,75 @@ public class COrderFactory extends COrders {
 		LinkedList<COrderDetail> orderDetails = new LinkedList<COrderDetail>();
 		COrders order = new COrders();
 		while (rs.next()) {
-			order = new COrders();
-			order.COrderMaster.setOrder_id(rs.getString(1));
-			order.COrderMaster.setPlatform(rs.getString(2));
-			order.COrderMaster.setGuestAccount(rs.getString(3));
-			order.COrderMaster.setOrderDate(rs.getDate(4));
-			order.COrderMaster.setShippingDate(rs.getDate(5));
-			order.COrderMaster.setLogistics(rs.getString(6));
-			order.COrderMaster.setOrderStatus(rs.getString(7));
-			order.COrderMaster.setTotalPrice(rs.getDouble(8));
-			order.COrderMaster.setStaffName(rs.getString(9));
-			order.COrderMaster.setCurrency(rs.getString(14));
-			order.COrderReciever.setCountry(rs.getString(15));
-
-			String strSql2 = "SELECT SKU, productName, warehouse" + " FROM  orders_detail" + " where QR_id = ?";
-
-			PreparedStatement ps2 = conn.prepareStatement(strSql2);
-			ps2.setString(1, rs.getString(13));
-			ResultSet rs2 = ps2.executeQuery();
-			orderDetails = new LinkedList<>();
-			while (rs2.next()) {
-				COrderDetail COrderDetail = new COrderDetail();
-				COrderDetail.setSKU(rs2.getString(1));
-				COrderDetail.setProductName(rs2.getString(2));
-				COrderDetail.setWarehouse(rs2.getString(3));
-				orderDetails.add(COrderDetail);
-			}
-
-			order.setCOrderDetail(orderDetails);
-			order.COrderMaster.setComment(rs.getString(10));
-			order.COrderMaster.setEbayAccount(rs.getString(11));
-			order.COrderMaster.setPayDate(rs.getDate(12));
-			order.COrderMaster.setQR_id(rs.getString(13));
-			order.COrderMaster.setEbayItemNO(rs.getString(16));
-			order.COrderMaster.setPaypalmentId(rs.getString(17));
-			order.COrderMaster.setEbayNO(rs.getString(18));
-			// System.out.println(order);
-			orderList.add(order);
+			orderList.add(putorder(conn, rs));
 		}
 		return orderList;
+	}
+
+
+
+
+	private COrders putorder(Connection conn, ResultSet rs) throws SQLException {
+		COrders order = new COrders();
+		order.COrderMaster.setOrder_id(rs.getString(1));
+		order.COrderMaster.setPlatform(rs.getString(2));
+		order.COrderMaster.setGuestAccount(rs.getString(3));
+		order.COrderMaster.setOrderDate(rs.getDate(4));
+		order.COrderMaster.setShippingDate(rs.getDate(5));
+		order.COrderMaster.setLogistics(rs.getString(6));
+		order.COrderMaster.setOrderStatus(rs.getString(7));
+		order.COrderMaster.setTotalPrice(rs.getDouble(8));
+		order.COrderMaster.setStaffName(rs.getString(9));
+		order.COrderMaster.setQR_id(rs.getString(13));
+		order.COrderMaster.setCurrency(rs.getString(14));
+		order.COrderReciever.setCountry(rs.getString(15));
+		order.setCOrderDetail(putDetail(conn, order.COrderMaster.getQR_id()));
+		order.COrderMaster.setComment(rs.getString(10));
+		order.COrderMaster.setEbayAccount(rs.getString(11));
+		order.COrderMaster.setPayDate(rs.getDate(12));
+		order.COrderMaster.setEbayItemNO(rs.getString(16));
+		order.COrderMaster.setPaypalmentId(rs.getString(17));
+		order.COrderMaster.setEbayNO(rs.getString(18));
+		return order;
+	}
+
+
+
+
+	private LinkedList<COrderDetail> putDetail(Connection conn,String qrid) throws SQLException {
+		LinkedList<COrderDetail> orderDetails = new LinkedList<>();
+		String strSql2 = "SELECT SKU, productName, warehouse" + " FROM  orders_detail" + " where QR_id = ?";
+		PreparedStatement ps2 = conn.prepareStatement(strSql2);
+		ps2.setString(1, qrid);
+		ResultSet rs2 = ps2.executeQuery();
+		while (rs2.next()) {
+			COrderDetail COrderDetail = new COrderDetail();
+			COrderDetail.setSKU(rs2.getString(1));
+			COrderDetail.setProductName(rs2.getString(2));
+			COrderDetail.setWarehouse(rs2.getString(3));
+			getPicAndLocation(COrderDetail,conn);
+			orderDetails.add(COrderDetail);
+		}
+		return orderDetails;
+	}
+
+	private void getPicAndLocation(tw.iii.qr.order.DTO.COrderDetail cOrderDetail, Connection conn) {
+		String strsql ="select p.picturePath,s.warehousePosition1,s.warehousePosition2 "+
+					" from product p inner join storage s on p.SKU =s.SKU inner join orders_detail od on p.sku= od.SKU and od.warehouse = s.warehouse "+
+					" where p.sku= ? and od.warehouse = ? ";
+		try{
+		PreparedStatement ps = conn.prepareStatement(strsql);
+		ps.setString(1, cOrderDetail.getSKU());
+		ps.setString(2, cOrderDetail.getWarehouse());
+		
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()){
+			cOrderDetail.setPicPath(rs.getString(1));
+			cOrderDetail.setWarehouseLocation(rs.getString(2)+"-"+(rs.getString(3)));
+		}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
 	}
 
 	public COrders getOrderAllInfo(String QR_id, Connection conn) throws SQLException {
