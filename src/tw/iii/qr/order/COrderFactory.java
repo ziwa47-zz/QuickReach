@@ -323,29 +323,7 @@ public class COrderFactory extends COrders {
 		LinkedList<COrderDetail> orderDetails = new LinkedList<COrderDetail>();
 		COrders order = new COrders();
 		while (rs.next()) {
-			order = new COrders();
-			order.COrderMaster.setOrder_id(rs.getString(1));
-			order.COrderMaster.setPlatform(rs.getString(2));
-			order.COrderMaster.setGuestAccount(rs.getString(3));
-			order.COrderMaster.setOrderDate(rs.getDate(4));
-			order.COrderMaster.setShippingDate(rs.getDate(5));
-			order.COrderMaster.setLogistics(rs.getString(6));
-			order.COrderMaster.setOrderStatus(rs.getString(7));
-			order.COrderMaster.setTotalPrice(rs.getDouble(8));
-			order.COrderMaster.setStaffName(rs.getString(9));
-			order.COrderMaster.setCurrency(rs.getString(14));
-			order.COrderReciever.setCountry(rs.getString(15));
-
-			order.setCOrderDetail(getOrderDetail(conn, rs.getString(13)));
-			order.COrderMaster.setComment(rs.getString(10));
-			order.COrderMaster.setEbayAccount(rs.getString(11));
-			order.COrderMaster.setPayDate(rs.getDate(12));
-			order.COrderMaster.setQR_id(rs.getString(13));
-			order.COrderMaster.setEbayItemNO(rs.getString(16));
-			order.COrderMaster.setPaypalmentId(rs.getString(17));
-			order.COrderMaster.setEbayNO(rs.getString(18));
-			// System.out.println(order);
-			orderList.add(order);
+			orderList.add(putorder(conn, rs));
 		}
 		return orderList;
 	}
@@ -353,7 +331,34 @@ public class COrderFactory extends COrders {
 
 
 
-	private LinkedList<COrderDetail> getOrderDetail(Connection conn,String qrid) throws SQLException {
+	private COrders putorder(Connection conn, ResultSet rs) throws SQLException {
+		COrders order = new COrders();
+		order.COrderMaster.setOrder_id(rs.getString(1));
+		order.COrderMaster.setPlatform(rs.getString(2));
+		order.COrderMaster.setGuestAccount(rs.getString(3));
+		order.COrderMaster.setOrderDate(rs.getDate(4));
+		order.COrderMaster.setShippingDate(rs.getDate(5));
+		order.COrderMaster.setLogistics(rs.getString(6));
+		order.COrderMaster.setOrderStatus(rs.getString(7));
+		order.COrderMaster.setTotalPrice(rs.getDouble(8));
+		order.COrderMaster.setStaffName(rs.getString(9));
+		order.COrderMaster.setQR_id(rs.getString(13));
+		order.COrderMaster.setCurrency(rs.getString(14));
+		order.COrderReciever.setCountry(rs.getString(15));
+		order.setCOrderDetail(putDetail(conn, order.COrderMaster.getQR_id()));
+		order.COrderMaster.setComment(rs.getString(10));
+		order.COrderMaster.setEbayAccount(rs.getString(11));
+		order.COrderMaster.setPayDate(rs.getDate(12));
+		order.COrderMaster.setEbayItemNO(rs.getString(16));
+		order.COrderMaster.setPaypalmentId(rs.getString(17));
+		order.COrderMaster.setEbayNO(rs.getString(18));
+		return order;
+	}
+
+
+
+
+	private LinkedList<COrderDetail> putDetail(Connection conn,String qrid) throws SQLException {
 		LinkedList<COrderDetail> orderDetails = new LinkedList<>();
 		String strSql2 = "SELECT SKU, productName, warehouse" + " FROM  orders_detail" + " where QR_id = ?";
 		PreparedStatement ps2 = conn.prepareStatement(strSql2);
