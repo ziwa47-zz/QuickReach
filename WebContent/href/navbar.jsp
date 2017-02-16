@@ -129,8 +129,8 @@ $(function () {
 });
 	
 $( document ).ready(function() {
-$('body').css({'font-family': 'Noto Sans TC'});
-	});
+	$('body').css({'font-family': 'Noto Sans TC'});
+});
 //Modal
 $(function() {
 		$('.pop').on('click', function() {
