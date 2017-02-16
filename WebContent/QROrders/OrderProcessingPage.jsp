@@ -313,12 +313,13 @@
                   <tr style="background-color:#D4F4D8">
                     <td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
                       <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
-                    <td colspan="3">
+                    <td colspan="3" class="warehouseLocation">
                     <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                      <b>${k.getWarehouse()}</b>-${k.getWarehouseLocation() }<br/>
                     </c:forEach>
                     </td>
                   </tr>
@@ -347,12 +348,13 @@
                   <tr>
 					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
                       <b><a href="#">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
-                    <td colspan="3">
+                    <td colspan="3" class="warehouseLocation">
                     <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                      <b>${k.getWarehouse()}</b>-${k.getWarehouseLocation() }<br/>
                     </c:forEach>
                     </td>
                   </tr>
@@ -449,12 +451,13 @@
                   <tr style="background-color:#D4F4D8">
 					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
                       <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
-                    <td colspan="3">
+                    <td colspan="3" class="warehouseLocation">
                     <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                      <b>${k.getWarehouse()}</b>-${k.getWarehouseLocation() }<br/>
                     </c:forEach>
                     </td>
                   </tr>
@@ -482,15 +485,14 @@
                   <tr>
 					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
                       <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
-                    <td colspan="3">
+                    <td colspan="3" class="warehouseLocation">
                     <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>(倉別)<br/>
-                      <input type="hidden" name="warehouse" value="${k.getWarehouse()}">
+                      <b>${k.getWarehouse()}</b>-${k.getWarehouseLocation() }<br/>
                     </c:forEach>
-                    
                     </td>
                   </tr>
                   <tr>
@@ -511,6 +513,15 @@
 
 <%@ include file="../href/footer.jsp" %>
 <script type="text/javascript">
+$(document).ready(function(){
+	$('.warehouseLocation').each(function(){
+		if($(this).text() == undefined || $(this).text().trim() == ""){
+			$(this).addClass("danger");
+		} else {
+		    $(this).addClass("success");
+		}
+	});
+});
 function selectAllOrders(ele) {
 	//select all
 	if (ele.checked) {
