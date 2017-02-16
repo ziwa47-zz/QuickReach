@@ -268,10 +268,10 @@
                 <th>出貨日期</th>
                 <th>出貨編號</th>
                 <th>類型</th>
-                <th>Ebay Account</th>
+                <th>可填入</th>
                 <th>Tracking Code</th>
                 <th>數量</th>
-                <th>寄送國家</th>
+                <th>可填入</th>
                 <th>Owner</th>
                 <th>出倉位置</th>
                 <th>處理人員</th>
@@ -369,10 +369,10 @@
                 <th>出貨日期</th>
                 <th>出貨編號</th>
                 <th>類型</th>
-                <th>Ebay Account</th>
+                <th>可填入</th>
                 <th>TrackingCode</th>
                 <th>數量</th>
-                <th>寄送國家</th>
+                <th>可填入</th>
                 <th>Owner</th>
                 <th>出倉位置</th>
                 <th>處理人員</th>
