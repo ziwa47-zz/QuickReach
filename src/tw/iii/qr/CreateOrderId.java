@@ -6,14 +6,10 @@ package tw.iii.qr;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.Random;
 import java.util.Calendar;
+import java.util.Date;
 
 public class CreateOrderId {
 
