@@ -75,6 +75,7 @@ conn.close();
 	        <label class="radio-inline"><input type="checkbox" name="optionsRadios" id="optionsCheck" onchange="enableFields(this)">開關</label>
 	    	<label class="radio-inline">
 	    	<button type="submit" name="submit" value="updateOrder" class="btn btn-lg btn-success" id="btnCheck" disabled>更新商品資料</button>
+	    	<a href="../OrderProcessingPage.jsp?begin=0&end=10" class="btn btn-info" role="button">回到處理中</a>
 	      	</label>
 	      </div>
 	    </div>
@@ -428,7 +429,7 @@ $(function () {
 	    var total = $('#TotalPrice').val();
 	    if (sum>total || sum <=0)
 	    {
-	    	alert("請注意,修改後金額小於原始金額");
+	    	alert("請注意,修改後金額小於原始金額,不可更改");
 	        return false;
 	    } else if (sum>total || sum <=0)
 	    {
