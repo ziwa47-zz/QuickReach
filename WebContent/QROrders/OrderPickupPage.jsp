@@ -325,7 +325,7 @@
                       <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
-                    <td colspan="3">
+                    <td colspan="3" id="warehouseLocation">
                     <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
                       <b>${k.getWarehouse()}</b>-${k.get.getWarehouseLocation() }<br/>
                     </c:forEach>
@@ -525,6 +525,14 @@
 
 <%@ include file="../href/footer.jsp" %>
 <script type="text/javascript">
+$(document).ready(function(){
+	if($("#warehouseLocation").text() == undefined || $("#warehouseLocation").text() == ""){
+    	$("#warehouseLocation").addClass("danger");
+    } else {
+    	$("#warehouseLocation").addClass("success");
+    }
+});
+
 function selectAllOrders(ele) {
 	//select all
 	if (ele.checked) {
