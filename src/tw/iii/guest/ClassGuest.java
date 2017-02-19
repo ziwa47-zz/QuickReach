@@ -8,13 +8,13 @@ public class ClassGuest {
 	private String platformAccount;
 	private String email;
 	private String country;
-	private String tel;
+	private String tel;      //第7個//
 	private String address;
 	private String comment;
 	private String phone;
 	private String postcode;
 	private String birthday;
-	private String gender;
+	private String gender;   //13個//
 	
 
 	public String getGuestId(){	
