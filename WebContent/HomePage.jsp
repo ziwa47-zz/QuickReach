@@ -72,7 +72,7 @@
       <h3>獨立出貨</h3>
       <div class="row" style="font-size:24px; padding:10px">
         <a href="/QRIndependentOrder/SearchOrder.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">查詢訂單</label></a>
-      	<a href="/QRIndependentOrder/NewOrder.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">新增訂單</label></a>
+      	<a href="/QRIndependentOrder/IndependentOrder.jsp"><label class="btn btn-lg btn-primary">新增訂單</label></a>
       	<a href="/QRIndependentOrder/Pickup.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">揀貨中</label></a>
       	<a href="/QRIndependentOrder/UploadTrackingCode.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">上傳追蹤碼</label></a>
       	<a href="/QRIndependentOrder/Finished.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">已完成訂單</label></a>
