@@ -1,7 +1,11 @@
 USE [qrdata]
 GO
 
-/****** Object:  Table [dbo].[iorders_detail]    Script Date: 2017/2/11 §U§» 03:38:44 ******/
+/****** Object:  Table [dbo].[iorders_detail]    Script Date: 2017/2/19 ‰∏äÂçà 11:55:40 ******/
+DROP TABLE [dbo].[iorders_detail]
+GO
+
+/****** Object:  Table [dbo].[iorders_detail]    Script Date: 2017/2/19 ‰∏äÂçà 11:55:40 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -29,5 +33,4 @@ CREATE TABLE [dbo].[iorders_detail](
 ) ON [PRIMARY]
 
 GO
-
 
