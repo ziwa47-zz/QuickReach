@@ -1,15 +1,18 @@
 USE [qrdata]
 GO
 
-/****** Object:  Table [dbo].[guest]    Script Date: 2017/2/11 §U§» 03:47:17 ******/
+/****** Object:  Table [dbo].[guest]    Script Date: 2017/2/19 ‰∏äÂçà 11:55:28 ******/
 DROP TABLE [dbo].[guest]
 GO
 
-/****** Object:  Table [dbo].[guest]    Script Date: 2017/2/11 §U§» 03:47:17 ******/
+/****** Object:  Table [dbo].[guest]    Script Date: 2017/2/19 ‰∏äÂçà 11:55:28 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
 GO
 
 CREATE TABLE [dbo].[guest](
@@ -25,6 +28,8 @@ CREATE TABLE [dbo].[guest](
 	[comment] [nvarchar](max) NULL,
 	[phone] [nvarchar](50) NULL,
 	[postcode] [nvarchar](50) NULL,
+	[birthday] [date] NULL,
+	[gender] [varchar](1) NULL,
  CONSTRAINT [PK_guest] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
@@ -33,4 +38,6 @@ CREATE TABLE [dbo].[guest](
 
 GO
 
+SET ANSI_PADDING OFF
+GO
 
