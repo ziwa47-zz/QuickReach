@@ -1,7 +1,11 @@
 USE [qrdata]
 GO
 
-/****** Object:  Table [dbo].[iorders_master]    Script Date: 2017/2/11 §U§» 03:29:05 ******/
+/****** Object:  Table [dbo].[iorders_master]    Script Date: 2017/2/19 ‰∏äÂçà 11:55:48 ******/
+DROP TABLE [dbo].[iorders_master]
+GO
+
+/****** Object:  Table [dbo].[iorders_master]    Script Date: 2017/2/19 ‰∏äÂçà 11:55:48 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -11,24 +15,17 @@ GO
 CREATE TABLE [dbo].[iorders_master](
 	[Item] [int] IDENTITY(1,1) NOT NULL,
 	[QR_id] [nvarchar](100) NOT NULL,
-	[tansactionId] [nvarchar](100) NULL,
-
+	[transactionId] [nvarchar](100) NULL,
 	[platform] [nvarchar](45) NULL,
 	[guest] [nvarchar](45) NULL,
-	
 	[orderDate] [datetime] NULL,
 	[payDate] [datetime] NULL,
-	
-	
 	[logistics] [nvarchar](45) NULL,
 	[orderStatus] [nvarchar](45) NULL,
-
-	
 	[shippingDate] [datetime] NULL,
 	[shippingFees] [decimal](10, 2) NULL,
 	[refundShippingFees] [decimal](10, 2) NULL,
 	[otherFees] [decimal](10, 2) NULL,
-	
 	[paypalFees] [decimal](10, 2) NULL,
 	[insurance] [bit] NULL,
 	[insuranceFee] [decimal](10, 2) NULL,
@@ -44,12 +41,11 @@ CREATE TABLE [dbo].[iorders_master](
 	[trackingCode] [nvarchar](500) NULL,
 	[comment] [nvarchar](100) NULL,
 	[packageFees] [decimal](10, 2) NULL,
-	
-	
 	[paypalTotal] [decimal](10, 2) NULL,
 	[paypalNet] [decimal](10, 2) NULL,
 	[isCombine] [nvarchar](50) NULL,
 	[CombineSku] [nvarchar](100) NULL,
+	[paypalPrice] [decimal](10, 2) NULL,
  CONSTRAINT [PK_iorders_master] PRIMARY KEY CLUSTERED 
 (
 	[Item] ASC,
@@ -58,5 +54,4 @@ CREATE TABLE [dbo].[iorders_master](
 ) ON [PRIMARY]
 
 GO
-
 

@@ -70,7 +70,7 @@ public class AjaxProcessAutoComplete extends HttpServlet {
 			DataBaseConn jdbc = new DataBaseConn();
 			conn = jdbc.getConn();			
 			
-			String strSql = "SELECT  a.P_name, a.spec, a.color FROM  product as a left join  storage as b on a.SKU = b.SKU where a.SKU = ? ;";
+			String strSql = "SELECT  a.P_name, a.spec, a.color, a.owner FROM  product as a left join  storage as b on a.SKU = b.SKU where a.SKU = ? ;";
 
 			
 			ps = conn.prepareStatement(strSql);
@@ -84,6 +84,7 @@ public class AjaxProcessAutoComplete extends HttpServlet {
 			hm.put("pName", rs.getString(1));
 			hm.put("spec", rs.getString(2));
 			hm.put("color", rs.getString(3));
+			hm.put("owner", rs.getString(4));
 			
 			
 				
