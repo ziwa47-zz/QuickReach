@@ -1,15 +1,16 @@
 package tw.iii.qr.IndependentOrder.model.entity;
 // default package
-// Generated 2017/2/11 �U�� 10:14:00 by Hibernate Tools 4.0.0.Final
+// Generated 2017/2/18 �U�� 10:32:46 by Hibernate Tools 4.0.0.Final
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -17,13 +18,14 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "iorders_detail")
-public class IOrdersDetail implements Serializable {
+public class IordersDetail implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3770021725069437286L;
-	private Integer id;
+	private static final long serialVersionUID = -6110412986393571142L;
+	private Integer item;
+	private String qrId;
 	private String tansactionId;
 	private String sku;
 	private String productName;
@@ -35,16 +37,16 @@ public class IOrdersDetail implements Serializable {
 	private String comment;
 	private String owner;
 
-	public IOrdersDetail() {
+	public IordersDetail() {
 	}
 
-	public IOrdersDetail(Integer id) {
-		this.id = id;
+	public IordersDetail(String qrId) {
+		this.qrId = qrId;
 	}
 
-	public IOrdersDetail(Integer id, String tansactionId, String sku, String productName, String invoiceName,
+	public IordersDetail(String qrId, String tansactionId, String sku, String productName, String invoiceName,
 			BigDecimal price, BigDecimal invoicePrice, Integer qty, String warehouse, String comment, String owner) {
-		this.id = id;
+		this.qrId = qrId;
 		this.tansactionId = tansactionId;
 		this.sku = sku;
 		this.productName = productName;
@@ -57,16 +59,25 @@ public class IOrdersDetail implements Serializable {
 		this.owner = owner;
 	}
 
-	@EmbeddedId
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
 
-	@AttributeOverrides({ @AttributeOverride(name = "item", column = @Column(name = "Item", nullable = false)),
-			@AttributeOverride(name = "qrId", column = @Column(name = "QR_id", nullable = false, length = 100)) })
-	public Integer getId() {
-		return this.id;
+	@Column(name = "Item", unique = true, nullable = false)
+	public Integer getItem() {
+		return this.item;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setItem(Integer item) {
+		this.item = item;
+	}
+
+	@Column(name = "QR_id", nullable = false, length = 100)
+	public String getQrId() {
+		return this.qrId;
+	}
+
+	public void setQrId(String qrId) {
+		this.qrId = qrId;
 	}
 
 	@Column(name = "tansactionId", length = 100)

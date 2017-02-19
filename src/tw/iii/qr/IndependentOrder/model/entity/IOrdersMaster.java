@@ -1,16 +1,17 @@
 package tw.iii.qr.IndependentOrder.model.entity;
 // default package
-// Generated 2017/2/11 �U�� 10:14:00 by Hibernate Tools 4.0.0.Final
+// Generated 2017/2/18 �U�� 10:32:46 by Hibernate Tools 4.0.0.Final
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,14 +21,15 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "iorders_master")
-public class IOrdersMaster implements Serializable {
+public class IordersMaster implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6973160262857480542L;
-	private Integer id;
-	private String tansactionId;
+	private static final long serialVersionUID = -6315325721356186327L;
+	private Integer item;
+	private String qrId;
+	private String transactionId;
 	private String platform;
 	private String guest;
 	private Date orderDate;
@@ -57,23 +59,24 @@ public class IOrdersMaster implements Serializable {
 	private BigDecimal paypalNet;
 	private String isCombine;
 	private String combineSku;
+	private BigDecimal paypalPrice;
 
-	public IOrdersMaster() {
+	public IordersMaster() {
 	}
 
-	public IOrdersMaster(Integer id) {
-		this.id = id;
+	public IordersMaster(String qrId) {
+		this.qrId = qrId;
 	}
 
-	public IOrdersMaster(Integer id, String tansactionId, String platform, String guest, Date orderDate,
-			Date payDate, String logistics, String orderStatus, Date shippingDate, BigDecimal shippingFees,
+	public IordersMaster(String qrId, String transactionId, String platform, String guest, Date orderDate, Date payDate,
+			String logistics, String orderStatus, Date shippingDate, BigDecimal shippingFees,
 			BigDecimal refundShippingFees, BigDecimal otherFees, BigDecimal paypalFees, Boolean insurance,
 			BigDecimal insuranceFee, BigDecimal insuranceTotal, String currency, BigDecimal weight,
 			BigDecimal totalWeight, String fedexService, String fedexPacking, String staffName, String size,
 			BigDecimal totalPrice, String trackingCode, String comment, BigDecimal packageFees, BigDecimal paypalTotal,
-			BigDecimal paypalNet, String isCombine, String combineSku) {
-		this.id = id;
-		this.tansactionId = tansactionId;
+			BigDecimal paypalNet, String isCombine, String combineSku, BigDecimal paypalPrice) {
+		this.qrId = qrId;
+		this.transactionId = transactionId;
 		this.platform = platform;
 		this.guest = guest;
 		this.orderDate = orderDate;
@@ -103,27 +106,37 @@ public class IOrdersMaster implements Serializable {
 		this.paypalNet = paypalNet;
 		this.isCombine = isCombine;
 		this.combineSku = combineSku;
+		this.paypalPrice = paypalPrice;
 	}
 
-	@EmbeddedId
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
 
-	@AttributeOverrides({ @AttributeOverride(name = "item", column = @Column(name = "Item", nullable = false)),
-			@AttributeOverride(name = "qrId", column = @Column(name = "QR_id", nullable = false, length = 100)) })
-	public Integer getId() {
-		return this.id;
+	@Column(name = "Item", unique = true, nullable = false)
+	public Integer getItem() {
+		return this.item;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setItem(Integer item) {
+		this.item = item;
 	}
 
-	@Column(name = "tansactionId", length = 100)
-	public String getTansactionId() {
-		return this.tansactionId;
+	@Column(name = "QR_id", nullable = false, length = 100)
+	public String getQrId() {
+		return this.qrId;
 	}
 
-	public void setTansactionId(String tansactionId) {
-		this.tansactionId = tansactionId;
+	public void setQrId(String qrId) {
+		this.qrId = qrId;
+	}
+
+	@Column(name = "transactionId", length = 100)
+	public String getTransactionId() {
+		return this.transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
 	}
 
 	@Column(name = "platform", length = 45)
@@ -388,6 +401,15 @@ public class IOrdersMaster implements Serializable {
 
 	public void setCombineSku(String combineSku) {
 		this.combineSku = combineSku;
+	}
+
+	@Column(name = "paypalPrice", precision = 10)
+	public BigDecimal getPaypalPrice() {
+		return this.paypalPrice;
+	}
+
+	public void setPaypalPrice(BigDecimal paypalPrice) {
+		this.paypalPrice = paypalPrice;
 	}
 
 }
