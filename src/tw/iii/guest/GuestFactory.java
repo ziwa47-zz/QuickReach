@@ -1,6 +1,8 @@
-package tw.iii.guest;
+﻿package tw.iii.guest;
 
 import java.sql.Connection;
+
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,9 +10,11 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
+
 
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.IndependentOrder.model.entity.Guest;
@@ -23,14 +27,17 @@ public class GuestFactory extends Guest{
 	 */
 	private static final long serialVersionUID = 1L;
 
+
 	public GuestFactory(){
 		
 	}
+
 
 	public void insertGuest(Connection conn, HttpServletRequest request) throws ParseException	{
 
 		Guest cg = new Guest();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
 		cg.setGuestId(request.getParameter("guestId"));   //1st//
 		cg.setName(request.getParameter("name"));
 		cg.setCompany(request.getParameter("company"));
@@ -42,7 +49,9 @@ public class GuestFactory extends Guest{
 		cg.setComment(request.getParameter("comment"));
 		cg.setPhone(request.getParameter("phone"));
 		cg.setPostcode(request.getParameter("postcode"));
+
 		cg.setBirthday(dateFormat.parse(request.getParameter("birthday")));
+
 		cg.setGender(request.getParameter("gender"));    //13th//
 		
 		String sqlstr = "insert into guest values(?,?,?,?,?,?,?,?,?,?,?,?,?)"; // 13個
@@ -60,7 +69,9 @@ public class GuestFactory extends Guest{
 			ps.setString(9, cg.getComment());
 			ps.setString(10, cg.getPhone());
 			ps.setString(11, cg.getPostcode());
+
 			ps.setDate(12,new java.sql.Date(cg.getBirthday().getTime()));
+
 			ps.setString(13, cg.getGender());   //13th//
 			ps.executeUpdate();
 			
@@ -72,10 +83,12 @@ public class GuestFactory extends Guest{
 
 	}
 		
+
 	public void editGuest(Connection conn, HttpServletRequest request) throws ParseException{
 
 		Guest cg = new Guest();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
 		cg.setGuestId(request.getParameter("guestId"));   //1st//
 		cg.setName(request.getParameter("name"));
 		cg.setCompany(request.getParameter("company"));
@@ -87,7 +100,9 @@ public class GuestFactory extends Guest{
 		cg.setComment(request.getParameter("comment"));
 		cg.setPhone(request.getParameter("phone"));
 		cg.setPostcode(request.getParameter("postcode"));
+
 		cg.setBirthday(dateFormat.parse(request.getParameter("birthday")));
+
 		cg.setGender(request.getParameter("gender"));    //13th//
 		cg.setGuestId(request.getParameter("item"));
 		
@@ -96,6 +111,7 @@ public class GuestFactory extends Guest{
 				+ "email = ?, country = ?, tel = ?, address = ?, comment = ?,"
 				+ "phone = ?, postcode = ?, birthday = ?, gender = ? "
 				+ "where id = ?";  
+
 
 		try {
 			PreparedStatement ps = conn.prepareStatement(sqlstr);
