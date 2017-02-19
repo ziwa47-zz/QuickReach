@@ -15,6 +15,7 @@ public class ClassGuest {
 	private String postcode;
 	private String birthday;
 	private String gender;   //13個//
+	private String item;
 	
 
 	public String getGuestId(){	
@@ -106,6 +107,13 @@ public class ClassGuest {
 	}
 	public void setGender(String gender){
 		this.gender = gender;
+	}
+	//--//
+	public String getItem(){
+		return item;
+	}
+	public void setItem(String item) {
+        this.item = item;	
 	}
 	//--end--//
 }
