@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import tw.iii.qr.IndependentOrder.model.entity.Company;
 import tw.iii.qr.IndependentOrder.model.entity.Warehouse;
 import tw.iii.qr.IndependentOrder.model.repository.AbstractDAO;
 import tw.iii.qr.IndependentOrder.model.repository.WarehouseDAO;
@@ -50,12 +49,6 @@ public class WarehouseService extends AbstractService<Warehouse> {
 		return map;
 		
 	}
-	
-	
-	
-	
-
-	
 	
 
 }
