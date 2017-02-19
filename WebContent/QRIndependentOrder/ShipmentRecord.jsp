@@ -4,7 +4,7 @@
 <%@ page import="tw.iii.qr.DataBaseConn"%>
 <%@ page import="tw.iii.qr.order.DTO.COrders"%>
 <%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.LinkedList,java.util.*,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse"%>
-<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.DTO.COrderFactory" scope="page" />
+<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.COrderFactory" scope="page" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -268,10 +268,10 @@
                 <th>出貨日期</th>
                 <th>出貨編號</th>
                 <th>類型</th>
-                <th>Ebay Account</th>
+                <th>可填入</th>
                 <th>Tracking Code</th>
                 <th>數量</th>
-                <th>寄送國家</th>
+                <th>可填入</th>
                 <th>Owner</th>
                 <th>出倉位置</th>
                 <th>處理人員</th>
@@ -369,10 +369,10 @@
                 <th>出貨日期</th>
                 <th>出貨編號</th>
                 <th>類型</th>
-                <th>Ebay Account</th>
+                <th>可填入</th>
                 <th>TrackingCode</th>
                 <th>數量</th>
-                <th>寄送國家</th>
+                <th>可填入</th>
                 <th>Owner</th>
                 <th>出倉位置</th>
                 <th>處理人員</th>

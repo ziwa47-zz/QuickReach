@@ -137,5 +137,6 @@
 </div>
 <a href="#" class="pop"> <img src="../img/clipboard-2.png" style="width: 50px; height: 50px;"> </a>
 <%@ include file="../href/footer.jsp"%>
+
 </body>
 </html>

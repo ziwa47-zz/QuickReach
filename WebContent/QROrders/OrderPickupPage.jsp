@@ -3,7 +3,7 @@
 <%@ page import="tw.iii.qr.DataBaseConn"%>
 <%@ page import="tw.iii.qr.order.DTO.COrders"%>
 <%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.LinkedList,java.util.*,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse"%>
-<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.DTO.COrderFactory" scope="page" />
+<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.COrderFactory" scope="page" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -20,6 +20,7 @@
   COrderFactory.checkUrlToRemoveSession(request, session);
   Connection conn = new DataBaseConn().getConn();
   LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"揀貨中");
+  
   LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts(conn);
   session.setAttribute("list", orderList);
   request.setAttribute("begin", request.getParameter("begin"));
@@ -242,7 +243,6 @@
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
           <label class="btn btn-sm btn-info">
 		    <input type="checkbox" autocomplete="off" onchange="selectAllOrders(this)"> 選擇全部
-		    
 		  </label>
           <button type="submit" name="send" value="revertTo" class="btn btn-md btn-info">回復至</button>
 		  <select name="status" class="form-control">
@@ -305,7 +305,7 @@
                   <tr style="background-color:#D4F4D8">
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
                     <td><a href="OrderDetailUnchangable.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td>${i.getCOrderMaster().getEbayNO()}
+                    <td>${i.getCOrderMaster().getEbayNO()}</td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td>${i.getCOrderMaster().getGuestAccount()}</td>
@@ -321,12 +321,13 @@
                   <tr style="background-color:#D4F4D8">
 					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
                       <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
-                    <td colspan="3">
+                    <td colspan="3" class="warehouseLocation">
                     <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                      <b>${k.getWarehouse()}</b>-${k.getWarehouseLocation() }<br/>
                     </c:forEach>
                     </td>
                   </tr>
@@ -354,12 +355,13 @@
                   <tr>
 					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
                       <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
-                    <td colspan="3">
+                    <td colspan="3" class="warehouseLocation">
                     <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                      <b>${k.getWarehouse()}</b>-${k.getWarehouseLocation() }<br/>
                     </c:forEach>
                     </td>
                   </tr>
@@ -461,12 +463,13 @@
                   <tr style="background-color:#D4F4D8">
 					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
                       <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
-                    <td colspan="3">
+                    <td colspan="3" class="warehouseLocation">
                     <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                      <b>${k.getWarehouse()}</b>-${k.getWarehouseLocation() }<br/>
                     </c:forEach>
                     </td>
                   </tr>
@@ -494,12 +497,13 @@
                   <tr>
 					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
                       <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
-                    <td colspan="3">
+                    <td colspan="3" class="warehouseLocation">
                     <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                      <b>${k.getWarehouse()}</b>-${k.getWarehouseLocation() }<br/>
                     </c:forEach>
                     </td>
                   </tr>
@@ -521,6 +525,16 @@
 
 <%@ include file="../href/footer.jsp" %>
 <script type="text/javascript">
+$(document).ready(function(){
+	$('.warehouseLocation').each(function(){
+		if($(this).text() == undefined || $(this).text().trim() == ""){
+			$(this).addClass("danger");
+		} else {
+		    $(this).addClass("success");
+		}
+	});
+});
+
 function selectAllOrders(ele) {
 	//select all
 	if (ele.checked) {

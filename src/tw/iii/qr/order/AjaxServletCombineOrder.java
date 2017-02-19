@@ -14,8 +14,6 @@ import javax.servlet.http.HttpSession;
 
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.order.DTO.COrderCombineDetail;
-import tw.iii.qr.order.DTO.COrderCombineFactory;
-import tw.iii.qr.order.DTO.COrderFactory;
 import tw.iii.qr.order.DTO.GuestAccountAndOrder;
 
 /**
@@ -85,9 +83,8 @@ public class AjaxServletCombineOrder extends HttpServlet {
 			String qrid = combineDetail.get(i).getD_qrid();
 			pic = OCFactory.GetPic(qrid, conn);
 			for(int j=0; j<pic.size(); j++){
-				out.println("<td><a href='#' class='pop'><img src='/pics/"+ pic.get(j) +"'  style='width: 100px; height: 100px;'></a></td>");
+				out.println("<td><a href='#' class='pop'><img src='/pics/"+ pic.get(j) +"'  style='width: 100px; height: 100px;' onclick='AjaxModal()'></a></td>");
 			}
-			out.println("<td><a href='#' class='pop'><img src='../img/clipboard-2.png' style='width: 50px; height: 50px;'></a></td>");
 			//class='img-responsive'z
 			out.println("</tr>");
 		}

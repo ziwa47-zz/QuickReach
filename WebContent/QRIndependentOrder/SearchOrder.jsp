@@ -3,7 +3,7 @@
 <%@ page import="tw.iii.qr.DataBaseConn"%>
 <%@ page import="tw.iii.qr.order.DTO.COrders"%>
 <%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.LinkedList,java.util.*,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse"%>
-<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.DTO.COrderFactory" scope="page" />
+<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.COrderFactory" scope="page" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="en">
 <head>
@@ -314,12 +314,12 @@
               <th nowrap>編輯</th>
               <th>訂單編號</th>
               <th>平台</th>
-              <th>Ebay Account</th>
+              <th>可填入</th>
               <th>客戶帳號</th>
               <th>購買日期</th>
               <th>出貨日期</th>
               <th>物流</th>
-              <th>國家</th>
+              <th>可填入</th>
               <th>訂單狀態</th>
               <th>總金額</th>
               <th nowrap>使用者</th>
@@ -441,12 +441,12 @@
               <th nowrap>編輯</th>
               <th>訂單編號</th>
               <th>平台</th>
-              <th>Ebay Account</th>
+              <th>可填入</th>
               <th>客戶帳號</th>
               <th>購買日期</th>
               <th>出貨日期</th>
               <th>物流</th>
-              <th>國家</th>
+              <th>可填入</th>
               <th>訂單狀態</th>
               <th>總金額</th>
               <th nowrap>使用者</th>

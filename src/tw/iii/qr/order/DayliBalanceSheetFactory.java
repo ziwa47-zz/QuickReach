@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.order.DTO.COrderDetail;
 import tw.iii.qr.order.DTO.COrders;
-import tw.iii.qr.stock.DTO.CProductFactory;
+import tw.iii.qr.stock.CProductFactory;
 
 public class DayliBalanceSheetFactory extends COrders {
 	
@@ -54,7 +54,8 @@ public class DayliBalanceSheetFactory extends COrders {
 			conn.close();
 			
 		} catch (Exception e) {
-			System.out.println("撈失敗哪招?"+e);
+			System.out.println("撈失敗哪招?");
+			e.printStackTrace();
 		}
 
 		

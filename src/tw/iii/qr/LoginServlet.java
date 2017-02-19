@@ -1,13 +1,10 @@
 package tw.iii.qr;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,134 +12,79 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.rowset.serial.SQLInputImpl;
 
 import tw.iii.Competenece.Competence;
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Statement state=null;
-	private ResultSet rs=null;
-	private String account="";
-	private String password="";
-	String competencelv="";
-	boolean accountCheck = false;
-	boolean statusCheck = false;
-	String staffName="";
-	HttpSession session=null;
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		try {
-//			processLogin(request,response);
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			System.out.println("NONO");
-//			response.sendRedirect("/Login.jsp?p=0");
-//		}
-	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		try {
-			processLogin(request,response);
+			processLogin(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-//			if(accountCheck){
-//				if(statusCheck){
-//					//response.sendRedirect("/Login.jsp?p=0");
-//				}else{
-//					request.setAttribute("statusError", 1);
-//					response.setContentType("text/html;charset=UTF-8");
-//					response.sendRedirect("/Login.jsp?p=0");
-//				}
-//			}else{
-//				//System.out.println("帳密打錯囉");
-//				request.setAttribute("accountError", 1);
-//				response.setContentType("text/html;charset=UTF-8");
-//				response.sendRedirect("/Login.jsp?p=0");
-//			}
 		}
-//		
-		
-			
+	
+
 	}
 
-	private void processLogin(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException, ClassNotFoundException, Exception {
-		
-		accountCheck = false;
-		statusCheck = false;
+	private void processLogin(HttpServletRequest request, HttpServletResponse response)
+			throws IllegalAccessException, ClassNotFoundException, Exception {
+
+		AccountInfodata ac = new AccountInfodata();
 		request.setCharacterEncoding("UTF-8");
-		account = request.getParameter("account");
-		password = request.getParameter("password");		
-		session = request.getSession();
-		
-		checkLogin(account,password);
-		
-		if(accountCheck){
-			//Login true
-			if(statusCheck){
-				System.out.println(competencelv);
-				session.setAttribute("account", account);
-				session.setAttribute("staffName",staffName);
-				competenceSession(request,competencelv);
+		ac.setAccount(request.getParameter("account"));
+		ac.setPassword(request.getParameter("password"));
+		HttpSession session = request.getSession();
+
+		if (checkLogin(ac)) {
+			// Login true
+				session.setAttribute("account", ac.getAccount());
+				session.setAttribute("staffName", ac.getStaffname());
+				competenceSession(request, ac.getCompetenceLV());
 				response.sendRedirect("/HomePage.jsp");
-			}else{
-				System.out.println("帳號未啟用");
-				session.setAttribute("statusError", 1);
-				response.setContentType("text/html;charset=UTF-8");
-				response.sendRedirect("/Login.jsp?p=0");
-			}
-		}else{
-			//Login false
-			System.out.println("帳密打錯囉");
+		} else {
+			// Login false
+			System.out.println("登入失敗");
 			session.setAttribute("accountError", 1);
 			response.setContentType("text/html;charset=UTF-8");
 			response.sendRedirect("/Login.jsp?p=0");
-			
 		}
-	
 	}
-	public void checkLogin(String account,String password) throws IllegalAccessException, ClassNotFoundException, Exception{
+
+	public boolean checkLogin(AccountInfodata ac)
+			throws IllegalAccessException, ClassNotFoundException, Exception {
 		Connection conn = new DataBaseConn().getConn();
-		String sqlstr = "SELECT * FROM accountinfo ;";
-		state = conn.createStatement();
-		rs = state.executeQuery(sqlstr);
+		String sqlstr = "SELECT account,password,lastName,firstName,competenceLV,status FROM accountinfo where account = ?;";
+		PreparedStatement ps = conn.prepareStatement(sqlstr);
+		ps.setString(1, ac.getAccount());
+		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {
-			if(account.equals(rs.getString(1))){
-				//System.out.println("acc");
-				if(password.equals(rs.getString(2))){
-					//System.out.println("pass");
-					accountCheck = true;
-					if(rs.getInt(9)==1){
-						System.out.println("帳號狀態:"+rs.getInt(9));
-						staffName = rs.getString(3)+rs.getString(4);
-						System.out.println(staffName);
-						competencelv = rs.getString(8);
-						
-						statusCheck = true;
-						
-						return ;
-					}
-										
-				}
-						
+			if (ac.getAccount().equals(rs.getString(1)) && ac.getPassword().equals(rs.getString(2)) && rs.getInt(6) == 1) {
+				ac.setStatus(rs.getInt(6));
+				ac.setLastname(rs.getString(3));
+				ac.setFirstname(rs.getString(4));
+				ac.setStaffname(ac.getLastname()+ac.getFirstname());
+				ac.setCompetenceLV(rs.getString(5));
+				System.out.println(ac.getStaffname()+" 帳號狀態:" + ac.getStatus() + "帳號等級: "+ac.getCompetenceLV());
+				return true;
 			}
-
 		}
-
-		rs.close();
-		state.close();
-		conn.close();
 		
+		rs.close();
+		ps.close();
+		conn.close();
+		return false;
 	}
-	
-	public void competenceSession(HttpServletRequest request,String competencelv)
+
+	public void competenceSession(HttpServletRequest request, String competencelv)
 			throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
 
-		session = request.getSession(false);
+		HttpSession session = request.getSession(false);
 		Connection conn = new DataBaseConn().getConn();
 		String sqlstr = "SELECT * FROM competencelv where competenceLV= ? ";
 		Competence ct = new Competence();
@@ -172,33 +114,12 @@ public class LoginServlet extends HttpServlet {
 			ct.setParamSettingEdit(rs.getInt(19));
 			ct.setInventoryCostView(rs.getInt(20));
 
-			
-			// session.setAttribute("productManage",rs.getInt(2));
-			// session.setAttribute("purchaseManage",rs.getInt(3));
-			// session.setAttribute("inventoryManage",rs.getInt(4));
-			// session.setAttribute("inventoryInfoEdit",rs.getInt(5));
-			// session.setAttribute("clientManage",rs.getInt(6));
-			// session.setAttribute("entireOrders",rs.getInt(7));
-			// session.setAttribute("ordersInvoiceDownload",rs.getInt(8));
-			// session.setAttribute("priceChange",rs.getInt(9));
-			// session.setAttribute("pendingOrdersEdit",rs.getInt(10));
-			// session.setAttribute("totalAmountEdit",rs.getInt(11));
-			// session.setAttribute("ordersManage",rs.getInt(12));
-			// session.setAttribute("chartView",rs.getInt(13));
-			// session.setAttribute("productProfitView",rs.getInt(14));
-			// session.setAttribute("reportView",rs.getInt(15));
-			// session.setAttribute("productCostView",rs.getInt(16));
-			// session.setAttribute("accountInfoEdit",rs.getInt(17));
-			// session.setAttribute("paramSettingEdit",rs.getInt(18));
-			// session.setAttribute("ebayPaypalAccountEdit",rs.getInt(19));
-			// session.setAttribute("inventoryCostView",rs.getInt(20));
-
 		}
 		session.setAttribute("PageCompetence", ct);
 		rs.close();
 		ps.close();
 		conn.close();
 	}
-	
-	
+
 }
+

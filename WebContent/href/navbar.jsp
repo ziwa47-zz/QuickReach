@@ -140,8 +140,8 @@ $(function () {
 });
 	
 $( document ).ready(function() {
-$('body').css({'font-family': 'Noto Sans TC'});
-	});
+	$('body').css({'font-family': 'Noto Sans TC'});
+});
 //Modal
 $(function() {
 		$('.pop').on('click', function() {
@@ -149,6 +149,13 @@ $(function() {
 			$('#imagemodal').modal('show');   
 		});		
 });
+//AjaxModal
+function AjaxModal() {
+	$('.pop').on('click', function() {
+		$('.imagepreview').attr('src', $(this).find('img').attr('src'));
+		$('#imagemodal').modal('show');   
+	});		
+}
 
 </script>
 </head>
