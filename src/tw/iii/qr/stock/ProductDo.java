@@ -90,6 +90,9 @@ public class ProductDo extends HttpServlet {
 				out.write("</script>");
 				// session.removeAttribute("excelpath");
 				break;
+			case "modifyStorage":
+				processModifyStorage(request,response);
+				break;			
 			default:
 				break;
 				
@@ -101,6 +104,52 @@ public class ProductDo extends HttpServlet {
 	}
 
 	
+
+	private void processModifyStorage(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		
+		out = response.getWriter();
+		HttpSession session = request.getSession(); 
+		
+		String sku = request.getParameter("txtsku");
+		String stockID = request.getParameter("txtstockID");
+		String modifyType = request.getParameter("ddlModifyType");
+		String count = request.getParameter("txtCount");
+		String wareHouse = request.getParameter("wareHouse");
+		String comment = request.getParameter("txtComment");
+		String staffName= session.getAttribute("staffName").toString();
+		
+		int modifyCount = 0;
+		
+		if("increase".equals(modifyType))
+		{	
+			modifyCount=Integer.valueOf(count);
+			comment="增加;"+comment;
+		}
+		else if("decrease".equals(modifyType))
+		{
+			modifyCount=(-1)*Integer.valueOf(count);
+			comment="減少;"+comment;
+		}
+		
+		conn = new DataBaseConn().getConn();
+		
+		CStockFactory csf = new CStockFactory();
+		
+		csf.modifyStorage(modifyCount, comment, sku, wareHouse);
+		csf.modifyStorageLogMaster(stockID, comment, staffName, wareHouse);
+		csf.modifyStorageLogDetail(stockID, comment, sku, wareHouse, modifyCount);
+		
+		conn.close();
+		
+		out.write("<script type='text/javascript'>");
+		out.write("alert('修改成功');");
+		out.write("window.location = 'QRProduct/StockDetail.jsp?sku="+sku+"';");
+		out.write("</script>");
+		
+	}
+
 
 	private void processcountingsearch(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
 		request.setCharacterEncoding("UTF-8");
