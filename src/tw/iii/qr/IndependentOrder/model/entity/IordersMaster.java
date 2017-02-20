@@ -1,6 +1,6 @@
 package tw.iii.qr.IndependentOrder.model.entity;
 // default package
-// Generated 2017/2/18 �U�� 10:32:46 by Hibernate Tools 4.0.0.Final
+// Generated 2017/2/20 �U�� 10:29:56 by Hibernate Tools 4.0.0.Final
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -26,7 +26,7 @@ public class IordersMaster implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6315325721356186327L;
+	private static final long serialVersionUID = -4771233345212281182L;
 	private Integer item;
 	private String qrId;
 	private String transactionId;
@@ -60,6 +60,7 @@ public class IordersMaster implements Serializable {
 	private String isCombine;
 	private String combineSku;
 	private BigDecimal paypalPrice;
+	private String country;
 
 	public IordersMaster() {
 	}
@@ -74,7 +75,7 @@ public class IordersMaster implements Serializable {
 			BigDecimal insuranceFee, BigDecimal insuranceTotal, String currency, BigDecimal weight,
 			BigDecimal totalWeight, String fedexService, String fedexPacking, String staffName, String size,
 			BigDecimal totalPrice, String trackingCode, String comment, BigDecimal packageFees, BigDecimal paypalTotal,
-			BigDecimal paypalNet, String isCombine, String combineSku, BigDecimal paypalPrice) {
+			BigDecimal paypalNet, String isCombine, String combineSku, BigDecimal paypalPrice, String country) {
 		this.qrId = qrId;
 		this.transactionId = transactionId;
 		this.platform = platform;
@@ -107,6 +108,7 @@ public class IordersMaster implements Serializable {
 		this.isCombine = isCombine;
 		this.combineSku = combineSku;
 		this.paypalPrice = paypalPrice;
+		this.country = country;
 	}
 
 	@Id
@@ -410,6 +412,15 @@ public class IordersMaster implements Serializable {
 
 	public void setPaypalPrice(BigDecimal paypalPrice) {
 		this.paypalPrice = paypalPrice;
+	}
+
+	@Column(name = "country", length = 45)
+	public String getCountry() {
+		return this.country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 }
