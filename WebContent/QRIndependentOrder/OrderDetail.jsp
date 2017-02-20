@@ -31,26 +31,26 @@ conn.close();
 	response.sendRedirect("QROrders/SearchOrder.jsp");	
 }
 %>
- <div class="nav">
+<div class="nav">
   <div class="container">
-    <div class="navbar-left" style="background-color:#F3CE9A;" >
+    <div class="navbar-left" style="background-color:#3DFF81;" >
       <ul class="nav nav-tabs">
-        <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp" style="color:#FFFFFF">訂單管理</a></li>
+        <li class="" style="background-color:#189B30"><a href="SearchOrder.jsp?begin=0&end=10" style="color:#FFFFFF">獨立出貨</a></li>
         <c:if test="${PageCompetence.getEntireOrders() == 1 }"> 
-        	<li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
+        	<li><a href="/QROrders/DayliBalanceSheet.jsp" >日結表</a></li>
       	</c:if>
       </ul>
     </div>
   </div>
   <div class="container">
-    <div class="nav" style="background-color:#A45A21;" >
+    <div class="nav" style="background-color:#189B30;" >
       <ul class="nav nav-tabs">
         <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
-        <li><a href="OrderProcessingPage.jsp?begin=0&end=10" style="color:#fff">處理中</a></li>
-        <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
-        <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
-        <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
-        <li><a href="ShipmentRecord.jsp?begin=0&end=10" >訂單出貨記錄</a></li>
+        <li><a href="IndependentOrder.jsp?begin=0&end=10">新增訂單</a></li>
+        <li><a href=""  style="color:#fff">揀貨中</a></li>
+        <li><a href="UploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
+        <li><a href="Finished.jsp?begin=0&end=10">已完成訂單</a></li>
+        <li><a href="ShipmentRecord.jsp?begin=0&end=10">訂單出貨記錄</a></li>
         <li><a href="refundPage.jsp?begin=0&end=10" >退貨</a></li>
       </ul>
     </div>
@@ -65,7 +65,7 @@ conn.close();
   </ol>
 </div>
 
-  <div class="container table-responsive" style="background: #D9A56B; border-radius:20px;">
+  <div class="container table-responsive" style="background: #99C61D; border-radius:20px;">
   	<form name="searchform" method="post" action="../OrdersServlet" class="form-inline container" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px;" onsubmit="return isSubmited()">
 	<c:if test="${PageCompetence.getPendingOrdersEdit() == 1}">  	

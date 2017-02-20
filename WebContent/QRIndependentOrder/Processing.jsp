@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>已完成頁面</title>
+<title>處理中頁面</title>
 </head>
 <body>
 <%@ include file = "/href/navbar.jsp"%>
@@ -17,33 +17,35 @@
 <% response.sendRedirect("/HomePage.jsp"); %>   
 </c:if>
 <%
-  Connection conn = new DataBaseConn().getConn();
-  LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"已完成");
-  LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts(conn);
-  session.setAttribute("list", orderList);
-  request.setAttribute("begin", request.getParameter("begin"));
-  request.setAttribute("end", request.getParameter("end"));
-  session.setAttribute("ebayAccounts", ebayAccounts);
+	COrderFactory.checkUrlToRemoveSession(request, session);
+	Connection conn = new DataBaseConn().getConn();
+	LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"處理中");
+	LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts(conn);
+	session.setAttribute("list", orderList);
+    request.setAttribute("begin", request.getParameter("begin"));
+    request.setAttribute("end", request.getParameter("end"));
+    session.setAttribute("ebayAccounts", ebayAccounts);
 %>
 <div class="nav">
   <div class="container">
-    <div class="navbar-left" style="background-color:#F3CE9A;" >
+    <div class="navbar-left" style="background-color:#3DFF81;" >
       <ul class="nav nav-tabs">
-        <li class="" style="background-color:#A45A21"><a href="SearchOrder.jsp?begin=0&end=10" style="color:#FFFFFF">訂單管理</a></li>
+        <li class="" style="background-color:#189B30"><a href="SearchOrder.jsp?begin=0&end=10" style="color:#FFFFFF">獨立出貨</a></li>
         <c:if test="${PageCompetence.getEntireOrders() == 1 }"> 
-        	<li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
+        	<li><a href="/QROrders/DayliBalanceSheet.jsp" >日結表</a></li>
       	</c:if>
       </ul>
     </div>
   </div>
   <div class="container">
-    <div class="nav" style="background-color:#A45A21;" >
+    <div class="nav" style="background-color:#189B30;" >
       <ul class="nav nav-tabs">
         <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
-        <li><a href="OrderProcessingPage.jsp?begin=0&end=10">處理中</a></li>
-        <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
-        <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
-        <li><a href="OrderFinished.jsp?begin=0&end=10"  style="color:#fff">已完成訂單</a></li>
+        <li><a href="IndependentOrder.jsp?begin=0&end=10">新增訂單</a></li>
+        <li><a href=""  style="color:#fff">處理中</a></li>
+        <li><a href="Pickup.jsp?begin=0&end=10">揀貨中</a></li>
+        <li><a href="UploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
+        <li><a href="Finished.jsp?begin=0&end=10">已完成訂單</a></li>
         <li><a href="ShipmentRecord.jsp?begin=0&end=10">訂單出貨記錄</a></li>
         <li><a href="refundPage.jsp?begin=0&end=10" >退貨</a></li>
       </ul>
@@ -55,17 +57,16 @@
   <ol class="breadcrumb" >
     <li><a href="/HomePage.jsp" >首頁</a></li>
     <li class="active" style="display:"><a href="SearchOrder.jsp?begin=0&end=10">訂單管理</a></li>
-    <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
+    <li><a href="Processing.jsp?begin=0&end=10">處理中</a></li>
   </ol>
 </div>
 
 <div class="nav">
-  <div class="container" style="background: #D9A56B; border-radius:20px;">
-    <form name="searchform" method="post" action="../StatusDo" class="form-inline container"
+  <div class="container" style="background:#99C61D; border-radius:20px;">
+    <form name="searchform" method="post" action="../OrdersServlet" class="form-inline container"
     style="font-size: 100%; vertical-align: baseline; padding: 15px;">
       <fieldset class="font-weight" style="padding:0 30px 0 0;">
-        <legend>已完成</legend>
-        <input type="hidden">
+        <legend>處理中</legend>
         <div class="row">
           <div class="col-md-4 form-group ">
             <div class="row">
@@ -110,18 +111,6 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-8 form-group ">
-            <div class="row">
-              <div class="col-md-2">
-                <h5>
-                  <label>出貨單號：</label>
-                </h5>
-              </div>
-              <div class="col-md-6 input-group" style="padding-left: 15px; padding-right: 35px">
-                <input class="form-control" name="QR_id" type="text" style="border-radius: 4px">
-              </div>
-            </div>
-          </div>
           <div class="col-md-4 form-group ">
             <div class="row">
               <div class="col-md-4">
@@ -131,20 +120,6 @@
               </div>
               <div class="col-md-8" style="padding-left: 15px; padding-right: 35px">
                 <input class="form-control" name="guestAccount" type="text" style="border-radius: 4px">
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-8 form-group ">
-            <div class="row">
-              <div class="col-md-2">
-                <h5>
-                  <label>Tracking Code：</label>
-                </h5>
-              </div>
-              <div class="col-md-6 input-group" style="padding-left: 15px; padding-right: 35px">
-                <input class="form-control" name="trackingCode" type="text" style="border-radius: 4px">
               </div>
             </div>
           </div>
@@ -251,8 +226,8 @@
         </div>
         <br/>
         <div class="row text-center" >
-          <input type="hidden" name="processing"  value="finished"> <!-- 控制搜尋結果在已完成-->
-          <button class="btn btn-lg btn-primary" type="submit" name="submit" value="finishedSearch">搜尋</button>
+          <input type="hidden" name="processing"  value="processing"> <!-- 控制搜尋結果在處理中 -->
+          <button class="btn btn-lg btn-primary" type="submit" name="submit" value="processingSearch">搜尋</button>
           <button class="btn btn-lg btn-primary" type="button" name="" >清空</button>
         </div>
       </fieldset>
@@ -261,34 +236,40 @@
   <hr/>
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
         <form name="searchform" method="post" action="../StatusDo" class="form-inline container"
-          style="font-size: 100%; vertical-align: baseline; padding: 15px; "  onsubmit="return noSelected()">
-           <button type="submit" name="send" value="printdaily" class="btn btn-md btn-info">列印日結表</button>
-     <button type="submit" name="send" value="printdailyreport" class="btn btn-md btn-info">列印日出貨報表</button>
+          style="font-size: 100%; vertical-align: baseline; padding: 15px; "  onsubmit="return isSubmited()">
+          <label class="btn btn-sm btn-info">
+		    <input type="checkbox" autocomplete="off" onchange="selectAllOrders(this)"> 選擇全部
+		  </label>
+		  <button type="submit" name="send" value="revertTo" class="btn btn-md btn-info">回復至</button>
+		  <select name="status" class="form-control">
+		    <option></option>
+		    <option>待處理</option>
+		  </select>
           <ul class="pager pagination">
             <c:choose>
               <c:when test="${begin != 0}">
-                <li><a href="OrderFinished.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
+                <li><a href="OrderProcessingPage.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
               </c:when>
               <c:otherwise>
-                <li class="disabled"><a href="OrderFinished.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
+                <li class="disabled"><a href="OrderProcessingPage.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
               </c:otherwise>
             </c:choose>
             <c:forEach begin="0" end="${list.size()/10}" step="1" varStatus="check">
               <c:choose>
                 <c:when test="${(check.index*10) != begin}">
-                  <li><a href="OrderFinished.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
+                  <li><a href="OrderProcessingPage.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
                 </c:when>
                 <c:otherwise>
-                  <li class="active"><a href="OrderFinished.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
+                  <li class="active"><a href="OrderProcessingPage.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
                 </c:otherwise>
               </c:choose>
             </c:forEach>
             <c:choose>
               <c:when test="${end < list.size()}">
-                <li><a href="OrderFinished.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
+                <li><a href="OrderProcessingPage.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:when>
               <c:otherwise>
-                <li class="disabled"><a href="OrderFinished.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
+                <li class="disabled"><a href="OrderProcessingPage.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:otherwise>
             </c:choose>
             <label>共有:${list.size()}筆</label>
@@ -313,7 +294,7 @@
               <c:choose>
                 <c:when test="${check.index%2 != 0}">
                   <tr style="background-color:#D4F4D8">
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}" onchange="preventDoubleOrder(this)"></td>
+                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getCOrderMaster().getEbayNO()}
                     <td>${i.getCOrderMaster().getPlatform()}</td>
@@ -331,12 +312,13 @@
                   <tr style="background-color:#D4F4D8">
 					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
                       <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
-                    <td colspan="3">
+                    <td colspan="3" class="warehouseLocation" id="${i.getCOrderMaster().getQR_id()}">
                     <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                      <b>${k.getWarehouse()}</b>${k.getWarehouseLocation() }<br/>
                     </c:forEach>
                     </td>
                   </tr>
@@ -346,7 +328,7 @@
                 </c:when>
                 <c:otherwise>
                   <tr>
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}" onchange="preventDoubleOrder(this)"></td>
+                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}" onchange=""></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getCOrderMaster().getEbayNO()}
                     <td>${i.getCOrderMaster().getPlatform()}</td>
@@ -364,12 +346,13 @@
                   <tr>
 					<td colspan="9">
                     <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                      <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
                       <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
-                    <td colspan="3">
+                    <td colspan="3" class="warehouseLocation" id="${i.getCOrderMaster().getQR_id()}">
                     <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>(倉別)<br/>
+                      <b>${k.getWarehouse()}</b>${k.getWarehouseLocation() }<br/>
                     </c:forEach>
                     </td>
                   </tr>
@@ -380,15 +363,21 @@
               </c:choose>
             </c:forEach>
           </table>
-          <div class="row text-center" >
-            <button type="submit" name="send" value="finished" class="btn btn-lg btn-primary">退貨</button>
-           
-          </div>
         </form>
       </div>
 </div>
-<%@ include file="/href/footer.jsp" %>
+
+<%@ include file="../href/footer.jsp" %>
 <script type="text/javascript">
+$(document).ready(function(){
+	$('.warehouseLocation').each(function(){
+		if($(this).text() == undefined || $(this).text().trim() == ""){
+			$(this).addClass("danger");
+		} else {
+		    $(this).addClass("success");
+		}
+	});
+});
 function selectAllOrders(ele) {
 	//select all
 	if (ele.checked) {
@@ -397,15 +386,27 @@ function selectAllOrders(ele) {
     	$("input[name=QR_id]").prop("checked", false);
     }
 };
-function preventDoubleOrder(ele){
-	  var id = ele.value;
-	  if (ele.checked) {
-		  $("input[name=QR_id]").prop("disabled",true);
-		  $(ele).prop("disabled",false);
-	  } else {
-		  $("input[name=QR_id]").prop("disabled",false);
-	  }
- };
+function isSubmited() {
+	var id;
+	var tdWarehouseClass;
+	var bool = true; 
+	var count = 0;
+	$('input[name=QR_id]:checked').each(function(){
+		count = count + 1;
+		id = $(this).val();
+		tdWarehouseClass = $('#' + id).attr('class');
+		if(tdWarehouseClass.endsWith('danger')) {
+			bool = false;
+			return false;
+		}
+	});
+	if (count == 0) {
+		alert('請勾選訂單');
+		return false;
+	}
+	return bool;
+};
 </script>
 </body>
+  
 </html>
