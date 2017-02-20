@@ -62,33 +62,13 @@ function autoSetProductDetail() {
         dataType: "json", 
 
         success : function(response){       	
-        	
             	 $("#pName"+setValueId).val(response.pName);
                  $("#spec"+setValueId).val(response.spec);
                  $("#color"+setValueId).val(response.color);
                  $("#owner"+setValueId).val(response.owner);
 
         }        
-	});
-	
-	$.ajax({
-			
-			type:"GET",                  
-		    url: "/ajax/getStorageWarehouse",        
-		    data: $("#listForm").serialize(), 
-	        dataType: "json", 
-	
-	        success : function(response){       	
-	        	 $.each(response.data, function(i, item){
-					 alert(item.warehouse)
-					 $("#warehouse"+setValueId).append($("<option></option>").attr("value", item.warehouse+":"+item.warehousePosition).text(item.warehouse+":"+item.warehousePosition));
-					 
-				 })
-	
-	        }        
-		});
-	
-	
+	})
 
 }
 
@@ -169,7 +149,6 @@ function getIorderMasterId() {
 }
 
 
-
 //查詢客戶資料
 function getGuestData() {
 	
@@ -206,11 +185,10 @@ function getGuestData() {
 
      
 $(function() {	
-	
 	//取得公司列表
 	getCompanyList();
-	//取得倉庫列表(輝哥不給我取得)
-	//getWarehouseList();
+	//取得倉庫列表
+	getWarehouseList();
 	//取得訂單號碼
 	getIorderMasterId();
 	
@@ -234,7 +212,6 @@ $(function() {
 	    	
 	    	} else {
 	    		$('#submitButton').attr('disabled', 'disabled');
-	    		getIorderMasterId();
 	        	alert("此訂單單單號:"+$("#iorderMasterId").val())
 	        	form.submit();
 	    	}
@@ -460,8 +437,8 @@ $(function() {
 	                  	+'</div>'
 
 						);
-		//帶入倉庫選擇列表(輝哥不給我帶入)
-		//getWarehouseList();
+		//帶入倉庫選擇列表
+		getWarehouseList();
 
 		$("#count").val(dynamicId);
 		
@@ -500,46 +477,44 @@ display: block;
 <c:if test="${PageCompetence.getInventoryManage() == 0 }">  
 <% response.sendRedirect("/HomePage.jsp"); %>   
 </c:if>
-	<div class="nav">
-	
-		<div class="container">
-			<div class="navbar-left" style="background-color: #BCF1E5;">
-				<ul class="nav nav-tabs">
-					<li ><a href="SearchOrder.jsp?begin=0&end=10" >訂單管理</a></li>
-        			<c:if test="${PageCompetence.getEntireOrders() == 1 }"> 
-        				<li><a href="DayliBalanceSheet.jsp" >日結表</a></li>
-      				</c:if>
-      				<li class="" style="background-color:#1CAF9A" ><a href="IndependentOrder.jsp?begin=0&end=10" style="color:#FFFFFF">獨立訂單</a></li>
-				</ul>
-			</div>
-		</div>
-		
-		<div class="container">
-			<div class="nav" style="background-color: #1CAF9A;">
-				<ul class="nav nav-tabs">
-				<li><a href="IndependentOrder.jsp?begin=0&end=10" style="color:#fff">新增訂單</a></li>
-					<li><a href="SearchOrder.jsp?begin=0&end=10" >查詢訂單</a></li>
-        			<li><a href="OrderProcessingPage.jsp?begin=0&end=10">處理中</a></li>
-        			<li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
-        			<li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
-        			<li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
-        			<li><a href="ShipmentRecord.jsp?begin=0&end=10" >訂單出貨記錄</a></li>
-        			<li><a href="refundPage.jsp?begin=0&end=10" >退貨</a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
+<div class="nav">
+  <div class="container">
+    <div class="navbar-left" style="background-color:#3DFF81;" >
+      <ul class="nav nav-tabs">
+        <li class="" style="background-color:#189B30"><a href="SearchOrder.jsp?begin=0&end=10" style="color:#FFFFFF">獨立出貨</a></li>
+        <c:if test="${PageCompetence.getEntireOrders() == 1 }"> 
+        	<li><a href="/QROrders/DayliBalanceSheet.jsp" >日結表</a></li>
+      	</c:if>
+      </ul>
+    </div>
+  </div>
+  <div class="container">
+    <div class="nav" style="background-color:#189B30;" >
+      <ul class="nav nav-tabs">
+        <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
+        <li><a href="" style="color:#fff">新增訂單</a></li>
+        <li><a href="Processing.jsp?begin=0&end=10">處理中</a></li>
+        <li><a href="Pickup.jsp?begin=0&end=10">揀貨中</a></li>
+        <li><a href="UploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
+        <li><a href="Finished.jsp?begin=0&end=10">已完成訂單</a></li>
+        <li><a href="ShipmentRecord.jsp?begin=0&end=10">訂單出貨記錄</a></li>
+        <li><a href="refundPage.jsp?begin=0&end=10" >退貨</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
 
-	<div class="container container-fluid breadcrumbBox">
-		<ol class="breadcrumb">
-			<li><a href="/HomePage.jsp" >首頁</a></li>
-    		<li class="active" style="display:"><a href="IndependentOrder.jsp?begin=0&end=10">獨立訂單</a></li>
-    		<li><a href="IndependentOrder.jsp?begin=0&end=10">新增訂單</a></li>
-		</ol>
-	</div>
+<div class="container container-fluid breadcrumbBox">
+  <ol class="breadcrumb" >
+    <li><a href="/HomePage.jsp" >首頁</a></li>
+    <li class="active" style="display:"><a href="SearchOrder.jsp?begin=0&end=10">訂單管理</a></li>
+    <li><a href="Pickup.jsp?begin=0&end=10">揀貨中</a></li>
+  </ol>
+</div>
 
-	<div class="container" style="background: #9DDCD1; border-radius: 20px">
-		<form id="listForm" name="listForm" method="post"	action=<c:url value='../independentOrder/'/>
+  <div class="container" style="background:#99C61D; border-radius:20px;">
+		<form id="listForm" name="listForm" method="post"
+			action=<c:url value='../independentOrder/'/>
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
 			class="form-inline container">
 

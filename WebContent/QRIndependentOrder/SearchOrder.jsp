@@ -42,7 +42,8 @@
     <div class="nav" style="background-color:#189B30;" >
       <ul class="nav nav-tabs">
         <li><a href="" style="color:#fff">查詢訂單</a></li>
-        <li><a href="NewOrder.jsp?begin=0&end=10">新增訂單</a></li>
+        <li><a href="IndependentOrder.jsp?begin=0&end=10">新增訂單</a></li>
+        <li><a href="Processing.jsp?begin=0&end=10">處理中</a></li>
         <li><a href="Pickup.jsp?begin=0&end=10">揀貨中</a></li>
         <li><a href="UploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="Finished.jsp?begin=0&end=10">已完成訂單</a></li>
