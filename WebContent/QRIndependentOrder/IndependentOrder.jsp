@@ -234,6 +234,7 @@ $(function() {
 	    	
 	    	} else {
 	    		$('#submitButton').attr('disabled', 'disabled');
+	    		getIorderMasterId();
 	        	alert("此訂單單單號:"+$("#iorderMasterId").val())
 	        	form.submit();
 	    	}
