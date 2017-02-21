@@ -67,7 +67,7 @@ conn.close();
 
   <div class="container table-responsive" style="background: #D9A56B; border-radius:20px;">
   	<form name="searchform" method="post" action="../OrdersServlet" class="form-inline container" 
-  	style="font-size: 100%; vertical-align: baseline; padding: 15px;" onsubmit="return isLessTotalPrice()">
+  	style="font-size: 100%; vertical-align: baseline; padding: 15px;" onsubmit="return isSubmited()">
 	<c:if test="${PageCompetence.getPendingOrdersEdit() == 1}">  	
 	  	<div class="row">
 	      <label for="inputPassword" class="col-md-2 control-label text-left">編輯模式</label>
@@ -75,6 +75,7 @@ conn.close();
 	        <label class="radio-inline"><input type="checkbox" name="optionsRadios" id="optionsCheck" onchange="enableFields(this)">開關</label>
 	    	<label class="radio-inline">
 	    	<button type="submit" name="submit" value="updateOrder" class="btn btn-lg btn-success" id="btnCheck" disabled>更新商品資料</button>
+	    	<a href="../OrderProcessingPage.jsp?begin=0&end=10" class="btn btn-info" role="button">回到處理中</a>
 	      	</label>
 	      </div>
 	    </div>
@@ -366,9 +367,8 @@ conn.close();
 		           	</c:if>
 		            <td>
 		              <input class="" type="text" name="qty" value="${i.getQty()}">
-		             	 倉別:${i.getWarehouse()}<br/>
+		             	 倉別:
 		              <select name="warehouse">
-                        <option></option>
                         <c:set var="SKU" scope="session" value="${i.getSKU()}"/>
                         <%
                         if(session.getAttribute("SKU") != null){
@@ -378,9 +378,17 @@ conn.close();
                         	session.setAttribute("warehouses", "");
                         }
                         %>
-                        <c:forEach var="w" items="${warehouses}">
-                        <option value="${w}">${w}</option>
-                        </c:forEach>
+                        <c:choose>
+                          <c:when test="${i.getWarehouse() != null || i.getWarehouse() != ''}">
+                            <option value="${i.getWarehouse()}">${i.getWarehouse()}</option>
+		                  </c:when>
+		                  <c:otherwise>
+		                    <option></option>
+		                  </c:otherwise>
+		                </c:choose>
+                          <c:forEach var="w" items="${warehouses}">
+                            <option value="${w}">${w}</option>
+                          </c:forEach>
                       </select>
 		            </td>
 		            <td><input class="" type="text" name="comment" value="${i.getComment()}">
@@ -410,35 +418,43 @@ $(function () {
 	});
 });
   
-  function enableFields(ele){
-	  if (ele.checked) {
-		  $("#myfields").prop("disabled", false);
-		  $("#btnCheck").prop("disabled", false);
-	  } else {
-		  $("#myfields").prop("disabled", true);
-		  $("#btnCheck").prop("disabled", true);
- 	  }
-   };
+ function enableFields(ele){
+  if (ele.checked) {
+	  $("#myfields").prop("disabled", false);
+	  $("#btnCheck").prop("disabled", false);
+  } else {
+	  $("#myfields").prop("disabled", true);
+	  $("#btnCheck").prop("disabled", true);
+	  }
+  };
 
-   function isLessTotalPrice() {
-		var sum = 0;
-	    $('input[name="price"]').each(function(){
-	        sum += +$(this).val();
-	    });
-	    var total = $('#TotalPrice').val();
-	    if (sum>total || sum <=0)
-	    {
-	    	alert("請注意,修改後金額小於原始金額");
-	        return false;
-	    } else if (sum>total || sum <=0)
-	    {
-	    	alert("請注意,修改後金額小於等於0");
-	        return false;
-	    } else {
-	        return true;
-	    }
-	}
+function isSubmited() {
+	//isLessTotalPrice()
+	var sum = 0;
+    $('input[name="price"]').each(function(){
+        sum += +$(this).val();
+    });
+    var total = $('#TotalPrice').val();
+    if (sum>total || sum <=0)
+    {
+    	alert("請注意,修改後金額小於原始金額,不可更改");
+        return false;
+    } else if (sum>total || sum <=0)
+    {
+    	alert("請注意,修改後金額小於等於0");
+        return false;
+    }
+    //isWarehousePicked()
+    var isWarehousePicked = true;
+    $('select[name=warehouse]').each(function(){
+    	if($(this).val() == undefined || $(this).val().trim() == ""){
+    		alert("請選擇倉別");
+    		isWarehousePicked = false;
+    		return false;
+		}
+    });
+    return isWarehousePicked;
+}
 </script>  
-
 </body>
 </html>	

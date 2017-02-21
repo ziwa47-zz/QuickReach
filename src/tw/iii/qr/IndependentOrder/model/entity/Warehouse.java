@@ -1,14 +1,14 @@
 package tw.iii.qr.IndependentOrder.model.entity;
 // default package
-// Generated 2017/2/11 �U�� 10:22:02 by Hibernate Tools 4.0.0.Final
+// Generated 2017/2/16 �W�� 08:02:48 by Hibernate Tools 4.0.0.Final
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 

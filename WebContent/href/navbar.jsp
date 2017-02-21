@@ -83,6 +83,17 @@ $(function() {
 		dateFormat : 'yy-mm-dd',
 
 	});
+	$("input[name=birthday]").datepicker({
+		dateFormat : 'yy-mm-dd',
+
+	});
+	
+	$("input[name=date]").datepicker({
+		dateFormat : 'yy-mm-dd',
+		
+	});
+
+	
 	 $("input[name=date1]").datepicker({dateFormat : 'yy-mm-dd'});
         $("input[name=date2]").datepicker({dateFormat : 'yy-mm-dd'});
         $("input[name=payDateMin]").datepicker({dateFormat : 'yy-mm-dd'});
@@ -127,10 +138,26 @@ $(function () {
 		}
 	});
 });
+
+function noSelected() {
+	var count = 0;
+	$('input[name=QR_id]:checked').each(function(){
+		count = count + 1;
+		id = $(this).val();
+		tdWarehouseClass = $('#' + id).attr('class');
+		if(tdWarehouseClass.endsWith('danger')) {
+			return false;
+		}
+	});
+	if (count == 0) {
+		alert('請勾選訂單');
+		return false;
+	}
+}
 	
 $( document ).ready(function() {
-$('body').css({'font-family': 'Noto Sans TC'});
-	});
+	$('body').css({'font-family': 'Noto Sans TC'});
+});
 //Modal
 $(function() {
 		$('.pop').on('click', function() {

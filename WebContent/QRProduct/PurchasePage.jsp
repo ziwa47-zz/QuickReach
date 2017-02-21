@@ -13,6 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>進貨</title>
 <script src="../js/jquery-1.12.4.min.js"></script><!-- jqueryAutoComplete 不可以在../js/jquery-1.12.4.min.js 之前 -->
+<link rel="stylesheet" href="../css/smoothness/jquery-ui.min.css" rel="stylesheet">
 
 
 <script type="text/javascript">
