@@ -36,7 +36,7 @@ public class IndependentOrderController {
 	@Resource
 	IordersDetailService iordersDetailService;
 
-	private static final String ORDER_STATUS_PICK_UP = "處理中";
+	private static final String ORDER_STATUS_PROCESSING = "處理中";
 	
 	
 	/**處理獨立訂單<br/>
@@ -128,7 +128,7 @@ public class IndependentOrderController {
 			iorderMaster.setCurrency(currency);
 			iorderMaster.setComment(masterComment);
 			iorderMaster.setPaypalPrice(new BigDecimal(paypalPrice));
-			iorderMaster.setOrderStatus(ORDER_STATUS_PICK_UP);
+			iorderMaster.setOrderStatus(ORDER_STATUS_PROCESSING);
 			//loop 算總價
 			BigDecimal totalPrice = iordersMasterService.totalPrice(request);
 			iorderMaster.setTotalPrice(totalPrice);

@@ -25,3 +25,4 @@ WebContent/.DS_Store
 WebContent/WEB-INF/lib/.DS_Store
 >>>>>>> testziwa
 src/tw/iii/qr/DataBaseConn.java
+src/TEST/console/Test1.java

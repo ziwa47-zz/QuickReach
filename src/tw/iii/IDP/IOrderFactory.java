@@ -1,3 +1,4 @@
+package tw.iii.IDP;
 import java.util.List;
 
 import tw.iii.qr.IndependentOrder.model.entity.IDPorderAll;
@@ -11,7 +12,7 @@ public class IOrderFactory  {
 	GuestDAO gs = new GuestDAO();
 	IordersDetailDAO idd= new IordersDetailDAO();
 	IordersMasterDAO imd = new IordersMasterDAO();
-	IOrderFactory(){
+	public IOrderFactory(){
 		
 	}
 	
