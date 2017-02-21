@@ -17,13 +17,13 @@
 <% response.sendRedirect("/HomePage.jsp"); %>   
 </c:if>
 <%
-  /*Connection conn = new DataBaseConn().getConn();
+  Connection conn = new DataBaseConn().getConn();
   LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"已完成");
   LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts(conn);
   session.setAttribute("list", orderList);
   request.setAttribute("begin", request.getParameter("begin"));
   request.setAttribute("end", request.getParameter("end"));
-  session.setAttribute("ebayAccounts", ebayAccounts);*/
+  session.setAttribute("ebayAccounts", ebayAccounts);
 %>
 <div class="nav">
   <div class="container">
@@ -40,12 +40,13 @@
     <div class="nav" style="background-color:#189B30;" >
       <ul class="nav nav-tabs">
         <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
-        <li><a href="NewOrder.jsp?begin=0&end=10">新增訂單</a></li>
+        <li><a href="IndependentOrder.jsp?begin=0&end=10">新增訂單</a></li>
+        <li><a href="Processing.jsp?begin=0&end=10">處理中</a></li>
         <li><a href="Pickup.jsp?begin=0&end=10">揀貨中</a></li>
         <li><a href="UploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="" style="color:#fff">已完成訂單</a></li>
         <li><a href="ShipmentRecord.jsp?begin=0&end=10">訂單出貨記錄</a></li>
-        <li><a href="refundPage.jsp?begin=0&end=10" >退貨</a></li>
+        <li><a href="refundPage.jsp?begin=0&end=10">退貨</a></li>
       </ul>
     </div>
   </div>
