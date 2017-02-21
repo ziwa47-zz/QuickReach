@@ -36,7 +36,7 @@ public class IndependentOrderController {
 	@Resource
 	IordersDetailService iordersDetailService;
 
-	private static final String ORDER_STATUS_PICK_UP = " 撿貨中";
+	private static final String ORDER_STATUS_PICK_UP = "處理中";
 	
 	
 	/**處理獨立訂單<br/>
@@ -71,7 +71,7 @@ public class IndependentOrderController {
 		//String date 			= request.getParameter("orderDate");
 		//System.out.println(date);
 		String staffName 		= request.getParameter("staffName");
-		String orderGuest 		= request.getParameter("guest");
+		String orderGuest 		= request.getParameter("guestid");
 		String platform 		= request.getParameter("platform");
 		String paypalFees 		= request.getParameter("paypalFees");
 		String logistics 		= request.getParameter("logistics");
@@ -121,7 +121,7 @@ public class IndependentOrderController {
 			iorderMaster.setTransactionId(transactionId);
 			iorderMaster.setOrderDate(new Date());
 			iorderMaster.setStaffName(staffName);
-			iorderMaster.setGuest(orderGuest);
+			iorderMaster.setGuestId(orderGuest);
 			iorderMaster.setPlatform(platform);
 			iorderMaster.setPaypalFees(new BigDecimal(paypalFees));
 			iorderMaster.setLogistics(logistics);

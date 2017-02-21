@@ -1,5 +1,6 @@
 package tw.iii.qr.IndependentOrder.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -46,9 +47,9 @@ public class GuestService extends AbstractService<Guest> {
 	}
 	
 	
-	public Map<String , Object> selectGuestByGuestId(Map<String , Object> map,String guestId) throws Exception {
+	public Map<String , Object> selectGuestByGuestId(String guestId) throws Exception {
 		System.out.println("selectGuestByGuestId:start");
-		
+		Map<String , Object> map =  new HashMap<>();
 		Guest guest = guestDAO.selectGuestByGuestId(guestId);
 		if ( guest != null) {
 			System.out.println("guest != null");

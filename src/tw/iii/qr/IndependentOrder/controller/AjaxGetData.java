@@ -45,7 +45,7 @@ public class AjaxGetData {
 		try {
 			
 			String guestId = request.getParameter("guestId");
-			map = guestService.selectGuestByGuestId(map, guestId );
+			map = guestService.selectGuestByGuestId(guestId );
 
 
 		} catch (Exception e) {
