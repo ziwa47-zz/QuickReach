@@ -1,16 +1,12 @@
 package tw.iii.qr.IndependentOrder.controller;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import tw.iii.qr.IndependentOrder.service.CompanyService;
 import tw.iii.qr.IndependentOrder.service.GuestService;
 import tw.iii.qr.IndependentOrder.service.IordersMasterService;
@@ -39,7 +35,7 @@ public class AjaxGetData {
 	
 	/**ajax查詢顧客資料並回傳<br/>*/
 	@RequestMapping("/ajax/getGetGuest")
-	public @ResponseBody Map<String, Object> ajaxGetGuest(HttpServletRequest request) {
+	public @ResponseBody Map<String, Object> ajaxGetGuest(HttpServletRequest request) { 
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		try {
