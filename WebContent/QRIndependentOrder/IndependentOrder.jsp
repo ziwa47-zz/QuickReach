@@ -62,13 +62,33 @@ function autoSetProductDetail() {
         dataType: "json", 
 
         success : function(response){       	
+        	
             	 $("#pName"+setValueId).val(response.pName);
                  $("#spec"+setValueId).val(response.spec);
                  $("#color"+setValueId).val(response.color);
                  $("#owner"+setValueId).val(response.owner);
 
         }        
-	})
+	});
+	
+	$.ajax({
+			
+			type:"GET",                  
+		    url: "/ajax/getStorageWarehouse",        
+		    data: $("#listForm").serialize(), 
+	        dataType: "json", 
+	
+	        success : function(response){       	
+	        	 $.each(response.data, function(i, item){
+					 alert(item.warehouse)
+					 $("#warehouse"+setValueId).append($("<option></option>").attr("value", item.warehouse+":"+item.warehousePosition).text(item.warehouse+":"+item.warehousePosition));
+					 
+				 })
+	
+	        }        
+		});
+	
+	
 
 }
 
@@ -149,6 +169,7 @@ function getIorderMasterId() {
 }
 
 
+
 //查詢客戶資料
 function getGuestData() {
 	
@@ -185,10 +206,11 @@ function getGuestData() {
 
      
 $(function() {	
+	
 	//取得公司列表
 	getCompanyList();
-	//取得倉庫列表
-	getWarehouseList();
+	//取得倉庫列表(輝哥不給我取得)
+	//getWarehouseList();
 	//取得訂單號碼
 	getIorderMasterId();
 	
@@ -437,8 +459,8 @@ $(function() {
 	                  	+'</div>'
 
 						);
-		//帶入倉庫選擇列表
-		getWarehouseList();
+		//帶入倉庫選擇列表(輝哥不給我帶入)
+		//getWarehouseList();
 
 		$("#count").val(dynamicId);
 		
@@ -516,8 +538,7 @@ display: block;
 	</div>
 
 	<div class="container" style="background: #9DDCD1; border-radius: 20px">
-		<form id="listForm" name="listForm" method="post"
-			action=<c:url value='../independentOrder/'/>
+		<form id="listForm" name="listForm" method="post"	action=<c:url value='../independentOrder/'/>
 			style="font-size: 100%; vertical-align: baseline; padding: 15px;"
 			class="form-inline container">
 
