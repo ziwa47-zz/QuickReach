@@ -56,7 +56,7 @@ public class IndependentOrderController {
 		String company 			= request.getParameter("company");
 		String platformAccount 	= request.getParameter("platformAccount");
 		String email 			= request.getParameter("email");
-		String country 			= request.getParameter("country");
+		String guestCountry 	= request.getParameter("guestCountry");
 		String tel 				= request.getParameter("tel");
 		String address 			= request.getParameter("address");
 		String guestComment 	= request.getParameter("guestComment");
@@ -78,6 +78,7 @@ public class IndependentOrderController {
 		String currency 		= request.getParameter("currency");
 		String masterComment 	= request.getParameter("masterComment");
 		String paypalPrice 		= request.getParameter("paypalPrice");
+		String masterCountry 	= request.getParameter("masterCountry");
 		
 		
 		
@@ -100,7 +101,7 @@ public class IndependentOrderController {
 			guest.setCompany(company);
 			guest.setPlatformAccount(platformAccount);
 			guest.setEmail(email);
-			guest.setCountry(country);
+			guest.setCountry(guestCountry);
 			guest.setTel(tel);
 			guest.setAddress(address);
 			guest.setComment(guestComment);
@@ -129,6 +130,7 @@ public class IndependentOrderController {
 			iorderMaster.setComment(masterComment);
 			iorderMaster.setPaypalPrice(new BigDecimal(paypalPrice));
 			iorderMaster.setOrderStatus(ORDER_STATUS_PICK_UP);
+			iorderMaster.setCountry(masterCountry);
 			//loop 算總價
 			BigDecimal totalPrice = iordersMasterService.totalPrice(request);
 			iorderMaster.setTotalPrice(totalPrice);

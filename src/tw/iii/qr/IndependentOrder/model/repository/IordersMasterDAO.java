@@ -22,5 +22,13 @@ public class IordersMasterDAO extends AbstractDAO<IordersMaster> {
 		return criteria.list().size();
 	}
 	
+	public IordersMaster getByQrId(String qrId) throws Exception{
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.ge("qrId", qrId));
+		return (IordersMaster) criteria.list().get(0);
+	}
+	
+//	public static void main(String[] args) {
+//	}
 	
 }

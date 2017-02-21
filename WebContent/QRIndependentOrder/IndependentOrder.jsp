@@ -659,6 +659,19 @@ display: block;
 						<div class="row">
 							<div class="col-md-4">
 								<h5>
+									<label for="focusedInput ">國家：</label>
+								</h5>
+							</div>
+							<div class="col-md-8">
+								<input class="form-control" name="masterCountry" id="masterCountry"	type="text" value="">
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-md-4 form-group ">
+						<div class="row">
+							<div class="col-md-4">
+								<h5>
 									<label for="focusedInput ">幣別：</label>
 								</h5>
 							</div>
@@ -826,7 +839,7 @@ display: block;
 								</h5>
 							</div>
 							<div class="col-md-8">
-								<input class="form-control" name="country" id="country"	type="text" value="">
+								<input class="form-control" name="guestCountry" id="guestCountry"	type="text" value="">
 							</div>
 						</div>
 					</div>
