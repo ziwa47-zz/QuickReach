@@ -31,7 +31,7 @@ public class IordersMaster implements Serializable {
 	private String qrId;
 	private String transactionId;
 	private String platform;
-	private String guest;
+	private String guestid;
 	private Date orderDate;
 	private Date payDate;
 	private String logistics;
@@ -69,7 +69,7 @@ public class IordersMaster implements Serializable {
 		this.qrId = qrId;
 	}
 
-	public IordersMaster(String qrId, String transactionId, String platform, String guest, Date orderDate, Date payDate,
+	public IordersMaster(String qrId, String transactionId, String platform, String guestid, Date orderDate, Date payDate,
 			String logistics, String orderStatus, Date shippingDate, BigDecimal shippingFees,
 			BigDecimal refundShippingFees, BigDecimal otherFees, BigDecimal paypalFees, Boolean insurance,
 			BigDecimal insuranceFee, BigDecimal insuranceTotal, String currency, BigDecimal weight,
@@ -79,7 +79,7 @@ public class IordersMaster implements Serializable {
 		this.qrId = qrId;
 		this.transactionId = transactionId;
 		this.platform = platform;
-		this.guest = guest;
+		this.guestid = guestid;
 		this.orderDate = orderDate;
 		this.payDate = payDate;
 		this.logistics = logistics;
@@ -151,12 +151,12 @@ public class IordersMaster implements Serializable {
 	}
 
 	@Column(name = "guest", length = 45)
-	public String getGuest() {
-		return this.guest;
+	public String getGuestId() {
+		return this.guestid;
 	}
 
-	public void setGuest(String guest) {
-		this.guest = guest;
+	public void setGuestId(String guestid) {
+		this.guestid = guestid;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

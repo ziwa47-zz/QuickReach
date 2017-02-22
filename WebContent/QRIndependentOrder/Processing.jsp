@@ -87,12 +87,13 @@
                   <label>熟客代號：</label>
                 </h5>
               </div>
-              <div class="col-md-8">
-                <input class="form-control" name="guestid" type="text">
+              <div class="col-md-8" style="padding-left: 15px; padding-right: 35px">
+                <input class="form-control" name="guestId" type="text" style="border-radius: 4px">
               </div>
             </div>
           </div>
         </div>
+    
         <div class="row">
           <div class="col-md-4 form-group ">
             <div class="row">
@@ -168,20 +169,7 @@
 		  </div>
         </div>
         <br/>
-        <div class="row">
-          <div class="col-md-8 form-group ">
-            <div class="row">
-              <div class="col-md-2">
-                <h5>
-                  <label>備註：</label>
-                </h5>
-              </div>
-              <div class="col-md-8">
-                <textarea rows="4" cols="50" class="form-control"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
+       
         <br/>
         <div class="row text-center" >
           <input type="hidden" name="processing"  value="processing"> <!-- 控制搜尋結果在處理中 -->

@@ -33,7 +33,7 @@ public class GuestFactory extends Guest{
 	}
 
 
-	public void insertGuest(Connection conn, HttpServletRequest request) throws ParseException	{
+	public void insertGuest(HttpServletRequest request,Connection conn) throws ParseException	{
 
 		Guest cg = new Guest();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -84,7 +84,7 @@ public class GuestFactory extends Guest{
 	}
 		
 
-	public void editGuest(Connection conn, HttpServletRequest request) throws ParseException{
+	public void editGuest(HttpServletRequest request,Connection conn) throws ParseException{
 
 		Guest cg = new Guest();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -143,7 +143,7 @@ public class GuestFactory extends Guest{
 	}
 	
 	// --搜尋  guest all 名稱--//
-	public LinkedList<Guest> searchSGName(Connection conn,HttpServletRequest request) {
+	public LinkedList<Guest> searchSGName(HttpServletRequest request,Connection conn) {
 		LinkedList<Guest> sgnameall = new LinkedList<Guest>();		
 		String strsql = "select id,guestid,name,company~ from  guest ";
 
@@ -220,14 +220,14 @@ public class GuestFactory extends Guest{
 		return sgname;	
 	}
 	
-	public void deleteGuest (int id) throws SQLException{
+	public void deleteGuest (String id) throws SQLException{
 		Connection conn = null;
 		try {
 			conn = new DataBaseConn().getConn();
 			String strsql ="delete guest where Id = ?";
 			PreparedStatement ps = null;
 			ps = conn.prepareStatement(strsql);		
-			ps.setInt(1, id);	
+			ps.setString(1, id);	
 			ps.executeUpdate();
 		} catch (Exception e) {
 			System.out.println("刪除guest 失敗");

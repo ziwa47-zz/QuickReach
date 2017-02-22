@@ -876,14 +876,6 @@ public class COrderFactory extends COrders {
 			}
 		}
 		// 如果是合併訂單 要重新找這些參數
-		// COrderMaster Origincdm = new COrderMaster();
-		// Origincdm.setEbayAccount(request.getParameter("ebayaccount"));
-		// Origincdm.setOrder_id(request.getParameter("Order_id"));
-		// Origincdm.setTrackingCode(request.getParameter("trackingCode"));
-		// Origincdm.setLogistics(request.getParameter("logistics"));
-		// Origincdm.setQR_id(request.getParameter("QR_id"));
-		// Origincdm.setStaffName(request.getParameter("staffName"));
-
 		if (isCombine) {
 			String strsqlc = "select d_qrid from comebineorder where m_cqrid = ?";
 			PreparedStatement ps2 = conn.prepareStatement(strsqlc);
