@@ -68,20 +68,28 @@
       <fieldset class="font-weight" style="padding:0 30px 0 0;">
         <legend>處理中</legend>
         <div class="row">
+
           <div class="col-md-4 form-group ">
             <div class="row">
               <div class="col-md-4">
                 <h5>
-                  <label>ebay account：</label>
+                  <label>訂單號：</label>
                 </h5>
               </div>
               <div class="col-md-8">
-                <select class="form-control" name="eBayAccount">
-                  <option value="">請選擇</option>
-                  <c:forEach var="q" items="${ebayAccounts}" step="1" varStatus="check">
-                  <option value="">${q}</option>
-                  </c:forEach>
-                </select>
+                <input class="form-control" name="transactionId" type="text">
+              </div>
+            </div>
+          </div>
+         <div class="col-md-4 form-group ">
+            <div class="row">
+              <div class="col-md-4">
+                <h5>
+                  <label>客戶帳號：</label>
+                </h5>
+              </div>
+              <div class="col-md-8" style="padding-left: 15px; padding-right: 35px">
+                <input class="form-control" name="name" type="text" style="border-radius: 4px">
               </div>
             </div>
           </div>
@@ -89,53 +97,16 @@
             <div class="row">
               <div class="col-md-4">
                 <h5>
-                  <label>訂單編號：</label>
+                  <label>熟客代號：</label>
                 </h5>
               </div>
-              <div class="col-md-8">
-                <input class="form-control" name="ebayNO" type="text">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 form-group ">
-            <div class="row">
-              <div class="col-md-4">
-                <h5>
-                  <label>P/P帳號：</label>
-                </h5>
-              </div>
-              <div class="col-md-8">
-                <input class="form-control" name="paypal_id" type="text">
+              <div class="col-md-8" style="padding-left: 15px; padding-right: 35px">
+                <input class="form-control" name="guestId" type="text" style="border-radius: 4px">
               </div>
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-4 form-group ">
-            <div class="row">
-              <div class="col-md-4">
-                <h5>
-                  <label>E/B帳號：</label>
-                </h5>
-              </div>
-              <div class="col-md-8" style="padding-left: 15px; padding-right: 35px">
-                <input class="form-control" name="guestAccount" type="text" style="border-radius: 4px">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 form-group ">
-            <div class="row">
-              <div class="col-md-4">
-                <h5>
-                  <label>客戶姓名：</label>
-                </h5>
-              </div>
-              <div class="col-md-8" style="padding-left: 15px; padding-right: 35px">
-                <input class="form-control" name="guestLastName" type="text" style="border-radius: 4px">
-              </div>
-            </div>
-          </div>
-        </div>
+    
         <div class="row">
           <div class="col-md-4 form-group ">
             <div class="row">
@@ -203,27 +174,11 @@
             <label class="checkbox-inline"><input type="checkbox" name="RA" value="RA">RA(國際掛號)</label>
             <label class="checkbox-inline"><input type="checkbox" name="USPS1" value="USPS1">USPS寄倉</label>
             <label class="checkbox-inline"><input type="checkbox" name="USPS2" value="USPS2">USPS集運</label>
-            <label class="checkbox-inline"><input type="checkbox" name="seven" value="seven">7-11取貨付款</label>
-            <label class="checkbox-inline"><input type="checkbox" name="familyMart" value="familyMart">全家取貨付款</label>
-            <label class="checkbox-inline"><input type="checkbox" name="post" value="post">郵局快捷貨到付款</label>
-            <label class="checkbox-inline"><input type="checkbox" name="lothers" value="lothers">其他</label>
+            <label class="checkbox-inline"><input type="checkbox" name="other" value="other">其他</label>
           </div>
         </div>
         <br/>
-        <div class="row">
-          <div class="col-md-8 form-group ">
-            <div class="row">
-              <div class="col-md-2">
-                <h5>
-                  <label>備註：</label>
-                </h5>
-              </div>
-              <div class="col-md-8">
-                <textarea rows="4" cols="50" class="form-control"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
+       
         <br/>
         <div class="row text-center" >
           <input type="hidden" name="processing"  value="processing"> <!-- 控制搜尋結果在處理中 -->

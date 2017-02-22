@@ -81,6 +81,7 @@ public abstract class AbstractDAO<T> {
 		if(id==null) return null;
 		return (T)sessionFactory.getCurrentSession().get(getEntityClass(), id);
 	}
+	
 	public void saveOrUpdate(T t) throws Exception {
 		sessionFactory.getCurrentSession().saveOrUpdate(t);
 	}

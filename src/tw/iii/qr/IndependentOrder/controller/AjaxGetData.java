@@ -35,7 +35,7 @@ public class AjaxGetData {
 	StorageService storageService;
 	
 	@Resource
-	StockTransferService stockTransferService;
+	StockTransferService stockTransferService; //git test
 	
 	/**ajax查詢顧客資料並回傳<br/>*/
 	@RequestMapping("/ajax/getGetGuest")
@@ -45,7 +45,7 @@ public class AjaxGetData {
 		try {
 			
 			String guestId = request.getParameter("guestId");
-			map = guestService.selectGuestByGuestId(map, guestId );
+			map = guestService.selectGuestByGuestId(guestId );
 
 
 		} catch (Exception e) {
