@@ -35,9 +35,6 @@
 				<ul class="nav nav-tabs">
 					<li class="" style="background-color: #189B30"><a
 						href="SearchOrder.jsp?begin=0&end=10" style="color: #FFFFFF">獨立出貨</a></li>
-					<c:if test="${PageCompetence.getEntireOrders() == 1 }">
-						<li><a href="/QROrders/DayliBalanceSheet.jsp">日結表</a></li>
-					</c:if>
 				</ul>
 			</div>
 		</div>

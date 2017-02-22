@@ -7,7 +7,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
+<head> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>處理中頁面</title>
 </head>
@@ -31,9 +31,6 @@
     <div class="navbar-left" style="background-color:#3DFF81;" >
       <ul class="nav nav-tabs">
         <li class="" style="background-color:#189B30"><a href="SearchOrder.jsp?begin=0&end=10" style="color:#FFFFFF">獨立出貨</a></li>
-        <c:if test="${PageCompetence.getEntireOrders() == 1 }"> 
-        	<li><a href="/QROrders/DayliBalanceSheet.jsp" >日結表</a></li>
-      	</c:if>
       </ul>
     </div>
   </div>

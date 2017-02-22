@@ -203,6 +203,9 @@ function AjaxModal() {
 				<c:if test="${PageCompetence.getOrdersManage() ==1}">
 					<li><a href="/QROrders/SearchOrder.jsp">訂單資訊</a></li>
 				</c:if>
+				<c:if test="${PageCompetence.getOrdersManage() ==1}">
+					<li><a href="/QRIndependentOrder/SearchOrder.jsp">獨立出貨</a></li>
+				</c:if>
 				<c:if test="${PageCompetence.getEbayPaypalAccountEdit()==1}">
 					<li><a href="/QREBayAccount/eBayAccount.jsp">Ebay帳號管理</a></li>
 				</c:if>
