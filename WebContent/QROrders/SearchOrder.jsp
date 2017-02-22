@@ -258,7 +258,7 @@
                 </h5>
               </div>
               <div class="col-md-8">
-                <textarea rows="4" cols="50" class="form-control"></textarea>
+                <textarea rows="3" cols="50" class="form-control"></textarea>
               </div>
             </div>
           </div>

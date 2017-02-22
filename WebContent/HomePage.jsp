@@ -6,7 +6,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>QuickReach</title>
-
 </head>
 <body>
 
@@ -21,6 +20,9 @@
     </c:if>
     <c:if test="${PageCompetence.getOrdersManage() ==1}">
     	<li><a href="#menu1"><img src="img/clipboard-2.png" width="24" height="24">訂單資訊</a></li>
+    </c:if>
+    <c:if test="${PageCompetence.getOrdersManage() ==1}">
+    	<li><a href="#menu7"><img src="img/clipboard-2.png" width="24" height="24">獨立出貨</a></li>
     </c:if>
     <c:if test="${PageCompetence.getEbayPaypalAccountEdit()==1}">
     	<li><a href="#menu2"><img src="img/store-2.png" width="24" height="24">帳號管理</a></li>
@@ -69,14 +71,18 @@
       	<a href="/QROrders/ReadCombineOrders.jsp"><label class="btn btn-lg btn-primary">查詢合併訂單</label></a>
       </div>
       <br/>
+    </div>
+    <div id="menu7" class="tab-pane fade">
       <h3>獨立出貨</h3>
       <div class="row" style="font-size:24px; padding:10px">
         <a href="/QRIndependentOrder/SearchOrder.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">查詢訂單</label></a>
       	<a href="/QRIndependentOrder/IndependentOrder.jsp"><label class="btn btn-lg btn-primary">新增訂單</label></a>
+      	<a href="/QRIndependentOrder/Processing.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">處理中</label></a>
       	<a href="/QRIndependentOrder/Pickup.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">揀貨中</label></a>
       	<a href="/QRIndependentOrder/UploadTrackingCode.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">上傳追蹤碼</label></a>
       	<a href="/QRIndependentOrder/Finished.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">已完成訂單</label></a>
       	<a href="/QRIndependentOrder/ShipmentRecord.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">訂單出貨紀錄</label></a>
+      	<a href="/QRIndependentOrder/refundPage.jsp?begin=0&end=10"><label class="btn btn-lg btn-primary">訂單出貨紀錄</label></a>
       </div>
     </div>
     <div id="menu2" class="tab-pane fade">
