@@ -172,7 +172,72 @@ function AjaxModal() {
 		$('#imagemodal').modal('show');   
 	});		
 }
+//搜尋其他控制
+$(document).ready(function(){
+	$('.other').hide();
+	$('.toOther').on('click', function(){
+		var other = $('input[name=other]').val();
+		$("label[for=lothers]").html('<input type="checkbox" name="lothers" value="' + other + '" onclick="getOther()" checked>' + other);
+	    $('.other').hide();
+	});
+});
+function getOther() {
+	$('.other').toggle(this.checked);//toggle(false) will hide
+}
 
+//限制日期格式
+$(function() {
+		$('.pop').on('click', function() {
+			$('.imagepreview').attr('src', $(this).find('img').attr('src'));
+			$('#imagemodal').modal('show');   
+		});		
+});
+
+
+
+
+//check lib
+function checkInt(checkedItem) {
+	var regEx = /^\d+$/g;
+	return regEx.test(checkedItem);
+}
+
+function checkFloat(checkedItem) {
+	var regEx = /^[0-9]+(.[0-9]{1,2})?$/;
+	return regEx.test(checkedItem);
+}
+
+function trim(str) {
+	return str.replace(/(^\s*)|(\s*$)/g, "");
+}
+
+function isInteger(checkedItem) {
+    var regEx = /^\d+$/g;
+    return regEx.test(checkedItem);
+}
+
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && !isInteger(n);
+}
+
+function isDate(n) {
+    var result = false;
+    try {
+        n = new Date(n);
+        result = !isNaN(n.valueOf());
+    } catch (ex) {
+        result = false;
+    }
+    return result;
+}
+
+function chkEmail(mail) {
+	var rex = /^[a-zA-Z]([a-zA-Z0-9]*[.]?[a-zA-Z0-9]+)+@([\w-]+\.)+[a-zA-Z]{2,}$/;
+	if (rex.test((mail))) {
+		return true;
+	}
+	return false;
+}
 </script>
 </head>
 <body>
