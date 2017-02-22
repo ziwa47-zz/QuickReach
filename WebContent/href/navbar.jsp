@@ -13,7 +13,6 @@
 <!-- <script src="../js/jquery-1.12.4.min.js"></script> -->
 <!-- <script src="../js/bootstrap.min.js"></script> -->
 <!-- <script src="../js/jquery-ui.min.js"></script> -->
-<!-- <script src="../js/jquery.ui.datepicker-zh-TW.js"></script> -->
 
 
 <!-- downloaded -->
@@ -267,6 +266,9 @@ function chkEmail(mail) {
 				</c:if>
 				<c:if test="${PageCompetence.getOrdersManage() ==1}">
 					<li><a href="/QROrders/SearchOrder.jsp">訂單資訊</a></li>
+				</c:if>
+				<c:if test="${PageCompetence.getOrdersManage() ==1}">
+					<li><a href="/QRIndependentOrder/SearchOrder.jsp">獨立出貨</a></li>
 				</c:if>
 				<c:if test="${PageCompetence.getEbayPaypalAccountEdit()==1}">
 					<li><a href="/QREBayAccount/eBayAccount.jsp">Ebay帳號管理</a></li>
