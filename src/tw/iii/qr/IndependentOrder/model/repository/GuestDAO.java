@@ -16,6 +16,7 @@ public class GuestDAO extends AbstractDAO<Guest> {
 	}
 
 	public Guest selectGuestByGuestId(String guestId) throws Exception {
+		System.out.println("GuestDAO.selectGuestByGuestId():start");
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("guestId", guestId));
 		Guest guest = null;
@@ -26,7 +27,7 @@ public class GuestDAO extends AbstractDAO<Guest> {
 			guest = (Guest) criteria.list().get(0);
 			System.out.println(BeanUtils.describe(guest));
 		} 
-
+		System.out.println("GuestDAO.selectGuestByGuestId():finish");
 		return guest;
 	}
 

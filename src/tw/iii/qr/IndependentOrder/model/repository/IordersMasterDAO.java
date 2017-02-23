@@ -25,17 +25,18 @@ public class IordersMasterDAO extends AbstractDAO<IordersMaster> {
 	}
 	
 	public IordersMaster selectIordersMasterByQRId(String qrId) throws Exception {
+		System.out.println("IordersMasterDAO.selectIordersMasterByQRId():start");
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("QR_id", qrId));
+		criteria.add(Restrictions.eq("qrId", qrId));
 		IordersMaster iordersMaster = null;
-		System.out.println("QR_id = "+qrId);
+		System.out.println("qrId = "+qrId);
 
 		if (criteria.list().size() == 1) {
 			System.out.println("criteria.list().size() == 1");
 			iordersMaster = (IordersMaster) criteria.list().get(0);
 			System.out.println(BeanUtils.describe(iordersMaster));
 		} 
-
+		System.out.println("IordersMasterDAO.selectIordersMasterByQRId():start");
 		return iordersMaster;
 	}
 	
