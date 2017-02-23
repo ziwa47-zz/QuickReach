@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.order.DTO.COrderDetail;
 import tw.iii.qr.order.DTO.COrders;
-import tw.iii.qr.stock.DTO.CProductFactory;
+import tw.iii.qr.stock.CProductFactory;
 
 public class DayliBalanceSheetFactory extends COrders {
 	
@@ -27,6 +27,7 @@ public class DayliBalanceSheetFactory extends COrders {
 	
 	public void dayliBalanceSheet(){
 		Connection conn;
+		System.out.println("開始撈日結表!");
 		try {
 			conn = new DataBaseConn().getConn();
 			String strSql = "select distinct m.orderDate, m.QR_id, r.tel1, m.shippingFees,"
@@ -40,19 +41,20 @@ public class DayliBalanceSheetFactory extends COrders {
 					+ " order_recieverinfo as r on m.QR_id = r.QR_id"
 					+ " where m.orderstatus = N'待處理'"
 					+ " order by payDate desc";
-			System.out.println(strSql);
+//			System.out.println(strSql);
 			
 			PreparedStatement ps = conn.prepareStatement(strSql);
 			ResultSet rs = ps.executeQuery();
 			
 			LinkedList<COrders> orderList = SetOrders(rs,conn);
 			tw.iii.qr.daliy.servletContext.setAttribute("ndbs", orderList);
+			System.out.println("撈完丟上去!");
 			rs.close();
 			ps.close();
 			conn.close();
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			System.out.println("撈失敗哪招?");
 			e.printStackTrace();
 		}
 
@@ -74,7 +76,7 @@ public class DayliBalanceSheetFactory extends COrders {
 			if(orderPre.equals(orderNext))
 				continue;
 			
-			System.out.println(index+":"+rs.getString(2));
+//			System.out.println(index+":"+rs.getString(2));
 			//System.out.println(index +":"+rs.getString(2));
 			order = new COrders();
 			order.COrderMaster.setOrderDate(rs.getDate(1));

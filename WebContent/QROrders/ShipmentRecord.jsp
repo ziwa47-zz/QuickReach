@@ -4,7 +4,7 @@
 <%@ page import="tw.iii.qr.DataBaseConn"%>
 <%@ page import="tw.iii.qr.order.DTO.COrders"%>
 <%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.LinkedList,java.util.*,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse"%>
-<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.DTO.COrderFactory" scope="page" />
+<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.COrderFactory" scope="page" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -225,112 +225,9 @@
     </form>
   </div>
   <hr/>
-  <c:choose>
-    <c:when test="${SearchOrdersResult != null}">
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
         <form name="searchform" method="post" action="../toExcelServlet" class="form-inline container"
-          style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
-          <button class="btn btn-md btn-info" type="submit" name="submit" value="toDailyBalanceSheetExcel" >匯出日出貨報表</button>
-          <ul class="pager pagination">
-            <c:choose>
-              <c:when test="${begin != 0}">
-                <li><a href="ShipmentRecord.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
-              </c:when>
-              <c:otherwise>
-                <li class="disabled"><a href="ShipmentRecord.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
-              </c:otherwise>
-            </c:choose>
-            <c:forEach begin="0" end="${SearchOrdersResult.size()/10}" step="1" varStatus="check">
-              <c:choose>
-                <c:when test="${(check.index*10) != begin}">
-                  <li><a href="ShipmentRecord.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
-                </c:when>
-                <c:otherwise>
-                  <li class="active"><a href="ShipmentRecord.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
-                </c:otherwise>
-              </c:choose>
-            </c:forEach>
-            <c:choose>
-              <c:when test="${end < SearchOrdersResult.size()}">
-                <li><a href="ShipmentRecord.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
-              </c:when>
-              <c:otherwise>
-                <li class="disabled"><a href="ShipmentRecord.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
-              </c:otherwise>
-            </c:choose>
-            <label>共有:${SearchOrdersResult.size()}筆</label>
-          </ul>
-          <table class="table table-bordered table-hover table-condensed pull-left" style="margin:0 0 0 -15px">
-            <thead>
-              <tr class="ListTitle">
-                <th>出貨日期</th>
-                <th>出貨編號</th>
-                <th>類型</th>
-                <th>Ebay Account</th>
-                <th>Tracking Code</th>
-                <th>數量</th>
-                <th>寄送國家</th>
-                <th>Owner</th>
-                <th>出倉位置</th>
-                <th>處理人員</th>
-                <th>備註</th>
-              </tr>
-            </thead>
-            <tbody>
-              <c:forEach var="i" items="${SearchOrdersResult}" begin="${begin}" end="${end}" step="1" varStatus="check">
-                <c:choose>
-                  <c:when test="${check.index%2 != 0}">
-                    <tr style="background-color:#D4F4D8">
-                      <td>${i.getShippingDate()}</td>
-                      <td>${i.getQR_id()}</td>
-                      <td>${i.getType()}</td>
-                      <td>${i.getEbayAccount()}</td>
-                      <td>${i.getTrackingCode()}</td>
-                      <td>${i.getQty()}</td>
-                      <td>${i.getCountry()}</td>
-                      <td>${i.getOwner()}</td>
-                      <td>${i.getWarehouse()}</td>
-                      <td>${i.getStaffName()}</td>
-                      <td>${i.getComment()}</td>
-                    </tr>
-                    <tr style="background-color:#D4F4D8">
-                      <td colspan="5"><b>${i.getSKU()}</b>${i.getProductName()}</td>
-                      <td colspan="6"></td>
-                    </tr>
-                  </c:when>
-                  <c:otherwise>
-                    <tr>
-                      <td>${i.getShippingDate()}</td>
-                      <td>${i.getQR_id()}</td>
-                      <td>${i.getType()}</td>
-                      <td>${i.getEbayAccount()}</td>
-                      <td>${i.getTrackingCode()}</td>
-                      <td>${i.getQty()}</td>
-                      <td>${i.getCountry()}</td>
-                      <td>${i.getOwner()}</td>
-                      <td>${i.getWarehouse()}</td>
-                      <td>${i.getStaffName()}</td>
-                      <td>${i.getComment()}</td>
-                    </tr>
-                    <tr>
-                      <td colspan="5"><b>${i.getSKU()}</b>${i.getProductName()}</td>
-                      <td colspan="6"></td>
-                    </tr>
-                  </c:otherwise>
-                </c:choose>
-              </c:forEach>
-            </tbody>
-          </table>
-          <div class="row text-center" > 
-            <!--             <button type="submit" name="" class="btn-lg btn-primary">送出</button> --> 
-          </div>
-        </form>
-      </div>
-    </c:when>
-    <c:otherwise>
-      <div class="container table-responsive bg-warning" style=" border-radius:20px">
-        <form name="searchform" method="post" action="../toExcelServlet" class="form-inline container"
-          style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
+          style="font-size: 100%; vertical-align: baseline; padding: 15px; " onsubmit="return noSelected()">
           <button class="btn btn-md btn-info" type="submit" name="submit" value="toDailyBalanceSheetExcel" >匯出日出貨報表</button>
           <ul class="pager pagination">
             <c:choose>
@@ -424,8 +321,6 @@
           </table>
         </form>
       </div>
-    </c:otherwise>
-  </c:choose>
 </div>
 </body>
 </html>

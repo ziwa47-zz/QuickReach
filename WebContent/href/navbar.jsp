@@ -13,7 +13,6 @@
 <!-- <script src="../js/jquery-1.12.4.min.js"></script> -->
 <!-- <script src="../js/bootstrap.min.js"></script> -->
 <!-- <script src="../js/jquery-ui.min.js"></script> -->
-<!-- <script src="../js/jquery.ui.datepicker-zh-TW.js"></script> -->
 
 
 <!-- downloaded -->
@@ -63,63 +62,74 @@ position:absolute; width:70%; height:280px;
 }
 </style>
 <script type="text/javascript">
-	$(function() {
-		//日期選擇器
-	 	$(".yymmdd").datepicker({
-			dateFormat : 'yy-mm-dd',
-			
-		}); 
+$(function() {
+	//日期選擇器
+ 	$(".yymmdd").datepicker({
+		dateFormat : 'yy-mm-dd',
 		
-		$("input[name=checkupdate]").datepicker({
-			dateFormat : 'yy-mm-dd',
-		});
-		$("input[name=cdate]").datepicker({
-			dateFormat : 'yy-mm-dd',
-		});
-		$("input[name=dateMin]").datepicker({
-			dateFormat : 'yy-mm-dd',
-		});
-		$("input[name=dateMax]").datepicker({
-			dateFormat : 'yy-mm-dd',
-
-		});
-		 $("input[name=date1]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=date2]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=payDateMin]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=payDateMax]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=shippingDateMin]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=shippingDateMax]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=startTime]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=lastFixTime]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=OrderDate]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=PayDate]").datepicker({dateFormat : 'yy-mm-dd'});
-	        $("input[name=ShippingDate]").datepicker({dateFormat : 'yy-mm-dd'});
-	   });
+	}); 
 	
-	    function checkAllOrders(ele) {
-    	//select all
-		if (ele.checked) {
-			$("input[name=all]").prop("checked", true);
-	        $("input[name=waitProcess]").prop("checked", true);
-	        $("input[name=processing]").prop("checked", true);
-	        $("input[name=pickup]").prop("checked", true);
-	        $("input[name=finished]").prop("checked", true);
-	        $("input[name=refund]").prop("checked", true);
-	        $("input[name=oothers]").prop("checked", true);
-	        $("input[name=deducted]").prop("checked", true);
-	    } else {
-	    	$("input[name=all]").prop("checked", false);
-	        $("input[name=waitProcess]").prop("checked", false);
-	        $("input[name=processing]").prop("checked", false);
-	        $("input[name=pickup]").prop("checked", false);
-	        $("input[name=finished]").prop("checked", false);
-	        $("input[name=refund]").prop("checked", false);
-	        $("input[name=oothers]").prop("checked", false);
-	        $("input[name=deducted]").prop("checked", false);
-	    }
+	$("input[name=checkupdate]").datepicker({
+		dateFormat : 'yy-mm-dd',
+	});
+	$("input[name=cdate]").datepicker({
+		dateFormat : 'yy-mm-dd',
+	});
+	$("input[name=dateMin]").datepicker({
+		dateFormat : 'yy-mm-dd',
+	});
+	$("input[name=dateMax]").datepicker({
+		dateFormat : 'yy-mm-dd',
+
+	});
+	$("input[name=birthday]").datepicker({
+		dateFormat : 'yy-mm-dd',
+
+	});
+	
+	$("input[name=date]").datepicker({
+		dateFormat : 'yy-mm-dd',
+		
+	});
+
+	
+	 $("input[name=date1]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=date2]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=payDateMin]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=payDateMax]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=shippingDateMin]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=shippingDateMax]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=startTime]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=lastFixTime]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=OrderDate]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=PayDate]").datepicker({dateFormat : 'yy-mm-dd'});
+        $("input[name=ShippingDate]").datepicker({dateFormat : 'yy-mm-dd'});
+   });
+
+    function checkAllOrders(ele) {
+   	//select all
+	if (ele.checked) {
+		$("input[name=all]").prop("checked", true);
+        $("input[name=waitProcess]").prop("checked", true);
+        $("input[name=processing]").prop("checked", true);
+        $("input[name=pickup]").prop("checked", true);
+        $("input[name=finished]").prop("checked", true);
+        $("input[name=refund]").prop("checked", true);
+        $("input[name=oothers]").prop("checked", true);
+        $("input[name=deducted]").prop("checked", true);
+    } else {
+    	$("input[name=all]").prop("checked", false);
+        $("input[name=waitProcess]").prop("checked", false);
+        $("input[name=processing]").prop("checked", false);
+        $("input[name=pickup]").prop("checked", false);
+        $("input[name=finished]").prop("checked", false);
+        $("input[name=refund]").prop("checked", false);
+        $("input[name=oothers]").prop("checked", false);
+        $("input[name=deducted]").prop("checked", false);
+    }
 };
 
-	$(function () {
+$(function () {
 	$("button[name=send]").click(function() {
 		bool = confirm("確認是否送出訂單");
 		if(!bool){
@@ -127,13 +137,106 @@ position:absolute; width:70%; height:280px;
 		}
 	});
 });
+
+function noSelected() {
+	var count = 0;
+	$('input[name=QR_id]:checked').each(function(){
+		count = count + 1;
+		id = $(this).val();
+		tdWarehouseClass = $('#' + id).attr('class');
+		if(tdWarehouseClass.endsWith('danger')) {
+			return false;
+		}
+	});
+	if (count == 0) {
+		alert('請勾選訂單');
+		return false;
+	}
+}
 	
 $( document ).ready(function() {
-$('body').css({'font-family': 'Noto Sans TC'});
+	$('body').css({'font-family': 'Noto Sans TC'});
+});
+//Modal
+$(function() {
+		$('.pop').on('click', function() {
+			$('.imagepreview').attr('src', $(this).find('img').attr('src'));
+			$('#imagemodal').modal('show');   
+		});		
+});
+//AjaxModal
+function AjaxModal() {
+	$('.pop').on('click', function() {
+		$('.imagepreview').attr('src', $(this).find('img').attr('src'));
+		$('#imagemodal').modal('show');   
+	});		
+}
+//搜尋其他控制
+$(document).ready(function(){
+	$('.other').hide();
+	$('.toOther').on('click', function(){
+		var other = $('input[name=other]').val();
+		$("label[for=lothers]").html('<input type="checkbox" name="lothers" value="' + other + '" onclick="getOther()" checked>' + other);
+	    $('.other').hide();
 	});
+});
+function getOther() {
+	$('.other').toggle(this.checked);//toggle(false) will hide
+}
+
+//限制日期格式
+$(function() {
+		$('.pop').on('click', function() {
+			$('.imagepreview').attr('src', $(this).find('img').attr('src'));
+			$('#imagemodal').modal('show');   
+		});		
+});
 
 
 
+
+//check lib
+function checkInt(checkedItem) {
+	var regEx = /^\d+$/g;
+	return regEx.test(checkedItem);
+}
+
+function checkFloat(checkedItem) {
+	var regEx = /^[0-9]+(.[0-9]{1,2})?$/;
+	return regEx.test(checkedItem);
+}
+
+function trim(str) {
+	return str.replace(/(^\s*)|(\s*$)/g, "");
+}
+
+function isInteger(checkedItem) {
+    var regEx = /^\d+$/g;
+    return regEx.test(checkedItem);
+}
+
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && !isInteger(n);
+}
+
+function isDate(n) {
+    var result = false;
+    try {
+        n = new Date(n);
+        result = !isNaN(n.valueOf());
+    } catch (ex) {
+        result = false;
+    }
+    return result;
+}
+
+function chkEmail(mail) {
+	var rex = /^[a-zA-Z]([a-zA-Z0-9]*[.]?[a-zA-Z0-9]+)+@([\w-]+\.)+[a-zA-Z]{2,}$/;
+	if (rex.test((mail))) {
+		return true;
+	}
+	return false;
+}
 </script>
 </head>
 <body>
@@ -164,6 +267,9 @@ $('body').css({'font-family': 'Noto Sans TC'});
 				<c:if test="${PageCompetence.getOrdersManage() ==1}">
 					<li><a href="/QROrders/SearchOrder.jsp">訂單資訊</a></li>
 				</c:if>
+				<c:if test="${PageCompetence.getOrdersManage() ==1}">
+					<li><a href="/QRIndependentOrder/SearchOrder.jsp">獨立出貨</a></li>
+				</c:if>
 				<c:if test="${PageCompetence.getEbayPaypalAccountEdit()==1}">
 					<li><a href="/QREBayAccount/eBayAccount.jsp">Ebay帳號管理</a></li>
 				</c:if>
@@ -189,8 +295,17 @@ $('body').css({'font-family': 'Noto Sans TC'});
 	</div>
 	</nav>
 	<div class="loader text-center" id="spinner" hidden></div>
-<script type="text/javascript">
-    
-</script>
+	
+<!-- Modal -->
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">              
+      <div class="modal-body">
+      	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <img src="" class="imagepreview" style="width: 100%;" >
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

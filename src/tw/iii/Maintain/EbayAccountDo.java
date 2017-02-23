@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import tw.iii.qr.DataBaseConn;
-import tw.iii.qr.stock.DTO.CEbayFactory;
+import tw.iii.qr.stock.CEbayFactory;
+import tw.iii.qr.stock.CStockFactory;
 import tw.iii.qr.stock.DTO.CStock;
-import tw.iii.qr.stock.DTO.CStockFactory;
 
 @WebServlet("/EbayAccountDo")
 public class EbayAccountDo extends HttpServlet {
