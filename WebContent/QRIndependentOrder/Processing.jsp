@@ -7,7 +7,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
+<head> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>處理中頁面</title>
 </head>
@@ -31,9 +31,6 @@
     <div class="navbar-left" style="background-color:#3DFF81;" >
       <ul class="nav nav-tabs">
         <li class="" style="background-color:#189B30"><a href="SearchOrder.jsp?begin=0&end=10" style="color:#FFFFFF">獨立出貨</a></li>
-        <c:if test="${PageCompetence.getEntireOrders() == 1 }"> 
-        	<li><a href="/QROrders/DayliBalanceSheet.jsp" >日結表</a></li>
-      	</c:if>
       </ul>
     </div>
   </div>
@@ -68,28 +65,15 @@
       <fieldset class="font-weight" style="padding:0 30px 0 0;">
         <legend>處理中</legend>
         <div class="row">
-
           <div class="col-md-4 form-group ">
             <div class="row">
               <div class="col-md-4">
                 <h5>
-                  <label>訂單號：</label>
+                  <label>訂單編號：</label>
                 </h5>
               </div>
               <div class="col-md-8">
-                <input class="form-control" name="transactionId" type="text">
-              </div>
-            </div>
-          </div>
-         <div class="col-md-4 form-group ">
-            <div class="row">
-              <div class="col-md-4">
-                <h5>
-                  <label>客戶帳號：</label>
-                </h5>
-              </div>
-              <div class="col-md-8" style="padding-left: 15px; padding-right: 35px">
-                <input class="form-control" name="name" type="text" style="border-radius: 4px">
+                <input class="form-control" name="QR_id" type="text">
               </div>
             </div>
           </div>
@@ -165,7 +149,7 @@
         </div>
         <br/>
         <div class="row">
-          <div class="col-md-12 form-group ">
+          <div class="col-md-8 form-group ">
             <label>物流選擇：</label>
             <label class="checkbox-inline"><input type="checkbox" name="DHL" value="DHL">DHL</label>
             <label class="checkbox-inline"><input type="checkbox" name="Fedex" value="Fedex">Fedex</label>
@@ -174,8 +158,12 @@
             <label class="checkbox-inline"><input type="checkbox" name="RA" value="RA">RA(國際掛號)</label>
             <label class="checkbox-inline"><input type="checkbox" name="USPS1" value="USPS1">USPS寄倉</label>
             <label class="checkbox-inline"><input type="checkbox" name="USPS2" value="USPS2">USPS集運</label>
-            <label class="checkbox-inline"><input type="checkbox" name="other" value="other">其他</label>
+            <label class="checkbox-inline" for="lothers"><input type="checkbox" name="lothers" value="" onclick="getOther()">其他</label>
           </div>
+          <div class='col-md-2 form-group other'>
+			<input class="form-control" type="text" name="other">
+			<input type="button" class="btn btn-sm btn-info toOther" value="確定">
+		  </div>
         </div>
         <br/>
        
@@ -251,7 +239,7 @@
                   <tr style="background-color:#D4F4D8">
                     <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td>${i.getCOrderMaster().getEbayNO()}
+                    <td>${i.getCOrderMaster().getEbayNO()}</td>
                     <td>${i.getCOrderMaster().getPlatform()}</td>
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td>${i.getCOrderMaster().getGuestAccount()}</td>
@@ -359,6 +347,7 @@ function isSubmited() {
 		alert('請勾選訂單');
 		return false;
 	}
+	
 	return bool;
 };
 </script>
