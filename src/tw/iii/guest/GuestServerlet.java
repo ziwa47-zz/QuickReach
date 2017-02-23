@@ -43,7 +43,7 @@ public class GuestServerlet extends HttpServlet{
 			switch (submitType) {
 			
 			case "newGuestAccount":
-				processaddAccount(request, response); // new a Account
+				processaddGuestAccount(request, response); // new a Account
 				break;
 			case "updateGuestAccount":
 				processupdateAccount(request, response); // update Account
@@ -93,8 +93,8 @@ public class GuestServerlet extends HttpServlet{
 			response.setContentType("text/html;charset=UTF-8");
 			conn = new DataBaseConn().getConn();
 			GuestFactory guestFac = new GuestFactory();
-			System.out.println("deleteGuestID:"+request.getParameter("guestId"));		
-			guestFac.deleteGuest(request, conn);
+			System.out.println("deleteGuestID:"+request.getParameter("Id"));		
+			guestFac.deleteGuest(request.getParameter("Id"));
 
 			conn.close();
 			response.sendRedirect("GuestAccount/GuestAccount.jsp");
