@@ -5,12 +5,9 @@
 <%@ page
 	import="java.sql.Connection,java.sql.ResultSet,java.util.*,tw.iii.qr.stock.*,tw.iii.qr.stock.DTO.*,tw.iii.purchase.*,tw.iii.purchase.DTO.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<jsp:useBean id="stockDetail" class="tw.iii.qr.stock.DTO.CStockFactory"
-	scope="page" />
-<jsp:useBean id="productDetail"
-	class="tw.iii.qr.stock.DTO.CProductFactory" scope="page" />
-<jsp:useBean id="purchaseRecord" class="tw.iii.purchase.purchaseFactory"
-	scope="page" />
+<jsp:useBean id="stockDetail" class="tw.iii.qr.stock.CStockFactory" scope="page" />
+<jsp:useBean id = "productDetail" class="tw.iii.qr.stock.CProductFactory" scope="page" />
+<jsp:useBean id ="purchaseRecord" class= "tw.iii.purchase.purchaseFactory" scope="page"/>
 <html>
 <head>
 <script
