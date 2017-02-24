@@ -9,12 +9,15 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import tw.iii.IDP.IOrderFactory;
 import tw.iii.qr.IndependentOrder.model.entity.Guest;
+import tw.iii.qr.IndependentOrder.model.entity.IDPorderAll;
 import tw.iii.qr.IndependentOrder.model.entity.IordersMaster;
 import tw.iii.qr.IndependentOrder.service.CompanyService;
 import tw.iii.qr.IndependentOrder.service.GuestService;
@@ -24,7 +27,9 @@ import tw.iii.qr.IndependentOrder.service.WarehouseService;
 
 @Controller
 public class IndependentOrderController {
-
+	
+	@Autowired  IOrderFactory iOrderFactory;
+	
 	@Resource
 	CompanyService companyService;
 	@Resource
@@ -147,6 +152,16 @@ public class IndependentOrderController {
 		
 		 return "redirect:/HomePage.jsp";
 
+	}
+	
+	
+	
+	@RequestMapping(value = "/testFactory")
+	public String test(HttpServletRequest request) {
+		 iOrderFactory.getIDPorderAllInfo(request.getParameter("qrId"));
+		
+		
+		return "redirect:/HomePage.jsp";
 	}
 }
 
