@@ -20,7 +20,6 @@ public class IordersDetailDAO extends AbstractDAO<IordersDetail> {
 		System.out.println("IordersDetailDAO.selectIordersDetailByQRId():start");
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("qrId", qrId));
-		
 		System.out.println("IordersDetailDAO.selectIordersDetailByQRId():finish");
 		return criteria.list();
 	}

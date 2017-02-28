@@ -31,7 +31,6 @@ public class EbayAccountDo extends HttpServlet {
 		try {
 			// processeBayAccount(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

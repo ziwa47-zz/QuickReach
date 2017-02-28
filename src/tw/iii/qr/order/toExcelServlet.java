@@ -24,7 +24,6 @@ public class toExcelServlet extends HttpServlet {
 		try {
 			processToExcel(request,response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -33,7 +32,6 @@ public class toExcelServlet extends HttpServlet {
 		try {
 			processToExcel(request,response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -2,6 +2,7 @@ package tw.iii.qr.IndependentOrder.model.repository;
 
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.Criteria;
@@ -32,12 +33,33 @@ public class IordersMasterDAO extends AbstractDAO<IordersMaster> {
 		System.out.println("qrId = "+qrId);
 
 		if (criteria.list().size() == 1) {
-			System.out.println("criteria.list().size() == 1");
 			iordersMaster = (IordersMaster) criteria.list().get(0);
 			System.out.println(BeanUtils.describe(iordersMaster));
 		} 
 		System.out.println("IordersMasterDAO.selectIordersMasterByQRId():start");
 		return iordersMaster;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<IordersMaster> selectIordersMasterByStatus(String orderStatus) throws Exception {
+		System.out.println("IordersMasterDAO.selectIordersMasterByStatus():start");
+		
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
+		if(orderStatus!=""&&orderStatus!=null){
+			//找狀態
+			criteria.add(Restrictions.eq("orderStatus", orderStatus));
+		}//否則找全部
+		List<IordersMaster> list = criteria.list();
+		if(list.size()==0){
+			System.out.println("找不到資料");
+			return null;
+		}
+		for(int i =0;i<list.size();i++){
+		System.out.println(BeanUtils.describe(criteria.list().get(i)));
+		}
+		return list;
+	}
+	
+	
 	
 }

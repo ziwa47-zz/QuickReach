@@ -36,7 +36,6 @@ public class ProductDo extends HttpServlet {
 		try {
 			processSearchProduct(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

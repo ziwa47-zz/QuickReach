@@ -75,7 +75,7 @@ public class IordersMasterService extends AbstractService<IordersMaster> {
 			e.printStackTrace();
 		}
 		return iordersMasterId;
-
+		
 	}
 	
 	
@@ -112,35 +112,32 @@ public class IordersMasterService extends AbstractService<IordersMaster> {
 	 * 相關loop不花時間想註解了，請直接詢問作者吧 by 輝哥、kidd<br/><br/>~那些在資策會看輝哥一枝獨秀的日子
 	 * 
 	 * */
-	public BigDecimal totalPrice(HttpServletRequest request) throws Exception {
-		
-		int count = Integer.parseInt(request.getParameter("count"));
-		LinkedList<Integer> times = new LinkedList<>();
-		
-		double totalPrice = 0;
-		
-		for (String s : request.getParameterValues("times")) {
-			times.add(Integer.parseInt(s));
-		}
-
-		for (int i = 1; i <= count; i++) {
-			if (times.indexOf(i) == -1)
-				continue;
-
-
-			int qty = Integer.valueOf(request.getParameter(("qty" + i)));
-			double price = Double.parseDouble(request.getParameter(("price" + i)));
-			
-			totalPrice += qty * price;
-		 
-		}
-		
-		return BigDecimal.valueOf(totalPrice);
-		
-	}
+//	public BigDecimal totalPrice(HttpServletRequest request) throws Exception {
+//		
+//		int count = Integer.parseInt(request.getParameter("count"));
+//		LinkedList<Integer> times = new LinkedList<>();
+//		
+//		double totalPrice = 0;
+//		
+//		for (String s : request.getParameterValues("times")) {
+//			times.add(Integer.parseInt(s));
+//		}
+//
+//		for (int i = 1; i <= count; i++) {
+//			if (times.indexOf(i) == -1)
+//				continue;
+//
+//
+//			int qty = Integer.valueOf(request.getParameter(("qty" + i)));
+//			double price = Double.parseDouble(request.getParameter(("Price" + i)));
+//			
+//			totalPrice += qty * price;
+//		 
+//		}
+//		
+//		return BigDecimal.valueOf(totalPrice);
+//		
+//	}
 	
-	public void updateIDPTrackingCode(IordersMaster ioc){
-		
-	}
-	
+
 }

@@ -23,7 +23,6 @@
 //		try {
 //			processSendTrackingCode(request,response);
 //		} catch (Exception e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 //	}
@@ -32,7 +31,6 @@
 //		try {
 //			processSendTrackingCode(request,response);
 //		} catch (Exception e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 //	}

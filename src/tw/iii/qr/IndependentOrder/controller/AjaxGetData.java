@@ -59,21 +59,21 @@ public class AjaxGetData {
 	}
 	
 	
-	/**ajax查詢公司資料並回傳<br/>*/
-	@RequestMapping("/ajax/getCompanyList")
-	public @ResponseBody Map<String, Object> ajaxGetCompanyList(HttpServletRequest request) {
-		Map<String, Object> map = new HashMap<String, Object>();
-
-		try {
-
-			companyService.makeCompanyMap(map);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return map;
-
-	}
+//	/**ajax查詢公司資料並回傳<br/>*/
+//	@RequestMapping("/ajax/getCompanyList")
+//	public @ResponseBody Map<String, Object> ajaxGetCompanyList(HttpServletRequest request) {
+//		Map<String, Object> map = new HashMap<String, Object>();
+//
+//		try {
+//
+//			companyService.makeCompanyMap(map);
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return map;
+//
+//	}
 	
 	
 	/**

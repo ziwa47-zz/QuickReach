@@ -92,7 +92,6 @@ public class QRAccountServlet extends HttpServlet {
 			qraf.insertQRAccount(qra);
 			response.sendRedirect("accountManage.jsp");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	
@@ -120,7 +119,6 @@ private void processEdit(HttpServletRequest request, HttpServletResponse respons
 			
 			response.sendRedirect("accountManage.jsp");
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		

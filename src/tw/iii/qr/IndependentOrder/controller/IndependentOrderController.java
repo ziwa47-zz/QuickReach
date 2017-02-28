@@ -1,9 +1,10 @@
-package tw.iii.qr.IndependentOrder.controller;
+﻿package tw.iii.qr.IndependentOrder.controller;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -80,10 +81,16 @@ public class IndependentOrderController {
 		String orderGuest 		= request.getParameter("guestid");
 		String platform 		= request.getParameter("platform");
 		String paypalFees 		= request.getParameter("paypalFees");
+		String paypalPrice 		= request.getParameter("paypalPrice");
+		String paypalNet 		= request.getParameter("paypalNet");
 		String logistics 		= request.getParameter("logistics");
 		String currency 		= request.getParameter("currency");
 		String masterComment 	= request.getParameter("masterComment");
-		String paypalPrice 		= request.getParameter("paypalPrice");
+		String invoiceName		= request.getParameter("invoiceName");
+		String invoicePrice		= request.getParameter("invoicePrice");
+		String totalPrice		= request.getParameter("totalPrice");
+		
+		
 		
 		
 		
@@ -135,9 +142,10 @@ public class IndependentOrderController {
 			iorderMaster.setComment(masterComment);
 			iorderMaster.setPaypalPrice(new BigDecimal(paypalPrice));
 			iorderMaster.setOrderStatus(ORDER_STATUS_PROCESSING);
-			//loop 算總價
-			BigDecimal totalPrice = iordersMasterService.totalPrice(request);
-			iorderMaster.setTotalPrice(totalPrice);
+			iorderMaster.setPaypalNet(new BigDecimal(paypalNet));
+			iorderMaster.setInvoiceName(invoiceName);
+			iorderMaster.setInvoicePrice(new BigDecimal(invoicePrice));
+			iorderMaster.setTotalPrice(new BigDecimal(totalPrice));
 			
 			iordersMasterService.persist(iorderMaster);
 			
@@ -156,15 +164,19 @@ public class IndependentOrderController {
 	}
 	
 	
-	
 	@RequestMapping(value = "/testFactory")
 	public String test(HttpServletRequest request) {
+	
+		 //iOrderFactory.getIDPorderAllInfo(request.getParameter("qrId"));
+		 iOrderFactory.getAllIDPorder("處理中");
+
 		 iOrderFactory.getIDPorderAllInfo(request.getParameter("qrId"));
 		 try {
 			System.out.println("myTest:"+BeanUtils.describe(storageDAO.selectStorageBySku(request.getParameter("qrId"))));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		
 		
 		return "redirect:/HomePage.jsp";
