@@ -1,4 +1,4 @@
-package tw.iii.qr.IndependentOrder.controller;
+﻿package tw.iii.qr.IndependentOrder.controller;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import tw.iii.IDP.IOrderFactory;
 import tw.iii.qr.IndependentOrder.model.entity.Guest;
-import tw.iii.qr.IndependentOrder.model.entity.IDPorderAll;
 import tw.iii.qr.IndependentOrder.model.entity.IordersMaster;
+import tw.iii.qr.IndependentOrder.model.repository.StorageDAO;
 import tw.iii.qr.IndependentOrder.service.CompanyService;
 import tw.iii.qr.IndependentOrder.service.GuestService;
 import tw.iii.qr.IndependentOrder.service.IordersDetailService;
@@ -31,6 +31,7 @@ public class IndependentOrderController {
 	
 	@Autowired  IOrderFactory iOrderFactory;
 	
+	@Resource StorageDAO storageDAO;
 	@Resource
 	CompanyService companyService;
 	@Resource
@@ -165,9 +166,17 @@ public class IndependentOrderController {
 	
 	@RequestMapping(value = "/testFactory")
 	public String test(HttpServletRequest request) {
-		
+	
 		 //iOrderFactory.getIDPorderAllInfo(request.getParameter("qrId"));
 		 iOrderFactory.getAllIDPorder("處理中");
+
+		 iOrderFactory.getIDPorderAllInfo(request.getParameter("qrId"));
+		 try {
+			System.out.println("myTest:"+BeanUtils.describe(storageDAO.selectStorageBySku(request.getParameter("qrId"))));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		
 		
 		return "redirect:/HomePage.jsp";

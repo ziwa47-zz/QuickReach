@@ -1,4 +1,4 @@
-package tw.iii.qr.IndependentOrder.service;
+﻿package tw.iii.qr.IndependentOrder.service;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;
@@ -52,7 +52,8 @@ public class IordersDetailService extends AbstractService<IordersDetail> {
 			//iordersDetail.setWarehousePosition(request.getParameter(("warehousePositionOne" + i)));
 			//iordersDetail.setWarehousePosition2(request.getParameter(("warehousePositionTwo" + i)));
 			iordersDetail.setComment(request.getParameter(("comment" + i)));
-			iordersDetail.setWarehouse(request.getParameter("warehouse"));
+			iordersDetail.setWarehouse(request.getParameter("warehouse"+i));
+
 			iordersDetail.setProductName(request.getParameter("pName"+i));
 			iordersDetail.setOwner(request.getParameter("owner"+i));
 			
