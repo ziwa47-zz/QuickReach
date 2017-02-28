@@ -1,5 +1,7 @@
 package tw.iii.qr.IndependentOrder.model.repository;
 
+import java.util.List;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -29,6 +31,20 @@ public class GuestDAO extends AbstractDAO<Guest> {
 		} 
 		System.out.println("GuestDAO.selectGuestByGuestId():finish");
 		return guest;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Guest> selectGuestByLike(String guestId) throws Exception {
+		System.out.println("GuestDAO.selectGuestByLike():start");
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.like("guestId", "%"+guestId+"%"));
+		System.out.println("guestId like %"+guestId+"%");
+
+		if (criteria.list().size() == 0) {
+			System.out.println("criteria.list().size() == 0");
+		} 
+		System.out.println("GuestDAO.selectGuestByLike():finish");
+		return criteria.list();
 	}
 
 }

@@ -56,7 +56,7 @@ public class IordersDetailService extends AbstractService<IordersDetail> {
 			//iordersDetail.setWarehousePosition(request.getParameter(("warehousePositionOne" + i)));
 			//iordersDetail.setWarehousePosition2(request.getParameter(("warehousePositionTwo" + i)));
 			iordersDetail.setComment(request.getParameter(("comment" + i)));
-			iordersDetail.setWarehouse(request.getParameter("warehouse"));
+			iordersDetail.setWarehouse(request.getParameter("warehouse"+i));
 			
 			iordersDetail.setProductName(request.getParameter("pName"+i));
 			iordersDetail.setInvoiceName(request.getParameter("invoiceName"+i));

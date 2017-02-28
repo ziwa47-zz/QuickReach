@@ -1,6 +1,7 @@
 package tw.iii.qr.IndependentOrder.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -79,7 +80,30 @@ public class GuestService extends AbstractService<Guest> {
 
 	}
 	
-	
+	public Map<String , Object> selectGuestForJQuery(String guestId) throws Exception {
+		System.out.println("selectGuestForJQuery:start");
+		Map<String , Object> map =  new HashMap<>();
+		List<Guest> list = guestDAO.selectGuestByLike(guestId);
+		if ( list.size() != 0) {
+			System.out.println("list.size() != 0");
+			for(int i = 0 ; i<list.size() ; i++) {
+				map.put(""+i		, list.get(i).getGuestId());
+				
+				System.out.println(BeanUtils.describe(list.get(i)));
+			}
+			
+				
+			
+					
+		} else {
+			System.out.println("list.size() == 0");
+			
+		}
+		
+		System.out.println("selectGuestForJQuery:finish");
+		return map;
+
+	}
 	
 	
 
