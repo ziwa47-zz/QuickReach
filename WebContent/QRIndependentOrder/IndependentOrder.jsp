@@ -127,6 +127,7 @@ function getWarehousePosition() {
         		 $.each(response.data, function(i, item){
     				 $("#warehouse1").append($("<option></option>").attr("value", item.warehouse+','+item.warehousePosition).text(item.warehouse+','+item.warehousePosition));
     		//其他  插入動態生成的商品資料 的倉庫select option
+        		 })
            	}else {
         		$.each(response.data, function(i, item){
       				 $("#warehouse"+(dynamicId-1)).append($("<option></option>").attr("value", item.warehouse+','+item.warehousePosition).text(item.warehouse+','+item.warehousePosition));
