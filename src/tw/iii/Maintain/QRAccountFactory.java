@@ -163,7 +163,6 @@ public class QRAccountFactory extends QRAccount{
 			}
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return list;

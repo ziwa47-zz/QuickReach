@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="tw.iii.qr.DataBaseConn"%>
-<%@ page import="tw.iii.qr.order.DTO.COrders"%>
-<%@ page import="java.sql.Connection,java.sql.ResultSet,java.util.LinkedList,java.util.*,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse"%>
-<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.COrderFactory" scope="page" />
+
+<%@ page import="tw.iii.qr.IndependentOrder.model.entity.IDPorderAll"%>
+<%@ page import="java.util.LinkedList"%>
+<jsp:useBean id="IOF" class="tw.iii.IDP.IOrderFactory" scope="page" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -17,14 +17,14 @@
 <% response.sendRedirect("/HomePage.jsp"); %>   
 </c:if>
 <%
-	COrderFactory.checkUrlToRemoveSession(request, session);
-	Connection conn = new DataBaseConn().getConn();
-	LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"處理中");
-	LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts(conn);
+	//COrderFactory.checkUrlToRemoveSession(request, session);
+	
+	LinkedList<IDPorderAll> orderList  = IOF.getAllIDPorder("處理中");
+	
 	session.setAttribute("list", orderList);
     request.setAttribute("begin", request.getParameter("begin"));
     request.setAttribute("end", request.getParameter("end"));
-    session.setAttribute("ebayAccounts", ebayAccounts);
+   
 %>
 <div class="nav">
   <div class="container">
@@ -223,7 +223,7 @@
               <th>編輯</th>
               <th>訂單編號</th>
               <th>平台</th>
-              <th>Ebay Account</th>
+              <th>客戶代號</th>
               <th>客戶帳號</th>
               <th>購買日期</th>
               <th>出貨日期</th>
@@ -237,71 +237,67 @@
               <c:choose>
                 <c:when test="${check.index%2 != 0}">
                   <tr style="background-color:#D4F4D8">
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}"></td>
-                    <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td>${i.getCOrderMaster().getEbayNO()}</td>
-                    <td>${i.getCOrderMaster().getPlatform()}</td>
-                    <td>${i.getCOrderMaster().getEbayAccount()}</td>
-                    <td>${i.getCOrderMaster().getGuestAccount()}</td>
-                    <td>${i.getCOrderMaster().getPayDate()}</td>
+                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getIordersMaster().getQrId()}"></td>
+                    <td><a href="OrderDetail.jsp?QR_id=${i.getIordersMaster().getQrId()}"><img src="../img/compose-4.png" ></a></td>
+                    <td>${i.getIordersMaster().getQrId()}</td>
+                    <td>${i.getIordersMaster().getPlatform()}</td>
+                    <td>${i.getIordersMaster().getGuestId()}</td>
+                    <td>${i.getIordersMaster().getGuestId()}</td>
+                    <td>${i.getIordersMaster().getPayDate()}</td>
                     <td></td>
-                    <td>${i.getCOrderMaster().getLogistics()}</td>
-                    <td>${i.getCOrderReciever().getCountry()}</td>
-                    <td>${i.getCOrderMaster().getOrderStatus()}
-                      <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
-                    <td>${i.getCOrderMaster().getTotalPrice()}${i.getCOrderMaster().getCurrency()}</td>
-                    <td>${i.getCOrderMaster().getStaffName()}</td>
+                    <td>${i.getIordersMaster().getLogistics()}</td>
+                    <td>${i.getGuestInfo().getCountry()}</td>
+                    <td>${i.getIordersMaster().getOrderStatus()}
+                      <input type="hidden" name="status" value="${i.getIordersMaster().getOrderStatus()}"></td>
+                    <td>${i.getIordersMaster().getTotalPrice()}${i.getIordersMaster().getCurrency()}</td>
+                    <td>${i.getIordersMaster().getStaffName()}</td>
                   </tr>
                   <tr style="background-color:#D4F4D8">
 					<td colspan="9">
-                    <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                    <c:forEach var="j" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
                       <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
                       <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
-                    <td colspan="3" class="warehouseLocation" id="${i.getCOrderMaster().getQR_id()}">
-                    <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                    <td colspan="3" class="warehouseLocation" id="${i.getIordersMaster().getQR_id()}">
+                    <c:forEach var="k" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
                       <b>${k.getWarehouse()}</b>${k.getWarehouseLocation() }<br/>
                     </c:forEach>
                     </td>
                   </tr>
-                  <tr>
-                    <td colspan="12">${i.getCOrderMaster().getComment()}</td>
-                  </tr>
+                 
                 </c:when>
                 <c:otherwise>
                   <tr>
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getCOrderMaster().getQR_id()}" onchange=""></td>
-                    <td><a href="OrderDetail.jsp?QR_id=${i.getCOrderMaster().getQR_id()}"><img src="../img/compose-4.png" ></a></td>
-                    <td>${i.getCOrderMaster().getEbayNO()}
-                    <td>${i.getCOrderMaster().getPlatform()}</td>
-                    <td>${i.getCOrderMaster().getEbayAccount()}</td>
-                    <td>${i.getCOrderMaster().getGuestAccount()}</td>
-                    <td>${i.getCOrderMaster().getPayDate()}</td>
+                   <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getIordersMaster().getQrId()}"></td>
+                    <td><a href="OrderDetail.jsp?QR_id=${i.getIordersMaster().getQrId()}"><img src="../img/compose-4.png" ></a></td>
+                    <td>${i.getIordersMaster().getQrId()}</td>
+                    <td>${i.getIordersMaster().getPlatform()}</td>
+                    <td>${i.getIordersMaster().getGuestId()}</td>
+                    <td>${i.getIordersMaster().getGuestId()}</td>
+                    <td>${i.getIordersMaster().getPayDate()}</td>
                     <td></td>
-                    <td>${i.getCOrderMaster().getLogistics()}</td>
-                    <td>${i.getCOrderReciever().getCountry()}</td>
-                    <td>${i.getCOrderMaster().getOrderStatus()}
-                      <input type="hidden" name="status" value="${i.getCOrderMaster().getOrderStatus()}"></td>
-                    <td>${i.getCOrderMaster().getTotalPrice()}${i.getCOrderMaster().getCurrency()}</td>
-                    <td>${i.getCOrderMaster().getStaffName()}</td>
+                    <td>${i.getIordersMaster().getLogistics()}</td>
+                    <td>${i.getGuestInfo().getCountry()}</td>
+                    <td>${i.getIordersMaster().getOrderStatus()}
+                      <input type="hidden" name="status" value="${i.getIordersMaster().getOrderStatus()}"></td>
+                    <td>${i.getIordersMaster().getTotalPrice()}${i.getIordersMaster().getCurrency()}</td>
+                    <td>${i.getIordersMaster().getStaffName()}</td>
                   </tr>
-                  <tr>
+                  <tr style="background-color:#D4F4D8">
 					<td colspan="9">
-                    <c:forEach var="j" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                    <c:forEach var="j" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
                       <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
                       <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
-                    <td colspan="3" class="warehouseLocation" id="${i.getCOrderMaster().getQR_id()}">
-                    <c:forEach var="k" items="${i.COrderDetail}" begin="0" step="1" varStatus="check">
+                    <td colspan="3" class="warehouseLocation" id="${i.getIordersMaster().getQR_id()}">
+                    <c:forEach var="k" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
                       <b>${k.getWarehouse()}</b>${k.getWarehouseLocation() }<br/>
                     </c:forEach>
                     </td>
                   </tr>
-                  <tr>
-                    <td colspan="12">${i.getCOrderMaster().getComment()}</td>
-                  </tr>
+                 
                 </c:otherwise>
               </c:choose>
             </c:forEach>

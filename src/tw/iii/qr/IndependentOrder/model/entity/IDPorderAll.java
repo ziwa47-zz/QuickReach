@@ -6,7 +6,7 @@ public class IDPorderAll {
 	
 	private IordersMaster iordersMaster;
 	private IordersDetail iordersDetail;
-	private Guest guestInfo = new Guest();
+	private Guest guestInfo;
 	private List<IordersDetail> iordersDetails;
 	
 	

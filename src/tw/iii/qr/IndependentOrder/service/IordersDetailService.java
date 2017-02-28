@@ -44,25 +44,24 @@ public class IordersDetailService extends AbstractService<IordersDetail> {
 				continue;
 
 			IordersDetail iordersDetail = new IordersDetail();
-		
-			
 			iordersDetail.setQrId(qrId);
-			
 			iordersDetail.setTansactionId(transactionId);
-			
 			iordersDetail.setSku(request.getParameter(("sku" + i)));
 			iordersDetail.setQty(Integer.valueOf(request.getParameter(("qty" + i))));
-			iordersDetail.setPrice(new BigDecimal(request.getParameter(("price" + i))));
+			iordersDetail.setPrice(new BigDecimal(request.getParameter(("Price" + i))));
 			//iordersDetail.setWarehousePosition(request.getParameter(("warehousePositionOne" + i)));
 			//iordersDetail.setWarehousePosition2(request.getParameter(("warehousePositionTwo" + i)));
 			iordersDetail.setComment(request.getParameter(("comment" + i)));
 			iordersDetail.setWarehouse(request.getParameter("warehouse"));
-			
 			iordersDetail.setProductName(request.getParameter("pName"+i));
-			iordersDetail.setInvoiceName(request.getParameter("invoiceName"+i));
-			iordersDetail.setInvoicePrice(new BigDecimal(request.getParameter("invoicePrice"+i)));
-			iordersDetail.setOwner(request.getParameter("owner"+i));;
+			iordersDetail.setOwner(request.getParameter("owner"+i));
 			
+			if(request.getParameter("weight_g"+i)!=null&&request.getParameter("weight_g"+i)!=""){
+			iordersDetail.setWeight_g(new BigDecimal(request.getParameter("weight_g"+i)));
+			}
+			if(request.getParameter("weight_oz"+i)!=null&&request.getParameter("weight_oz"+i)!=""){
+			iordersDetail.setWeight_oz(new BigDecimal(request.getParameter("weight_oz"+i)));
+			}
 			//前端撈商品明細  要增加 owner，ajax也要改寫~
 			
 			persist(iordersDetail);
