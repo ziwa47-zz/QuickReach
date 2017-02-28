@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ page import="tw.iii.IDP.IOrderFactory"%>
 <%@ page import="tw.iii.qr.IndependentOrder.model.entity.IDPorderAll"%>
 <%@ page import="java.util.LinkedList"%>
 <jsp:useBean id="IOF" class="tw.iii.IDP.IOrderFactory" scope="page" />
