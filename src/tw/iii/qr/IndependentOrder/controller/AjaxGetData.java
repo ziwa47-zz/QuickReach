@@ -40,17 +40,20 @@ public class AjaxGetData {
 	/**ajax查詢顧客資料並回傳<br/>*/
 	@RequestMapping("/ajax/getGetGuest")
 	public @ResponseBody Map<String, Object> ajaxGetGuest(HttpServletRequest request) {
+		System.out.println("ajaxGetGuest:start");
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		try {
 			
 			String guestId = request.getParameter("guestId");
+			System.out.println("guestId:"+guestId);
 			map = guestService.selectGuestByGuestId(guestId );
 
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("ajaxGetGuest:finish");
 		return map;
 
 	}
@@ -157,7 +160,24 @@ public class AjaxGetData {
 
 	}
 	
-	
+	/**ajax查詢顧客下拉選單for JQuery autocomplete<br/>*/
+	@RequestMapping("/ajax/getGuestList")
+	public @ResponseBody Map<String, Object> ajaxGuestList(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		try {
+			
+			String guestId = request.getParameter("term");
+			System.out.println("guestId="+guestId);
+			map = guestService.selectGuestForJQuery(guestId );
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+
+	}
 	
 }
 
