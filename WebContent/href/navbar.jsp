@@ -89,7 +89,9 @@ $(function() {
 	
 	$("input[name=date]").datepicker({
 		dateFormat : 'yy-mm-dd',
-		
+	});
+	$("input[name=birthday]").datepicker({
+		dateFormat : 'yy-mm-dd',
 	});
 
 	
