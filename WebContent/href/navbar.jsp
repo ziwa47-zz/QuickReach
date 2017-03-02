@@ -282,6 +282,9 @@ function chkEmail(mail) {
 			    <c:if test="${PageCompetence.getParamSettingEdit() ==1}">
 			    	<li><a href="/SupplyCompany/SCManage.jsp">供應商/倉庫</a></li>
 				</c:if>
+				<c:if test="${PageCompetence.getParamSettingEdit() ==1}">
+			    	<li><a href="/QRGuest/GuestManage.jsp">客戶管理</a></li>
+				</c:if>
 			</ul>
 
 			<ul class="nav navbar-right">
