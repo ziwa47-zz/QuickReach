@@ -318,4 +318,64 @@ public JSONArray iosstockDetail(HttpServletRequest request) throws IllegalAccess
 		return counting;
 	}
 
+	public void modifyStorage(int count,String comment, String sku , String warehouse)throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+		DataBaseConn dbc = new DataBaseConn();
+		Connection conn = dbc.getConn() ;
+		
+
+		String sqlstr = "UPDATE storage  SET qty = qty+? ,comment = ? ,purchaseDate = getdate() WHERE SKU= ? and warehouse = ? ";
+
+		PreparedStatement preparedState = conn.prepareStatement(sqlstr);		
+
+		preparedState.setInt(1, count);
+		preparedState.setString(2, comment);
+		preparedState.setString(3, sku);
+		preparedState.setString(4, warehouse);
+		
+		preparedState.execute();
+		preparedState.close();
+		
+		conn.close();
+
+	}
+	public void modifyStorageLogMaster(String stockTransferId,String comment, String staffName , String oldWarehouse)throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+		DataBaseConn dbc = new DataBaseConn();
+		Connection conn = dbc.getConn() ;
+		
+
+		String sqlstr = "INSERT INTO stockTransferlog_master (stockTransferId,date,staffName,stockStatus,oldWarehouse,comment) VALUES (?,getdate(),?,'4',?,?)";
+		PreparedStatement preparedState = conn.prepareStatement(sqlstr);		
+
+		preparedState.setString(1, stockTransferId);
+		preparedState.setString(2, staffName);
+		preparedState.setString(3, oldWarehouse);
+		preparedState.setString(4, comment);
+		
+		preparedState.execute();
+		preparedState.close();
+		
+		conn.close();
+
+	}
+	
+	public void modifyStorageLogDetail(String stockTransferId,String comment, String SKU , String oldWarehouse ,int qty)throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
+		DataBaseConn dbc = new DataBaseConn();
+		Connection conn = dbc.getConn() ;
+		
+
+		String sqlstr = "INSERT INTO stockTransferlog_detail (stockTransferId,SKU,stockStatus,oldWarehouse,comment,qty) VALUES (?,?,'4',?,?,?)";
+		PreparedStatement preparedState = conn.prepareStatement(sqlstr);		
+
+		preparedState.setString(1, stockTransferId);
+		preparedState.setString(2, SKU);
+		preparedState.setString(3, oldWarehouse);
+		preparedState.setString(4, comment);
+		preparedState.setInt(5, qty);
+		
+		preparedState.execute();
+		preparedState.close();
+		
+		conn.close();
+
+	}
 }

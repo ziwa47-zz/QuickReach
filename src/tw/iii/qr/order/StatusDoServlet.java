@@ -31,7 +31,6 @@ public class StatusDoServlet extends HttpServlet {
 		try {
 			processSubmit(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -42,7 +41,6 @@ public class StatusDoServlet extends HttpServlet {
 		try {
 			processSubmit(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -2,7 +2,9 @@ package tw.iii.qr.stock.DTO;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import javax.persistence.Entity;
 
+@Entity
 public class CProduct {
 	private String item;
 	private String SKU;
@@ -169,7 +171,6 @@ public class CProduct {
 		AllStock = allStock;
 	}
 	public String getCompany() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	public void setCompany(String company) {

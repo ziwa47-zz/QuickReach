@@ -1018,7 +1018,7 @@ public class COrderFactory extends COrders {
 				//System.out.println("bundle");
 				plusBundledeductStock(conn, condition.get(i));
 
-			} else if (!"B00".equals(condition.get(i).getSKU().substring(0, 3))) {
+			} else  {
 
 				//System.out.println("single");
 				deductStock(conn, condition.get(i));
@@ -1085,7 +1085,7 @@ public class COrderFactory extends COrders {
 
 		LinkedList<COrderDetail> result = new LinkedList<COrderDetail>();
 
-		String strSql = "select d.SKU,d.qty, d.warehouse, d.item, p.productType ,d.Qr_id "
+		String strSql = "select d.SKU,d.qty, d.warehouse, d.item, p.productType "
 				+ " from orders_detail as d left join product p on d.sku = p.sku   where d.QR_id = ? ";
 
 		PreparedStatement ps = conn.prepareStatement(strSql);
@@ -1098,13 +1098,12 @@ public class COrderFactory extends COrders {
 
 		while (rs.next()) {
 			detail = new COrderDetail();
-			if (!"調貨類".equals(rs.getString(4))) {
+			if (!"調貨類".equals(rs.getString(5))) {
 				detail.setSKU(rs.getString(1));
 				detail.setQty(rs.getInt(2));
 				detail.setWarehouse(rs.getString(3));
 				detail.setItem(Integer.valueOf(rs.getString(4)));
 				result.add(detail);
-				System.out.println("con:" + rs.getString(1));
 			}
 		}
 

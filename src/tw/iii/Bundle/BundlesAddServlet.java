@@ -54,7 +54,6 @@ public class BundlesAddServlet extends HttpServlet {
 				response.sendRedirect("BundlesAdd.jsp");
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

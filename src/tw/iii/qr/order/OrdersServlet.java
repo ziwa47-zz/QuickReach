@@ -26,7 +26,6 @@ public class OrdersServlet extends HttpServlet {
 		try {
 			processSearchOrders(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -36,7 +35,6 @@ public class OrdersServlet extends HttpServlet {
 		try {
 			processSearchOrders(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

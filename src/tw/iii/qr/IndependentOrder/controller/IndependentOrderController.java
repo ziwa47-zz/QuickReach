@@ -1,21 +1,25 @@
-package tw.iii.qr.IndependentOrder.controller;
+﻿package tw.iii.qr.IndependentOrder.controller;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import tw.iii.IDP.IOrderFactory;
 import tw.iii.qr.IndependentOrder.model.entity.Guest;
 import tw.iii.qr.IndependentOrder.model.entity.IordersMaster;
+import tw.iii.qr.IndependentOrder.model.repository.StorageDAO;
 import tw.iii.qr.IndependentOrder.service.CompanyService;
 import tw.iii.qr.IndependentOrder.service.GuestService;
 import tw.iii.qr.IndependentOrder.service.IordersDetailService;
@@ -24,7 +28,10 @@ import tw.iii.qr.IndependentOrder.service.WarehouseService;
 
 @Controller
 public class IndependentOrderController {
-
+	
+	@Autowired  IOrderFactory iOrderFactory;
+	
+	@Resource StorageDAO storageDAO;
 	@Resource
 	CompanyService companyService;
 	@Resource
@@ -74,10 +81,16 @@ public class IndependentOrderController {
 		String orderGuest 		= request.getParameter("guestid");
 		String platform 		= request.getParameter("platform");
 		String paypalFees 		= request.getParameter("paypalFees");
+		String paypalPrice 		= request.getParameter("paypalPrice");
+		String paypalNet 		= request.getParameter("paypalNet");
 		String logistics 		= request.getParameter("logistics");
 		String currency 		= request.getParameter("currency");
 		String masterComment 	= request.getParameter("masterComment");
-		String paypalPrice 		= request.getParameter("paypalPrice");
+		String invoiceName		= request.getParameter("invoiceName");
+		String invoicePrice		= request.getParameter("invoicePrice");
+		String totalPrice		= request.getParameter("totalPrice");
+		
+		
 		
 		
 		
@@ -129,9 +142,10 @@ public class IndependentOrderController {
 			iorderMaster.setComment(masterComment);
 			iorderMaster.setPaypalPrice(new BigDecimal(paypalPrice));
 			iorderMaster.setOrderStatus(ORDER_STATUS_PROCESSING);
-			//loop 算總價
-			BigDecimal totalPrice = iordersMasterService.totalPrice(request);
-			iorderMaster.setTotalPrice(totalPrice);
+			iorderMaster.setPaypalNet(new BigDecimal(paypalNet));
+			iorderMaster.setInvoiceName(invoiceName);
+			iorderMaster.setInvoicePrice(new BigDecimal(invoicePrice));
+			iorderMaster.setTotalPrice(new BigDecimal(totalPrice));
 			
 			iordersMasterService.persist(iorderMaster);
 			
@@ -147,6 +161,25 @@ public class IndependentOrderController {
 		
 		 return "redirect:/HomePage.jsp";
 
+	}
+	
+	
+	@RequestMapping(value = "/testFactory")
+	public String test(HttpServletRequest request) {
+	
+		 //iOrderFactory.getIDPorderAllInfo(request.getParameter("qrId"));
+		 iOrderFactory.getAllIDPorder("處理中");
+
+		 iOrderFactory.getIDPorderAllInfo(request.getParameter("qrId"));
+		 try {
+			System.out.println("myTest:"+BeanUtils.describe(storageDAO.selectStorageBySku(request.getParameter("qrId"))));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		
+		
+		return "redirect:/HomePage.jsp";
 	}
 }
 

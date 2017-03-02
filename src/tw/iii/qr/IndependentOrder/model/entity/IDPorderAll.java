@@ -1,14 +1,12 @@
 package tw.iii.qr.IndependentOrder.model.entity;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 public class IDPorderAll {
 	
 	private IordersMaster iordersMaster;
 	private IordersDetail iordersDetail;
-	private Guest guestInfo = new Guest();
+	private Guest guestInfo;
 	private List<IordersDetail> iordersDetails;
 	
 	
