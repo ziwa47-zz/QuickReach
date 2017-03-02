@@ -34,6 +34,9 @@
     <c:if test="${PageCompetence.getParamSettingEdit() ==1}">
     	<li><a href="#menu6"><img src="img/warehouse.png" width="36" height="36">供應商/倉庫</a></li>
     </c:if>
+    <c:if test="${PageCompetence.getParamSettingEdit() ==1}">
+    	<li><a href="#menu8"><img src="img/users.png" width="24" height="24">客戶管理</a></li>
+    </c:if>
     <c:if test="${PageCompetence.getOrdersManage() ==1}">
     	<li><a href="#menu5">獲取訂單</a></li>
     </c:if>
@@ -116,6 +119,14 @@
       <a href="/QRWarehouse/warehouseManage.jsp"><label class="btn btn-lg btn-primary" >倉庫管理</label></a>
       <a href="/QRWarehouse/addWarehouse.jsp"><label class="btn btn-lg btn-primary" >新增倉庫</label></a>
     </div>
+    </div>
+    <div id="menu8" class="tab-pane fade">
+      <h3>客戶管理</h3>
+      <div class="row" style="font-size:24px; padding:10px">
+        <a href="/QRGuest/GuestManage.jsp"><label class="btn btn-lg btn-primary">客戶管理</label></a>
+      	<a href="/QRGuest/Guest.jsp"><label class="btn btn-lg btn-primary">新增客戶</label></a>
+      	<a href="/QRGuest/GuestManage.jsp"><label class="btn btn-lg btn-primary">查詢客戶</label></a>
+      </div>
     </div>
     <div id="menu5" class="tab-pane fade">
       <h3>獲取訂單</h3>
