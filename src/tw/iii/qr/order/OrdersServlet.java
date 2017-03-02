@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.order.DTO.COrders;
 import tw.iii.qr.order.DTO.SessionRecord;
+import tw.iii.qr.order.DTO.ShipmentRecord;
 
 @WebServlet("/OrdersServlet")
 public class OrdersServlet extends HttpServlet {
@@ -80,6 +81,11 @@ public class OrdersServlet extends HttpServlet {
 			orderList = COrderFactory.orders(request,Order_Refund);
 			session.setAttribute("refund", orderList);
 			response.sendRedirect("QROrders/refundPage.jsp?begin=0&end=10");
+			break;
+		case "shipmentRecordSearch":
+			LinkedList<ShipmentRecord>	shipmentRecord = COrderFactory.searchShipmentRecord(request);
+			session.setAttribute("shipmentRecords", shipmentRecord);
+			response.sendRedirect("QROrders/ShipmentRecord.jsp?begin=0&end=10");
 			break;
 		case "updateOrder":
 			// OFactory.updateOrderDetail(request, conn);

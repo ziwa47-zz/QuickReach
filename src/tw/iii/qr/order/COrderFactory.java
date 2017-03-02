@@ -1083,7 +1083,7 @@ public class COrderFactory extends COrders {
 		return unSelected;
 	}
 
-	public LinkedList<ShipmentRecord> searchShipmentRecord(HttpServletRequest request) throws Exception {
+	public static LinkedList<ShipmentRecord> searchShipmentRecord(HttpServletRequest request) throws Exception {
 		Connection conn = new DataBaseConn().getConn();
 		String strSql = "select s.date, s.QR_id, s.type, m.eBayAccount, d.SKU, d.productName, d.qty,"
 				+ " r.country, d.owner, d.warehouse, m.staffName, s.comment, s.trackingCode"
@@ -1203,7 +1203,7 @@ public class COrderFactory extends COrders {
 			param++;
 		}
 
-		// System.out.println(strSql);
+		System.out.println(strSql);
 
 		ResultSet rs = ps.executeQuery();
 
@@ -1223,7 +1223,9 @@ public class COrderFactory extends COrders {
 			record.setComment(rs.getString(12));
 			record.setTrackingCode(rs.getString(13));
 			shipmentRecord.add(record);
+			
 		}
+		conn.close();
 		return shipmentRecord;
 	}
 

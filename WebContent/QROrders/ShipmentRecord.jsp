@@ -20,10 +20,7 @@
 </c:if>
 <%
 	COrderFactory.checkUrlToRemoveSession(request, session);
-	Connection conn = new DataBaseConn().getConn();
-	LinkedList<ShipmentRecord>	shipmentRecord = COrderFactory.searchShipmentRecord(request);
 	LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts();
-	session.setAttribute("shipmentRecord", shipmentRecord);
     request.setAttribute("begin", request.getParameter("begin"));
     request.setAttribute("end", request.getParameter("end"));
     session.setAttribute("ebayAccounts", ebayAccounts);
@@ -62,7 +59,7 @@
 </div>
 <div class="nav">
   <div class="container" style="background: #D9A56B; border-radius:20px;">
-    <form name="searchform" method="post" action="../ShipmentServlet" class="form-inline container"
+    <form name="searchform" method="post" action="../OrdersServlet" class="form-inline container"
     style="font-size: 100%; vertical-align: baseline; padding: 15px;">
       <fieldset class="font-weight" style="padding:0 30px 0 0;">
         <legend>出貨記錄查詢</legend>
@@ -218,8 +215,8 @@
         </div>
         <br/>
         <div class="row text-center" >
-          <button class="btn btn-lg btn-primary" type="submit" name="submit" value="shipmentRecord">搜尋</button>
-          <button class="btn btn-lg btn-primary" type="button" name="" >清空</button>
+          <button class="btn btn-lg btn-primary" type="submit" name="submit" value="shipmentRecordSearch">搜尋</button>
+          <button class="btn btn-lg btn-primary" type="reset" name="" >清空</button>
         </div>
       </fieldset>
     </form>
@@ -249,14 +246,14 @@
               </c:choose>
             </c:forEach>
             <c:choose>
-              <c:when test="${end < shipmentRecord.size()}">
+              <c:when test="${end < shipmentRecords.size()}">
                 <li><a href="ShipmentRecord.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:when>
               <c:otherwise>
                 <li class="disabled"><a href="ShipmentRecord.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:otherwise>
             </c:choose>
-            <label>共有:${shipmentRecord.size()}筆</label>
+            <label>共有:${shipmentRecords.size()}筆</label>
           </ul>
           <table class="table table-bordered table-hover table-condensed pull-left" style="margin:0 0 0 -15px">
             <thead>
@@ -275,7 +272,7 @@
               </tr>
             </thead>
             <tbody>
-              <c:forEach var="i" items="${shipmentRecord}" begin="${begin}" end="${end}" step="1" varStatus="check">
+              <c:forEach var="i" items="${shipmentRecords}" begin="${begin}" end="${end}" step="1" varStatus="check">
                 <c:choose>
                   <c:when test="${check.index%2 != 0}">
                     <tr style="background-color:#D4F4D8">
