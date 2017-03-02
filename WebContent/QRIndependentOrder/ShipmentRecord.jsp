@@ -21,9 +21,9 @@
 <%
 	COrderFactory.checkUrlToRemoveSession(request, session);
 	Connection conn = new DataBaseConn().getConn();
-	LinkedList<ShipmentRecord> shipmentRecord = COrderFactory.searchShipmentRecord(request, conn);
-	LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts(conn);
-	session.setAttribute("list", shipmentRecord);
+	LinkedList<ShipmentRecord> shipmentRecord = COrderFactory.searchShipmentRecord(request);
+	LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts();
+	session.setAttribute("shipmentRecord", shipmentRecord);
     request.setAttribute("begin", request.getParameter("begin"));
     request.setAttribute("end", request.getParameter("end"));
     session.setAttribute("ebayAccounts", ebayAccounts);
@@ -341,7 +341,7 @@
                 <li class="disabled"><a href="ShipmentRecord.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
               </c:otherwise>
             </c:choose>
-            <c:forEach begin="0" end="${list.size()/10}" step="1" varStatus="check">
+            <c:forEach begin="0" end="${shipmentRecord.size()/10}" step="1" varStatus="check">
               <c:choose>
                 <c:when test="${(check.index*10) != begin}">
                   <li><a href="ShipmentRecord.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
@@ -352,14 +352,14 @@
               </c:choose>
             </c:forEach>
             <c:choose>
-              <c:when test="${end < list.size()}">
+              <c:when test="${end < shipmentRecord.size()}">
                 <li><a href="ShipmentRecord.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:when>
               <c:otherwise>
                 <li class="disabled"><a href="ShipmentRecord.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:otherwise>
             </c:choose>
-            <label>共有:${list.size()}筆</label>
+            <label>共有:${shipmentRecord.size()}筆</label>
           </ul>
           <table class="table table-bordered table-hover table-condensed pull-left" style="margin:0 0 0 -15px">
             <thead>
@@ -378,7 +378,7 @@
               </tr>
             </thead>
             <tbody>
-              <c:forEach var="i" items="${list}" begin="${begin}" end="${end}" step="1" varStatus="check">
+              <c:forEach var="i" items="${shipmentRecord}" begin="${begin}" end="${end}" step="1" varStatus="check">
                 <c:choose>
                   <c:when test="${check.index%2 != 0}">
                     <tr style="background-color:#D4F4D8">

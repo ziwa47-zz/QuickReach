@@ -17,10 +17,9 @@
 <% response.sendRedirect("/HomePage.jsp"); %>   
 </c:if>
 <%
-  Connection conn = new DataBaseConn().getConn();
-  LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"已完成");
-  LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts(conn);
-  session.setAttribute("list", orderList);
+ 
+  LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts();
+ 
   request.setAttribute("begin", request.getParameter("begin"));
   request.setAttribute("end", request.getParameter("end"));
   session.setAttribute("ebayAccounts", ebayAccounts);
@@ -61,24 +60,23 @@
 
 <div class="nav">
   <div class="container" style="background: #D9A56B; border-radius:20px;">
-    <form name="searchform" method="post" action="../StatusDo" class="form-inline container"
+    <form name="searchform" method="post" action="../OrdersServlet" class="form-inline container"
     style="font-size: 100%; vertical-align: baseline; padding: 15px;">
       <fieldset class="font-weight" style="padding:0 30px 0 0;">
-        <legend>已完成</legend>
-        <input type="hidden">
+        <legend>處理中</legend>
         <div class="row">
           <div class="col-md-4 form-group ">
             <div class="row">
               <div class="col-md-4">
                 <h5>
-                  <label>ebay account：</label>
+                  <label>Ebay帳號：</label>
                 </h5>
               </div>
               <div class="col-md-8">
                 <select class="form-control" name="eBayAccount">
                   <option value="">請選擇</option>
                   <c:forEach var="q" items="${ebayAccounts}" step="1" varStatus="check">
-                  <option value="">${q}</option>
+                  <option value="${q}">${q}</option>
                   </c:forEach>
                 </select>
               </div>
@@ -88,7 +86,7 @@
             <div class="row">
               <div class="col-md-4">
                 <h5>
-                  <label>訂單編號：</label>
+                  <label>訂單編號(EbayNo)：</label>
                 </h5>
               </div>
               <div class="col-md-8">
@@ -100,7 +98,7 @@
             <div class="row">
               <div class="col-md-4">
                 <h5>
-                  <label>P/P帳號：</label>
+                  <label>客戶PayPal帳號：</label>
                 </h5>
               </div>
               <div class="col-md-8">
@@ -110,41 +108,15 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-8 form-group ">
-            <div class="row">
-              <div class="col-md-2">
-                <h5>
-                  <label>出貨單號：</label>
-                </h5>
-              </div>
-              <div class="col-md-6 input-group" style="padding-left: 15px; padding-right: 35px">
-                <input class="form-control" name="QR_id" type="text" style="border-radius: 4px">
-              </div>
-            </div>
-          </div>
           <div class="col-md-4 form-group ">
             <div class="row">
               <div class="col-md-4">
                 <h5>
-                  <label>E/B帳號：</label>
+                  <label>客戶Ebay帳號：</label>
                 </h5>
               </div>
               <div class="col-md-8" style="padding-left: 15px; padding-right: 35px">
                 <input class="form-control" name="guestAccount" type="text" style="border-radius: 4px">
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-8 form-group ">
-            <div class="row">
-              <div class="col-md-2">
-                <h5>
-                  <label>Tracking Code：</label>
-                </h5>
-              </div>
-              <div class="col-md-6 input-group" style="padding-left: 15px; padding-right: 35px">
-                <input class="form-control" name="trackingCode" type="text" style="border-radius: 4px">
               </div>
             </div>
           </div>
@@ -221,17 +193,15 @@
         <div class="row">
           <div class="col-md-12 form-group ">
             <label>物流選擇：</label>
-            <label class="checkbox-inline"><input type="checkbox" name="DHL" value="DHL">DHL</label>
-            <label class="checkbox-inline"><input type="checkbox" name="Fedex" value="Fedex">Fedex</label>
-            <label class="checkbox-inline"><input type="checkbox" name="EMS" value="EMS">EMS</label>
-            <label class="checkbox-inline"><input type="checkbox" name="AP" value="AP">AP(國際包裹)</label>
-            <label class="checkbox-inline"><input type="checkbox" name="RA" value="RA">RA(國際掛號)</label>
-            <label class="checkbox-inline"><input type="checkbox" name="USPS1" value="USPS1">USPS寄倉</label>
-            <label class="checkbox-inline"><input type="checkbox" name="USPS2" value="USPS2">USPS集運</label>
-            <label class="checkbox-inline"><input type="checkbox" name="seven" value="seven">7-11取貨付款</label>
-            <label class="checkbox-inline"><input type="checkbox" name="familyMart" value="familyMart">全家取貨付款</label>
-            <label class="checkbox-inline"><input type="checkbox" name="post" value="post">郵局快捷貨到付款</label>
-            <label class="checkbox-inline"><input type="checkbox" name="lothers" value="lothers">其他</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="ALL" checked="checked">ALL</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="DHL">DHL</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="Fedex">Fedex</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="EMS">EMS</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="AP">AP(國際包裹)</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="RA">RA(國際掛號)</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="USPS1">USPS寄倉</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="USPS2">USPS集運</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="lothers">其他</label>
           </div>
         </div>
         <br/>
@@ -251,7 +221,7 @@
         </div>
         <br/>
         <div class="row text-center" >
-          <input type="hidden" name="processing"  value="finished"> <!-- 控制搜尋結果在已完成-->
+          <input type="hidden" name="finished"  value="finished"> <!-- 控制搜尋結果在處理中 -->
           <button class="btn btn-lg btn-primary" type="submit" name="submit" value="finishedSearch">搜尋</button>
           <button class="btn btn-lg btn-primary" type="button" name="" >清空</button>
         </div>

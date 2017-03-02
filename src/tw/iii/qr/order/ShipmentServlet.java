@@ -43,7 +43,7 @@ public class ShipmentServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Connection conn = new DataBaseConn().getConn();
 		COrderFactory OFactory = new COrderFactory();
-		LinkedList<ShipmentRecord> shipmentSearch = OFactory.searchShipmentRecord(request, conn);
+		LinkedList<ShipmentRecord> shipmentSearch = OFactory.searchShipmentRecord(request);
 		SessionRecord sessionRecord = new SessionRecord();
 		session.setAttribute(sessionRecord.getOrdersResult(), shipmentSearch);
 		conn.close();

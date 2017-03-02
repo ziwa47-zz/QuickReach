@@ -50,7 +50,6 @@ public class StatusDoServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession();
-		Connection conn = new DataBaseConn().getConn();
 		COrderFactory OFactory = new COrderFactory();
 		COrderMaster Origincdm = new COrderMaster();
 		Origincdm.setEbayAccount(request.getParameter("ebayaccount"));
@@ -65,7 +64,7 @@ public class StatusDoServlet extends HttpServlet {
 		case "dayliBalance":
 			if (request.getParameter("QR_id") != null && request.getParameter("logistics") != "") {
 				if (OFactory.unSelectedList(request) != null) {
-					OFactory.updateToProcessing(request, conn);
+					OFactory.updateToProcessing(request);
 				} else {
 					LinkedList<String> printList = OFactory.unSelectedList(request);
 					out.write("<script type='text/javascript'>");
@@ -76,13 +75,11 @@ public class StatusDoServlet extends HttpServlet {
 					out.write("</script>");
 				}
 				response.sendRedirect("QROrders/OrderProcessingPage.jsp?begin=0&end=10");
-				conn.close();
 			} else {
 				out.write("<script type='text/javascript'>");
 				out.write("alert('未勾選任何一筆訂單，請再次操作');");
 				out.write("window.location = 'QROrders/DayliBalanceSheet.jsp';");
 				out.write("</script>");
-				conn.close();
 			}
 			break;
 		case "printsent":
@@ -151,18 +148,16 @@ public class StatusDoServlet extends HttpServlet {
 			break;
 		case "processing":
 			LinkedList<String> warehouses = OFactory.getWarehouse(request);
-			OFactory.updateToPickUp(request, conn);
+			OFactory.updateToPickUp(request);
 			response.sendRedirect("QROrders/OrderPickupPage.jsp?begin=0&end=10");
-			conn.close();
 			break;
 
 		case "pickUp":
-			OFactory.updateToComplete(request, conn);
+			OFactory.updateToComplete(request);
 			response.sendRedirect("QROrders/OrderUploadTrackingCode.jsp?begin=0&end=10");
-			conn.close();
 			break;
 		case "sendTrackingCode":
-			String result = DoSendTrackingCode(Origincdm, response, out, conn) ;
+			String result = DoSendTrackingCode(Origincdm, response, out) ;
 			out.println(result);
 			out.println("1秒後跳轉回上傳追蹤碼頁面");
 			out.println("<br/>");
@@ -170,35 +165,31 @@ public class StatusDoServlet extends HttpServlet {
 			
 			break;
 		case "finished":
-			OFactory.updateToRefund(request, conn);
-			OFactory.isBundleAddBackToStock(Origincdm, conn);
+			OFactory.updateToRefund(request);
+			OFactory.isBundleAddBackToStock(Origincdm);
 			response.sendRedirect("QROrders/refundPage.jsp?begin=0&end=10");
-			conn.close();
 			break;
 		case "revertTo":
-			OFactory.revertTo(request, conn);
+			OFactory.revertTo(request);
 			response.sendRedirect(request.getHeader("Referer"));
-			conn.close();
 			break;
 		case "deleteUndo":
-			OFactory.deleteUndoOrder(request, conn);
+			OFactory.deleteUndoOrder(request);
 			response.sendRedirect("QROrders/NewOrderSearch.jsp?begin=0&end=10");
-			conn.close();
 			break;
 			
 		}
 		out.close();
-		conn.close();
 
 	}
 
-	private String DoSendTrackingCode(COrderMaster origincdm, HttpServletResponse response, PrintWriter out,
-			Connection conn) throws Exception, ApiException, SdkException, SQLException, IOException {
+	private String DoSendTrackingCode(COrderMaster origincdm, HttpServletResponse response, PrintWriter out
+			) throws Exception, ApiException, SdkException, SQLException, IOException {
 
-		
+		Connection conn = new DataBaseConn().getConn();
 		COrderFactory OFactory = new COrderFactory();
 		//找出真正的訂單號 單筆 size =1 合併size >1
-		LinkedList<COrderMaster> TrueOrders = OFactory.checkOrderIdOrderStatus(origincdm, conn);
+		LinkedList<COrderMaster> TrueOrders = OFactory.checkOrderIdOrderStatus(origincdm);
 		
 		conn.setAutoCommit(false);
 		Savepoint sp1 = conn.setSavepoint();

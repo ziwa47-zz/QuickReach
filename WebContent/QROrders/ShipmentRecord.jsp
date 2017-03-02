@@ -21,9 +21,9 @@
 <%
 	COrderFactory.checkUrlToRemoveSession(request, session);
 	Connection conn = new DataBaseConn().getConn();
-	LinkedList<ShipmentRecord> shipmentRecord = COrderFactory.searchShipmentRecord(request, conn);
-	LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts(conn);
-	session.setAttribute("list", shipmentRecord);
+	LinkedList<ShipmentRecord>	shipmentRecord = COrderFactory.searchShipmentRecord(request);
+	LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts();
+	session.setAttribute("shipmentRecord", shipmentRecord);
     request.setAttribute("begin", request.getParameter("begin"));
     request.setAttribute("end", request.getParameter("end"));
     session.setAttribute("ebayAccounts", ebayAccounts);
@@ -71,44 +71,44 @@
             <div class="row">
               <div class="col-md-4">
                 <h5>
-                  <label>ebay account：</label>
+                  <label>Ebay帳號：</label>
                 </h5>
               </div>
               <div class="col-md-8">
                 <select class="form-control" name="eBayAccount">
                   <option value="">請選擇</option>
                   <c:forEach var="q" items="${ebayAccounts}" step="1" varStatus="check">
-                  <option value="">${q}</option>
+                  <option value="${q}">${q}</option>
                   </c:forEach>
                 </select>
               </div>
             </div>
           </div>
-          <div class="col-md-4 form-group ">
-            <div class="row">
-              <div class="col-md-4">
-                <h5>
-                  <label>類型：</label>
-                </h5>
-              </div>
-              <div class="col-md-8">
-                <input class="form-control" name="type" type="text">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 form-group ">
-            <div class="row">
-              <div class="col-md-4">
-                <h5>
-                  <label>Owner：</label>
-                </h5>
-              </div>
-              <div class="col-md-8" style="padding-left: 15px; padding-right: 35px">
-                <input class="form-control" name="owner" type="text" style="border-radius: 4px">
-              </div>
-            </div>
-          </div>
-        </div>
+<!--           <div class="col-md-4 form-group "> -->
+<!--             <div class="row"> -->
+<!--               <div class="col-md-4"> -->
+<!--                 <h5> -->
+<!--                   <label>類型：</label> -->
+<!--                 </h5> -->
+<!--               </div> -->
+<!--               <div class="col-md-8"> -->
+<!--                 <input class="form-control" name="type" type="text"> -->
+<!--               </div> -->
+<!--             </div> -->
+<!--           </div> -->
+<!--           <div class="col-md-4 form-group "> -->
+<!--             <div class="row"> -->
+<!--               <div class="col-md-4"> -->
+<!--                 <h5> -->
+<!--                   <label>Owner：</label> -->
+<!--                 </h5> -->
+<!--               </div> -->
+<!--               <div class="col-md-8" style="padding-left: 15px; padding-right: 35px"> -->
+<!--                 <input class="form-control" name="owner" type="text" style="border-radius: 4px"> -->
+<!--               </div> -->
+<!--             </div> -->
+<!--           </div> -->
+        </div> 
         <div class="row">
           <div class="col-md-8 form-group ">
             <div class="row">
@@ -164,7 +164,7 @@
             <div class="row">
               <div class="col-md-4">
                 <h5>
-                  <label>warehouse：</label>
+                  <label>出貨倉別：</label>
                 </h5>
               </div>
               <div class="col-md-8">
@@ -238,7 +238,7 @@
                 <li class="disabled"><a href="ShipmentRecord.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
               </c:otherwise>
             </c:choose>
-            <c:forEach begin="0" end="${list.size()/10}" step="1" varStatus="check">
+            <c:forEach begin="0" end="${shipmentRecord.size()/10}" step="1" varStatus="check">
               <c:choose>
                 <c:when test="${(check.index*10) != begin}">
                   <li><a href="ShipmentRecord.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
@@ -249,18 +249,18 @@
               </c:choose>
             </c:forEach>
             <c:choose>
-              <c:when test="${end < list.size()}">
+              <c:when test="${end < shipmentRecord.size()}">
                 <li><a href="ShipmentRecord.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:when>
               <c:otherwise>
                 <li class="disabled"><a href="ShipmentRecord.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:otherwise>
             </c:choose>
-            <label>共有:${list.size()}筆</label>
+            <label>共有:${shipmentRecord.size()}筆</label>
           </ul>
           <table class="table table-bordered table-hover table-condensed pull-left" style="margin:0 0 0 -15px">
             <thead>
-              <tr class="ListTitle">
+              <tr class="shipmentRecordTitle">
                 <th>出貨日期</th>
                 <th>出貨編號</th>
                 <th>類型</th>
@@ -275,7 +275,7 @@
               </tr>
             </thead>
             <tbody>
-              <c:forEach var="i" items="${list}" begin="${begin}" end="${end}" step="1" varStatus="check">
+              <c:forEach var="i" items="${shipmentRecord}" begin="${begin}" end="${end}" step="1" varStatus="check">
                 <c:choose>
                   <c:when test="${check.index%2 != 0}">
                     <tr style="background-color:#D4F4D8">

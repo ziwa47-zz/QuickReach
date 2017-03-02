@@ -507,8 +507,7 @@ $(function() {
 	                  	+'</div>'
 
 						);
-		//帶入倉庫選擇列表
-		getWarehouseList();
+		
 
 		$("#count").val(dynamicId);
 		

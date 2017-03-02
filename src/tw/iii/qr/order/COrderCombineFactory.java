@@ -33,8 +33,8 @@ public class COrderCombineFactory {
 	}
 
 	// Read
-	public LinkedList<COrderCombine> canCombine(HttpServletRequest request, Connection conn) throws Exception {
-
+	public LinkedList<COrderCombine> canCombine(HttpServletRequest request) throws Exception {
+		Connection conn = new DataBaseConn().getConn();
 		// select m1.orderDate as 'M1 orderDate',m2.orderDate as 'M2 orderDate',
 		// m1.ebayNO,m2.ebayNO,m1.guestAccount,m1.ebayNO from orders_master m1
 		// inner join orders_master m2 on m1.guestAccount=m2.guestAccount where
@@ -71,35 +71,38 @@ public class COrderCombineFactory {
 			coc.setGuestAccount(rs.getString(1));
 			coc.setQR_Id1(rs.getString(2));
 			coc.setEbayNO1(rs.getInt(3));
-			coc.setPicturePath1(GetPic(rs.getString(2), conn));
+			coc.setPicturePath1(GetPic(rs.getString(2)));
 			coc.setPayTime1(rs.getDate(4));
 			coc.setQR_Id2(rs.getString(5));
 			coc.setEbayNO2(rs.getInt(6));
-			coc.setPicturePath2(GetPic(rs.getString(5), conn));
+			coc.setPicturePath2(GetPic(rs.getString(5)));
 			coc.setPayTime2(rs.getDate(7));
 			list.add(coc);
 		}
+		conn.close();
 		return list;
 
 	}
 
-	public LinkedList<String> GetPic(String qrid, Connection conn) throws Exception {
+	public LinkedList<String> GetPic(String qrid) throws Exception {
+		Connection conn = new DataBaseConn().getConn();
 		LinkedList<String> pic = new LinkedList<>();
-		String strsql2 = "select p.picturePath from product p inner join orders_detail d on p.SKU=d.SKU"
+		String strsql = "select p.picturePath from product p inner join orders_detail d on p.SKU=d.SKU"
 				+ " where  d.QR_id =  ?";
-		PreparedStatement ps2 = conn.prepareStatement(strsql2);
-		ps2.setString(1, qrid);
-		ResultSet rs2 = ps2.executeQuery();
-		while (rs2.next()) {
-			pic.add(rs2.getString(1));
+		PreparedStatement ps = conn.prepareStatement(strsql);
+		ps.setString(1, qrid);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			pic.add(rs.getString(1));
 			// System.out.println(rs2.getString(1));
 		}
+		conn.close();
 		return pic;
 	}
 
 	// create
-	public String CombineOrders(HttpServletRequest request, Connection conn) throws Exception {
-
+	public String CombineOrders(HttpServletRequest request) throws Exception {
+		Connection conn = new DataBaseConn().getConn();
 		conn.setAutoCommit(false);
 		Savepoint sp = null;
 
@@ -123,7 +126,7 @@ public class COrderCombineFactory {
 		if (guestAccount.size() > 1) {
 			return guestAccount.size() + " Failed 請選擇相同的帳號";
 		} else {
-			Iterator iterator = guestAccount.iterator();
+			Iterator<String> iterator = guestAccount.iterator();
 			while (iterator.hasNext())
 				specguestAccount = (String) iterator.next();
 		}
@@ -177,23 +180,23 @@ public class COrderCombineFactory {
 			param.put("DATE", new java.sql.Date(date));
 
 			// 新增合併訂單的Master
-			boolean isInsertMaster = InsertCombineMaster(param, conn);
+			boolean isInsertMaster = InsertCombineMaster(param);
 			if (!isInsertMaster) {
 				throw new Exception("寫入ORDERMaster失敗");
 			}
 
 			// 新增合併訂單的Detail
-			boolean isInsertDetail = InsertCombineDetail(param, conn);
+			boolean isInsertDetail = InsertCombineDetail(param);
 			if (!isInsertDetail) {
 				throw new Exception("寫入ORDERDetail失敗");
 			}
 			// 新增合併訂單的Reciver
-			boolean isInsertReciverInfo = InsertCombineReciverInfo(param, conn);
+			boolean isInsertReciverInfo = InsertCombineReciverInfo(param);
 			if (!isInsertReciverInfo) {
 				throw new Exception("寫入ORDERReciver失敗");
 			}
 			// 新增合併訂單的Guest
-			boolean isInsertGuestInfo = InsertCombineGuestInfo(param, conn);
+			boolean isInsertGuestInfo = InsertCombineGuestInfo(param);
 			if (!isInsertGuestInfo) {
 				throw new Exception("寫入ORDERGuest失敗");
 			}
@@ -221,8 +224,9 @@ public class COrderCombineFactory {
 		}
 		return "success";
 	}
-
-	private boolean InsertCombineReciverInfo(HashMap<String, Object> param, Connection conn) {
+	
+	private boolean InsertCombineReciverInfo(HashMap<String, Object> param) throws Exception{
+		Connection conn = new DataBaseConn().getConn();
 		// 其實還是寫到原本的Orders_Detail 不過 QRID 是 C開頭所以沒影響
 
 		// param.put("CQRID", CQRID);
@@ -232,23 +236,27 @@ public class COrderCombineFactory {
 		// param.put("DATE", new java.sql.Date(date));
 
 		// 先準備參數
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+//		PreparedStatement ps = null;
+//		ResultSet rs = null;
 		COrderReciever cor = new COrderReciever();
 		String cQrId = (String) param.get("CQRID");
+		
+		@SuppressWarnings("unchecked")
 		LinkedList<String> qRIDs = (LinkedList<String>) param.get("QRID");
-		LinkedList<String> eBayNos = (LinkedList<String>) param.get("EBAYNO");
-		String guestAccount = (String) param.get("GUESTACCOUNT");
-		java.sql.Date date = (java.sql.Date) param.get("DATE");
+//		@SuppressWarnings("unchecked")
+//		LinkedList<String> eBayNos = (LinkedList<String>) param.get("EBAYNO");
+//		String guestAccount = (String) param.get("GUESTACCOUNT");
+//		java.sql.Date date = (java.sql.Date) param.get("DATE");
 
 		// 先找出各個QRID的DETAIL SKU
-		cor = getInsertDataToOrderReciever(conn, cQrId, qRIDs);
-
-		return insertCOrderReciever(conn, cor) ? true : false;
+		cor = getInsertDataToOrderReciever(cQrId, qRIDs);
+		conn.close();
+		return insertCOrderReciever(cor) ? true : false;
 
 	}
 
-	private boolean InsertCombineGuestInfo(HashMap<String, Object> param, Connection conn) {
+	private boolean InsertCombineGuestInfo(HashMap<String, Object> param) throws Exception {
+		Connection conn = new DataBaseConn().getConn();
 		// 其實還是寫到原本的Orders_Detail 不過 QRID 是 C開頭所以沒影響
 
 		// param.put("CQRID", CQRID);
@@ -258,23 +266,25 @@ public class COrderCombineFactory {
 		// param.put("DATE", new java.sql.Date(date));
 
 		// 先準備參數
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+//		PreparedStatement ps = null;
+//		ResultSet rs = null;
 		COrderGuestInfo og = new COrderGuestInfo();
 		String cQrId = (String) param.get("CQRID");
+		@SuppressWarnings("unchecked")
 		LinkedList<String> qRIDs = (LinkedList<String>) param.get("QRID");
-		LinkedList<String> eBayNos = (LinkedList<String>) param.get("EBAYNO");
-		String guestAccount = (String) param.get("GUESTACCOUNT");
-		java.sql.Date date = (java.sql.Date) param.get("DATE");
+//		LinkedList<String> eBayNos = (LinkedList<String>) param.get("EBAYNO");
+//		String guestAccount = (String) param.get("GUESTACCOUNT");
+//		java.sql.Date date = (java.sql.Date) param.get("DATE");
 
 		// 先找出各個QRID的DETAIL SKU
-		og = getInsertDataToOrderGuest(conn, cQrId, qRIDs);
-
-		return insertCOrderGuest(conn, og) ? true : false;
+		og = getInsertDataToOrderGuest(cQrId, qRIDs);
+		conn.close();
+		return insertCOrderGuest(og) ? true : false;
 
 	}
 
-	private boolean insertCOrderGuest(Connection conn, COrderGuestInfo og) {
+	private boolean insertCOrderGuest(COrderGuestInfo og) throws Exception {
+		Connection conn = new DataBaseConn().getConn();
 		String strSql = "INSERT INTO orders_guestinfo (QR_id,guestFirstName, guestLastName, guestAccount, email)"
 				+ " VALUES (?, ?, ?, ?, ?)";
 		PreparedStatement ps = null;
@@ -290,15 +300,17 @@ public class COrderCombineFactory {
 			ps.executeUpdate();
 
 		} catch (Exception e) {
+			conn.close();
 			e.printStackTrace();
 			return false;
 		}
-
+		conn.close();
 		System.out.println("OGuest寫入成功!");
 		return true;
 	}
 
-	private COrderGuestInfo getInsertDataToOrderGuest(Connection conn, String cQrId, LinkedList<String> qRIDs) {
+	private COrderGuestInfo getInsertDataToOrderGuest(String cQrId, LinkedList<String> qRIDs) throws Exception {
+		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		COrderGuestInfo og = new COrderGuestInfo();
@@ -317,14 +329,17 @@ public class COrderCombineFactory {
 					og.setEmail(rs.getString(4));
 				}
 			}
+			conn.close();
 			return og;
 		} catch (Exception e) {
+			conn.close();
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-	private boolean insertCOrderReciever(Connection conn, COrderReciever cor) {
+	private boolean insertCOrderReciever(COrderReciever cor) throws Exception {
+		Connection conn = new DataBaseConn().getConn();
 		String strSql = "INSERT INTO order_recieverinfo (QR_id, recieverFirstName, tel1, address, country, postCode)"
 				+ " VALUES (?, ?, ?, ?, ?, ?)";
 		PreparedStatement ps = null;
@@ -341,15 +356,18 @@ public class COrderCombineFactory {
 			ps.executeUpdate();
 
 		} catch (Exception e) {
+			conn.close();
 			e.printStackTrace();
 			return false;
 		}
 
 		System.out.println("OReciever寫入成功!");
+		conn.close();
 		return true;
 	}
 
-	private COrderReciever getInsertDataToOrderReciever(Connection conn, String cQrId, LinkedList<String> qRIDs) {
+	private COrderReciever getInsertDataToOrderReciever(String cQrId, LinkedList<String> qRIDs) throws Exception {
+		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		COrderReciever cor = new COrderReciever();
@@ -360,7 +378,6 @@ public class COrderCombineFactory {
 				ps.setString(1, qRIDs.get(i));
 				rs = ps.executeQuery();
 				while (rs.next()) {
-					COrderDetail od = new COrderDetail();
 					cor.setQR_id(cQrId);
 					cor.setRecieverFirstName(rs.getString(1));
 					cor.setTel1(rs.getString(2));
@@ -369,14 +386,17 @@ public class COrderCombineFactory {
 					cor.setPostCode(rs.getString(5));
 				}
 			}
+			conn.close();
 			return cor;
 		} catch (Exception e) {
+			conn.close();
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-	private boolean InsertCombineMaster(HashMap<String, Object> param, Connection conn) {
+	private boolean InsertCombineMaster(HashMap<String, Object> param) throws Exception {
+		Connection conn = new DataBaseConn().getConn();
 		// 其實還是寫到原本的Orders_Master 不過 QRID 是 C開頭所以沒影響
 
 		// param.put("CQRID", CQRID);
@@ -386,22 +406,24 @@ public class COrderCombineFactory {
 		// param.put("DATE", new java.sql.Date(date));
 
 		// 先準備參數
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+//		PreparedStatement ps = null;
+//		ResultSet rs = null;
 		COrderMaster om = new COrderMaster();
 		String cQrId = (String) param.get("CQRID");
+		@SuppressWarnings("unchecked")
 		LinkedList<String> qRIDs = (LinkedList<String>) param.get("QRID");
-		LinkedList<String> eBayNos = (LinkedList<String>) param.get("EBAYNO");
-		String guestAccount = (String) param.get("GUESTACCOUNT");
-		java.sql.Date date = (java.sql.Date) param.get("DATE");
+//		LinkedList<String> eBayNos = (LinkedList<String>) param.get("EBAYNO");
+//		String guestAccount = (String) param.get("GUESTACCOUNT");
+//		java.sql.Date date = (java.sql.Date) param.get("DATE");
 
 		// 先找出各個QRID的Master SKU
-		om = getInsertDataToOrderMaster(conn, cQrId, qRIDs);
-
-		return insertCOrderMaster(conn, om) ? true : false;
+		om = getInsertDataToOrderMaster(cQrId, qRIDs);
+		conn.close();
+		return insertCOrderMaster(om) ? true : false;
 	}
 
-	private boolean insertCOrderMaster(Connection conn, COrderMaster om) {
+	private boolean insertCOrderMaster(COrderMaster om) throws Exception {
+		Connection conn = new DataBaseConn().getConn();
 		String strSql = "INSERT INTO orders_master(QR_id, platform,eBayAccount, guestAccount, "
 				+ " orderStatus,paypal_id,payment,paypalFees, "
 				+ " ebayFees, totalPrice, currency, ebayPrice, paypalNet,isCombine )"
@@ -426,17 +448,19 @@ public class COrderCombineFactory {
 			ps.setString(14, "2");
 
 			ps.executeUpdate();
-
 		} catch (Exception e) {
+			conn.close();
 			e.printStackTrace();
 			return false;
 		}
 
+		conn.close();
 		System.out.println("OMaster寫入成功!");
 		return true;
 	}
 
-	private COrderMaster getInsertDataToOrderMaster(Connection conn, String cQrId, LinkedList<String> qRIDs) {
+	private COrderMaster getInsertDataToOrderMaster(String cQrId, LinkedList<String> qRIDs) throws Exception {
+		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		COrderMaster om = new COrderMaster();
@@ -474,18 +498,19 @@ public class COrderCombineFactory {
 			om.setTotalPrice(totalPrice);
 			om.setEbayPrice(ebayPrice);
 			om.setPaypalNet(paypalNet);
-
+			conn.close();
 			return om;
 		} catch (Exception e) {
+			conn.close();
 			e.printStackTrace();
 			return null;
 		}
 
 	}
 
-	public LinkedList<GuestAccountAndOrder> HasCombineOrderGuest(HttpServletRequest request, Connection conn)
+	public LinkedList<GuestAccountAndOrder> HasCombineOrderGuest(HttpServletRequest request)
 			throws Exception {
-
+		Connection conn = new DataBaseConn().getConn();
 		// 找到七天內有合併訂單的使用者
 		// select distinct guestAccount from comebineorder where
 		// DATEDIFF(day,combineDate,getDate())<7
@@ -514,12 +539,14 @@ public class COrderCombineFactory {
 			ga.setOrder(rs.getString(2));
 			guestAccount.add(ga);
 		}
+		conn.close();
 		return guestAccount;
 
 	}
 
-	public LinkedList<COrderCombineDetail> ReadCombineOrder(HttpServletRequest request, Connection conn)
+	public LinkedList<COrderCombineDetail> ReadCombineOrder(HttpServletRequest request)
 			throws Exception {
+		Connection conn = new DataBaseConn().getConn();
 		// 前端傳來的參數 下拉式選單的值
 		String cqrid = request.getParameter("CQRID");
 
@@ -538,10 +565,12 @@ public class COrderCombineFactory {
 			cocd.setCombineDate(rs.getDate(5));
 			list.add(cocd);
 		}
+		conn.close();
 		return list;
 	}
 
-	private Boolean InsertCombineDetail(HashMap<String, Object> param, Connection conn) throws Exception {
+	private Boolean InsertCombineDetail(HashMap<String, Object> param) throws Exception {
+		Connection conn = new DataBaseConn().getConn();
 		// 其實還是寫到原本的Orders_Detail 不過 QRID 是 C開頭所以沒影響
 
 		// param.put("CQRID", CQRID);
@@ -551,24 +580,25 @@ public class COrderCombineFactory {
 		// param.put("DATE", new java.sql.Date(date));
 
 		// 先準備參數
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		COrderDetail od = new COrderDetail();
+//		PreparedStatement ps = null;
+//		ResultSet rs = null;
+//		COrderDetail od = new COrderDetail();
 		String cQrId = (String) param.get("CQRID");
+		@SuppressWarnings("unchecked")
 		LinkedList<String> qRIDs = (LinkedList<String>) param.get("QRID");
-		LinkedList<String> eBayNos = (LinkedList<String>) param.get("EBAYNO");
-		String guestAccount = (String) param.get("GUESTACCOUNT");
-		java.sql.Date date = (java.sql.Date) param.get("DATE");
+//		LinkedList<String> eBayNos = (LinkedList<String>) param.get("EBAYNO");
+//		String guestAccount = (String) param.get("GUESTACCOUNT");
+//		java.sql.Date date = (java.sql.Date) param.get("DATE");
 
 		// 先找出各個QRID的DETAIL SKU
-		LinkedList<COrderDetail> ods = getInsertDataToOrderDetail(conn, cQrId, qRIDs);
-
-		return insertCOrderDetail(conn, ods) ? true : false;
+		LinkedList<COrderDetail> ods = getInsertDataToOrderDetail(cQrId, qRIDs);
+		conn.close();
+		return insertCOrderDetail(ods) ? true : false;
 
 	}
 
-	private boolean insertCOrderDetail(Connection conn, LinkedList<COrderDetail> ods) throws Exception {
-
+	private boolean insertCOrderDetail(LinkedList<COrderDetail> ods) throws Exception {
+		Connection conn = new DataBaseConn().getConn();
 		String strSql = "INSERT INTO orders_detail (QR_id, SKU, productName, invoiceName"
 				+ ", price, invoicePrice, qty, comment )" + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement ps = null;
@@ -585,18 +615,20 @@ public class COrderCombineFactory {
 				ps.setInt(7, od.getQty());
 				ps.setString(8, od.getComment());
 				ps.executeUpdate();
-
 			} catch (Exception e) {
+				conn.close();
 				e.printStackTrace();
 				return false;
 			}
 		}
+		conn.close();
 		System.out.println("ODetail寫入成功!");
 		return true;
 	}
 
-	private LinkedList<COrderDetail> getInsertDataToOrderDetail(Connection conn, String cQrId, LinkedList<String> qRIDs)
-			throws SQLException {
+	private LinkedList<COrderDetail> getInsertDataToOrderDetail(String cQrId, LinkedList<String> qRIDs)
+			throws Exception {
+		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		LinkedList<COrderDetail> ods = new LinkedList<>();
@@ -620,6 +652,7 @@ public class COrderCombineFactory {
 		}
 		rs.close();
 		ps.close();
+		conn.close();
 		return ods;
 	}
 

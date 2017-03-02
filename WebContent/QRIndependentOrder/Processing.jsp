@@ -19,9 +19,9 @@
 <%
 	//COrderFactory.checkUrlToRemoveSession(request, session);
 	
-	LinkedList<IDPorderAll> orderList  = IOF.getAllIDPorder("處理中");
+	//LinkedList<IDPorderAll> orderList  = IOF.getAllIDPorder(request,"處理中");
 	
-	session.setAttribute("list", orderList);
+	//session.setAttribute("list", orderList);
     request.setAttribute("begin", request.getParameter("begin"));
     request.setAttribute("end", request.getParameter("end"));
    
