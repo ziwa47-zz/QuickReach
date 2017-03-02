@@ -89,7 +89,9 @@ $(function() {
 	
 	$("input[name=date]").datepicker({
 		dateFormat : 'yy-mm-dd',
-		
+	});
+	$("input[name=birthday]").datepicker({
+		dateFormat : 'yy-mm-dd',
 	});
 
 	
@@ -279,6 +281,9 @@ function chkEmail(mail) {
 			    </c:if>
 			    <c:if test="${PageCompetence.getParamSettingEdit() ==1}">
 			    	<li><a href="/SupplyCompany/SCManage.jsp">供應商/倉庫</a></li>
+				</c:if>
+				<c:if test="${PageCompetence.getParamSettingEdit() ==1}">
+			    	<li><a href="/QRGuest/GuestManage.jsp">客戶管理</a></li>
 				</c:if>
 			</ul>
 

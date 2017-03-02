@@ -69,7 +69,7 @@ public class GuestServerlet extends HttpServlet{
 		guestFac.insertGuest(request, conn);
 
 		conn.close();
-		response.sendRedirect("GuestAccount/GuestAccount.jsp");
+		response.sendRedirect("QRGuest/Guest.jsp");
 	}
 
 	//edit Guest帳號//
@@ -79,11 +79,12 @@ public class GuestServerlet extends HttpServlet{
 			response.setContentType("text/html;charset=UTF-8");
 			conn = new DataBaseConn().getConn();
 			GuestFactory guestFac = new GuestFactory();
-			System.out.println("update:"+request.getParameter("GuestId"));
+			String id = request.getParameter("Id");
+			System.out.println("update:"+ id);
 			guestFac.editGuest(request, conn);
 
 			conn.close();
-			response.sendRedirect("GuestAccount/GuestAccount.jsp");
+			response.sendRedirect("QRGuest/editGuest.jsp?p=" + id);
 		}
 	
 		// 刪除 Guest 帳號//
@@ -92,11 +93,12 @@ public class GuestServerlet extends HttpServlet{
 			response.setContentType("text/html;charset=UTF-8");
 			conn = new DataBaseConn().getConn();
 			GuestFactory guestFac = new GuestFactory();
-			System.out.println("deleteGuestID:"+request.getParameter("Id"));		
-			guestFac.deleteGuest(request.getParameter("Id"));
+			String id = request.getParameter("Id");
+			System.out.println("deleteGuestID:"+ id);		
+			guestFac.deleteGuest(id);
 
 			conn.close();
-			response.sendRedirect("GuestAccount/GuestAccount.jsp");
+			response.sendRedirect("QRGuest/GuestManage.jsp");
 		}
 		
 		

@@ -104,7 +104,7 @@ public class GuestFactory extends Guest{
 		cg.setBirthday(dateFormat.parse(request.getParameter("birthday")));
 
 		cg.setGender(request.getParameter("gender"));    //13th//
-		cg.setGuestId(request.getParameter("item"));
+		cg.setId(Integer.parseInt(request.getParameter("Id")));
 		
 		String sqlstr = "UPDATE guest set "
 				+ "guestId = ?, name = ?, company = ?, platformAccount = ?,"
@@ -129,7 +129,7 @@ public class GuestFactory extends Guest{
 			ps.setString(11, cg.getPostcode());  
 			ps.setDate(12,new java.sql.Date(cg.getBirthday().getTime()));
 			ps.setString(13, cg.getGender());  //13th//
-						
+			ps.setInt(14, cg.getId());
 			ps.executeUpdate();						
 			ps.close();
 
@@ -145,7 +145,8 @@ public class GuestFactory extends Guest{
 	// --搜尋  guest all 名稱--//
 	public LinkedList<Guest> searchSGName(HttpServletRequest request,Connection conn) {
 		LinkedList<Guest> sgnameall = new LinkedList<Guest>();		
-		String strsql = "select id,guestid,name,company~ from  guest ";
+		String strsql = "select id,guestid,name,company,platformAccount,Email,Country, "
+				+ "tel,address,comment,phone,postcode,birthday,gender from  guest ";
 
 		try {
 			PreparedStatement ps = conn.prepareStatement(strsql);
@@ -154,7 +155,7 @@ public class GuestFactory extends Guest{
 			while (rs.next()) {
 				Guest cguest = new Guest();
 				
-				//cguest.setId(Integer.parseInt(rs.getString(1)));
+				cguest.setId(Integer.parseInt(rs.getString(1)));
 				cguest.setGuestId(rs.getString(2));
 				cguest.setName(rs.getString(3));
 				cguest.setCompany(rs.getString(4));
