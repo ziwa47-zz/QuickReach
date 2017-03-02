@@ -19,8 +19,8 @@
 <%
   COrderFactory.checkUrlToRemoveSession(request, session);
   Connection conn = new DataBaseConn().getConn();
-  LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"揀貨中");
-  LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts(conn);
+  LinkedList<COrders> orderList = COrderFactory.orders(request,"揀貨中");
+  LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts();
   session.setAttribute("list", orderList);
   request.setAttribute("begin", request.getParameter("begin"));
   request.setAttribute("end", request.getParameter("end"));
