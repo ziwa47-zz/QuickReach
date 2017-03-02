@@ -41,12 +41,12 @@
     <div class="nav" style="background-color:#A45A21;" >
       <ul class="nav nav-tabs">
         <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
-        <li><a href="OrderProcessingPage.jsp?begin=0&end=10" style="color:#fff">處理中</a></li>
+        <li><a href="OrderProcessingPage.jsp?begin=0&end=10" >處理中</a></li>
         <li><a href="OrderPickupPage.jsp?begin=0&end=10">揀貨中</a></li>
         <li><a href="OrderUploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
         <li><a href="OrderFinished.jsp?begin=0&end=10">已完成訂單</a></li>
         <li><a href="ShipmentRecord.jsp" >訂單出貨記錄</a></li>
-        <li><a href="refundPage.jsp?begin=0&end=10" >退貨</a></li>
+        <li><a href="refundPage.jsp?begin=0&end=10" style="color:#fff">退貨</a></li>
       </ul>
     </div>
   </div>
@@ -64,7 +64,7 @@
     <form name="searchform" method="post" action="../OrdersServlet" class="form-inline container"
     style="font-size: 100%; vertical-align: baseline; padding: 15px;">
       <fieldset class="font-weight" style="padding:0 30px 0 0;">
-        <legend>處理中</legend>
+        <legend>退貨(異常)</legend>
         <div class="row">
           <div class="col-md-4 form-group ">
             <div class="row">

@@ -19,7 +19,6 @@
 <%
  
   LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts();
- 
   request.setAttribute("begin", request.getParameter("begin"));
   request.setAttribute("end", request.getParameter("end"));
   session.setAttribute("ebayAccounts", ebayAccounts);
@@ -60,10 +59,11 @@
 
 <div class="nav">
   <div class="container" style="background: #D9A56B; border-radius:20px;">
+
     <form name="searchform" method="post" action="../OrdersServlet" class="form-inline container"
     style="font-size: 100%; vertical-align: baseline; padding: 15px;">
       <fieldset class="font-weight" style="padding:0 30px 0 0;">
-        <legend>處理中</legend>
+        <legend>已完成</legend>
         <div class="row">
           <div class="col-md-4 form-group ">
             <div class="row">
@@ -243,7 +243,7 @@
                 <li class="disabled"><a href="OrderFinished.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
               </c:otherwise>
             </c:choose>
-            <c:forEach begin="0" end="${list.size()/10}" step="1" varStatus="check">
+            <c:forEach begin="0" end="${finished.size()/10}" step="1" varStatus="check">
               <c:choose>
                 <c:when test="${(check.index*10) != begin}">
                   <li><a href="OrderFinished.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
@@ -254,14 +254,14 @@
               </c:choose>
             </c:forEach>
             <c:choose>
-              <c:when test="${end < list.size()}">
+              <c:when test="${end < finished.size()}">
                 <li><a href="OrderFinished.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:when>
               <c:otherwise>
                 <li class="disabled"><a href="OrderFinished.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:otherwise>
             </c:choose>
-            <label>共有:${list.size()}筆</label>
+            <label>共有:${finished.size()}筆</label>
           </ul>
           <table class="table table-bordered table-hover table-condensed pull-left" style="margin:0 0 0 -15px">
             <tr class="ListTitle">
@@ -279,7 +279,7 @@
               <th>總金額</th>
               <th>使用者</th>
             </tr>
-            <c:forEach var="i" items="${list}" begin="${begin}" end="${end}" step="1" varStatus="check">
+            <c:forEach var="i" items="${finished}" begin="${begin}" end="${end}" step="1" varStatus="check">
               <c:choose>
                 <c:when test="${check.index%2 != 0}">
                   <tr style="background-color:#D4F4D8">

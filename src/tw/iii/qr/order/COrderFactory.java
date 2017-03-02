@@ -83,9 +83,9 @@ public class COrderFactory extends COrders {
 
 			strSql += checkboxAreUnchecked(waitProcess, processing, pickup, shipped, finished, refund, others, deducted,
 					undo) ? " and ( '1' = '1' " : " and ( orderStatus is null ";
-
-			strSql += isNullorEmpty(processing) ? "" : " or orderStatus = N'待處理' ";
-			strSql += isNullorEmpty(waitProcess) ? "" : " or orderStatus = N'處理中' ";
+			
+			strSql += isNullorEmpty(waitProcess) ? "" : " or orderStatus = N'待處理' ";
+			strSql += isNullorEmpty(processing) ? "" : " or orderStatus = N'處理中' ";
 			strSql += isNullorEmpty(pickup) ? "" : " or orderStatus = N'揀貨中' ";
 			strSql += isNullorEmpty(shipped) ? "" : " or orderStatus = N'已出貨' ";
 			strSql += isNullorEmpty(finished) ? "" : " or orderStatus = N'已完成' ";
@@ -105,7 +105,7 @@ public class COrderFactory extends COrders {
 		if ("ALL".equals(logistics) || "".equals(logistics) || logistics==null) {
 			strSql += "";
 		} else if ("lothers".equals(logistics)) {
-			strSql += " logistics <> 'DHL' ";
+			strSql += " and logistics <> 'DHL' ";
 			strSql += " and logistics <> 'EMS' ";
 			strSql += " and logistics <> 'AP' ";
 			strSql += " and logistics <> 'RA' ";
