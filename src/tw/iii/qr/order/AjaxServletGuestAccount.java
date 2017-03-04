@@ -57,14 +57,11 @@ public class AjaxServletGuestAccount extends HttpServlet {
 		
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
-		//System.out.println(request.getParameter("DATECOUNT"));
 		PrintWriter out = response.getWriter();
-		HttpSession session = request.getSession();
-		Connection conn = new DataBaseConn().getConn();
 		COrderCombineFactory OCFactory = new COrderCombineFactory();
 		
 		LinkedList<GuestAccountAndOrder> guestAccount = new LinkedList<>();
-		guestAccount = OCFactory.HasCombineOrderGuest(request, conn);
+		guestAccount = OCFactory.HasCombineOrderGuest(request);
 		
 		for(int i=0; i<guestAccount.size(); i++){
 			System.out.println(guestAccount.get(i).getGuestAccount());

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ page import="tw.iii.IDP.IOrderFactory"%>
 <%@ page import="tw.iii.qr.IndependentOrder.model.entity.IDPorderAll"%>
 <%@ page import="java.util.LinkedList"%>
 <jsp:useBean id="IOF" class="tw.iii.IDP.IOrderFactory" scope="page" />
@@ -19,9 +19,9 @@
 <%
 	//COrderFactory.checkUrlToRemoveSession(request, session);
 	
-	LinkedList<IDPorderAll> orderList  = IOF.getAllIDPorder("處理中");
+	//LinkedList<IDPorderAll> orderList  = IOF.getAllIDPorder(request,"處理中");
 	
-	session.setAttribute("list", orderList);
+	//session.setAttribute("list", orderList);
     request.setAttribute("begin", request.getParameter("begin"));
     request.setAttribute("end", request.getParameter("end"));
    

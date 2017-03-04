@@ -25,6 +25,18 @@ var independentId;
 
 var dynamicId = 2;
 
+//客戶下拉選單
+//GuestId欄位輸入3碼後，搜尋相符合的客戶
+function jqueryAutoCompleteGuest() {
+	
+	$("#guestId").autocomplete({
+		source:"/ajax/getGuestList",
+		minLength:2,
+		
+	});
+
+}
+
 //SKU欄位輸入3碼後，搜尋相符合的商品
 function jqueryAutoCompleteSKU(id) {
 	
@@ -34,6 +46,7 @@ function jqueryAutoCompleteSKU(id) {
 		//選擇SKU後，搜尋商品並自動填入該商品明細
 		select:function(event,ui){
 			autoComplete(id)
+			
 		}
 	});
 
@@ -47,7 +60,7 @@ function autoComplete(id){
 	     setValueId = skuName.substring(3);
 		$("#autoCompleteNumber").val(skuNum);
 		autoSetProductDetail();
-		
+		getWarehousePosition();
 			});
 	
 };
@@ -98,13 +111,12 @@ function autoSetProductDetail() {
 // 	})
 // }
 
-//取得倉庫列表
-function getWarehouseList() {
-	
+//取得該商品的庫存倉別及儲位
+function getWarehousePosition() {
 	$.ajax({
 		
 		type:"GET",                  
-	    url: "/ajax/getWarehouseList",        
+	    url: "/ajax/getStorageWarehouse",        
 	    data: $("#listForm").serialize(), 
         dataType: "json", 
 
@@ -112,17 +124,13 @@ function getWarehouseList() {
             	
         	//插入第一筆商品資料的倉庫select option
         	if (dynamicId == 2 ) {
-        		 $.each(response.data, function(key, value){
-    				 
-    				 $("#warehouse1").append($("<option></option>").attr("value", key).text(value));
-    				 
-    			 })
-        		
+        		 $.each(response.data, function(i, item){
+    				 $("#warehouse1").append($("<option></option>").attr("value", item.warehouse+','+item.warehousePosition).text(item.warehouse+','+item.warehousePosition));
     		//其他  插入動態生成的商品資料 的倉庫select option
-        	} else {
-        		$.each(response.data, function(key, value){
-   				
-   				 $("#warehouse"+(dynamicId-1)).append($("<option></option>").attr("value", key).text(value));
+        		 })
+           	}else {
+        		$.each(response.data, function(i, item){
+      				 $("#warehouse"+(dynamicId-1)).append($("<option></option>").attr("value", item.warehouse+','+item.warehousePosition).text(item.warehouse+','+item.warehousePosition));
    				 
    			 })
         	}
@@ -499,8 +507,7 @@ $(function() {
 	                  	+'</div>'
 
 						);
-		//帶入倉庫選擇列表
-		getWarehouseList();
+		
 
 		$("#count").val(dynamicId);
 		
@@ -771,7 +778,7 @@ display: block;
             </h5>
           </div>
           <div class="col-md-8">
-            <input class="form-control" type="text" id="guestId" name="guestId" value="" onblur ="getGuestData()">
+              <input class="form-control" type="text" id="guestId" name="guestId" value=""  onfocus = "jqueryAutoCompleteGuest()" onblur = "getGuestData()">
             <input type="hidden" name ='id' id='id'>
           </div>
         </div>

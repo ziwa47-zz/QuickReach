@@ -16,11 +16,16 @@ import javax.servlet.http.HttpSession;
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.order.DTO.COrders;
 import tw.iii.qr.order.DTO.SessionRecord;
+import tw.iii.qr.order.DTO.ShipmentRecord;
 
 @WebServlet("/OrdersServlet")
 public class OrdersServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private static String Order_Processing = "處理中";
+	private static String Order_Pickup = "揀貨中";
+	private static String Order_Send = "已出貨";
+	private static String Order_Finished = "已完成";
+	private static String Order_Refund = "退貨";
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
@@ -45,118 +50,98 @@ public class OrdersServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession();
-		String QR_id = request.getParameter("QR_id");
-		Connection conn = new DataBaseConn().getConn();
+		
 		COrderFactory OFactory = new COrderFactory();
-		LinkedList<COrders> orderProcessingPageSearch = OFactory.orderProcessingPageSearch(request, conn);
-		SessionRecord sessionRecord = new SessionRecord();
-		session.setAttribute(sessionRecord.getOrdersResult(), orderProcessingPageSearch);
-		// conn.close();
+		LinkedList<COrders> orderList = new LinkedList<>();
+		String QR_id = request.getParameter("QR_id");
 		String submit = request.getParameter("submit");
-
+		System.out.println(submit);
 		switch (submit) {
 		case "orderSearch":
-			// session.setAttribute(sessionRecord.getSearchOrder(),
-			// orderProcessingPageSearch);
-			conn.close();
+			orderList = COrderFactory.orders(request,"");
+			session.setAttribute("orderSearch", orderList);
 			response.sendRedirect("QROrders/SearchOrder.jsp?begin=0&end=10");
 			break;
 		case "processingSearch":
-			// session.setAttribute(sessionRecord.getOrderProcessing(),
-			// orderProcessingPageSearch);
-			conn.close();
+			orderList = COrderFactory.orders(request,Order_Processing);
+			session.setAttribute("processing", orderList);
 			response.sendRedirect("QROrders/OrderProcessingPage.jsp?begin=0&end=10");
 			break;
 		case "pickupSearch":
-			// session.setAttribute(sessionRecord.getOrderPickUp(),
-			// orderProcessingPageSearch);
-			conn.close();
+			orderList = COrderFactory.orders(request,Order_Pickup);
+			session.setAttribute("pickup", orderList);
 			response.sendRedirect("QROrders/OrderPickupPage.jsp?begin=0&end=10");
 			break;
 		case "finishedSearch":
-			// session.setAttribute(sessionRecord.getOrderFinished(),
-			// orderProcessingPageSearch);
-			conn.close();
+			orderList = COrderFactory.orders(request,Order_Finished);
+			session.setAttribute("finished", orderList);
 			response.sendRedirect("QROrders/OrderFinished.jsp?begin=0&end=10");
+			break;
+		case "refundSearch":
+			orderList = COrderFactory.orders(request,Order_Refund);
+			session.setAttribute("refund", orderList);
+			response.sendRedirect("QROrders/refundPage.jsp?begin=0&end=10");
+			break;
+		case "shipmentRecordSearch":
+			LinkedList<ShipmentRecord>	shipmentRecord = COrderFactory.searchShipmentRecord(request);
+			session.setAttribute("shipmentRecords", shipmentRecord);
+			response.sendRedirect("QROrders/ShipmentRecord.jsp?begin=0&end=10");
 			break;
 		case "updateOrder":
 			// OFactory.updateOrderDetail(request, conn);
 			String staffName = session.getAttribute("staffName").toString();
-			OFactory.updateOrderDetail(request, conn, staffName, QR_id);
-			OFactory.updateMainOrderDetail(request, conn, QR_id);
-			conn.close();
+			OFactory.updateOrderDetail(request, staffName, QR_id);
+			OFactory.updateMainOrderDetail(request, QR_id);
 			response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + request.getParameter("QR_id"));
 			break;
 		case "toGetProducts":
-			conn.close();
 			response.sendRedirect("QROrders/selectProduct.jsp?QR_id=" + request.getParameter("QR_id"));
 			break;
 		case "insertSKU":
-			OFactory.insertOrderDetail(request, conn, QR_id);
-			conn.close();
+			OFactory.insertOrderDetail(request, QR_id);
 			response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + QR_id);
 			break;
 		case "deleteDetail":
-			OFactory.deleteFromOrderDetail(request, conn);
-			conn.close();
+			OFactory.deleteFromOrderDetail(request);
 			response.sendRedirect("QROrders/OrderDetail.jsp?QR_id=" + QR_id);
 		case "updateOrderNew":
-			// OFactory.updateOrderDetail(request, conn);
 			String staffName2 = session.getAttribute("staffName").toString();
-			OFactory.updateOrderDetail(request, conn, staffName2, QR_id);
-			OFactory.updateMainOrderDetail(request, conn, QR_id);
-			conn.close();
+			OFactory.updateOrderDetail(request, staffName2, QR_id);
+			OFactory.updateMainOrderDetail(request, QR_id);
 			response.sendRedirect("QROrders/NewOrder.jsp?QR_id=" + QR_id);
 			break;
 		case "toGetProductsNew":
-			conn.close();
 			response.sendRedirect("QROrders/selectProductNew.jsp?QR_id=" + QR_id);
 			break;
 		case "insertSKUNew":
-			OFactory.insertOrderDetail(request, conn, QR_id);
-			conn.close();
+			OFactory.insertOrderDetail(request, QR_id);
 			response.sendRedirect("QROrders/NewOrder.jsp?QR_id=" + QR_id);
 			break;
 		case "deleteDetailNew":
-			OFactory.deleteFromOrderDetail(request, conn);
-			conn.close();
+			OFactory.deleteFromOrderDetail(request);
 			response.sendRedirect("QROrders/NewOrder.jsp?QR_id=" + QR_id);
 			break;
 		case "sendNewOrder":
-			OFactory.updateToPickUp(request, conn);
-			conn.close();
+			OFactory.updateToPickUp(request);
 			response.sendRedirect("QROrders/OrderPickupPage.jsp?begin=0&end=10");
 			break;
 		case "CreateCombineOrders":
 			COrderCombineFactory Ccoc = new COrderCombineFactory();
-			String result = Ccoc.CombineOrders(request, conn);
-
+			String result = Ccoc.CombineOrders(request);
 			out.println(result);
-			out.println("3秒後跳轉回合併訂單頁面");
+			out.println("1秒後跳轉回合併訂單頁面");
 			out.println("<br/>");
-			response.setHeader("Refresh", "3; /QROrders/OrderCombine.jsp");
-
+			response.setHeader("Refresh", "1; /QROrders/OrderCombine.jsp");
 			break;
 		case "GoOrderCombine":
 			response.sendRedirect("QROrders/OrderCombine.jsp");
 			break;
 		case "ReadCombineOrders":
 			COrderCombineFactory Rcoc = new COrderCombineFactory();
-			Rcoc.canCombine(request, conn);
+			Rcoc.canCombine(request);
 			response.sendRedirect("QROrders/ReadCombineOrders.jsp");
 			break;
-//		case "UpdateCombineOrders":
-//			COrderCombineFactory Ucoc = new COrderCombineFactory();
-//			Ucoc.UpdateCombineOrder(request, conn);
-//			response.sendRedirect("QROrders/OrderCombine.jsp");
-//			break;
-//		case "DeleteCombineOrders":
-//			COrderCombineFactory Dcoc = new COrderCombineFactory();
-//			Dcoc.DeCombine(request, conn);
-//			response.sendRedirect("QROrders/OrderCombine.jsp");
-//			break;
 		default:
-			conn.close();
 			response.sendRedirect("QROrders/SearchOrder.jsp?begin=0&end=10");
 			break;
 
