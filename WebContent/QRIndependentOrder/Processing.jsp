@@ -1,9 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ page import="tw.iii.IDP.IOrderFactory"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"    pageEncoding="UTF-8"%>
 <%@ page import="tw.iii.qr.IndependentOrder.model.entity.IDPorderAll"%>
-<%@ page import="java.util.LinkedList"%>
-<jsp:useBean id="IOF" class="tw.iii.IDP.IOrderFactory" scope="page" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -19,11 +15,11 @@
 <%
 	//COrderFactory.checkUrlToRemoveSession(request, session);
 	
-	//LinkedList<IDPorderAll> orderList  = IOF.getAllIDPorder(request,"處理中");
+// 	LinkedList<IDPorderAll> orderList  = IOF.getAllIDPorder("處理中");
 	
-	//session.setAttribute("list", orderList);
-    request.setAttribute("begin", request.getParameter("begin"));
-    request.setAttribute("end", request.getParameter("end"));
+// 	session.setAttribute("list", orderList);
+     request.setAttribute("begin", request.getParameter("begin"));
+     request.setAttribute("end", request.getParameter("end"));
    
 %>
 <div class="nav">
@@ -255,13 +251,13 @@
                   <tr style="background-color:#D4F4D8">
 					<td colspan="9">
                     <c:forEach var="j" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
-                      <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
-                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
+<%--                       <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a> --%>
+                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSku()}">${j.getSku()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
-                    <td colspan="3" class="warehouseLocation" id="${i.getIordersMaster().getQR_id()}">
+                    <td colspan="3" class="warehouseLocation" id="${i.getIordersMaster().getQrId()}">
                     <c:forEach var="k" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>${k.getWarehouseLocation() }<br/>
+                      <b>${k.getWarehouse()}</b>${k.getWarehouse() }<br/>
                     </c:forEach>
                     </td>
                   </tr>
@@ -287,13 +283,13 @@
                   <tr style="background-color:#D4F4D8">
 					<td colspan="9">
                     <c:forEach var="j" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
-                      <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
-                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSKU()}">${j.getSKU()}</a></b>${j.getProductName()}<br/>
+<%--                       <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a> --%>
+                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSku()}">${j.getSku()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
-                    <td colspan="3" class="warehouseLocation" id="${i.getIordersMaster().getQR_id()}">
+                    <td colspan="3" class="warehouseLocation" id="${i.getIordersMaster().getQrId()}">
                     <c:forEach var="k" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>${k.getWarehouseLocation() }<br/>
+                      <b>${k.getWarehouse()}</b>${k.getWarehouse() }<br/>
                     </c:forEach>
                     </td>
                   </tr>
