@@ -8,6 +8,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import tw.iii.qr.IndependentOrder.model.entity.Guest;
 import tw.iii.qr.IndependentOrder.model.entity.IordersMaster;
@@ -43,21 +44,18 @@ public class IordersMasterDAO extends AbstractDAO<IordersMaster> {
 	@SuppressWarnings("unchecked")
 	public List<IordersMaster> selectIordersMasterByStatus(String orderStatus) throws Exception {
 		System.out.println("IordersMasterDAO.selectIordersMasterByStatus():start");
+		System.out.println("orderStatus:"+orderStatus);
 		
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
-		if(orderStatus!=""&&orderStatus!=null){
+		if(StringUtils.hasText(orderStatus)){
 			//找狀態
 			criteria.add(Restrictions.eq("orderStatus", orderStatus));
 		}//否則找全部
-		List<IordersMaster> list = criteria.list();
-		if(list.size()==0){
+		if(criteria.list().size()==0){
 			System.out.println("找不到資料");
-			return null;
 		}
-		for(int i =0;i<list.size();i++){
-		System.out.println(BeanUtils.describe(criteria.list().get(i)));
-		}
-		return list;
+		
+		return criteria.list();
 	}
 	
 	
