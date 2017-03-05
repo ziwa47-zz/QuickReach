@@ -64,10 +64,10 @@
 				LinkedList<Competence> list = new LinkedList<Competence>();
 				list = ctsql.getCompetenceLevel();
 				session.setAttribute("list", list);
-
+				//這裡又亂碼了!!!!!! 2017/03/05
 				if (request.getParameter("CompetenceLv") != null) {
 					//System.out.println(request.getParameter("Competencelv"));
-
+					
 					String csv = new String(request.getParameter("CompetenceLv").getBytes("8859_1"), "UTF-8");
 					session.setAttribute("csv", csv);
 					//System.out.println(csv);
@@ -161,12 +161,12 @@
 								</c:if>
 
 								<c:if test="${lv.getInventoryInfoEdit() == 1 }">
-									<label style="display:none" class="checkboxbox-inline"><input
+									<label  class="checkboxbox-inline"><input
 										type="checkbox" id="id_fd-is_active_1"
 										name="InventoryInfoEdit" checked />編輯庫存資料</label>
 								</c:if>
 								<c:if test="${lv.getInventoryInfoEdit() == 0 }">
-									<label style="display:none" class="checkboxbox-inline"><input
+									<label  class="checkboxbox-inline"><input
 										type="checkbox" id="id_fd-is_active_1"
 										name="InventoryInfoEdit" />編輯庫存資料</label>
 								</c:if>

@@ -19,7 +19,7 @@ public class StockTransferDAO extends AbstractDAO<StockTransferlogMaster> {
 	public int selectTodayCount(Date today,String oldWarehouse) throws Exception{
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.ge("date", today));
-		criteria.add(Restrictions.ge("oldWarehouse", oldWarehouse));
+		criteria.add(Restrictions.eq("oldWarehouse", oldWarehouse));
 		return criteria.list().size();
 	}
 	
