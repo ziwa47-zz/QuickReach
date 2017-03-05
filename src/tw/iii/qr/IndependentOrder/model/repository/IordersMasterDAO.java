@@ -10,7 +10,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import tw.iii.qr.IndependentOrder.model.entity.Guest;
 import tw.iii.qr.IndependentOrder.model.entity.IordersMaster;
 
 @Repository
