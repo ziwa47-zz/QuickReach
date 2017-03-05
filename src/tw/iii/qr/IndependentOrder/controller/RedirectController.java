@@ -159,6 +159,7 @@ public class RedirectController {
 		return "redirect:/QRIndependentOrder/UploadTrackingCode.jsp?begin=0&end=10";
 
 	}
+
 	@RequestMapping(value ="QRIndependentOrder/Finished")
 	public String redirectFinished(HttpServletRequest request) {
 

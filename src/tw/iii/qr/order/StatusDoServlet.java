@@ -202,6 +202,7 @@ public class StatusDoServlet extends HttpServlet {
 					OFactory.isBundledeductStock(corder, conn);
 					OFactory.insertIntoShippingLog(corder, conn);
 					OFactory.insertIntoPurchaseLogFromOrders(corder, conn);
+					//
 					System.out.println("sendTrackingCode success");
 				} catch (Exception e) {
 					System.out.println("sendTrackingCode fail");

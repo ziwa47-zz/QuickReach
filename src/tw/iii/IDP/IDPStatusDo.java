@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.util.LinkedList;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,44 +15,52 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import com.ebay.sdk.ApiException;
 import com.ebay.sdk.SdkException;
 
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.IndependentOrder.model.entity.IordersMaster;
+import tw.iii.qr.IndependentOrder.service.CompanyService;
+import tw.iii.qr.IndependentOrder.service.GuestService;
 import tw.iii.qr.IndependentOrder.service.IordersDetailService;
 import tw.iii.qr.IndependentOrder.service.IordersMasterService;
+import tw.iii.qr.IndependentOrder.service.StockTransferService;
+import tw.iii.qr.IndependentOrder.service.StorageService;
+import tw.iii.qr.IndependentOrder.service.WarehouseService;
 import tw.iii.qr.order.COrderFactory;
 import tw.iii.qr.order.CompleteSale;
 import tw.iii.qr.order.DTO.COrderMaster;
 import tw.iii.qr.stock.CDBtoExcel;
+import tw.iii.qr.stock.CDBtoExcelIDP;
 
-@WebServlet("/IDPStatusDo")
+@Controller
 public class IDPStatusDo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	@Resource
+	CompanyService companyService;
 
-	public IDPStatusDo() {
-		super();
-	}
+	@Resource
+	WarehouseService warehouseService;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		try {
-			processSubmit(request, response);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	@Resource
+	IordersMasterService iordersMasterService;
+	@Resource
+	GuestService guestService;
+	@Resource
+	StorageService storageService;
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		try {
-			processSubmit(request, response);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	@Resource
+	StockTransferService stockTransferService;
+	
+	@Resource
+	IOrderFactory iOrderFactory;
 
+
+	@RequestMapping(value ="QRIndependentOrder/IDPStatusDo")
 	private void processSubmit(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
@@ -69,75 +78,75 @@ public class IDPStatusDo extends HttpServlet {
 		switch (send) {
 
 		case "printsent":
-			String[] path = new CDBtoExcel().logisticsselect(request, response);
+			String[] path = new CDBtoExcelIDP().logisticsselect(request, response);
 			session.setAttribute("pathsent", path);
-			response.sendRedirect("/href/toExcel.jsp?excel=4");
+			response.sendRedirect("/href/toExcel.jsp?excel=4idp");
 
 			out.write("<script type='text/javascript'>");
 			out.write("alert('列印成功');");
-			out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
+			out.write("window.location = '/QRIndependentOrder/Pickup';");
 			out.write("</script>");
 
 			break;
 		case "printpick":
-			String[] pathpick = new CDBtoExcel().pickup(request, response);
+			String[] pathpick = new CDBtoExcelIDP().pickup(request, response);
 
 			session.setAttribute("pathpick", pathpick);
-			response.sendRedirect("/href/toExcel.jsp?excel=5");
+			response.sendRedirect("/href/toExcel.jsp?excel=5idp");
 
 			out.write("<script type='text/javascript'>");
 			out.write("alert('列印成功');");
-			out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
+			out.write("window.location = '/QRIndependentOrder/Pickup';");
 			out.write("</script>");
 			// session.removeAttribute("excelpath");
 			break;
 
 		case "printcoll":
-			String[] pathcoll = new CDBtoExcel().collect(request, response);
+			String[] pathcoll = new CDBtoExcelIDP().collect(request, response);
 			session.setAttribute("pathcoll", pathcoll);
-			response.sendRedirect("/href/toExcel.jsp?excel=6");
+			response.sendRedirect("/href/toExcel.jsp?excel=6idp");
 
 			out.write("<script type='text/javascript'>");
 			out.write("alert('列印成功');");
-			out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
+			out.write("window.location = '/QRIndependentOrder/Pickup';");
 			out.write("</script>");
 			// session.removeAttribute("excelpath");
 			break;
 		case "printlogistic":
-			String[] pathlogistic = new CDBtoExcel().物流匯出格式();
+			String[] pathlogistic = new CDBtoExcelIDP().物流匯出格式();
 			session.setAttribute("pathlogistic", pathlogistic);
-			response.sendRedirect("/href/toExcel.jsp?excel=1");
+			response.sendRedirect("/href/toExcel.jsp?excel=1idp");
 
 			out.write("<script type='text/javascript'>");
 			out.write("alert('列印成功');");
-			out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
+			out.write("window.location = '/QRIndependentOrder/Pickup';");
 			out.write("</script>");
 			// session.removeAttribute("excelpath");
 			break;
 		case "printdaily":
-			response.sendRedirect("/href/toExcel.jsp?excel=2");
+			response.sendRedirect("/href/toExcel.jsp?excel=2idp");
 			out.write("<script type='text/javascript'>");
 			out.write("alert('列印成功');");
-			out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
+			out.write("window.location = '/QRIndependentOrder/Pickup';");
 			out.write("</script>");
 			// session.removeAttribute("excelpath");
 			break;
 		case "printdailyreport":
-			response.sendRedirect("/href/toExcel.jsp?excel=3");
+			response.sendRedirect("/href/toExcel.jsp?excel=3idp");
 			out.write("<script type='text/javascript'>");
 			out.write("alert('列印成功');");
-			out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
+			out.write("window.location = '/QRIndependentOrder/Pickup';");
 			out.write("</script>");
 			// session.removeAttribute("excelpath");
 			break;
 		case "processing":
 			ims.updateToPickUp(request);
-			response.sendRedirect("QRIndependentOrder/Pickup.jsp?begin=0&end=10");
+			response.sendRedirect("/QRIndependentOrder/Pickup");
 			break;
 
 		case "pickUp":
 			ims.updateToComplete(request);
-			response.sendRedirect("QRIndependentOrder/UploadTrackingCode.jsp?begin=0&end=10");
+			response.sendRedirect("/QRIndependentOrder/UploadTrackingCode");
 			break;
 		case "sendTrackingCode":
 			String result = DoSendTrackingCode(Origincdm, response, out);
@@ -145,22 +154,19 @@ public class IDPStatusDo extends HttpServlet {
 			out.println(result);
 			out.println("1秒後跳轉回上傳追蹤碼頁面");
 			out.println("<br/>");
-			response.setHeader("Refresh", "1; /QROrders/OrderUploadTrackingCode.jsp?begin=0&end=10");
+			response.setHeader("Refresh", "1; /QRIndependentOrder/UploadTrackingCode");
 
 			break;
-//		case "finished":
-//			ims.updateToRefund(request);
-//			ims.isBundleAddBackToStock(Origincdm);
-//			response.sendRedirect("QROrders/refundPage.jsp?begin=0&end=10");
-//			break;
-//		case "revertTo":
-//			ims.revertTo(request);
-//			response.sendRedirect(request.getHeader("Referer"));
-//			break;
-//		case "deleteUndo":
-//			ims.deleteUndoOrder(request);
-//			response.sendRedirect("QROrders/NewOrderSearch.jsp?begin=0&end=10");
-//			break;
+		case "finished":
+			ims.updateToRefund(request);
+			OFactory.isBundleAddBackToStock(Origincdm);
+			response.sendRedirect("QRIndependentOrder/refundPage.jsp?begin=0&end=10");
+			break;
+		case "revertTo":
+			ims.revertTo(request);
+			response.sendRedirect(request.getHeader("Referer"));
+			break;
+
 
 		}
 		out.close();
@@ -177,9 +183,8 @@ public class IDPStatusDo extends HttpServlet {
 		//扣庫存 寫Shippinglog 寫扣庫存紀錄
 		for (IordersMaster iorder : TrueOrders) {
 			OFactory.checkIsBundleAndDeductStock(iorder);
-			//TODO IDP SHIPPING
 			OFactory.insertIntoShippingLog(iorder);
-//			OFactory.insertIntoPurchaseLogFromOrders(iorder);
+			OFactory.insertIntoPurchaseLogFromOrders(iorder);
 			//OFactory.sendMAil(iorder);
 			System.out.println("sendTrackingCode success");
 
