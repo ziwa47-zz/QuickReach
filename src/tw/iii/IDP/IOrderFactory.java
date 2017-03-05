@@ -1,5 +1,9 @@
 package tw.iii.IDP;
 
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,6 +36,8 @@ import tw.iii.qr.IndependentOrder.model.repository.IordersMasterDAO;
 import tw.iii.qr.IndependentOrder.model.repository.PurchaselogDetailDAO;
 import tw.iii.qr.IndependentOrder.model.repository.PurchaselogMasterDAO;
 import tw.iii.qr.IndependentOrder.model.repository.StorageDAO;
+import tw.iii.qr.IndependentOrder.service.GuestService;
+import tw.iii.qr.IndependentOrder.service.IordersDetailService;
 import tw.iii.qr.IndependentOrder.service.IordersMasterService;
 import tw.iii.qr.IndependentOrder.service.PurchaselogDetailService;
 import tw.iii.qr.IndependentOrder.service.PurchaselogMasterService;
@@ -39,17 +45,20 @@ import tw.iii.qr.IndependentOrder.service.StorageService;
 
 @Service
 @Transactional
-public class IOrderFactory { 
-
+public class IOrderFactory {
 
 	@Autowired
 	GuestDAO guestDAO;
+	@Autowired
+	GuestService guestService;
 	@Autowired
 	IordersDetailDAO iordersDetailDAO;
 	@Autowired
 	IordersMasterDAO iordersMasterDAO;
 	@Autowired
 	IordersMasterService iordersMasterService;
+	@Autowired
+	IordersDetailService iordersDetailService;
 	@Autowired
 	IcomebineOrderDAO icomebineOrderDAO;
 	@Autowired
@@ -64,7 +73,6 @@ public class IOrderFactory {
 	BundlesDAO bundlesDAO;
 	@Autowired
 	IdpShippingLogDAO idpShippingLogDAO;
-	
 	@Autowired
 	StorageDAO storageDAO;
 	@Autowired
@@ -77,15 +85,15 @@ public class IOrderFactory {
 	public LinkedList<IDPorderAll> getAllIDPorder(HttpServletRequest request, String Orderstatus) {
 		System.out.println("IOrderFactory.getAllIDPorder():start");
 		// 整理查詢參數
-		String guestId 				= request.getParameter("guestId");
-		String QR_id 				= request.getParameter("QR_id");
-		String SKU 					= request.getParameter("SKU");
-		String productName 		= request.getParameter("productName");
-		String payDateMin 			= request.getParameter("payDateMin");
-		String payDateMax 		= request.getParameter("payDateMax");
-		String shippingDateMin 	= request.getParameter("shippingDateMin");
-		String shippingDateMax 	= request.getParameter("shippingDateMax");
-		String logistics 				= request.getParameter("logistics");
+		String guestId = request.getParameter("guestId");
+		String QR_id = request.getParameter("QR_id");
+		String SKU = request.getParameter("SKU");
+		String productName = request.getParameter("productName");
+		String payDateMin = request.getParameter("payDateMin");
+		String payDateMax = request.getParameter("payDateMax");
+		String shippingDateMin = request.getParameter("shippingDateMin");
+		String shippingDateMax = request.getParameter("shippingDateMax");
+		String logistics = request.getParameter("logistics");
 		if (logistics == "USPS1")
 			logistics = "USPS寄倉";
 		if (logistics == "USPS2")
@@ -110,11 +118,12 @@ public class IOrderFactory {
 		LinkedList<IDPorderAll> idps = new LinkedList<IDPorderAll>();
 		System.out.println(Orderstatus);
 		try {
-			List<IordersMaster> iordersMasters = iordersMasterDAO.selectIordersMasterByStatus(masterselector, Orderstatus);
+			List<IordersMaster> iordersMasters = iordersMasterDAO.selectIordersMasterByStatus(masterselector,
+					Orderstatus);
 			if (iordersMasters.size() == 0)
 				return null;
 
-			System.out.println("iordersMasters.size():"+iordersMasters.size());
+			System.out.println("iordersMasters.size():" + iordersMasters.size());
 			for (IordersMaster iom : iordersMasters) {
 				IDPorderAll idp = getIDPorderAllInfo(detailselector, iom);
 				if (idp != null)
@@ -125,7 +134,7 @@ public class IOrderFactory {
 			e.printStackTrace();
 		}
 		System.out.println("IOrderFactory.getAllIDPorder():finish");
-		
+
 		return idps;
 	}
 
@@ -146,7 +155,8 @@ public class IOrderFactory {
 		List<IordersDetail> iorderDetailList = null;
 		try {
 			// 如果有查SKU或productName
-			if (StringUtils.hasText(detailselector.get("SKU")) && StringUtils.hasText(detailselector.get("productName"))) {
+			if (StringUtils.hasText(detailselector.get("SKU"))
+					&& StringUtils.hasText(detailselector.get("productName"))) {
 				iorderDetailList = iordersDetailDAO.getSeletedDetail(iom.getQrId(), detailselector);
 				if (iorderDetailList == null || iorderDetailList.size() == 0)
 					return null;
@@ -173,7 +183,7 @@ public class IOrderFactory {
 	}
 
 	public IDPorderAll getIDPorderAllInfobyqrId(String qrId) {
-		//System.out.println("IOrderFactory.getIDPorderAllInfobyqrId():start");
+		// System.out.println("IOrderFactory.getIDPorderAllInfobyqrId():start");
 		IDPorderAll idp = new IDPorderAll();
 
 		// 加入master
@@ -195,8 +205,124 @@ public class IOrderFactory {
 			e.printStackTrace();
 			return null;
 		}
-		//System.out.println("IOrderFactory.getIDPorderAllInfobyqrId():finish");
+		// System.out.println("IOrderFactory.getIDPorderAllInfobyqrId():finish");
 		return idp;
+	}
+
+	public void updateOrder(HttpServletRequest request) throws Exception {
+		IDPorderAll order = getIDPorderAllInfobyqrId(request.getParameter("QR_id"));
+		IordersMaster master = order.getIordersMaster();
+		Guest guest = order.getGuestInfo();
+		List<IordersDetail> details = order.getIordersDetails();
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		DateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+		master.setGuestId(request.getParameter("guestId"));
+		master.setOrderStatus(request.getParameter("OrderStatus"));
+		master.setTrackingCode(request.getParameter("trackingCode"));
+		master.setPlatform(request.getParameter("Platform"));
+		master.setTransactionId(request.getParameter("transactionId"));
+		try {
+			if (!isNullorEmpty(request.getParameter("OrderDate"))) {
+				master.setOrderDate(format.parse(request.getParameter("OrderDate")));
+			}
+		} catch (Exception e) {
+			master.setOrderDate(format2.parse(request.getParameter("OrderDate")));
+		}
+		try {
+			if (!isNullorEmpty(request.getParameter("PayDate"))) {
+				master.setPayDate(format.parse(request.getParameter("PayDate")));
+			}
+
+		} catch (Exception e) {
+			master.setPayDate(format2.parse(request.getParameter("PayDate")));
+		}
+		try {
+		if (!isNullorEmpty(request.getParameter("ShippingDate"))) {
+			master.setShippingDate(format.parse(request.getParameter("ShippingDate")));
+		}
+		}catch (Exception e) {
+			master.setShippingDate(format.parse(request.getParameter("ShippingDate")));
+		}
+		master.setLogistics(request.getParameter("Logistics"));
+		if (!isNullorEmpty(request.getParameter("ShippingFees")))
+			master.setShippingFees(new BigDecimal(request.getParameter("ShippingFees")));
+		if (!isNullorEmpty(request.getParameter("RefundShippingFees")))
+			master.setRefundShippingFees(new BigDecimal(request.getParameter("RefundShippingFees")));
+		if (!isNullorEmpty(request.getParameter("OtherFees")))
+			master.setOtherFees(new BigDecimal(request.getParameter("OtherFees")));
+		if (!isNullorEmpty(request.getParameter("InsuranceTotal")))
+			master.setOtherFees(new BigDecimal(request.getParameter("InsuranceTotal")));
+		if (!isNullorEmpty(request.getParameter("PaypalFees")))
+			master.setPaypalFees(new BigDecimal(request.getParameter("PaypalFees")));
+		if (!isNullorEmpty(request.getParameter("TotalPrice")))
+			master.setTotalPrice(new BigDecimal(request.getParameter("TotalPrice")));
+		iordersMasterService.update(master);
+
+		guest.setName(request.getParameter("name"));
+		guest.setEmail(request.getParameter("email"));
+		guest.setTel(request.getParameter("tel"));
+		guest.setPhone(request.getParameter("phone"));
+		guest.setCompany(request.getParameter("company"));
+		guest.setAddress(request.getParameter("address"));
+		guest.setCountry(request.getParameter("country"));
+		guest.setPostcode(request.getParameter("postcode"));
+		guest.setGender(request.getParameter("gender"));
+		guestService.update(guest);
+
+		LinkedList<String> itemList = new LinkedList<String>(Arrays.asList(request.getParameterValues("item")));
+		LinkedList<String> SKUList = new LinkedList<String>(Arrays.asList(request.getParameterValues("SKU")));
+		LinkedList<String> priceList = new LinkedList<String>(Arrays.asList(request.getParameterValues("price")));
+		LinkedList<String> qtyList = new LinkedList<String>(Arrays.asList(request.getParameterValues("qty")));
+		LinkedList<String> weightgList = new LinkedList<String>(Arrays.asList(request.getParameterValues("weight_g")));
+		LinkedList<String> weightozList = new LinkedList<String>(
+				Arrays.asList(request.getParameterValues("weight_oz")));
+		LinkedList<String> commentList = new LinkedList<String>(Arrays.asList(request.getParameterValues("comment")));
+		LinkedList<String> warehouseList = new LinkedList<String>(
+				Arrays.asList(request.getParameterValues("warehouse")));
+		for (int i = 0; i < details.size(); i++) {
+			details.get(i).setItem(Integer.valueOf(itemList.get(i)));
+			details.get(i).setSku(SKUList.get(i));
+			if (!isNullorEmpty(priceList.get(i)))
+				details.get(i).setPrice(new BigDecimal(priceList.get(i)));
+			details.get(i).setQty(Integer.valueOf(qtyList.get(i)));
+			if (!isNullorEmpty(weightgList.get(i)))
+				details.get(i).setWeight_g(new BigDecimal(weightgList.get(i)));
+			if (!isNullorEmpty(weightozList.get(i)))
+				details.get(i).setWeight_oz(new BigDecimal(weightozList.get(i)));
+			details.get(i).setComment(commentList.get(i));
+			details.get(i).setWarehouse(warehouseList.get(i));
+			iordersDetailService.update(details.get(i));
+		}
+
+	}
+
+	public void insertOrderDetail(HttpServletRequest request) throws Exception {
+		String[] strSKUArray = request.getParameterValues("SKU");
+		LinkedList<String> SKUs = new LinkedList<String>(Arrays.asList(strSKUArray));
+		String[] strProductName = request.getParameterValues("productName");
+		LinkedList<String> productNames = new LinkedList<String>(Arrays.asList(strProductName));
+		for (int i = 0; i < SKUs.size(); i++) {
+			IordersDetail detail = new IordersDetail();
+			// QR_id, SKU, productName, invoiceName, price, invoicePrice, qty
+			detail.setQrId(request.getParameter("QR_id"));
+			detail.setSku(SKUs.get(i));
+			detail.setProductName(productNames.get(i));
+			detail.setPrice(new BigDecimal("0.0"));
+			detail.setQty(Integer.valueOf("0"));
+			detail.setWeight_g(new BigDecimal("0.0"));
+			detail.setWeight_oz(new BigDecimal("0"));
+			detail.setComment("");
+			iordersDetailService.persist(detail);
+		}
+	}
+
+	public void deleteFromOrderDetail(HttpServletRequest request) {
+		try {
+			iordersDetailService.deletebyitem((request.getParameter("item")));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void checkIsBundleAndDeductStock(IordersMaster corder) {
@@ -229,14 +355,16 @@ public class IOrderFactory {
 		}
 
 	}
+
 	private void plusBundleaddStock(IordersDetail iod) {
-		
+
 		List<Bundles> bundlesku = bundlesDAO.getAllskuByIod(iod);
 		for (Bundles b : bundlesku) {
 			storageService.addStock(iod, b);
 		}
 
 	}
+
 	private void addStock(IordersDetail iod) {
 		storageService.addStock(iod);
 	}
@@ -250,8 +378,6 @@ public class IOrderFactory {
 	}
 
 	public LinkedList<IordersMaster> checkIDPOrderIdOrderStatus(IordersMaster origincdm) throws Exception {
-		// 準備參數 檢查前用
-		IordersMaster order = new IordersMaster();
 		// 檢查後回傳用
 		LinkedList<IordersMaster> CombineOrders = new LinkedList<IordersMaster>();
 		IordersMaster iom = new IordersMaster();
@@ -269,7 +395,7 @@ public class IOrderFactory {
 			}
 		} else {
 			iordersMasterService.updateTrackingCode(iom, origincdm.getTrackingCode());
-			CombineOrders.add(order);
+			CombineOrders.add(iom);
 
 		}
 
@@ -290,7 +416,7 @@ public class IOrderFactory {
 			idpshippinglog.setWarehouse(storage.getWarehouse());
 			idpshippinglog
 					.setWarehouselocation(storage.getWarehousePosition1() + "-" + storage.getWarehousePosition2());
-			idpshippinglogService.persist(idpshippinglog);
+			// idpshippinglogService.persist(idpshippinglog);
 		}
 	}
 
@@ -361,7 +487,7 @@ public class IOrderFactory {
 	}
 
 	public LinkedList<String> getWarehouses(HttpServletRequest request, String SKU) throws Exception {
-		//System.out.println("SKU:"+SKU);
+		// System.out.println("SKU:"+SKU);
 		LinkedList<String> warehouses = new LinkedList<>();
 		List<Storage> storage = storageDAO.selectStorageBySku(SKU);
 		for (Storage s : storage) {

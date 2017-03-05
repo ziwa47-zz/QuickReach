@@ -1,7 +1,11 @@
 package tw.iii.IDP;
 
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServlet;
@@ -12,7 +16,12 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import tw.iii.qr.IndependentOrder.controller.RedirectController;
+import tw.iii.qr.IndependentOrder.model.entity.Guest;
+import tw.iii.qr.IndependentOrder.model.entity.IDPorderAll;
+import tw.iii.qr.IndependentOrder.model.entity.IordersDetail;
 import tw.iii.qr.IndependentOrder.model.entity.IordersMaster;
+import tw.iii.qr.IndependentOrder.model.repository.IordersMasterDAO;
 import tw.iii.qr.IndependentOrder.service.CompanyService;
 import tw.iii.qr.IndependentOrder.service.GuestService;
 import tw.iii.qr.IndependentOrder.service.IordersMasterService;
@@ -41,6 +50,8 @@ public class IDPStatusDo extends HttpServlet {
 	StockTransferService stockTransferService;
 	
 	@Resource
+	RedirectController redirectController;
+	@Resource
 	IOrderFactory iOrderFactory;
 
 
@@ -55,8 +66,41 @@ public class IDPStatusDo extends HttpServlet {
 		Origincdm.setLogistics(request.getParameter("logistics"));
 		Origincdm.setQrId(request.getParameter("QR_id"));
 		Origincdm.setStaffName(request.getParameter("staffName"));
-		String send = request.getParameter("send");
-
+		String[] trueurl = null;
+		String url ="";
+		String send ="";
+		String submit ="";
+		if(!isNullorEmpty(request.getParameter("send")))
+			 send = request.getParameter("send");
+		if(!isNullorEmpty(request.getParameter("submit")))
+			submit = request.getParameter("submit");
+		
+		
+		switch (submit){
+		case "updateOrder":
+			iOrderFactory.updateOrder(request);
+			url=redirectController.redirectOrderDetail(request);
+			trueurl=url.split(":");
+			response.sendRedirect(trueurl[1]);
+			break;
+		case "toGetProducts":
+			response.sendRedirect("/QRIndependentOrder/selectProductNew.jsp?QR_id="+request.getParameter("QR_id"));
+			break;
+		case "insertSKUNew":
+			iOrderFactory.insertOrderDetail(request);
+			url=redirectController.redirectOrderDetail(request);
+			trueurl=url.split(":");
+			response.sendRedirect(trueurl[1]);
+			break;	
+		case "deleteDetail":
+			iOrderFactory.deleteFromOrderDetail(request);
+			url=redirectController.redirectOrderDetail(request);
+			trueurl=url.split(":");
+			System.out.print(trueurl[1]);
+			response.sendRedirect(trueurl[1]);
+			break;
+		}
+		
 		switch (send) {
 
 		case "printsent":
@@ -148,6 +192,8 @@ public class IDPStatusDo extends HttpServlet {
 			iordersMasterService.revertTo(request);
 			response.sendRedirect(request.getHeader("Referer"));
 			break;
+			
+		
 
 
 		}
@@ -155,6 +201,7 @@ public class IDPStatusDo extends HttpServlet {
 
 	}
 
+	
 	private String DoSendTrackingCode(IordersMaster origincdm, HttpServletResponse response, PrintWriter out)
 			throws Exception {
 
@@ -163,6 +210,7 @@ public class IDPStatusDo extends HttpServlet {
 
 		//扣庫存 寫Shippinglog 寫扣庫存紀錄
 		for (IordersMaster iorder : TrueOrders) {
+			System.out.println(iorder.getQrId());
 			iOrderFactory.checkIsBundleAndDeductStock(iorder);
 			iOrderFactory.insertIntoShippingLog(iorder);
 			iOrderFactory.insertIntoPurchaseLogFromOrders(iorder);
@@ -173,6 +221,13 @@ public class IDPStatusDo extends HttpServlet {
 		// 如果訂單超過一筆表示是合併訂單 應該另外處理把合併訂單送到已完成 與 把狀態修改成已完成
 		return "Success";
 
+	}
+	private static boolean isNullorEmpty(String s) {
+
+		if (s == null || s.length() == 0)
+			return true;
+
+		return false;
 	}
 
 }

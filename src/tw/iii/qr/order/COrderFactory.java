@@ -1288,14 +1288,14 @@ public class COrderFactory extends COrders {
 		Connection conn = new DataBaseConn().getConn();
 		LinkedList<String> warehouses = new LinkedList<String>();
 		// CStock myCStock = new CStock();
-		String strSql = "select warehouse from  storage where SKU = ?";
+		String strSql = "select warehouse,warehousePosition1,warehousePosition2 from  storage where SKU = ?";
 
 		PreparedStatement ps = conn.prepareStatement(strSql);
 		ps.setString(1, SKU);
 		ResultSet rs = ps.executeQuery();
 
 		while (rs.next()) {
-			warehouses.add(rs.getString(1));
+			warehouses.add(rs.getString(1)+","+rs.getString(2)+"-"+rs.getString(3));
 		}
 		return warehouses;
 	}

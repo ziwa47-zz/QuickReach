@@ -84,6 +84,11 @@ public class IordersDetailDAO extends AbstractDAO<IordersDetail> {
 		return null;
 
 	}
+	public IordersDetail getbyitem(String item){
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("item", Integer.valueOf(item)));
+		return (IordersDetail) criteria.list().get(0);
+	}
 
 	private static boolean isNullorEmpty(String s) {
 

@@ -69,6 +69,9 @@ public class ProductDo extends HttpServlet {
 			case "getProcuctNew":
 				processSearchProductToAddOrderDetailNew(request, response);
 				break;
+			case "getProcuctNewIDP":
+				processSearchProductToAddIDPOrderDetailNew(request, response);
+				break;
 			case "submitcounting":
 				processcountingsearch(request,response);
 				break;
@@ -246,5 +249,17 @@ public class ProductDo extends HttpServlet {
 		
 		response.sendRedirect("/QROrders/selectProductNew.jsp?QR_id=" + request.getParameter("QR_id"));
 	}
-	
+	private void processSearchProductToAddIDPOrderDetailNew(HttpServletRequest request, HttpServletResponse response)
+			throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		HttpSession session = request.getSession(); 
+		conn = new DataBaseConn().getConn();
+		CProductFactory cpf = new CProductFactory();
+		LinkedList<CProduct> cp =cpf.searchProduct(request,conn);
+		session.setAttribute("productall", cp);
+		conn.close();
+		
+		response.sendRedirect("/QRIndependentOrder/selectProductNew.jsp?QR_id=" + request.getParameter("QR_id"));
+	}
 }

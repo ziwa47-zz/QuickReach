@@ -66,7 +66,7 @@
 	        <label class="radio-inline"><input type="checkbox" name="optionsRadios" id="optionsCheck" onchange="enableFields(this)">開關</label>
 	    	<label class="radio-inline">
 	    	<button type="submit" name="submit" value="updateOrder" class="btn btn-lg btn-success" id="btnCheck" disabled>更新商品資料</button>
-	    	<a href="../OrderProcessingPage.jsp?begin=0&end=10" class="btn btn-info" role="button">回到處理中</a>
+	    	<a href="/QRIndependentOrder/Processing" class="btn btn-info" role="button">回到處理中</a>
 	      	</label>
 	      </div>
 	    </div>
@@ -209,10 +209,6 @@
 			          <div class="col-md-5 well-sm"><input readonly class="form-control" type="text" name="OtherFees" value="${IDPOrderDetail.getIordersMaster().getOtherFees()}"></div>
 			        </div>
 			        <div class="row">
-			          <div class="col-md-3 text-right well-sm label-tag"><h4>ebay成交費</h4></div>
-			          <div class="col-md-5 well-sm"><input readonly class="form-control" type="text" name="EbayFees" value="${IDPOrderDetail.getIordersMaster().getEbayFees()}"></div>
-			        </div>
-			        <div class="row">
 			          <div class="col-md-3 text-right well-sm label-tag"><h4>計算保價</h4></div>
 			          <div class="col-md-5 well-sm"><input readonly class="form-control" type="text" name="InsuranceTotal" value="${IDPOrderDetail.getIordersMaster().getInsuranceTotal()}"></div>
 			        </div>
@@ -221,21 +217,6 @@
 			          <div class="col-md-5 well-sm"><input readonly class="form-control" type="text" name="PaypalFees" value="${IDPOrderDetail.getIordersMaster().getPaypalFees()}"></div>
 			        </div>
 		        </c:if>
-		        
-		        
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>重量(公克)</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="weight_g" value="${IDPOrderDetail.getIordersDetail().getWeight_g()}"></div>
-		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>重量(盎司)</h4></div>
-		          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="weight_oz" value="${IDPOrderDetail.getIordersDetail().getWeight_oz()}"></div>
-		        </div>
-		        <div class="row">
-		          <div class="col-md-3 text-right well-sm label-tag"><h4>備註</h4></div>
-		          <div class="col-md-5 well-sm"></div>
-		        </div>
-		        
 		        <c:if test="${PageCompetence.getTotalAmountEdit() == 1}">
 			        <div class="row">
 			          <div class="col-md-3 text-right well-sm label-tag"><h4>總計</h4></div>
@@ -265,6 +246,8 @@
 			        <th>商品名稱</th>
 			        <th>售價</th>
 			        <th>數量</th>
+			        <th>重量(公克)</th>
+			        <th>重量(盎司)</th>
 			        <th>備註</th>
 		          </tr>
 	            </thead>
@@ -276,10 +259,10 @@
 		              SKU:<br/><a href="../QRProduct/StockDetail.jsp?sku=${i.getSku()}"><b>${i.getSku()}</b></a>
 	          		  <button type="submit" name="submit" value="deleteDetail" class="btn btn-sm btn-danger">移除此商品</button>
 		            </td>
-		            <td>Product Name:<br/>${i.getProductName()}<br/>
+		            <td>${i.getProductName()}
 		            </td>
 		           	<c:if test="${PageCompetence.getTotalAmountEdit() == 1}">
-			            <td><input class="" type="text" name="price" value="${i.getPrice()}" ></td>
+			            <td><input class=""  type="text" name="price" value="${i.getPrice()}" ></td>
 			        </c:if>
 		            <c:if test="${PageCompetence.getTotalAmountEdit() == 0}">
 			            <td><input class="" type="text" name="price" value="${i.getPrice()}" readonly></td>
@@ -310,6 +293,8 @@
                           </c:forEach>
                       </select>
 		            </td>
+		            <td>重量(公克):<input class="form-control" type="text" name="weight_g" value="${i.getWeight_g()}"></td>
+		            <td>重量(盎司):<input class="form-control" type="text" name="weight_oz" value="${i.getWeight_oz()}"></td>
 		            <td><input class="form-control" type="text" name="comment" value="${i.getComment()}">
 		            <input type="hidden" name="item" value="${i.getItem()}">
 		            </td>
@@ -327,7 +312,7 @@
   </div>
 
 <script type="text/javascript">
- 
+
 $(function () {
 	$(".btn-danger").click(function() {
 		bool = confirm("確認是否刪除訂單");
@@ -354,9 +339,9 @@ function isSubmited() {
         sum += +$(this).val();
     });
     var total = $('#TotalPrice').val();
-    if (sum>total || sum <=0)
+    if (sum!=total || sum <=0)
     {
-    	alert("請注意,修改後金額小於原始金額,不可更改");
+    	alert("請注意,修改後金額不等於總金額,不可更改");
         return false;
     } else if (sum>total || sum <=0)
     {

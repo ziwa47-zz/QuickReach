@@ -1,5 +1,7 @@
 package tw.iii.qr.IndependentOrder.model.entity;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -13,8 +15,10 @@ public class PurchaselogDetail implements Serializable {
 	 */
 	private static final long serialVersionUID = -2674334248706188391L;
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	private Integer id;
+	
 	private String purchaseId;
-	@Id
 	@Column(name="SKU")
 	private String sku;
 	private String warehouse;
@@ -25,6 +29,12 @@ public class PurchaselogDetail implements Serializable {
 	private String comment;
 	private String stockStatus;
 
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public void setPurchaseId(String purchaseId) {
 		this.purchaseId = purchaseId;
 	}

@@ -72,6 +72,13 @@ public class IordersDetailService extends AbstractService<IordersDetail> {
 
 		// insert data
 	}
-
+	public void deletebyitem(String item){
+		try {
+			delete(iordersDetailDAO.getbyitem(item));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 }

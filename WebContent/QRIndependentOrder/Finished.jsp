@@ -222,7 +222,7 @@
                 <c:when test="${check.index%2 != 0}">
                   <tr style="background-color:#D4F4D8">
                     <td rowspan="2" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getIordersMaster().getQrId()}"></td>
-                    <td><a href="OrderDetail.jsp?QR_id=${i.getIordersMaster().getQrId()}"><img src="../img/compose-4.png" ></a></td>
+                    <td><a href="OrderDetail?QR_id=${i.getIordersMaster().getQrId()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getIordersMaster().getQrId()}</td>
                     <td>${i.getIordersMaster().getPlatform()}</td>
                     <td>${i.getIordersMaster().getGuestId()}</td>
@@ -253,7 +253,7 @@
                 <c:otherwise>
                   <tr>
                      <td rowspan="2" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getIordersMaster().getQrId()}"></td>
-                    <td><a href="OrderDetail.jsp?QR_id=${i.getIordersMaster().getQrId()}"><img src="../img/compose-4.png" ></a></td>
+                    <td><a href="OrderDetail?QR_id=${i.getIordersMaster().getQrId()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getIordersMaster().getQrId()}</td>
                     <td>${i.getIordersMaster().getPlatform()}</td>
                     <td>${i.getIordersMaster().getGuestId()}</td>
