@@ -139,15 +139,15 @@ public class IDPStatusDo extends HttpServlet {
 			ims.updateToComplete(request);
 			response.sendRedirect("QRIndependentOrder/UploadTrackingCode.jsp?begin=0&end=10");
 			break;
-//		case "sendTrackingCode":
-//			String result = DoSendTrackingCode(Origincdm, response, out);
-//
-//			out.println(result);
-//			out.println("1秒後跳轉回上傳追蹤碼頁面");
-//			out.println("<br/>");
-//			response.setHeader("Refresh", "1; /QROrders/OrderUploadTrackingCode.jsp?begin=0&end=10");
-//
-//			break;
+		case "sendTrackingCode":
+			String result = DoSendTrackingCode(Origincdm, response, out);
+
+			out.println(result);
+			out.println("1秒後跳轉回上傳追蹤碼頁面");
+			out.println("<br/>");
+			response.setHeader("Refresh", "1; /QROrders/OrderUploadTrackingCode.jsp?begin=0&end=10");
+
+			break;
 //		case "finished":
 //			ims.updateToRefund(request);
 //			ims.isBundleAddBackToStock(Origincdm);
@@ -167,26 +167,26 @@ public class IDPStatusDo extends HttpServlet {
 
 	}
 
-//	private String DoSendTrackingCode(IordersMaster origincdm, HttpServletResponse response, PrintWriter out)
-//			throws Exception {
-//
-//		IOrderFactory OFactory = new IOrderFactory();
-//		// 找出真正的訂單號 單筆 size =1 合併size >1 更新追蹤碼 改狀態 加入shippingDate
-//		LinkedList<IordersMaster> TrueOrders = OFactory.checkIDPOrderIdOrderStatus(origincdm);
-//
-//		//扣庫存 寫Shippinglog 寫扣庫存紀錄
-//		for (IordersMaster corder : TrueOrders) {
-//			OFactory.checkIsBundleAndDeductStock(corder);
-//			
-//			//TODO IDP SHIPPING
-//			OFactory.insertIntoShippingLog(corder);
-////			OFactory.insertIntoPurchaseLogFromOrders(corder);
-//			System.out.println("sendTrackingCode success");
-//
-//		}
-//		// 如果訂單超過一筆表示是合併訂單 應該另外處理把合併訂單送到已完成 與 把狀態修改成已完成
-//		return "Success";
-//
-//	}
+	private String DoSendTrackingCode(IordersMaster origincdm, HttpServletResponse response, PrintWriter out)
+			throws Exception {
+
+		IOrderFactory OFactory = new IOrderFactory();
+		// 找出真正的訂單號 單筆 size =1 合併size >1 更新追蹤碼 改狀態 加入shippingDate
+		LinkedList<IordersMaster> TrueOrders = OFactory.checkIDPOrderIdOrderStatus(origincdm);
+
+		//扣庫存 寫Shippinglog 寫扣庫存紀錄
+		for (IordersMaster iorder : TrueOrders) {
+			OFactory.checkIsBundleAndDeductStock(iorder);
+			//TODO IDP SHIPPING
+			OFactory.insertIntoShippingLog(iorder);
+//			OFactory.insertIntoPurchaseLogFromOrders(iorder);
+			//OFactory.sendMAil(iorder);
+			System.out.println("sendTrackingCode success");
+
+		}
+		// 如果訂單超過一筆表示是合併訂單 應該另外處理把合併訂單送到已完成 與 把狀態修改成已完成
+		return "Success";
+
+	}
 
 }

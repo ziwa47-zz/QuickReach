@@ -43,7 +43,24 @@ public class RedirectController {
 	
 	@Resource
 	IOrderFactory iOrderFactory;
+	
+	@RequestMapping(value ="QRIndependentOrder/OrderDetail",method=RequestMethod.GET)
+	public String redirectOrderDetail(HttpServletRequest request) {
+		
+		try {
+			System.out.println(request.getParameter("QR_id"));
+			LinkedList<IDPorderAll> orderList = iOrderFactory.getAllIDPorder(request,"");
+			IDPorderAll idpoa = orderList.get(0);
+			HttpSession session = request.getSession();
+	        session.setAttribute("IDPOrderDetail", idpoa);
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//System.out.println("RedirectController.redirectProcessing():finish");
+		return "redirect:/QRIndependentOrder/OrderDetail.jsp";
+
+	}
 	/**
 	 * 導頁至查詢訂單頁面<br/>
 	 */
