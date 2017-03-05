@@ -746,6 +746,10 @@ public class COrderFactory extends COrders {
 		} else {
 			corder = new COrderMaster();
 			corder.setQR_id(order.getQR_id());
+			corder.setEbayAccount(origincdm.getEbayAccount());
+			corder.setOrder_id(origincdm.getOrder_id());
+			corder.setLogistics(origincdm.getLogistics());
+			corder.setStaffName(origincdm.getStaffName());
 			CombineOrders.add(corder);
 		}
 		conn.close();

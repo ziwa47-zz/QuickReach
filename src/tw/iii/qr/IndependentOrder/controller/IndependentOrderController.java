@@ -167,6 +167,7 @@ public class IndependentOrderController {
 
 	}
 
+
 	@RequestMapping(value = "/testFactory")
 	public String test(HttpServletRequest request) {
 
@@ -187,4 +188,5 @@ public class IndependentOrderController {
 	
 	
 	
+
 }
