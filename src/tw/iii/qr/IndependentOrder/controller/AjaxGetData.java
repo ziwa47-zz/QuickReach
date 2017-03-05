@@ -141,12 +141,14 @@ public class AjaxGetData {
 	 * */
 	@RequestMapping("/ajax/getStockTransferMasterCount")
 	public @ResponseBody Map<String, Object> ajaxGetStockTransferMasterCount(HttpServletRequest request) {
+		System.out.println("warehouse");
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		try {
 
-			//String warehouse = request.getParameter("warehouse");
-			String warehouse = "US";
+			String warehouse = request.getParameter("warehouse");
+			System.out.println(warehouse);
+			//String warehouse = "US";
 			if(StringUtils.hasText(warehouse)) {
 				String stockTransferId = stockTransferService.makeStockTransferMasterId(warehouse);
 				map.put("data", stockTransferId);

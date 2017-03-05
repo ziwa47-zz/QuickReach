@@ -56,7 +56,7 @@
 
 <div class="nav">
   <div class="container" style="background:#99C61D; border-radius:20px;">
-    <form name="searchform" method="post" action="../OrdersServlet" class="form-inline container"
+    <form name="searchform" method="post" action="/QRIndependentOrder/Processing" class="form-inline container"
     style="font-size: 100%; vertical-align: baseline; padding: 15px;">
       <fieldset class="font-weight" style="padding:0 30px 0 0;">
         <legend>處理中</legend>
@@ -145,36 +145,33 @@
         </div>
         <br/>
         <div class="row">
-          <div class="col-md-8 form-group ">
+          <div class="col-md-12 form-group ">
             <label>物流選擇：</label>
-            <label class="checkbox-inline"><input type="checkbox" name="DHL" value="DHL">DHL</label>
-            <label class="checkbox-inline"><input type="checkbox" name="Fedex" value="Fedex">Fedex</label>
-            <label class="checkbox-inline"><input type="checkbox" name="EMS" value="EMS">EMS</label>
-            <label class="checkbox-inline"><input type="checkbox" name="AP" value="AP">AP(國際包裹)</label>
-            <label class="checkbox-inline"><input type="checkbox" name="RA" value="RA">RA(國際掛號)</label>
-            <label class="checkbox-inline"><input type="checkbox" name="USPS1" value="USPS1">USPS寄倉</label>
-            <label class="checkbox-inline"><input type="checkbox" name="USPS2" value="USPS2">USPS集運</label>
-            <label class="checkbox-inline" for="lothers"><input type="checkbox" name="lothers" value="" onclick="getOther()">其他</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="ALL" checked="checked">ALL</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="DHL">DHL</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="Fedex">Fedex</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="EMS">EMS</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="AP">AP(國際包裹)</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="RA">RA(國際掛號)</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="USPS1">USPS寄倉</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="USPS2">USPS集運</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="lothers">其他</label>
           </div>
-          <div class='col-md-2 form-group other'>
-			<input class="form-control" type="text" name="other">
-			<input type="button" class="btn btn-sm btn-info toOther" value="確定">
-		  </div>
         </div>
         <br/>
        
         <br/>
         <div class="row text-center" >
-          <input type="hidden" name="processing"  value="processing"> <!-- 控制搜尋結果在處理中 -->
-          <button class="btn btn-lg btn-primary" type="submit" name="submit" value="processingSearch">搜尋</button>
-          <button class="btn btn-lg btn-primary" type="button" name="" >清空</button>
+          <input type="hidden" name="IDPprocessing"  value="IDPprocessing"> <!-- 控制搜尋結果在處理中 -->
+          <button class="btn btn-lg btn-primary" type="submit" name="submit" value="IDPprocessingSearch">搜尋</button>
+          <button class="btn btn-lg btn-primary" type="reset" name="" >清空</button>
         </div>
       </fieldset>
     </form>
   </div>
   <hr/>
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
-        <form name="searchform" method="post" action="../StatusDo" class="form-inline container"
+        <form name="searchform" method="post" action="../IDPStatusDo" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; "  onsubmit="return isSubmited()">
           <label class="btn btn-sm btn-info">
 		    <input type="checkbox" autocomplete="off" onchange="selectAllOrders(this)"> 選擇全部
@@ -193,7 +190,7 @@
                 <li class="disabled"><a href="OrderProcessingPage.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
               </c:otherwise>
             </c:choose>
-            <c:forEach begin="0" end="${list.size()/10}" step="1" varStatus="check">
+            <c:forEach begin="0" end="${IDPprocess.size()/10}" step="1" varStatus="check">
               <c:choose>
                 <c:when test="${(check.index*10) != begin}">
                   <li><a href="OrderProcessingPage.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
@@ -204,14 +201,14 @@
               </c:choose>
             </c:forEach>
             <c:choose>
-              <c:when test="${end < list.size()}">
+              <c:when test="${end < IDPprocess.size()}">
                 <li><a href="OrderProcessingPage.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:when>
               <c:otherwise>
                 <li class="disabled"><a href="OrderProcessingPage.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:otherwise>
             </c:choose>
-            <label>共有:${list.size()}筆</label>
+            <label>共有:${IDPprocess.size()}筆</label>
           </ul>
           <table class="table table-bordered table-hover table-condensed pull-left" style="margin:0 0 0 -15px">
             <tr class="ListTitle">
@@ -219,8 +216,8 @@
               <th>編輯</th>
               <th>訂單編號</th>
               <th>平台</th>
-              <th>客戶代號</th>
-              <th>客戶帳號</th>
+              <th>熟客代號</th>
+              <th>客戶姓名</th>
               <th>購買日期</th>
               <th>出貨日期</th>
               <th>物流</th>
@@ -229,16 +226,16 @@
               <th>總金額</th>
               <th>使用者</th>
             </tr>
-            <c:forEach var="i" items="${list}" begin="${begin}" end="${end}" step="1" varStatus="check">
+            <c:forEach var="i" items="${IDPprocess}" begin="${begin}" end="${end}" step="1" varStatus="check">
               <c:choose>
                 <c:when test="${check.index%2 != 0}">
                   <tr style="background-color:#D4F4D8">
-                    <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getIordersMaster().getQrId()}"></td>
+                    <td rowspan="2" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getIordersMaster().getQrId()}"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getIordersMaster().getQrId()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getIordersMaster().getQrId()}</td>
                     <td>${i.getIordersMaster().getPlatform()}</td>
                     <td>${i.getIordersMaster().getGuestId()}</td>
-                    <td>${i.getIordersMaster().getGuestId()}</td>
+                    <td>${i.getGuestInfo().getName()}</td>
                     <td>${i.getIordersMaster().getPayDate()}</td>
                     <td></td>
                     <td>${i.getIordersMaster().getLogistics()}</td>
@@ -257,7 +254,7 @@
                     </td>
                     <td colspan="3" class="warehouseLocation" id="${i.getIordersMaster().getQrId()}">
                     <c:forEach var="k" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>${k.getWarehouse() }<br/>
+                      <b>${k.getWarehouse()}</b><br/>
                     </c:forEach>
                     </td>
                   </tr>
@@ -265,12 +262,12 @@
                 </c:when>
                 <c:otherwise>
                   <tr>
-                   <td rowspan="3" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getIordersMaster().getQrId()}"></td>
+                   <td rowspan="2" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getIordersMaster().getQrId()}"></td>
                     <td><a href="OrderDetail.jsp?QR_id=${i.getIordersMaster().getQrId()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getIordersMaster().getQrId()}</td>
                     <td>${i.getIordersMaster().getPlatform()}</td>
                     <td>${i.getIordersMaster().getGuestId()}</td>
-                    <td>${i.getIordersMaster().getGuestId()}</td>
+                    <td>${i.getGuestInfo().getName()}</td>
                     <td>${i.getIordersMaster().getPayDate()}</td>
                     <td></td>
                     <td>${i.getIordersMaster().getLogistics()}</td>
@@ -289,7 +286,7 @@
                     </td>
                     <td colspan="3" class="warehouseLocation" id="${i.getIordersMaster().getQrId()}">
                     <c:forEach var="k" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
-                      <b>${k.getWarehouse()}</b>${k.getWarehouse() }<br/>
+                      <b>${k.getWarehouse()}</b><br/>
                     </c:forEach>
                     </td>
                   </tr>
@@ -298,6 +295,9 @@
               </c:choose>
             </c:forEach>
           </table>
+          <div class="row text-center" >
+            <button type="submit" name="send" value="processing" class="btn btn-lg btn-primary">送出</button>
+          </div>
         </form>
       </div>
 </div>
