@@ -7,8 +7,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import tw.iii.qr.IndependentOrder.model.entity.IcombineOrder;
-import tw.iii.qr.IndependentOrder.model.entity.IordersMaster;
-import tw.iii.qr.IndependentOrder.model.entity.Storage;
 
 @Repository
 public class IcomebineOrderDAO extends AbstractDAO<IcombineOrder> {

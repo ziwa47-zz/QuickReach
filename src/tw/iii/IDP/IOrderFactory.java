@@ -26,6 +26,8 @@ import tw.iii.qr.IndependentOrder.model.repository.IcomebineOrderDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IdpShippingLogDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IordersDetailDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IordersMasterDAO;
+import tw.iii.qr.IndependentOrder.model.repository.PurchaseLogDetailDAO;
+import tw.iii.qr.IndependentOrder.model.repository.PurchaseLogMasterDAO;
 import tw.iii.qr.IndependentOrder.model.repository.StorageDAO;
 import tw.iii.qr.IndependentOrder.service.IordersMasterService;
 import tw.iii.qr.IndependentOrder.service.StorageService;
@@ -35,22 +37,17 @@ import tw.iii.qr.IndependentOrder.service.StorageService;
 @Transactional
 public class IOrderFactory {
 
-	@Autowired
-	GuestDAO guestDAO;
-	@Autowired
-	IordersDetailDAO iordersDetailDAO;
-	@Autowired
-	IordersMasterDAO iordersMasterDAO;
-	@Autowired
-	StorageDAO storageDAO;
-	@Autowired
-	IcomebineOrderDAO icomebineOrderDAO;
-	@Autowired
-	BundlesDAO bundlesDAO;
-	@Autowired
-	IdpShippingLogDAO idpShippingLogDAO;
-	@Autowired
-	StorageService storageService;
+
+	@Autowired	GuestDAO guestDAO;
+	@Autowired	IordersDetailDAO iordersDetailDAO;
+	@Autowired	IordersMasterDAO iordersMasterDAO;
+	@Autowired	IcomebineOrderDAO icomebineOrderDAO;
+	@Autowired	PurchaseLogDetailDAO purchaseLogDetailDAO;
+	@Autowired	PurchaseLogMasterDAO purchaseLogMasterDAO;
+	@Autowired	BundlesDAO bundlesDAO;
+	@Autowired	IdpShippingLogDAO idpShippingLogDAO;
+	@Autowired	StorageDAO storageDAO;
+	@Autowired	StorageService storageService;
 
 	public IOrderFactory() {
 

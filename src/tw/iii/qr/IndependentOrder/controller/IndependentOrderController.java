@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +23,7 @@ import tw.iii.qr.IndependentOrder.service.CompanyService;
 import tw.iii.qr.IndependentOrder.service.GuestService;
 import tw.iii.qr.IndependentOrder.service.IordersDetailService;
 import tw.iii.qr.IndependentOrder.service.IordersMasterService;
+import tw.iii.qr.IndependentOrder.service.QueueEmailService;
 import tw.iii.qr.IndependentOrder.service.WarehouseService;
 
 @Controller
@@ -44,6 +44,8 @@ public class IndependentOrderController {
 	GuestService guestService;
 	@Resource
 	IordersDetailService iordersDetailService;
+	@Resource
+	QueueEmailService queueEmailService;
 
 	private static final String ORDER_STATUS_PROCESSING = "處理中";
 
@@ -59,38 +61,38 @@ public class IndependentOrderController {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		// for guest
-		String id = request.getParameter("id");
-		String guestId = request.getParameter("guestId");
-		String name = request.getParameter("name");
-		String company = request.getParameter("company");
-		String platformAccount = request.getParameter("platformAccount");
-		String email = request.getParameter("email");
-		String country = request.getParameter("country");
-		String tel = request.getParameter("tel");
-		String address = request.getParameter("address");
-		String guestComment = request.getParameter("guestComment");
-		String phone = request.getParameter("phone");
-		String postcode = request.getParameter("postcode");
-		String birthday = request.getParameter("birthday");
-		String gender = request.getParameter("gender");
+		String id 						= request.getParameter("id");
+		String guestId 				= request.getParameter("guestId");
+		String name 				= request.getParameter("name");
+		String company 			= request.getParameter("company");
+		String platformAccount 	= request.getParameter("platformAccount");
+		String email 					= request.getParameter("email");
+		String country 				= request.getParameter("country");
+		String tel 					= request.getParameter("tel");
+		String address 				= request.getParameter("address");
+		String guestComment		= request.getParameter("guestComment");
+		String phone 				= request.getParameter("phone");
+		String postcode 			= request.getParameter("postcode");
+		String birthday 				= request.getParameter("birthday");
+		String gender 				= request.getParameter("gender");
 
 		// for iorders_master
-		String qrId = request.getParameter("iorderMasterId");
-		String transactionId = request.getParameter("transactionId");
+		String qrId 					= request.getParameter("iorderMasterId");
+		String transactionId 		= request.getParameter("transactionId");
 		// String date = request.getParameter("orderDate");
 		// System.out.println(date);
-		String staffName = request.getParameter("staffName");
-		String orderGuest = request.getParameter("guestid");
-		String platform = request.getParameter("platform");
-		String paypalFees = request.getParameter("paypalFees");
-		String paypalPrice = request.getParameter("paypalPrice");
-		String paypalNet = request.getParameter("paypalNet");
-		String logistics = request.getParameter("logistics");
-		String currency = request.getParameter("currency");
-		String masterComment = request.getParameter("masterComment");
-		String invoiceName = request.getParameter("invoiceName");
-		String invoicePrice = request.getParameter("invoicePrice");
-		String totalPrice = request.getParameter("totalPrice");
+		String staffName 			= request.getParameter("staffName");
+		String orderGuest 			= request.getParameter("guestid");
+		String platform 			= request.getParameter("platform");
+		String paypalFees 			= request.getParameter("paypalFees");
+		String paypalPrice 			= request.getParameter("paypalPrice");
+		String paypalNet 			= request.getParameter("paypalNet");
+		String logistics 				= request.getParameter("logistics");
+		String currency 			= request.getParameter("currency");
+		String masterComment 	= request.getParameter("masterComment");
+		String invoiceName 		= request.getParameter("invoiceName");
+		String invoicePrice 			= request.getParameter("invoicePrice");
+		String totalPrice 			= request.getParameter("totalPrice");
 
 		// for iorders_detail
 
@@ -164,4 +166,5 @@ public class IndependentOrderController {
 		return "redirect:/HomePage.jsp";
 
 	}
+
 }
