@@ -34,11 +34,10 @@ import tw.iii.qr.IndependentOrder.model.repository.IcomebineOrderDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IdpShippingLogDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IordersDetailDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IordersMasterDAO;
-import tw.iii.qr.IndependentOrder.model.repository.PurchaseLogDetailDAO;
-import tw.iii.qr.IndependentOrder.model.repository.PurchaseLogMasterDAO;
+import tw.iii.qr.IndependentOrder.model.repository.PurchaselogDetailDAO;
+import tw.iii.qr.IndependentOrder.model.repository.PurchaselogMasterDAO;
 import tw.iii.qr.IndependentOrder.model.repository.StorageDAO;
 import tw.iii.qr.IndependentOrder.service.StorageService;
-import tw.iii.qr.stock.DTO.CStock;
 
 public class CDBtoExcelIDP {
 	
@@ -51,9 +50,9 @@ public class CDBtoExcelIDP {
 	@Autowired
 	IcomebineOrderDAO icomebineOrderDAO;
 	@Autowired
-	PurchaseLogDetailDAO purchaseLogDetailDAO;
+	PurchaselogDetailDAO purchaseLogDetailDAO;
 	@Autowired
-	PurchaseLogMasterDAO purchaseLogMasterDAO;
+	PurchaselogMasterDAO purchaseLogMasterDAO;
 	@Autowired
 	BundlesDAO bundlesDAO;
 	@Autowired

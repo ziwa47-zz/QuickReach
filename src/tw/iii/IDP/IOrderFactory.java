@@ -46,6 +46,8 @@ public class IOrderFactory {
 	@Autowired
 	IordersMasterDAO iordersMasterDAO;
 	@Autowired
+	IordersMasterService iordersMasterService;
+	@Autowired
 	IcomebineOrderDAO icomebineOrderDAO;
 	@Autowired
 	PurchaselogDetailDAO purchaseLogDetailDAO;
@@ -136,9 +138,6 @@ public class IOrderFactory {
 		try {
 			// 如果有查SKU或productName
 			if (StringUtils.hasText(detailselector.get("SKU")) && StringUtils.hasText(detailselector.get("productName"))) {
-				System.out.println("1");
-				System.out.println(detailselector.get("SKU"));
-				System.out.println(detailselector.get("productName"));
 				iorderDetailList = iordersDetailDAO.getSeletedDetail(iom.getQrId(), detailselector);
 				if (iorderDetailList == null || iorderDetailList.size() == 0)
 					return null;
@@ -211,29 +210,26 @@ public class IOrderFactory {
 	}
 
 	private void deductStock(IordersDetail iod) {
-		StorageService ss = new StorageService();
-		ss.deductStock(iod);
+		storageService.deductStock(iod);
 	}
 
 	private void plusBundledeductStock(IordersDetail iod) {
-		StorageService ss = new StorageService();
 		List<Bundles> bundlesku = bundlesDAO.getAllskuByIod(iod);
 		for (Bundles b : bundlesku) {
-			ss.deductStock(iod, b);
+			storageService.deductStock(iod, b);
 		}
 
 	}
 	private void plusBundleaddStock(IordersDetail iod) {
-		StorageService ss = new StorageService();
+		
 		List<Bundles> bundlesku = bundlesDAO.getAllskuByIod(iod);
 		for (Bundles b : bundlesku) {
-			ss.addStock(iod, b);
+			storageService.addStock(iod, b);
 		}
 
 	}
 	private void addStock(IordersDetail iod) {
-		StorageService ss = new StorageService();
-		ss.addStock(iod);
+		storageService.addStock(iod);
 	}
 
 	private static boolean isNullorEmpty(String s) {
@@ -246,7 +242,6 @@ public class IOrderFactory {
 
 	public LinkedList<IordersMaster> checkIDPOrderIdOrderStatus(IordersMaster origincdm) throws Exception {
 		// 準備參數 檢查前用
-		IordersMasterService ims = new IordersMasterService();
 		IordersMaster order = new IordersMaster();
 		// 檢查後回傳用
 		LinkedList<IordersMaster> CombineOrders = new LinkedList<IordersMaster>();
@@ -257,14 +252,14 @@ public class IOrderFactory {
 			System.out.println("這是合併訂單 " + iom.getQrId());
 
 			List<IcombineOrder> icbo = icomebineOrderDAO.getbymqrId(iom.getQrId());
-			IordersMaster icom;
+			IordersMaster icom = new IordersMaster();
 			for (IcombineOrder DqrId : icbo) {
 				icom = iordersMasterDAO.selectIordersMasterByQRId(DqrId.getdQrid());
-				ims.updateTrackingCode(icom, origincdm.getTrackingCode());
+				iordersMasterService.updateTrackingCode(icom, origincdm.getTrackingCode());
 				CombineOrders.add(iordersMasterDAO.get(icom.getQrId()));
 			}
 		} else {
-			ims.updateTrackingCode(iom, origincdm.getTrackingCode());
+			iordersMasterService.updateTrackingCode(iom, origincdm.getTrackingCode());
 			CombineOrders.add(order);
 
 		}

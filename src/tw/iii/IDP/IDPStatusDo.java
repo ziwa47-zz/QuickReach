@@ -50,9 +50,7 @@ public class IDPStatusDo extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession();
-		IOrderFactory OFactory = new IOrderFactory();
 		IordersMaster Origincdm = new IordersMaster();
-		IordersMasterService ims = new IordersMasterService();
 		Origincdm.setTrackingCode(request.getParameter("trackingCode"));
 		Origincdm.setLogistics(request.getParameter("logistics"));
 		Origincdm.setQrId(request.getParameter("QR_id"));
@@ -124,12 +122,12 @@ public class IDPStatusDo extends HttpServlet {
 			// session.removeAttribute("excelpath");
 			break;
 		case "processing":
-			ims.updateToPickUp(request);
+			iordersMasterService.updateToPickUp(request);
 			response.sendRedirect("/QRIndependentOrder/Pickup");
 			break;
 
 		case "pickUp":
-			ims.updateToComplete(request);
+			iordersMasterService.updateToComplete(request);
 			response.sendRedirect("/QRIndependentOrder/UploadTrackingCode");
 			break;
 		case "sendTrackingCode":
@@ -142,12 +140,12 @@ public class IDPStatusDo extends HttpServlet {
 
 			break;
 		case "finished":
-			ims.updateToRefund(request);
-			OFactory.isBundleAddBackToStock(Origincdm);
+			iordersMasterService.updateToRefund(request);
+			iOrderFactory.isBundleAddBackToStock(Origincdm);
 			response.sendRedirect("QRIndependentOrder/refundPage.jsp?begin=0&end=10");
 			break;
 		case "revertTo":
-			ims.revertTo(request);
+			iordersMasterService.revertTo(request);
 			response.sendRedirect(request.getHeader("Referer"));
 			break;
 
@@ -160,15 +158,14 @@ public class IDPStatusDo extends HttpServlet {
 	private String DoSendTrackingCode(IordersMaster origincdm, HttpServletResponse response, PrintWriter out)
 			throws Exception {
 
-		IOrderFactory OFactory = new IOrderFactory();
 		// 找出真正的訂單號 單筆 size =1 合併size >1 更新追蹤碼 改狀態 加入shippingDate
-		LinkedList<IordersMaster> TrueOrders = OFactory.checkIDPOrderIdOrderStatus(origincdm);
+		LinkedList<IordersMaster> TrueOrders = iOrderFactory.checkIDPOrderIdOrderStatus(origincdm);
 
 		//扣庫存 寫Shippinglog 寫扣庫存紀錄
 		for (IordersMaster iorder : TrueOrders) {
-			OFactory.checkIsBundleAndDeductStock(iorder);
-			OFactory.insertIntoShippingLog(iorder);
-			OFactory.insertIntoPurchaseLogFromOrders(iorder);
+			iOrderFactory.checkIsBundleAndDeductStock(iorder);
+			iOrderFactory.insertIntoShippingLog(iorder);
+			iOrderFactory.insertIntoPurchaseLogFromOrders(iorder);
 			//OFactory.sendMAil(iorder);
 			System.out.println("sendTrackingCode success");
 

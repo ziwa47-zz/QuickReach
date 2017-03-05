@@ -33,7 +33,7 @@ public class IordersMasterDAO extends AbstractDAO<IordersMaster> {
 		// System.out.println("IordersMasterDAO.selectIordersMasterByQRId():start");
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("qrId", qrId));
-		IordersMaster iordersMaster = null;
+		IordersMaster iordersMaster = new IordersMaster();
 		// System.out.println("qrId = "+qrId);
 
 		if (criteria.list().size() == 1) {
