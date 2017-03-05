@@ -22,12 +22,10 @@ public class StorageDAO extends AbstractDAO<Storage> {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("sku", sku));
 		//System.out.println("sku = "+sku);
-
-
+		System.out.println("criteria.list().size()="+criteria.list().size());
 		return criteria.list();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Storage selectStorageBySku(IordersDetail iod,String sku) throws Exception {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
 		String[] ware = iod.getWarehouse().split(",");
