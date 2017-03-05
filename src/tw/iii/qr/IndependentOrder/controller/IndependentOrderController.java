@@ -23,6 +23,7 @@ import tw.iii.qr.IndependentOrder.service.CompanyService;
 import tw.iii.qr.IndependentOrder.service.GuestService;
 import tw.iii.qr.IndependentOrder.service.IordersDetailService;
 import tw.iii.qr.IndependentOrder.service.IordersMasterService;
+import tw.iii.qr.IndependentOrder.service.QueueEmailService;
 import tw.iii.qr.IndependentOrder.service.WarehouseService;
 
 @Controller
@@ -43,6 +44,8 @@ public class IndependentOrderController {
 	GuestService guestService;
 	@Resource
 	IordersDetailService iordersDetailService;
+	@Resource
+	QueueEmailService queueEmailService;
 
 	private static final String ORDER_STATUS_PROCESSING = "處理中";
 
@@ -168,6 +171,7 @@ public class IndependentOrderController {
 	public String test(HttpServletRequest request) {
 
 		// iOrderFactory.getIDPorderAllInfo(request.getParameter("qrId"));
+		//queueEmailService.sendMail("verlander243@gmail.com", "j165418@gmail.com", "WOW", "gggggggg");
 		iOrderFactory.getAllIDPorder("處理中");
 
 		iOrderFactory.getIDPorderAllInfo(request.getParameter("qrId"));
@@ -180,4 +184,7 @@ public class IndependentOrderController {
 
 		return "redirect:/HomePage.jsp";
 	}
+	
+	
+	
 }

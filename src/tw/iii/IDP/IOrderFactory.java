@@ -3,8 +3,6 @@ package tw.iii.IDP;
 import java.util.LinkedList;
 import java.util.List;
 
-
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +13,14 @@ import tw.iii.qr.IndependentOrder.model.entity.Guest;
 import tw.iii.qr.IndependentOrder.model.entity.IDPorderAll;
 import tw.iii.qr.IndependentOrder.model.entity.IordersDetail;
 import tw.iii.qr.IndependentOrder.model.entity.IordersMaster;
+import tw.iii.qr.IndependentOrder.model.repository.BundlesDAO;
 import tw.iii.qr.IndependentOrder.model.repository.GuestDAO;
+import tw.iii.qr.IndependentOrder.model.repository.IcomebineOrderDAO;
+import tw.iii.qr.IndependentOrder.model.repository.IdpShippingLogDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IordersDetailDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IordersMasterDAO;
+import tw.iii.qr.IndependentOrder.model.repository.PurchaseLogDetailDAO;
+import tw.iii.qr.IndependentOrder.model.repository.PurchaseLogMasterDAO;
 
 
 
@@ -25,12 +28,15 @@ import tw.iii.qr.IndependentOrder.model.repository.IordersMasterDAO;
 @Transactional
 public class IOrderFactory {
 
-	@Autowired
-	GuestDAO guestDAO;
-	@Autowired
-	IordersDetailDAO iordersDetailDAO;
-	@Autowired
-	IordersMasterDAO iordersMasterDAO;
+	@Autowired	GuestDAO guestDAO;
+	@Autowired	IordersDetailDAO iordersDetailDAO;
+	@Autowired	IordersMasterDAO iordersMasterDAO;
+	@Autowired	IcomebineOrderDAO icomebineOrderDAO;
+	@Autowired	PurchaseLogDetailDAO purchaseLogDetailDAO;
+	@Autowired	PurchaseLogMasterDAO purchaseLogMasterDAO;
+	@Autowired	BundlesDAO bundlesDAO;
+	@Autowired	IdpShippingLogDAO idpShippingLogDAO;
+
 	
 
 
