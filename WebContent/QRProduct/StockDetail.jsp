@@ -166,6 +166,7 @@ table.sortable thead {
 			</fieldset>
 		</form>
 	</div>
+	<c:if test="${PageCompetence.getInventoryInfoEdit() == 1 }">
 	<div class="container table-responsive bg-warning"
 		style="border-radius: 20px">
 		<form name="searchform" method="post" action="../ProductDo"
@@ -183,7 +184,7 @@ table.sortable thead {
 						</div>
 						<div class="col-md-8">
 						<input class="form-control"  name="txtsku" type="hidden"  value="${product.getSKU()}">
-						<input class="form-control" id="txtstockID" name="txtstockID" type="text"  >
+						<input class="form-control" id="txtstockID" name="txtstockID" type="hidden"  >
 							<select name="ddlModifyType" >
 								<option value="increase">增加</option>
 								<option value="decrease">減少</option>
@@ -250,6 +251,7 @@ table.sortable thead {
 
 		</form>
 	</div>
+	</c:if>
 	<div class="container table-responsive bg-warning"
 		style="border-radius: 20px">
 		<form name="searchform" method="post" action="#"
@@ -351,7 +353,7 @@ table.sortable thead {
 		        dataType: "json", 
 
 		        success : function(response){
-		         alert(response.data)
+		         //alert(response.data)
 		         $("#txtstockID").val(response.data);
 		        }        
 		 })

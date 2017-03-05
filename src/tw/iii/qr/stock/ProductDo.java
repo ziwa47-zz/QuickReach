@@ -111,9 +111,10 @@ public class ProductDo extends HttpServlet {
 		
 		String sku = request.getParameter("txtsku");
 		String stockID = request.getParameter("txtstockID");
+		
 		String modifyType = request.getParameter("ddlModifyType");
 		String count = request.getParameter("txtCount");
-		String wareHouse = request.getParameter("wareHouse");
+		String warehouse = request.getParameter("warehouse");
 		String comment = request.getParameter("txtComment");
 		String staffName= session.getAttribute("staffName").toString();
 		
@@ -130,15 +131,15 @@ public class ProductDo extends HttpServlet {
 			comment="減少;"+comment;
 		}
 		
-		conn = new DataBaseConn().getConn();
-		
+		//conn = new DataBaseConn().getConn();
+		System.out.println(modifyCount+comment+sku+warehouse);
 		CStockFactory csf = new CStockFactory();
 		
-		csf.modifyStorage(modifyCount, comment, sku, wareHouse);
-		csf.modifyStorageLogMaster(stockID, comment, staffName, wareHouse);
-		csf.modifyStorageLogDetail(stockID, comment, sku, wareHouse, modifyCount);
+		csf.modifyStorage(modifyCount, comment, sku, warehouse);
+		csf.modifyStorageLogMaster(stockID, comment, staffName, warehouse);
+		csf.modifyStorageLogDetail(stockID, comment, sku, warehouse, modifyCount);
 		
-		conn.close();
+		//conn.close();
 		
 		out.write("<script type='text/javascript'>");
 		out.write("alert('修改成功');");
