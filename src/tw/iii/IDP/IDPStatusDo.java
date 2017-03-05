@@ -1,15 +1,9 @@
 package tw.iii.IDP;
 
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Savepoint;
 import java.util.LinkedList;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,28 +11,18 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.ebay.sdk.ApiException;
-import com.ebay.sdk.SdkException;
-
-import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.IndependentOrder.model.entity.IordersMaster;
 import tw.iii.qr.IndependentOrder.service.CompanyService;
 import tw.iii.qr.IndependentOrder.service.GuestService;
-import tw.iii.qr.IndependentOrder.service.IordersDetailService;
 import tw.iii.qr.IndependentOrder.service.IordersMasterService;
 import tw.iii.qr.IndependentOrder.service.StockTransferService;
 import tw.iii.qr.IndependentOrder.service.StorageService;
 import tw.iii.qr.IndependentOrder.service.WarehouseService;
-import tw.iii.qr.order.COrderFactory;
-import tw.iii.qr.order.CompleteSale;
-import tw.iii.qr.order.DTO.COrderMaster;
-import tw.iii.qr.stock.CDBtoExcel;
 import tw.iii.qr.stock.CDBtoExcelIDP;
 
 @Controller
-public class IDPStatusDo extends HttpServlet {
+public class IDPStatusDo extends HttpServlet { 
 	private static final long serialVersionUID = 1L;
 	@Resource
 	CompanyService companyService;

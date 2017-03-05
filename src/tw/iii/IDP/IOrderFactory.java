@@ -19,8 +19,8 @@ import tw.iii.qr.IndependentOrder.model.entity.IcombineOrder;
 import tw.iii.qr.IndependentOrder.model.entity.IdpShippingLog;
 import tw.iii.qr.IndependentOrder.model.entity.IordersDetail;
 import tw.iii.qr.IndependentOrder.model.entity.IordersMaster;
-import tw.iii.qr.IndependentOrder.model.entity.PurchaseLogDetail;
-import tw.iii.qr.IndependentOrder.model.entity.PurchaseLogMaster;
+import tw.iii.qr.IndependentOrder.model.entity.PurchaselogDetail;
+import tw.iii.qr.IndependentOrder.model.entity.PurchaselogMaster;
 import tw.iii.qr.IndependentOrder.model.entity.Storage;
 import tw.iii.qr.IndependentOrder.model.repository.BundlesDAO;
 import tw.iii.qr.IndependentOrder.model.repository.GuestDAO;
@@ -28,15 +28,15 @@ import tw.iii.qr.IndependentOrder.model.repository.IcomebineOrderDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IdpShippingLogDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IordersDetailDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IordersMasterDAO;
+import tw.iii.qr.IndependentOrder.model.repository.PurchaselogDetailDAO;
+import tw.iii.qr.IndependentOrder.model.repository.PurchaselogMasterDAO;
 import tw.iii.qr.IndependentOrder.model.repository.StorageDAO;
 import tw.iii.qr.IndependentOrder.service.IordersMasterService;
 import tw.iii.qr.IndependentOrder.service.StorageService;
-import tw.iii.qr.order.DTO.COrderDetail;
-import tw.iii.qr.order.DTO.COrderMaster;
 
 @Service
 @Transactional
-public class IOrderFactory {
+public class IOrderFactory { 
 
 
 	@Autowired
@@ -48,9 +48,9 @@ public class IOrderFactory {
 	@Autowired
 	IcomebineOrderDAO icomebineOrderDAO;
 	@Autowired
-	PurchaseLogDetailDAO purchaseLogDetailDAO;
+	PurchaselogDetailDAO purchaseLogDetailDAO;
 	@Autowired
-	PurchaseLogMasterDAO purchaseLogMasterDAO;
+	PurchaselogMasterDAO purchaseLogMasterDAO;
 	@Autowired
 	BundlesDAO bundlesDAO;
 	@Autowired
@@ -291,7 +291,7 @@ public class IOrderFactory {
 
 	public void insertIntoPurchaseLogFromOrders(IordersMaster iorder) throws Exception {
 
-		PurchaseLogMaster purchaselog_master = new PurchaseLogMaster();
+		PurchaselogMaster purchaselog_master = new PurchaselogMaster();
 		purchaselog_master.setPurchaseId(iorder.getQrId());
 		purchaselog_master.setDate(iorder.getShippingDate());
 		purchaselog_master.setComment(iorder.getGuestId());
@@ -300,7 +300,7 @@ public class IOrderFactory {
 		// TODO String strSql2 = "insert into purchaselog_detail (purchaseId,
 		// SKU, warehouse, qty, price, stockStatus)"
 		// + " values( ?, ?, ?, ?, ?, ?)";
-		PurchaseLogDetail purchaselog_detail = new PurchaseLogDetail();
+		PurchaselogDetail purchaselog_detail = new PurchaselogDetail();
 		List<IordersDetail> iod = iordersDetailDAO.selectIordersDetailByQRId(iorder.getQrId());
 
 		for (IordersDetail od : iod) {
