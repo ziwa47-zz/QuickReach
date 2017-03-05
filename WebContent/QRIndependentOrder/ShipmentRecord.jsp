@@ -174,7 +174,7 @@
   <hr/>
 
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
-        <form name="searchform" method="post" action="../IDPtoExcelServlet" class="form-inline container"
+        <form name="searchform" method="post" action="/QRIndependentOrder/IDPStatusDo" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
           <button class="btn btn-md btn-info" type="submit" name="submit" value="toDailyBalanceSheetExcel" >匯出日出貨報表</button>
           <ul class="pager pagination">

@@ -59,7 +59,7 @@
 
 <div class="nav">
   <div class="container" style="background:#99C61D; border-radius:20px;">
-    <form name="searchform" method="post" action="../OrdersServlet" class="form-inline container"
+    <form name="searchform" method="post" action="/QRIndependentOrder/refund" class="form-inline container"
     style="font-size: 100%; vertical-align: baseline; padding: 15px;">
       <fieldset class="font-weight" style="padding:0 30px 0 0;">
         <legend>退貨</legend>
@@ -233,7 +233,7 @@
   <c:choose>
     <c:when test="${SearchOrdersResult != null}">
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
-        <form name="searchform" method="post" action="../StatusDo" class="form-inline container"
+        <form name="searchform" method="post" action="/QRIndependentOrder/IDPStatusDo" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
 		  <label class="btn btn-sm btn-info">
 		    <input type="checkbox" autocomplete="off" onchange="selectAllOrders(this)"> 選擇全部

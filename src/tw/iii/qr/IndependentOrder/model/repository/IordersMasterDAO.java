@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -54,6 +55,7 @@ public class IordersMasterDAO extends AbstractDAO<IordersMaster> {
 		if (StringUtils.hasText(orderStatus)) {
 			// 找狀態
 			criteria.add(Restrictions.eq("orderStatus", orderStatus));
+			criteria.addOrder(Order.desc("qrId"));
 		} // 否則找全部
 		if (criteria.list().size() == 0) {
 			System.out.println("找不到資料");

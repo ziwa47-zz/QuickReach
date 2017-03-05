@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.omg.CORBA.PERSIST_STORE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,8 @@ import tw.iii.qr.IndependentOrder.model.repository.PurchaselogDetailDAO;
 import tw.iii.qr.IndependentOrder.model.repository.PurchaselogMasterDAO;
 import tw.iii.qr.IndependentOrder.model.repository.StorageDAO;
 import tw.iii.qr.IndependentOrder.service.IordersMasterService;
+import tw.iii.qr.IndependentOrder.service.PurchaselogDetailService;
+import tw.iii.qr.IndependentOrder.service.PurchaselogMasterService;
 import tw.iii.qr.IndependentOrder.service.StorageService;
 
 @Service
@@ -54,9 +57,14 @@ public class IOrderFactory {
 	@Autowired
 	PurchaselogMasterDAO purchaseLogMasterDAO;
 	@Autowired
+	PurchaselogMasterService purchaselogMasterService;
+	@Autowired
+	PurchaselogDetailService purchaselogDetailService;
+	@Autowired
 	BundlesDAO bundlesDAO;
 	@Autowired
 	IdpShippingLogDAO idpShippingLogDAO;
+	
 	@Autowired
 	StorageDAO storageDAO;
 	@Autowired
@@ -117,6 +125,7 @@ public class IOrderFactory {
 			e.printStackTrace();
 		}
 		System.out.println("IOrderFactory.getAllIDPorder():finish");
+		
 		return idps;
 	}
 
@@ -247,7 +256,7 @@ public class IOrderFactory {
 		LinkedList<IordersMaster> CombineOrders = new LinkedList<IordersMaster>();
 		IordersMaster iom = new IordersMaster();
 
-		iom = iordersMasterDAO.get(origincdm.getQrId());
+		iom = iordersMasterDAO.selectIordersMasterByQRId(origincdm.getQrId());
 		if (iom.getQrId().toLowerCase().startsWith("i")) {
 			System.out.println("這是合併訂單 " + iom.getQrId());
 
@@ -281,6 +290,7 @@ public class IOrderFactory {
 			idpshippinglog.setWarehouse(storage.getWarehouse());
 			idpshippinglog
 					.setWarehouselocation(storage.getWarehousePosition1() + "-" + storage.getWarehousePosition2());
+			idpshippinglogService.persist(idpshippinglog);
 		}
 	}
 
@@ -292,6 +302,7 @@ public class IOrderFactory {
 		purchaselog_master.setComment(iorder.getGuestId());
 		purchaselog_master.setStaffName(iorder.getStaffName());
 		purchaselog_master.setStockStatus("2");
+		purchaselogMasterService.persist(purchaselog_master);
 		// TODO String strSql2 = "insert into purchaselog_detail (purchaseId,
 		// SKU, warehouse, qty, price, stockStatus)"
 		// + " values( ?, ?, ?, ?, ?, ?)";
@@ -311,6 +322,7 @@ public class IOrderFactory {
 					purchaselog_detail.setWarehousePosition2(storage.getWarehousePosition2());
 					purchaselog_detail.setQty(bundles.getQty() * od.getQty());
 					purchaselog_detail.setStockStatus("2");
+					purchaselogDetailService.persist(purchaselog_detail);
 				}
 			} else {
 				Storage storage = storageDAO.selectStorageBySku(od, od.getSku());
@@ -321,8 +333,8 @@ public class IOrderFactory {
 				purchaselog_detail.setWarehousePosition2(storage.getWarehousePosition2());
 				purchaselog_detail.setQty(od.getQty());
 				purchaselog_detail.setStockStatus("2");
+				purchaselogDetailService.persist(purchaselog_detail);
 			}
-
 		}
 
 	}

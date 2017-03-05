@@ -170,7 +170,7 @@
   
   
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
-        <form name="searchform" method="post" action="../IDPStatusDo" class="form-inline container"
+        <form name="searchform" method="post" action="/QRIndependentOrder/IDPStatusDo" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
           <label class="btn btn-sm btn-info">
 		    <input type="checkbox" autocomplete="off" onchange="selectAllOrders(this)"> 選擇全部
