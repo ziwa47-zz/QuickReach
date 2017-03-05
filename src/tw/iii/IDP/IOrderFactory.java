@@ -1,47 +1,31 @@
 package tw.iii.IDP;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.beanutils.BeanUtils;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.IndependentOrder.model.entity.Guest;
 import tw.iii.qr.IndependentOrder.model.entity.IDPorderAll;
 import tw.iii.qr.IndependentOrder.model.entity.IordersDetail;
 import tw.iii.qr.IndependentOrder.model.entity.IordersMaster;
-
 import tw.iii.qr.IndependentOrder.model.repository.BundlesDAO;
-
-import tw.iii.qr.IndependentOrder.model.entity.Storage;
-
 import tw.iii.qr.IndependentOrder.model.repository.GuestDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IcomebineOrderDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IdpShippingLogDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IordersDetailDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IordersMasterDAO;
-
 import tw.iii.qr.IndependentOrder.model.repository.PurchaseLogDetailDAO;
 import tw.iii.qr.IndependentOrder.model.repository.PurchaseLogMasterDAO;
-
-
-
 import tw.iii.qr.IndependentOrder.model.repository.StorageDAO;
-import tw.iii.qr.IndependentOrder.service.IordersMasterService;
 import tw.iii.qr.IndependentOrder.service.StorageService;
-import tw.iii.qr.order.DTO.COrderDetail;
-import tw.iii.qr.order.DTO.COrderMaster;
-import tw.iii.qr.order.DTO.COrders;
 
 
 @Service
@@ -60,13 +44,6 @@ public class IOrderFactory {
 
 	
 
-
-	@Autowired
-	GuestDAO guestDAO;
-	@Autowired
-	IordersDetailDAO iordersDetailDAO;
-	@Autowired
-	IordersMasterDAO iordersMasterDAO;
 	@Autowired
 	StorageDAO storageDAO;
 
