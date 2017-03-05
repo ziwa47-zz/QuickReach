@@ -1,24 +1,24 @@
-package tw.iii.qr.IndependentOrder.service;
+﻿package tw.iii.qr.IndependentOrder.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import tw.iii.qr.IndependentOrder.model.entity.PurchaseLogDetail;
+import tw.iii.qr.IndependentOrder.model.entity.PurchaselogDetail;
 import tw.iii.qr.IndependentOrder.model.repository.AbstractDAO;
-import tw.iii.qr.IndependentOrder.model.repository.PurchaseLogDetailDAO;
+import tw.iii.qr.IndependentOrder.model.repository.PurchaselogDetailDAO;
 
 @Service
 @Transactional
-public class PurchaseLogDetailService extends AbstractService<PurchaseLogDetail> {
+public class PurchaselogDetailService extends AbstractService<PurchaselogDetail> {
 	@Autowired
-	private PurchaseLogDetailDAO purchaseLogDetailDAO;
+	private PurchaselogDetailDAO purchaselogDetailDAO;
 
 
 	@Override
-	protected AbstractDAO<PurchaseLogDetail> getDAO() {
-		return purchaseLogDetailDAO;
+	protected AbstractDAO<PurchaselogDetail> getDAO() {
+		return purchaselogDetailDAO;
 	}
 
-
+	
 }
