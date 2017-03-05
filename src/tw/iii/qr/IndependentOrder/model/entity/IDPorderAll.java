@@ -1,9 +1,14 @@
 package tw.iii.qr.IndependentOrder.model.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class IDPorderAll {
+public class IDPorderAll  implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3392007666605359681L;
 	private IordersMaster iordersMaster;
 	private IordersDetail iordersDetail;
 	private Guest guestInfo;

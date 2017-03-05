@@ -1,17 +1,22 @@
 package tw.iii.qr.IndependentOrder.controller;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import tw.iii.IDP.IOrderFactory;
 import tw.iii.qr.IndependentOrder.model.entity.IDPorderAll;
+import tw.iii.qr.IndependentOrder.model.entity.IordersDetail;
+import tw.iii.qr.IndependentOrder.model.entity.Storage;
+import tw.iii.qr.IndependentOrder.model.repository.StorageDAO;
 import tw.iii.qr.IndependentOrder.service.CompanyService;
 import tw.iii.qr.IndependentOrder.service.GuestService;
 import tw.iii.qr.IndependentOrder.service.IordersMasterService;
@@ -24,6 +29,8 @@ public class RedirectController {
 
 	@Resource
 	CompanyService companyService;
+	@Resource
+	StorageDAO storageDAO;
 
 	@Resource
 	WarehouseService warehouseService;
@@ -43,19 +50,28 @@ public class RedirectController {
 	
 	@RequestMapping(value ="QRIndependentOrder/OrderDetail")
 	public String redirectOrderDetail(HttpServletRequest request) {
-		
+		System.out.println("RedirectController.redirectOrderDetail():start");
+		String qrId = request.getParameter("QR_id");
 		try {
-			System.out.println(request.getParameter("QR_id"));
-			LinkedList<IDPorderAll> orderList = iOrderFactory.getAllIDPorder(request,"");
-			IDPorderAll idpoa = orderList.get(0);
-			HttpSession session = request.getSession();
-	        session.setAttribute("IDPOrderDetail", idpoa);
+			
+			if(StringUtils.hasText(qrId)) {
+				System.out.println(request.getParameter("QR_id"));
+				LinkedList<IDPorderAll> orderList = iOrderFactory.getAllIDPorder(request,"");
+				IDPorderAll idpoa = orderList.get(0);
+				
+				HttpSession session = request.getSession();
+		        session.setAttribute("IDPOrderDetail", idpoa);
+		      
+			}
+			
+	        
+	        
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//System.out.println("RedirectController.redirectProcessing():finish");
-		return "redirect:/QRIndependentOrder/OrderDetail.jsp";
+		System.out.println("RedirectController.redirectOrderDetail():finish");
+		return "redirect:/QRIndependentOrder/OrderDetail.jsp?QR_id="+qrId;
 
 	}
 	/**
@@ -63,7 +79,7 @@ public class RedirectController {
 	 */
 	@RequestMapping(value ="QRIndependentOrder/SearchOrder")
 	public String redirectSearchOrder(HttpServletRequest request) {
-		//System.out.println("RedirectController.redirectProcessing():start");
+		System.out.println("RedirectController.SearchOrder():start");
 		try {
 			LinkedList<IDPorderAll> orderList = iOrderFactory.getAllIDPorder(request,"");
 			
@@ -143,9 +159,7 @@ public class RedirectController {
 		return "redirect:/QRIndependentOrder/UploadTrackingCode.jsp?begin=0&end=10";
 
 	}
-	
 
-	
 	@RequestMapping(value ="QRIndependentOrder/Finished")
 	public String redirectFinished(HttpServletRequest request) {
 
@@ -173,7 +187,7 @@ public class RedirectController {
 			//LinkedList<IDPorderAll> orderList = iOrderFactory.getAllIDPorder(request,"已完成");
 
 			HttpSession session = request.getSession();
-	        //session.setAttribute("IDPShipmentRecord", orderList);
+	       // session.setAttribute("IDPShipmentRecord", orderList);
 			request.setAttribute("begin", request.getParameter("begin"));
 			request.setAttribute("end", request.getParameter("end"));
 

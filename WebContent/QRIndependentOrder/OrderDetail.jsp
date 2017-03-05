@@ -3,6 +3,7 @@
 <%@ page import="tw.iii.IDP.*" %>
 <%@ page import="tw.iii.qr.IndependentOrder.model.entity.*" %>
 <jsp:useBean id="IOrderFactory" class="tw.iii.IDP.IOrderFactory" scope="page" />
+<jsp:useBean id="COrderFactory" class="tw.iii.qr.order.COrderFactory" scope="page" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -16,14 +17,14 @@
 <% response.sendRedirect("/HomePage.jsp"); %>   
 </c:if>
 <%
-String QR_id ;
-if(request.getParameter("QR_id") != null || request.getParameter("QR_id") != ""){
-QR_id = request.getParameter("QR_id");
-System.out.println(QR_id);
-IOrderFactory iof = new IOrderFactory();
-IDPorderAll IDPOrderDetail = iof.getIDPorderAllInfobyqrId(QR_id);
-session.setAttribute("IDPOrderDetail", IDPOrderDetail);
-}
+// String QR_id ;
+// if(request.getParameter("QR_id") != null || request.getParameter("QR_id") != ""){
+// QR_id = request.getParameter("QR_id");
+// System.out.println(QR_id);
+// IOrderFactory iof = new IOrderFactory();
+// IDPorderAll IDPOrderDetail = iof.getIDPorderAllInfobyqrId(QR_id);
+// session.setAttribute("IDPOrderDetail", IDPOrderDetail);
+// }
 %>
 <div class="nav">
   <div class="container">
@@ -36,12 +37,12 @@ session.setAttribute("IDPOrderDetail", IDPOrderDetail);
   <div class="container">
     <div class="nav" style="background-color:#189B30;" >
       <ul class="nav nav-tabs">
-        <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
+        <li><a href="SearchOrder?begin=0&end=10">查詢訂單</a></li>
         <li><a href="IndependentOrder.jsp?begin=0&end=10">新增訂單</a></li>
         <li><a href=""  style="color:#fff">揀貨中</a></li>
-        <li><a href="UploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
-        <li><a href="Finished.jsp?begin=0&end=10">已完成訂單</a></li>
-        <li><a href="ShipmentRecord.jsp?begin=0&end=10">訂單出貨記錄</a></li>
+        <li><a href="UploadTrackingCode?begin=0&end=10">上傳追蹤碼</a></li>
+        <li><a href="Finished?begin=0&end=10">已完成訂單</a></li>
+        <li><a href="ShipmentRecord?begin=0&end=10">訂單出貨記錄</a></li>
         <li><a href="refundPage.jsp?begin=0&end=10" >退貨</a></li>
       </ul>
     </div>
@@ -51,14 +52,13 @@ session.setAttribute("IDPOrderDetail", IDPOrderDetail);
 <div class="container container-fluid breadcrumbBox">
   <ol class="breadcrumb" >
     <li><a href="/HomePage.jsp" >首頁</a></li>
-    <li class="active" style="display:"><a href="SearchOrder.jsp?begin=0&end=10">訂單管理</a></li>
-    <li><a href="OrderDetail.jsp?QR_id=${IDPOrderDetail.getIOrderMaster().getQR_id()}">訂單明細</a></li>
+    <li class="active" style="display:"><a href="SearchOrder?begin=0&end=10">訂單管理</a></li>
+    <li><a href="OrderDetail?QR_id=${IDPOrderDetail.getIordersMaster().getQrId()}">訂單明細</a></li>
   </ol>
 </div>
 
   <div class="container table-responsive" style="background: #99C61D; border-radius:20px;">
-  	<form name="searchform" method="post" action="../OrdersServlet" class="form-inline container" 
-  	style="font-size: 100%; vertical-align: baseline; padding: 15px;" onsubmit="return isSubmited()">
+  	<form name="searchform" method="post" action="../OrdersServlet" class="form-inline container" 	style="font-size: 100%; vertical-align: baseline; padding: 15px;" onsubmit="return isSubmited()">
 	<c:if test="${PageCompetence.getPendingOrdersEdit() == 1}">  	
 	  	<div class="row">
 	      <label for="inputPassword" class="col-md-2 control-label text-left">編輯模式</label>
@@ -183,9 +183,8 @@ session.setAttribute("IDPOrderDetail", IDPOrderDetail);
 			          <div class="col-md-3 text-right well-sm label-tag"><h4>其它費用</h4></div>
 			          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="OtherFees" value="${IDPOrderDetail.getIordersMaster().getOtherFees()}"></div>
 			        </div>
-			        <div class="row">
-			          <div class="col-md-3 text-right well-sm label-tag"><h4>ebay成交費</h4></div>
-			          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="EbayFees" value="${IDPOrderDetail.getIordersMaster().getEbayFees()}"></div>
+<!-- 			        <div class="row"> -->
+<!-- 			          <div class="col-md-3 text-right well-sm label-tag"><h4>ebay成交費</h4></div> -->
 			        </div>
 			        <div class="row">
 			          <div class="col-md-3 text-right well-sm label-tag"><h4>計算保價</h4></div>
@@ -273,9 +272,9 @@ session.setAttribute("IDPOrderDetail", IDPOrderDetail);
 		        <tbody>
 		          <tr>
 		            <td>
-		              <input class="" type="hidden" name="SKU" value="${i.getSKU()}">
-		              SKU:<br/><a href="../QRProduct/StockDetail.jsp?sku=${i.getSku()}"><b>${i.getSKU()}</b></a>
-	          		  <button type="submit" name="submit" value="deleteDetail" class="btn btn-sm btn-danger">移除此商品
+		              <input class="" type="hidden" name="SKU" value="${i.getSku()}">
+		              SKU:<br/><a href="../QRProduct/StockDetail.jsp?sku=${i.getSku()}"><b>${i.getSku()}</b></a>
+	          		  <button type="submit" name="submit" value="deleteDetail" class="btn btn-sm btn-danger">移除此商品</button>
 		            </td>
 		            <td>Product Name:<br/>${i.getProductName()}<br/>
 		            </td>
@@ -289,10 +288,10 @@ session.setAttribute("IDPOrderDetail", IDPOrderDetail);
 		              <input class="" type="text" name="qty" value="${i.getQty()}">
 		             	 倉別:
 		              <select name="warehouse">
-                        <c:set var="SKU" scope="session" value="${i.getSKU()}"/>
+                        <c:set var="SKU" scope="session" value="${i.getSku()}"/>
                         <%
                         if(session.getAttribute("SKU") != null){
-                        LinkedList<String> warehouses = IOrderFactory.getWarehouses(request,session.getAttribute("SKU").toString());
+                        LinkedList<String> warehouses = COrderFactory.getWarehousesForI(request,session.getAttribute("SKU").toString());
                         session.setAttribute("warehouses", warehouses);
                         } else {
                         	session.setAttribute("warehouses", "");

@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "iorders_detail")
 public class IordersDetail implements Serializable {
-
+ 
 	/**
 	 * 
 	 */

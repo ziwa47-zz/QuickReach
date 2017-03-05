@@ -45,10 +45,9 @@ public class IordersMasterDAO extends AbstractDAO<IordersMaster> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<IordersMaster> selectIordersMasterByStatus(Map<String, String> selector, String orderStatus)
-			throws Exception {
-		// System.out.println("IordersMasterDAO.selectIordersMasterByStatus():start");
-		// System.out.println("orderStatus:"+orderStatus);
+	public List<IordersMaster> selectIordersMasterByStatus(Map<String, String> selector, String orderStatus) throws Exception {
+		 System.out.println("IordersMasterDAO.selectIordersMasterByStatus():start");
+		 System.out.println("orderStatus:"+orderStatus);
 
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
 		setCriteriaSelector(selector, criteria);

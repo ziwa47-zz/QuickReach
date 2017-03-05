@@ -28,8 +28,6 @@ import tw.iii.qr.IndependentOrder.model.repository.IcomebineOrderDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IdpShippingLogDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IordersDetailDAO;
 import tw.iii.qr.IndependentOrder.model.repository.IordersMasterDAO;
-import tw.iii.qr.IndependentOrder.model.repository.PurchaseLogDetailDAO;
-import tw.iii.qr.IndependentOrder.model.repository.PurchaseLogMasterDAO;
 import tw.iii.qr.IndependentOrder.model.repository.StorageDAO;
 import tw.iii.qr.IndependentOrder.service.IordersMasterService;
 import tw.iii.qr.IndependentOrder.service.StorageService;
@@ -39,6 +37,7 @@ import tw.iii.qr.order.DTO.COrderMaster;
 @Service
 @Transactional
 public class IOrderFactory {
+
 
 	@Autowired
 	GuestDAO guestDAO;
@@ -66,16 +65,17 @@ public class IOrderFactory {
 	}
 
 	public LinkedList<IDPorderAll> getAllIDPorder(HttpServletRequest request, String Orderstatus) {
+		System.out.println("IOrderFactory.getAllIDPorder():start");
 		// 整理查詢參數
-		String guestId = request.getParameter("guestId");
-		String QR_id = request.getParameter("QR_id");
-		String SKU = request.getParameter("SKU");
-		String productName = request.getParameter("productName");
-		String payDateMin = request.getParameter("payDateMin");
-		String payDateMax = request.getParameter("payDateMax");
-		String shippingDateMin = request.getParameter("shippingDateMin");
-		String shippingDateMax = request.getParameter("shippingDateMax");
-		String logistics = request.getParameter("logistics");
+		String guestId 				= request.getParameter("guestId");
+		String QR_id 				= request.getParameter("QR_id");
+		String SKU 					= request.getParameter("SKU");
+		String productName 		= request.getParameter("productName");
+		String payDateMin 			= request.getParameter("payDateMin");
+		String payDateMax 		= request.getParameter("payDateMax");
+		String shippingDateMin 	= request.getParameter("shippingDateMin");
+		String shippingDateMax 	= request.getParameter("shippingDateMax");
+		String logistics 				= request.getParameter("logistics");
 		if (logistics == "USPS1")
 			logistics = "USPS寄倉";
 		if (logistics == "USPS2")
@@ -100,11 +100,11 @@ public class IOrderFactory {
 		LinkedList<IDPorderAll> idps = new LinkedList<IDPorderAll>();
 		System.out.println(Orderstatus);
 		try {
-			List<IordersMaster> iordersMasters = iordersMasterDAO.selectIordersMasterByStatus(masterselector,
-					Orderstatus);
+			List<IordersMaster> iordersMasters = iordersMasterDAO.selectIordersMasterByStatus(masterselector, Orderstatus);
 			if (iordersMasters.size() == 0)
 				return null;
 
+			System.out.println("iordersMasters.size():"+iordersMasters.size());
 			for (IordersMaster iom : iordersMasters) {
 				IDPorderAll idp = getIDPorderAllInfo(detailselector, iom);
 				if (idp != null)
@@ -114,7 +114,7 @@ public class IOrderFactory {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		System.out.println("IOrderFactory.getAllIDPorder():finish");
 		return idps;
 	}
 
@@ -127,15 +127,16 @@ public class IOrderFactory {
 	 * @param iom
 	 */
 	public IDPorderAll getIDPorderAllInfo(Map<String, String> detailselector, IordersMaster iom) {
+		System.out.println("IOrderFactory.getIDPorderAllInfo():start");
 		IDPorderAll idp = new IDPorderAll();
 		// 加入master
 		idp.setIordersMaster(iom);
-
 		// 加入detail
 		List<IordersDetail> iorderDetailList = null;
 		try {
 			// 如果有查SKU或productName
-			if (!isNullorEmpty(detailselector.get("productName")) || !isNullorEmpty(detailselector.get("SKU"))) {
+			if (StringUtils.hasText(detailselector.get("SKU")) && StringUtils.hasText(detailselector.get("productName"))) {
+				System.out.println("1");
 				System.out.println(detailselector.get("SKU"));
 				System.out.println(detailselector.get("productName"));
 				iorderDetailList = iordersDetailDAO.getSeletedDetail(iom.getQrId(), detailselector);
@@ -159,11 +160,12 @@ public class IOrderFactory {
 			e.printStackTrace();
 			return null;
 		}
-
+		System.out.println("IOrderFactory.getIDPorderAllInfo():finish");
 		return idp;
 	}
 
 	public IDPorderAll getIDPorderAllInfobyqrId(String qrId) {
+		//System.out.println("IOrderFactory.getIDPorderAllInfobyqrId():start");
 		IDPorderAll idp = new IDPorderAll();
 
 		// 加入master
@@ -185,7 +187,7 @@ public class IOrderFactory {
 			e.printStackTrace();
 			return null;
 		}
-
+		//System.out.println("IOrderFactory.getIDPorderAllInfobyqrId():finish");
 		return idp;
 	}
 
@@ -352,7 +354,7 @@ public class IOrderFactory {
 	}
 
 	public LinkedList<String> getWarehouses(HttpServletRequest request, String SKU) throws Exception {
-
+		//System.out.println("SKU:"+SKU);
 		LinkedList<String> warehouses = new LinkedList<>();
 		List<Storage> storage = storageDAO.selectStorageBySku(SKU);
 		for (Storage s : storage) {

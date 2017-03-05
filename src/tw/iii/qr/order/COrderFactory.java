@@ -1279,6 +1279,26 @@ public class COrderFactory extends COrders {
 		}
 		return warehouses;
 	}
+	
+	
+/**查獨立訂單明細的商品資訊倉別*/
+	public LinkedList<String> getWarehousesForI(HttpServletRequest request, String SKU)
+			throws IllegalAccessException, ClassNotFoundException, Exception {
+
+		Connection conn = new DataBaseConn().getConn();
+		LinkedList<String> warehouses = new LinkedList<String>();
+		// CStock myCStock = new CStock();
+		String strSql = "select warehouse from  storage where SKU = ?";
+
+		PreparedStatement ps = conn.prepareStatement(strSql);
+		ps.setString(1, SKU);
+		ResultSet rs = ps.executeQuery();
+
+		while (rs.next()) {
+			warehouses.add(rs.getString(1));
+		}
+		return warehouses;
+	}
 
 	private static boolean isNullorEmpty(String s) {
 
