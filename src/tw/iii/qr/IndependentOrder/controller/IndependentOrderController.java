@@ -171,11 +171,11 @@ public class IndependentOrderController {
 	@RequestMapping(value = "/testFactory")
 	public String test(HttpServletRequest request) {
 
-		// iOrderFactory.getIDPorderAllInfo(request.getParameter("qrId"));
-		//queueEmailService.sendMail("verlander243@gmail.com", "j165418@gmail.com", "WOW", "gggggggg");
-		iOrderFactory.getAllIDPorder("處理中");
+		//iOrderFactory.getIDPorderAllInfo(request.getParameter("qrId"));
+		queueEmailService.sendMail("verlander243@gmail.com", "j165418@gmail.com", "WOW", "gggggggg");
+		//iOrderFactory.getAllIDPorder("處理中");
 
-		iOrderFactory.getIDPorderAllInfo(request.getParameter("qrId"));
+		//iOrderFactory.getIDPorderAllInfo(request.getParameter("qrId"));
 		try {
 			System.out.println(
 					"myTest:" + BeanUtils.describe(storageDAO.selectStorageBySku(request.getParameter("qrId"))));
