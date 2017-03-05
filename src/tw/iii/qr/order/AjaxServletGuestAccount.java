@@ -27,19 +27,16 @@ public class AjaxServletGuestAccount extends HttpServlet {
      */
     public AjaxServletGuestAccount() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		try {
 			processAjax(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -48,12 +45,10 @@ public class AjaxServletGuestAccount extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		//doGet(request, response);
 		try {
 			processAjax(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -62,14 +57,11 @@ public class AjaxServletGuestAccount extends HttpServlet {
 		
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
-		//System.out.println(request.getParameter("DATECOUNT"));
 		PrintWriter out = response.getWriter();
-		HttpSession session = request.getSession();
-		Connection conn = new DataBaseConn().getConn();
 		COrderCombineFactory OCFactory = new COrderCombineFactory();
 		
 		LinkedList<GuestAccountAndOrder> guestAccount = new LinkedList<>();
-		guestAccount = OCFactory.HasCombineOrderGuest(request, conn);
+		guestAccount = OCFactory.HasCombineOrderGuest(request);
 		
 		for(int i=0; i<guestAccount.size(); i++){
 			System.out.println(guestAccount.get(i).getGuestAccount());

@@ -40,37 +40,40 @@ public class AjaxGetData {
 	/**ajax查詢顧客資料並回傳<br/>*/
 	@RequestMapping("/ajax/getGetGuest")
 	public @ResponseBody Map<String, Object> ajaxGetGuest(HttpServletRequest request) {
+		System.out.println("ajaxGetGuest:start");
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		try {
 			
 			String guestId = request.getParameter("guestId");
+			System.out.println("guestId:"+guestId);
 			map = guestService.selectGuestByGuestId(guestId );
 
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("ajaxGetGuest:finish");
 		return map;
 
 	}
 	
 	
-	/**ajax查詢公司資料並回傳<br/>*/
-	@RequestMapping("/ajax/getCompanyList")
-	public @ResponseBody Map<String, Object> ajaxGetCompanyList(HttpServletRequest request) {
-		Map<String, Object> map = new HashMap<String, Object>();
-
-		try {
-
-			companyService.makeCompanyMap(map);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return map;
-
-	}
+//	/**ajax查詢公司資料並回傳<br/>*/
+//	@RequestMapping("/ajax/getCompanyList")
+//	public @ResponseBody Map<String, Object> ajaxGetCompanyList(HttpServletRequest request) {
+//		Map<String, Object> map = new HashMap<String, Object>();
+//
+//		try {
+//
+//			companyService.makeCompanyMap(map);
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return map;
+//
+//	}
 	
 	
 	/**
@@ -138,12 +141,14 @@ public class AjaxGetData {
 	 * */
 	@RequestMapping("/ajax/getStockTransferMasterCount")
 	public @ResponseBody Map<String, Object> ajaxGetStockTransferMasterCount(HttpServletRequest request) {
+		System.out.println("warehouse");
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		try {
 
-			//String warehouse = request.getParameter("warehouse");
-			String warehouse = "US";
+			String warehouse = request.getParameter("warehouse");
+			System.out.println(warehouse);
+			//String warehouse = "US";
 			if(StringUtils.hasText(warehouse)) {
 				String stockTransferId = stockTransferService.makeStockTransferMasterId(warehouse);
 				map.put("data", stockTransferId);
@@ -157,7 +162,24 @@ public class AjaxGetData {
 
 	}
 	
-	
+	/**ajax查詢顧客下拉選單for JQuery autocomplete<br/>*/
+	@RequestMapping("/ajax/getGuestList")
+	public @ResponseBody Map<String, Object> ajaxGuestList(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		try {
+			
+			String guestId = request.getParameter("term");
+			System.out.println("guestId="+guestId);
+			map = guestService.selectGuestForJQuery(guestId );
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+
+	}
 	
 }
 

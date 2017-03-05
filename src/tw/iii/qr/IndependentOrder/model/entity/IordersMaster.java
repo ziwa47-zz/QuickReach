@@ -1,5 +1,6 @@
 package tw.iii.qr.IndependentOrder.model.entity;
 // default package
+
 // Generated 2017/2/20 �U�� 10:29:56 by Hibernate Tools 4.0.0.Final
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -31,7 +32,7 @@ public class IordersMaster implements Serializable {
 	private String qrId;
 	private String transactionId;
 	private String platform;
-	private String guestid;
+	private String guestId;
 	private Date orderDate;
 	private Date payDate;
 	private String logistics;
@@ -45,22 +46,19 @@ public class IordersMaster implements Serializable {
 	private BigDecimal insuranceFee;
 	private BigDecimal insuranceTotal;
 	private String currency;
-	private BigDecimal weight;
-	private BigDecimal totalWeight;
 	private String fedexService;
 	private String fedexPacking;
 	private String staffName;
-	private String size;
 	private BigDecimal totalPrice;
 	private String trackingCode;
 	private String comment;
 	private BigDecimal packageFees;
-	private BigDecimal paypalTotal;
 	private BigDecimal paypalNet;
 	private String isCombine;
 	private String combineSku;
 	private BigDecimal paypalPrice;
-	private String country;
+	private String invoiceName;
+	private BigDecimal invoicePrice;
 
 	public IordersMaster() {
 	}
@@ -69,17 +67,18 @@ public class IordersMaster implements Serializable {
 		this.qrId = qrId;
 	}
 
-	public IordersMaster(String qrId, String transactionId, String platform, String guestid, Date orderDate, Date payDate,
-			String logistics, String orderStatus, Date shippingDate, BigDecimal shippingFees,
+	public IordersMaster(String qrId, String transactionId, String platform, String guestId, Date orderDate,
+			Date payDate, String logistics, String orderStatus, Date shippingDate, BigDecimal shippingFees,
 			BigDecimal refundShippingFees, BigDecimal otherFees, BigDecimal paypalFees, Boolean insurance,
-			BigDecimal insuranceFee, BigDecimal insuranceTotal, String currency, BigDecimal weight,
-			BigDecimal totalWeight, String fedexService, String fedexPacking, String staffName, String size,
-			BigDecimal totalPrice, String trackingCode, String comment, BigDecimal packageFees, BigDecimal paypalTotal,
-			BigDecimal paypalNet, String isCombine, String combineSku, BigDecimal paypalPrice, String country) {
+			BigDecimal insuranceFee, BigDecimal insuranceTotal, String currency, 
+			 String fedexService, String fedexPacking, String staffName, BigDecimal totalPrice, String trackingCode,
+			 String comment, BigDecimal packageFees, BigDecimal paypalNet, String isCombine, String combineSku, 
+			 BigDecimal paypalPrice, String invoiceName,
+			BigDecimal invoicePrice) {
 		this.qrId = qrId;
 		this.transactionId = transactionId;
 		this.platform = platform;
-		this.guestid = guestid;
+		this.guestId = guestId;
 		this.orderDate = orderDate;
 		this.payDate = payDate;
 		this.logistics = logistics;
@@ -93,22 +92,19 @@ public class IordersMaster implements Serializable {
 		this.insuranceFee = insuranceFee;
 		this.insuranceTotal = insuranceTotal;
 		this.currency = currency;
-		this.weight = weight;
-		this.totalWeight = totalWeight;
 		this.fedexService = fedexService;
 		this.fedexPacking = fedexPacking;
 		this.staffName = staffName;
-		this.size = size;
 		this.totalPrice = totalPrice;
 		this.trackingCode = trackingCode;
 		this.comment = comment;
 		this.packageFees = packageFees;
-		this.paypalTotal = paypalTotal;
 		this.paypalNet = paypalNet;
 		this.isCombine = isCombine;
 		this.combineSku = combineSku;
 		this.paypalPrice = paypalPrice;
-		this.country = country;
+		this.invoiceName = invoiceName;
+		this.invoicePrice = invoicePrice;
 	}
 
 	@Id
@@ -150,13 +146,13 @@ public class IordersMaster implements Serializable {
 		this.platform = platform;
 	}
 
-	@Column(name = "guest", length = 45)
+	@Column(name = "guestId", length = 45)
 	public String getGuestId() {
-		return this.guestid;
+		return this.guestId;
 	}
 
-	public void setGuestId(String guestid) {
-		this.guestid = guestid;
+	public void setGuestId(String guestId) {
+		this.guestId = guestId;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -279,24 +275,6 @@ public class IordersMaster implements Serializable {
 		this.currency = currency;
 	}
 
-	@Column(name = "weight", precision = 10)
-	public BigDecimal getWeight() {
-		return this.weight;
-	}
-
-	public void setWeight(BigDecimal weight) {
-		this.weight = weight;
-	}
-
-	@Column(name = "totalWeight", precision = 10)
-	public BigDecimal getTotalWeight() {
-		return this.totalWeight;
-	}
-
-	public void setTotalWeight(BigDecimal totalWeight) {
-		this.totalWeight = totalWeight;
-	}
-
 	@Column(name = "FedexService", length = 45)
 	public String getFedexService() {
 		return this.fedexService;
@@ -324,14 +302,7 @@ public class IordersMaster implements Serializable {
 		this.staffName = staffName;
 	}
 
-	@Column(name = "size", length = 45)
-	public String getSize() {
-		return this.size;
-	}
 
-	public void setSize(String size) {
-		this.size = size;
-	}
 
 	@Column(name = "totalPrice", precision = 10)
 	public BigDecimal getTotalPrice() {
@@ -369,14 +340,7 @@ public class IordersMaster implements Serializable {
 		this.packageFees = packageFees;
 	}
 
-	@Column(name = "paypalTotal", precision = 10)
-	public BigDecimal getPaypalTotal() {
-		return this.paypalTotal;
-	}
 
-	public void setPaypalTotal(BigDecimal paypalTotal) {
-		this.paypalTotal = paypalTotal;
-	}
 
 	@Column(name = "paypalNet", precision = 10)
 	public BigDecimal getPaypalNet() {
@@ -413,14 +377,21 @@ public class IordersMaster implements Serializable {
 	public void setPaypalPrice(BigDecimal paypalPrice) {
 		this.paypalPrice = paypalPrice;
 	}
-
-	@Column(name = "country", length = 45)
-	public String getCountry() {
-		return this.country;
+	@Column(name = "invoiceName", length = 100)
+	public String getInvoiceName() {
+		return invoiceName;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setInvoiceName(String invoiceName) {
+		this.invoiceName = invoiceName;
+	}
+	@Column(name = "invoicePrice")
+	public BigDecimal getInvoicePrice() {
+		return invoicePrice;
+	}
+
+	public void setInvoicePrice(BigDecimal invoicePrice) {
+		this.invoicePrice = invoicePrice;
 	}
 
 }

@@ -25,6 +25,18 @@ var independentId;
 
 var dynamicId = 2;
 
+//客戶下拉選單
+//GuestId欄位輸入3碼後，搜尋相符合的客戶
+function jqueryAutoCompleteGuest() {
+	
+	$("#guestId").autocomplete({
+		source:"/ajax/getGuestList",
+		minLength:2,
+		
+	});
+
+}
+
 //SKU欄位輸入3碼後，搜尋相符合的商品
 function jqueryAutoCompleteSKU(id) {
 	
@@ -34,6 +46,7 @@ function jqueryAutoCompleteSKU(id) {
 		//選擇SKU後，搜尋商品並自動填入該商品明細
 		select:function(event,ui){
 			autoComplete(id)
+			
 		}
 	});
 
@@ -47,7 +60,7 @@ function autoComplete(id){
 	     setValueId = skuName.substring(3);
 		$("#autoCompleteNumber").val(skuNum);
 		autoSetProductDetail();
-		
+		getWarehousePosition();
 			});
 	
 };
@@ -66,6 +79,7 @@ function autoSetProductDetail() {
                  $("#spec"+setValueId).val(response.spec);
                  $("#color"+setValueId).val(response.color);
                  $("#owner"+setValueId).val(response.owner);
+                 $("#cost"+setValueId).val(response.cost);
 
         }        
 	})
@@ -74,36 +88,35 @@ function autoSetProductDetail() {
 
 
 
-//取得公司列表
-function getCompanyList() {
+// //取得公司列表
+// function getCompanyList() {
 	
-	$.ajax({
+// 	$.ajax({
 		
-		type:"GET",                  
-	    url: "/ajax/getCompanyList",        
-	    data: $("#listForm").serialize(), 
-        dataType: "json", 
+// 		type:"GET",                  
+// 	    url: "/ajax/getCompanyList",        
+// 	    data: $("#listForm").serialize(), 
+//         dataType: "json", 
 
-        success : function(response){
+//         success : function(response){
         	
-        	//插入第一筆商品資料的倉庫select option
+//         	//插入第一筆商品資料的倉庫select option
         		
-        		 $.each(response.data, function(key, value){
+//         		 $.each(response.data, function(key, value){
     				 
-    				 $("#company").append($("<option></option>").attr("value", key).text(value));
+//     				 $("#company").append($("<option></option>").attr("value", key).text(value));
     				 
-    			 })
-        }        
-	})
-}
+//     			 })
+//         }        
+// 	})
+// }
 
-//取得倉庫列表
-function getWarehouseList() {
-	
+//取得該商品的庫存倉別及儲位
+function getWarehousePosition() {
 	$.ajax({
 		
 		type:"GET",                  
-	    url: "/ajax/getWarehouseList",        
+	    url: "/ajax/getStorageWarehouse",        
 	    data: $("#listForm").serialize(), 
         dataType: "json", 
 
@@ -111,17 +124,13 @@ function getWarehouseList() {
             	
         	//插入第一筆商品資料的倉庫select option
         	if (dynamicId == 2 ) {
-        		 $.each(response.data, function(key, value){
-    				 
-    				 $("#warehouse1").append($("<option></option>").attr("value", key).text(value));
-    				 
-    			 })
-        		
+        		 $.each(response.data, function(i, item){
+    				 $("#warehouse1").append($("<option></option>").attr("value", item.warehouse+','+item.warehousePosition).text(item.warehouse+','+item.warehousePosition));
     		//其他  插入動態生成的商品資料 的倉庫select option
-        	} else {
-        		$.each(response.data, function(key, value){
-   				
-   				 $("#warehouse"+(dynamicId-1)).append($("<option></option>").attr("value", key).text(value));
+        		 })
+           	}else {
+        		$.each(response.data, function(i, item){
+      				 $("#warehouse"+(dynamicId-1)).append($("<option></option>").attr("value", item.warehouse+','+item.warehousePosition).text(item.warehouse+','+item.warehousePosition));
    				 
    			 })
         	}
@@ -146,6 +155,27 @@ function getIorderMasterId() {
     				 $("#iorderMasterId").val(response.data);
         }        
 	})
+}
+
+//取得小計
+function getSum(id) {
+
+	$("#sum"+id).val($("#Price"+id).val()*$("#qty"+id).val());
+	gettotalPrice()
+	
+}
+//取得總計
+function gettotalPrice(){
+
+	
+	var amount = 0;
+	for(var i=1;i<dynamicId;i++){
+		if($("#sum"+i).val()!=null){
+		amount += +$("#sum"+i).val()
+		}
+	}
+	$("#totalPrice").val(amount);
+		
 }
 
 
@@ -185,10 +215,7 @@ function getGuestData() {
 
      
 $(function() {	
-	//取得公司列表
-	getCompanyList();
-	//取得倉庫列表
-	getWarehouseList();
+	
 	//取得訂單號碼
 	getIorderMasterId();
 	
@@ -353,57 +380,7 @@ $(function() {
 	                    +'           </div>'
 	            
 	                    +'           <div class="row">'
-	                        
-	                    +'				<div class="col-md-4 form-group ">'
-	                    +'                	<div class="row">'
-	                  	+'                  	<div class="col-md-4">'
-	                  	+'							<h5>'
-	                  	+'								<label for="focusedInput " >數量：</label>'
-	                  	+'							</h5>'
-	                  	+'						</div>'
-	                  	+'                 		<div class="col-md-8"><input class="form-control digits required" name="qty'+dynamicId+'" title="數量必須大於0" type="text">'
-	                  	+'						</div>'
-	                  	+'                	</div>'
-	                  	+'              </div>'
-	                  
-	                 	+' 				<div class="col-md-4 form-group ">'
-	                  	+'                	<div class="row">'
-	            		+'                  	<div class="col-md-4">'
-	            		+'							<h5>'
-	            		+'								<label for="focusedInput " >成本：</label>'
-	            		+'							</h5>'
-	            		+'						</div>'
-	            		+'                 		<div class="col-md-8"><input class="form-control number required" name="price'+dynamicId+'" title="價格必須大於0" type="text">'
-	            		+'						</div>'
-	            		+'                	</div>'
-	            		+'             </div>'
-	            		
-	            		+'				<div class="col-md-4 form-group ">'
-						+'					<div class="row">'
-	            		+'						<div class="col-md-4">'	
-	            		+'							<h5>'		
-	            		+'								<label for="focusedInput ">小計：</label>'			
-	            		+'							</h5>'		
-	            		+'						</div>'	
-	            		+'						<div class="col-md-8">'	
-	            		+'							<input class="form-control " title="" name="invoiceName'+dynamicId+'" type="text">'		
-						+'						</div>'	
-						+'					</div>'
-						+'				</div>'
-					
-						+'				<div class="col-md-4 form-group ">'
-						+'					<div class="row">'
-						+'						<div class="col-md-4">'	
-						+'							<h5>'	
-						+'								<label for="focusedInput ">售價：</label>'	
-						+'							</h5>'		
-						+'						</div>'	
-						+'						<div class="col-md-8">'	
-						+'							<input class="form-control number required" title="" name="invoicePrice'+dynamicId+'" type="text">'	
-						+'						</div>'	
-						+'					</div>'
-						+'				</div>'
-					
+
 						+'				<div class="col-md-4 form-group ">'
 						+'					<div class="row">'
 						+'						<div class="col-md-4">'	
@@ -412,12 +389,25 @@ $(function() {
 						+'							</h5>'
 						+'						</div>'
 						+'						<div class="col-md-8">'	
-						+'							<input class="form-control " title="" id="owner'+dynamicId+'" name="owner'+dynamicId+'" type="text">'		
+						+'							<input class="form-control " title="" id="owner'+dynamicId+'" name="owner'+dynamicId+'" type="text" readonly>'		
 						+'						</div>'	
 						+'					</div>'
 						+'				</div>'
-	                            
-	                  	+'              <div class="col-md-4 form-group ">'
+
+						+'				<div class="col-md-4 form-group ">'
+						+'					<div class="row">'
+						+'						<div class="col-md-4">'	
+						+'							<h5>'	
+						+'								<label for="focusedInput ">成本(TWD)：</label>'	
+						+'							</h5>'
+						+'						</div>'
+						+'						<div class="col-md-8">'	
+						+'							<input class="form-control "  id="cost'+dynamicId+'" name="cost'+dynamicId+'" type="text" readonly>'		
+						+'						</div>'	
+						+'					</div>'
+						+'				</div>'
+
+					  	+'              <div class="col-md-4 form-group ">'
 	                  	+'              	<div class="row">'
 	                  	+'                  	<div class="col-md-4">'
 	                  	+'							<h5>'
@@ -428,6 +418,86 @@ $(function() {
 	                  	+'						</div>'
 	                  	+'                	</div>'
 	                  	+'            	</div>'
+	                	+'            </div>'
+
+	                	+'           <div class="row">'
+
+	                	+'				<div class="col-md-4 form-group ">'
+						+'					<div class="row">'
+						+'						<div class="col-md-4">'	
+						+'							<h5>'	
+						+'								<label for="focusedInput ">售價(TWD)：</label>'	
+						+'							</h5>'		
+						+'						</div>'	
+						+'						<div class="col-md-8">'	
+						+'							<input class="form-control number required" id="Price'+dynamicId+'" name="Price'+dynamicId+'" type="text" onblur ="getSum('+dynamicId+')">'	
+						+'						</div>'	
+						+'					</div>'
+						+'				</div>'
+	                	
+	                    +'				<div class="col-md-4 form-group ">'
+	                    +'                	<div class="row">'
+	                  	+'                  	<div class="col-md-4">'
+	                  	+'							<h5>'
+	                  	+'								<label for="focusedInput " >數量：</label>'
+	                  	+'							</h5>'
+	                  	+'						</div>'
+	                  	+'                 		<div class="col-md-8"><input class="form-control digits required" id="qty'+dynamicId+'" name="qty'+dynamicId+'" title="數量必須大於0" type="text" value="1" onblur ="getSum('+dynamicId+')">'
+	                  	+'						</div>'
+	                  	+'                	</div>'
+	                  	+'              </div>'
+	                  
+
+	            		
+	            		+'				<div class="col-md-4 form-group ">'
+						+'					<div class="row">'
+	            		+'						<div class="col-md-4">'	
+	            		+'							<h5>'		
+	            		+'								<label for="focusedInput ">小計(TWD)：</label>'			
+	            		+'							</h5>'		
+	            		+'						</div>'	
+	            		+'						<div class="col-md-8">'	
+	            		+'							<input class="form-control " id="sum'+dynamicId+'" name="sum'+dynamicId+'" type="text" readonly>'		
+						+'						</div>'	
+						+'					</div>'
+						+'				</div>'
+						+'			</div>'
+
+						+'           <div class="row">'
+
+				 		+'				<div class="col-md-4 form-group ">'
+						+'					<div class="row">'
+	            		+'						<div class="col-md-4">'	
+	            		+'							<h5>'		
+	            		+'								<label for="focusedInput ">重量 克：</label>'			
+	            		+'							</h5>'		
+	            		+'						</div>'	
+	            		+'						<div class="col-md-8">'	
+	            		+'							<input class="form-control " title="" name="weight_g'+dynamicId+'" type="text">'		
+						+'						</div>'	
+						+'					</div>'
+						+'				</div>'
+
+						+'				<div class="col-md-4 form-group ">'
+						+'					<div class="row">'
+	            		+'						<div class="col-md-4">'	
+	            		+'							<h5>'		
+	            		+'								<label for="focusedInput ">重量 盎司：</label>'			
+	            		+'							</h5>'		
+	            		+'						</div>'	
+	            		+'						<div class="col-md-8">'	
+	            		+'							<input class="form-control " title="" name="weight_oz'+dynamicId+'" type="text">'		
+						+'						</div>'	
+						+'					</div>'
+						+'				</div>'
+						
+						+'				</div>'
+					
+					
+
+	                            
+	                
+	                  	
 	                  	+'          </div>'
 	           
 	                  	+'         <br/>'
@@ -437,8 +507,7 @@ $(function() {
 	                  	+'</div>'
 
 						);
-		//帶入倉庫選擇列表
-		getWarehouseList();
+		
 
 		$("#count").val(dynamicId);
 		
@@ -667,7 +736,7 @@ display: block;
             </h5>
           </div>
           <div class="col-md-8">
-            <input class="form-control" name="platform" id="platform"	type="text" value="">
+            <input class="form-control" name="invoiceName" id="invoiceName"	type="text" value="">
           </div>
         </div>
       </div>
@@ -675,11 +744,23 @@ display: block;
         <div class="row">
           <div class="col-md-4">
             <h5>
-              <label for="focusedInput ">invoicePrice：</label>
+              <label for="focusedInput ">invoicePrice(按照選擇幣別)：</label>
             </h5>
           </div>
           <div class="col-md-8">
-            <input class="form-control" name="transactionId" id="transactionId"	type="text" value="">
+            <input class="form-control" name="invoicePrice" id="invoicePrice"	type="text" value="">
+          </div>
+        </div>
+      </div>
+        <div class="col-md-4 form-group ">
+        <div class="row">
+          <div class="col-md-4">
+            <h5>
+              <label for="focusedInput ">總價(TWD)：</label>
+            </h5>
+          </div>
+          <div class="col-md-8">
+            <input class="form-control" name="totalPrice" id="totalPrice"	type="text" value="">
           </div>
         </div>
       </div>
@@ -697,7 +778,7 @@ display: block;
             </h5>
           </div>
           <div class="col-md-8">
-            <input class="form-control" type="text" id="guestId" name="guestId" value="" onblur ="getGuestData()">
+              <input class="form-control" type="text" id="guestId" name="guestId" value=""  onfocus = "jqueryAutoCompleteGuest()" onblur = "getGuestData()">
             <input type="hidden" name ='id' id='id'>
           </div>
         </div>
@@ -879,6 +960,7 @@ display: block;
           <div class="panel-body">
             <input type="hidden">
             <div class="row">
+            
               <div class="col-md-4 form-group ">
                 <div class="row">
                   <div class="col-md-4">
@@ -892,6 +974,7 @@ display: block;
                 </div>
                 <!--  onchange="autoComplete(1)" --> 
               </div>
+              
               <div class="col-md-8 form-group ">
                 <div class="row">
                   <div class="col-md-2">
@@ -904,8 +987,10 @@ display: block;
                   </div>
                 </div>
               </div>
+              
             </div>
             <div class="row">
+            
               <div class="col-md-4 form-group ">
                 <div class="row">
                   <div class="col-md-4">
@@ -918,6 +1003,7 @@ display: block;
                   </div>
                 </div>
               </div>
+              
               <div class="col-md-4 form-group ">
                 <div class="row">
                   <div class="col-md-4">
@@ -930,6 +1016,7 @@ display: block;
                   </div>
                 </div>
               </div>
+              
               <div class="col-md-4 form-group ">
                 <div class="row">
                   <div class="col-md-4">
@@ -944,57 +1031,12 @@ display: block;
                   </div>
                 </div>
               </div>
+              
             </div>
+            
             <div class="row">
-              <div class="col-md-4 form-group ">
-                <div class="row">
-                  <div class="col-md-4">
-                    <h5>
-                      <label for="focusedInput ">數量：</label>
-                    </h5>
-                  </div>
-                  <div class="col-md-8">
-                    <input class="form-control digits required" title="數量必須大於0" name="qty1" type="text">
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 form-group ">
-                <div class="row">
-                  <div class="col-md-4">
-                    <h5>
-                      <label for="focusedInput ">成本：</label>
-                    </h5>
-                  </div>
-                  <div class="col-md-8">
-                    <input class="form-control number required" title="價格必須大於0" name="price1" type="text">
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 form-group ">
-                <div class="row">
-                  <div class="col-md-4">
-                    <h5>
-                      <label for="focusedInput ">小計：</label>
-                    </h5>
-                  </div>
-                  <div class="col-md-8">
-                    <input class="form-control required"  name="invoiceName1" type="text">
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 form-group ">
-                <div class="row">
-                  <div class="col-md-4">
-                    <h5>
-                      <label for="focusedInput ">售價：</label>
-                    </h5>
-                  </div>
-                  <div class="col-md-8">
-                    <input class="form-control number required" title="價格必須大於0" name="invoicePrice1" type="text">
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 form-group ">
+            
+             <div class="col-md-4 form-group ">
                 <div class="row">
                   <div class="col-md-4">
                     <h5>
@@ -1002,11 +1044,25 @@ display: block;
                     </h5>
                   </div>
                   <div class="col-md-8">
-                    <input class="form-control " id=owner1  name="owner1" type="text">
+                    <input class="form-control " id=owner1  name="owner1" type="text" readonly>
                   </div>
                 </div>
               </div>
-              <div class="col-md-4 form-group ">
+              
+               <div class="col-md-4 form-group ">
+                <div class="row">
+                  <div class="col-md-4">
+                    <h5>
+                      <label for="focusedInput ">成本(TWD)：</label>
+                    </h5>
+                  </div>
+                  <div class="col-md-8">
+                    <input class="form-control number"  id="cost1" name="cost1" type="text" readonly>
+                  </div>
+                </div>
+              </div>
+              
+               <div class="col-md-4 form-group ">
                 <div class="row">
                   <div class="col-md-4">
                     <h5>
@@ -1018,7 +1074,75 @@ display: block;
                   </div>
                 </div>
               </div>
+             </div>
+              <div class="row">
+             
+              <div class="col-md-4 form-group ">
+                <div class="row">
+                  <div class="col-md-4">
+                    <h5>
+                      <label for="focusedInput ">售價(TWD)：</label>
+                    </h5>
+                  </div>
+                  <div class="col-md-8">
+                    <input class="form-control number required" title="價格必須大於0" id ="Price1" name="Price1" type="text" onblur ="getSum(1)">
+                  </div>
+                </div>
+              </div>
+             
+              <div class="col-md-4 form-group ">
+                <div class="row">
+                  <div class="col-md-4">
+                    <h5>
+                      <label for="focusedInput ">數量：</label>
+                    </h5>
+                  </div>
+                  <div class="col-md-8">
+                    <input class="form-control digits required" title="數量必須大於0" id ="qty1"name="qty1" type="text" value="1" onblur ="getSum(1)">
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-4 form-group ">
+                <div class="row">
+                  <div class="col-md-4">
+                    <h5>
+                      <label for="focusedInput ">小計(TWD)：</label>
+                    </h5>
+                  </div>
+                  <div class="col-md-8">
+                    <input class="form-control required"  id="sum1" name="sum1" type="text" readonly>
+                  </div>
+                </div>
+              </div>
+             
             </div>
+             <div class="row">
+              <div class="col-md-4 form-group ">
+                <div class="row">
+                  <div class="col-md-4">
+                    <h5>
+                      <label for="focusedInput ">重量 克：</label>
+                    </h5>
+                  </div>
+                  <div class="col-md-8">
+                    <input class="form-control" name="weight_g1" type="text">
+                  </div>
+                </div>
+              </div>
+               <div class="col-md-4 form-group ">
+                <div class="row">
+                  <div class="col-md-4">
+                    <h5>
+                      <label for="focusedInput ">重量 盎司：</label>
+                    </h5>
+                  </div>
+                  <div class="col-md-8">
+                    <input class="form-control" name="weight_oz1" type="text">
+                  </div>
+                </div>
+              </div>
+              </div>
             <br />
           </div>
         </div>

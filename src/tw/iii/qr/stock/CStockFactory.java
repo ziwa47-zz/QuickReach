@@ -335,7 +335,7 @@ public JSONArray iosstockDetail(HttpServletRequest request) throws IllegalAccess
 		preparedState.execute();
 		preparedState.close();
 		
-		dbc.connclose(conn);
+		conn.close();
 
 	}
 	public void modifyStorageLogMaster(String stockTransferId,String comment, String staffName , String oldWarehouse)throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
@@ -354,7 +354,7 @@ public JSONArray iosstockDetail(HttpServletRequest request) throws IllegalAccess
 		preparedState.execute();
 		preparedState.close();
 		
-		dbc.connclose(conn);
+		conn.close();
 
 	}
 	
@@ -375,7 +375,7 @@ public JSONArray iosstockDetail(HttpServletRequest request) throws IllegalAccess
 		preparedState.execute();
 		preparedState.close();
 		
-		dbc.connclose(conn);
+		conn.close();
 
 	}
 }

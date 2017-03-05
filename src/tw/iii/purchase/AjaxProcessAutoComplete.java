@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import tw.iii.qr.DataBaseConn;
 
+import org.apache.poi.hssf.model.ConvertAnchor;
 import org.json.JSONObject;
 
 @WebServlet("/AjaxProcessAutoComplete")
@@ -28,7 +29,7 @@ public class AjaxProcessAutoComplete extends HttpServlet {
 			try {
 				process(request, response);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		
@@ -40,7 +41,7 @@ public class AjaxProcessAutoComplete extends HttpServlet {
 		try {
 			process(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}
@@ -64,13 +65,13 @@ public class AjaxProcessAutoComplete extends HttpServlet {
 			 //searchSku = request.getParameter(autoCompleteNumber);
 		
 		
-		HashMap<String, String> hm = new HashMap<String, String>();		
+		HashMap<String, Object> hm = new HashMap<String, Object>();		
 	
 		try {
 			DataBaseConn jdbc = new DataBaseConn();
 			conn = jdbc.getConn();			
 			
-			String strSql = "SELECT  a.P_name, a.spec, a.color, a.owner FROM  product as a left join  storage as b on a.SKU = b.SKU where a.SKU = ? ;";
+			String strSql = "SELECT  a.P_name, a.spec, a.color, a.owner,a.cost FROM  product as a left join  storage as b on a.SKU = b.SKU where a.SKU = ? ;";
 
 			
 			ps = conn.prepareStatement(strSql);
@@ -85,6 +86,7 @@ public class AjaxProcessAutoComplete extends HttpServlet {
 			hm.put("spec", rs.getString(2));
 			hm.put("color", rs.getString(3));
 			hm.put("owner", rs.getString(4));
+			hm.put("cost", rs.getDouble(5));
 			
 			
 				

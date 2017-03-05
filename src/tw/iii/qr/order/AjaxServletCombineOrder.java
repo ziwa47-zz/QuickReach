@@ -28,19 +28,16 @@ public class AjaxServletCombineOrder extends HttpServlet {
      */
     public AjaxServletCombineOrder() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		try {
 			processAjax(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -49,12 +46,10 @@ public class AjaxServletCombineOrder extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		//doGet(request, response);
 		try {
 			processAjax(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -65,12 +60,9 @@ public class AjaxServletCombineOrder extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		System.out.println(request.getParameter("CQRID"));
 		PrintWriter out = response.getWriter();
-		HttpSession session = request.getSession();
-		Connection conn = new DataBaseConn().getConn();
 		COrderCombineFactory OCFactory = new COrderCombineFactory();
-		
 		LinkedList<COrderCombineDetail> combineDetail = new LinkedList<>();
-		combineDetail = OCFactory.ReadCombineOrder(request, conn);
+		combineDetail = OCFactory.ReadCombineOrder(request);
 		LinkedList<String> pic = new LinkedList<>();
 
 		for(int i=0; i<combineDetail.size(); i++){
@@ -81,11 +73,10 @@ public class AjaxServletCombineOrder extends HttpServlet {
 			out.println("<td>" + combineDetail.get(i).getD_ebayno() + "</td>");
 			out.println("<td>" + combineDetail.get(i).getCombineDate() + "</td>");
 			String qrid = combineDetail.get(i).getD_qrid();
-			pic = OCFactory.GetPic(qrid, conn);
+			pic = OCFactory.GetPic(qrid);
 			for(int j=0; j<pic.size(); j++){
 				out.println("<td><a href='#' class='pop'><img src='/pics/"+ pic.get(j) +"'  style='width: 100px; height: 100px;' onclick='AjaxModal()'></a></td>");
 			}
-			//class='img-responsive'z
 			out.println("</tr>");
 		}
 	}

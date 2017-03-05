@@ -29,13 +29,15 @@ public class IordersDetail implements Serializable {
 	private String tansactionId;
 	private String sku;
 	private String productName;
-	private String invoiceName;
 	private BigDecimal price;
-	private BigDecimal invoicePrice;
 	private Integer qty;
 	private String warehouse;
 	private String comment;
 	private String owner;
+	private BigDecimal weight_g;
+	private BigDecimal weight_oz;
+	private String picPath;
+	
 
 	public IordersDetail() {
 	}
@@ -44,19 +46,22 @@ public class IordersDetail implements Serializable {
 		this.qrId = qrId;
 	}
 
-	public IordersDetail(String qrId, String tansactionId, String sku, String productName, String invoiceName,
-			BigDecimal price, BigDecimal invoicePrice, Integer qty, String warehouse, String comment, String owner) {
+	public IordersDetail(String qrId, String tansactionId, String sku, String productName, BigDecimal price,
+			Integer qty, String warehouse, String comment, String owner,BigDecimal weight_g,BigDecimal weight_oz
+			,String picPath) {
 		this.qrId = qrId;
 		this.tansactionId = tansactionId;
 		this.sku = sku;
 		this.productName = productName;
-		this.invoiceName = invoiceName;
 		this.price = price;
-		this.invoicePrice = invoicePrice;
 		this.qty = qty;
 		this.warehouse = warehouse;
 		this.comment = comment;
 		this.owner = owner;
+		this.weight_g = weight_g;
+		this.weight_oz = weight_oz;
+		this.picPath = picPath;
+		
 	}
 
 	@Id
@@ -107,14 +112,7 @@ public class IordersDetail implements Serializable {
 		this.productName = productName;
 	}
 
-	@Column(name = "invoiceName", length = 1000)
-	public String getInvoiceName() {
-		return this.invoiceName;
-	}
 
-	public void setInvoiceName(String invoiceName) {
-		this.invoiceName = invoiceName;
-	}
 
 	@Column(name = "price", precision = 10)
 	public BigDecimal getPrice() {
@@ -125,14 +123,6 @@ public class IordersDetail implements Serializable {
 		this.price = price;
 	}
 
-	@Column(name = "invoicePrice", precision = 10)
-	public BigDecimal getInvoicePrice() {
-		return this.invoicePrice;
-	}
-
-	public void setInvoicePrice(BigDecimal invoicePrice) {
-		this.invoicePrice = invoicePrice;
-	}
 
 	@Column(name = "qty")
 	public Integer getQty() {
@@ -169,5 +159,31 @@ public class IordersDetail implements Serializable {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
+	@Column(name = "weight_g")
+	public BigDecimal getWeight_g() {
+		return weight_g;
+	}
+
+	public void setWeight_g(BigDecimal weight_g) {
+		this.weight_g = weight_g;
+	}
+	@Column(name = "weight_oz")
+	public BigDecimal getWeight_oz() {
+		return weight_oz;
+	}
+
+	public void setWeight_oz(BigDecimal weight_oz) {
+		this.weight_oz = weight_oz;
+	}
+	
+	@Column(name = "picPath", length = 100)
+	public String getPicPath() {
+		return this.picPath;
+	}
+
+	public void setPicPath(String picPath) {
+		this.picPath = picPath;
+	}
+	
 
 }

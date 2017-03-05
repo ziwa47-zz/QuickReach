@@ -18,11 +18,7 @@
 </c:if>
 <%
   COrderFactory.checkUrlToRemoveSession(request, session);
-  Connection conn = new DataBaseConn().getConn();
-  LinkedList<COrders> orderList = COrderFactory.orders(request,conn,"揀貨中");
-  
-  LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts(conn);
-  session.setAttribute("list", orderList);
+  LinkedList<String> ebayAccounts = COrderFactory.getEbayAccounts();
   request.setAttribute("begin", request.getParameter("begin"));
   request.setAttribute("end", request.getParameter("end"));
   session.setAttribute("ebayAccounts", ebayAccounts);
@@ -67,20 +63,19 @@
     style="font-size: 100%; vertical-align: baseline; padding: 15px;">
       <fieldset class="font-weight" style="padding:0 30px 0 0;">
         <legend>揀貨中</legend>
-        <input type="hidden">
         <div class="row">
           <div class="col-md-4 form-group ">
             <div class="row">
               <div class="col-md-4">
                 <h5>
-                  <label>ebay account：</label>
+                  <label>Ebay帳號：</label>
                 </h5>
               </div>
               <div class="col-md-8">
                 <select class="form-control" name="eBayAccount">
                   <option value="">請選擇</option>
                   <c:forEach var="q" items="${ebayAccounts}" step="1" varStatus="check">
-                  <option value="">${q}</option>
+                  <option value="${q}">${q}</option>
                   </c:forEach>
                 </select>
               </div>
@@ -90,7 +85,7 @@
             <div class="row">
               <div class="col-md-4">
                 <h5>
-                  <label>訂單編號：</label>
+                  <label>訂單編號(EbayNo)：</label>
                 </h5>
               </div>
               <div class="col-md-8">
@@ -102,7 +97,7 @@
             <div class="row">
               <div class="col-md-4">
                 <h5>
-                  <label>P/P帳號：</label>
+                  <label>客戶PayPal帳號：</label>
                 </h5>
               </div>
               <div class="col-md-8">
@@ -116,7 +111,7 @@
             <div class="row">
               <div class="col-md-4">
                 <h5>
-                  <label>E/B帳號：</label>
+                  <label>客戶Ebay帳號：</label>
                 </h5>
               </div>
               <div class="col-md-8" style="padding-left: 15px; padding-right: 35px">
@@ -178,36 +173,34 @@
               </div>
             </div>
           </div>
-          <div class="col-md-8 form-group ">
-            <div class="row">
-              <div class="col-md-2">
-                <h5>
-                  <label>出貨日期：</label>
-                </h5>
-              </div>
-              <div class="col-md-10">
-                <input class="form-control" type="text" name="shippingDateMin">
-                <label for="focusedInput ">~</label>
-                <input class="form-control" type="text" name="shippingDateMax">
-              </div>
-            </div>
-          </div>
+<!--           <div class="col-md-8 form-group "> -->
+<!--             <div class="row"> -->
+<!--               <div class="col-md-2"> -->
+<!--                 <h5> -->
+<!--                   <label>出貨日期：</label> -->
+<!--                 </h5> -->
+<!--               </div> -->
+<!--               <div class="col-md-10"> -->
+<!--                 <input class="form-control" type="text" name="shippingDateMin"> -->
+<!--                 <label for="focusedInput ">~</label> -->
+<!--                 <input class="form-control" type="text" name="shippingDateMax"> -->
+<!--               </div> -->
+<!--             </div> -->
+<!--           </div> -->
         </div>
         <br/>
         <div class="row">
           <div class="col-md-12 form-group ">
             <label>物流選擇：</label>
-            <label class="checkbox-inline"><input type="checkbox" name="DHL" value="DHL">DHL</label>
-            <label class="checkbox-inline"><input type="checkbox" name="Fedex" value="Fedex">Fedex</label>
-            <label class="checkbox-inline"><input type="checkbox" name="EMS" value="EMS">EMS</label>
-            <label class="checkbox-inline"><input type="checkbox" name="AP" value="AP">AP(國際包裹)</label>
-            <label class="checkbox-inline"><input type="checkbox" name="RA" value="RA">RA(國際掛號)</label>
-            <label class="checkbox-inline"><input type="checkbox" name="USPS1" value="USPS1">USPS寄倉</label>
-            <label class="checkbox-inline"><input type="checkbox" name="USPS2" value="USPS2">USPS集運</label>
-            <label class="checkbox-inline"><input type="checkbox" name="seven" value="seven">7-11取貨付款</label>
-            <label class="checkbox-inline"><input type="checkbox" name="familyMart" value="familyMart">全家取貨付款</label>
-            <label class="checkbox-inline"><input type="checkbox" name="post" value="post">郵局快捷貨到付款</label>
-            <label class="checkbox-inline"><input type="checkbox" name="lothers" value="lothers">其他</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="ALL" checked="checked">ALL</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="DHL">DHL</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="Fedex">Fedex</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="EMS">EMS</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="AP">AP(國際包裹)</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="RA">RA(國際掛號)</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="USPS1">USPS寄倉</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="USPS2">USPS集運</label>
+            <label class="checkbox-inline"><input type="radio" name="logistics" value="lothers">其他</label>
           </div>
         </div>
         <br/>
@@ -227,7 +220,7 @@
         </div>
         <br/>
         <div class="row text-center" >
-          <input type="hidden" name="pickup"  value="pickup"> <!-- 控制搜尋結果在揀貨中 -->
+          <input type="hidden" name="pickup"  value="pickup"> <!-- 控制搜尋結果在處理中 -->
           <button class="btn btn-lg btn-primary" type="submit" name="submit" value="pickupSearch">搜尋</button>
           <button class="btn btn-lg btn-primary" type="button" name="" >清空</button>
         </div>
@@ -260,7 +253,7 @@
                 <li class="disabled"><a href="OrderPickupPage.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
               </c:otherwise>
             </c:choose>
-            <c:forEach begin="0" end="${list.size()/10}" step="1" varStatus="check">
+            <c:forEach begin="0" end="${pickup.size()/10}" step="1" varStatus="check">
               <c:choose>
                 <c:when test="${(check.index*10) != begin}">
                   <li><a href="OrderPickupPage.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
@@ -271,14 +264,14 @@
               </c:choose>
             </c:forEach>
             <c:choose>
-              <c:when test="${end < list.size()}">
+              <c:when test="${end < pickup.size()}">
                 <li><a href="OrderPickupPage.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:when>
               <c:otherwise>
                 <li class="disabled"><a href="OrderPickupPage.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:otherwise>
             </c:choose>
-            <label>共有:${list.size()}筆</label>
+            <label>共有:${pickup.size()}筆</label>
           </ul>
           <table class="table table-bordered table-hover table-condensed pull-left" style="margin:0 0 0 -15px">
             <tr class="ListTitle">
@@ -296,7 +289,7 @@
               <th>總金額</th>
               <th>使用者</th>
             </tr>
-            <c:forEach var="i" items="${list}" begin="${begin}" end="${end}" step="1" varStatus="check">
+            <c:forEach var="i" items="${pickup}" begin="${begin}" end="${end}" step="1" varStatus="check">
               <c:choose>
                 <c:when test="${check.index%2 != 0}">
                   <tr style="background-color:#D4F4D8">
