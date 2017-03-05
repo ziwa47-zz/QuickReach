@@ -58,7 +58,7 @@
 		<br />
 		<div class="container table-responsive bg-warning"
 			style="border-radius: 20px">
-			<form name="searchform" method="post" action="../StatusDo"
+			<form name="searchform" method="post" action="../IDPStatusDo"
 				class="form-inline container"
 				style="font-size: 100%; vertical-align: baseline; padding: 15px;">
 				<div class="row">
@@ -85,7 +85,7 @@
 							<li class="disabled"><a 	href="OrderUploadTrackingCode.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
 						</c:otherwise>
 					</c:choose>
-					<c:forEach begin="0" end="${list.size()/10}" step="1"
+					<c:forEach begin="0" end="${IDPUploadTrackingCode.size()/10}" step="1"
 						varStatus="check">
 						<c:choose>
 							<c:when test="${(check.index*10) != begin}">
@@ -97,7 +97,7 @@
 						</c:choose>
 					</c:forEach>
 					<c:choose>
-						<c:when test="${end < list.size()}">
+						<c:when test="${end < IDPUploadTrackingCode.size()}">
 							<li><a
 								href="OrderUploadTrackingCode.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
 						</c:when>
@@ -106,7 +106,7 @@
 								href="OrderUploadTrackingCode.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
 						</c:otherwise>
 					</c:choose>
-					<label>共有:${list.size()}筆</label>
+					<label>共有:${IDPUploadTrackingCode.size()}筆</label>
 				</ul>
 				<table
 					class="table table-bordered table-hover table-condensed pull-left"
@@ -126,7 +126,7 @@
 						<th>總金額</th>
 						<th>使用者</th>
 					</tr>
-					<c:forEach var="i" items="${list}" begin="${begin}" end="${end}"
+					<c:forEach var="i" items="${IDPUploadTrackingCode}" begin="${begin}" end="${end}"
 						step="1" varStatus="check">
 						<c:choose>
 							<c:when test="${check.index%2 != 0}">
@@ -163,9 +163,7 @@
 											<b>${k.getWarehouse()}</b>(倉別)<br />
 										</c:forEach></td>
 								</tr>
-								<tr>
-									<td colspan="12">${i.getIordersMaster().getComment()}</td>
-								</tr>
+							
 							</c:when>
 							<c:otherwise>
 								<tr>
@@ -196,9 +194,6 @@
 									<td colspan="3"><c:forEach var="k" 	items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
 											<b>${k.getWarehouse()}</b>(倉別)<br />
 										</c:forEach></td>
-								</tr>
-								<tr>
-									<td colspan="12">${i.getIordersMaster().getComment()}</td>
 								</tr>
 							</c:otherwise>
 						</c:choose>
@@ -304,37 +299,37 @@
 				}
 
 				break;
-			case "USPS(寄倉)":
-				if ((!isNaN(checkTrackingCode))
-						&& checkTrackingCode.length == 22) {
-					$("#sendTrackingCodeSandbox").prop('disabled', false);
-					$("#sendTrackingCode").prop('disabled', false);
+// 			case "USPS(寄倉)":
+// 				if ((!isNaN(checkTrackingCode))
+// 						&& checkTrackingCode.length == 22) {
+// 					$("#sendTrackingCodeSandbox").prop('disabled', false);
+// 					$("#sendTrackingCode").prop('disabled', false);
+// // 					alert("ok,checkTrackingCode.length="
+// // 							+ checkTrackingCode.length + "\n"
+// // 							+ checkTrackingCode);
+// 				} else {
+// 					$("#sendTrackingCodeSandbox").prop('disabled', true);
+// 					$("#sendTrackingCode").prop('disabled', true);
+// 					alert("須輸入22碼數字 \n ex.9405510298370033498220 \n當前輸入:" + checkTrackingCode);
+// 				}
+
+// 				break;
+// 			case "USPS(集運)":
+// 				if ((!isNaN(checkTrackingCode))
+// 						&& checkTrackingCode.length == 22) {
+// 					$("#sendTrackingCodeSandbox").prop('disabled', false);
+// 					$("#sendTrackingCode").prop('disabled', false);
 // 					alert("ok,checkTrackingCode.length="
 // 							+ checkTrackingCode.length + "\n"
 // 							+ checkTrackingCode);
-				} else {
-					$("#sendTrackingCodeSandbox").prop('disabled', true);
-					$("#sendTrackingCode").prop('disabled', true);
-					alert("須輸入22碼數字 \n ex.9405510298370033498220 \n當前輸入:" + checkTrackingCode);
-				}
-
-				break;
-			case "USPS(集運)":
-				if ((!isNaN(checkTrackingCode))
-						&& checkTrackingCode.length == 22) {
-					$("#sendTrackingCodeSandbox").prop('disabled', false);
-					$("#sendTrackingCode").prop('disabled', false);
-					alert("ok,checkTrackingCode.length="
-							+ checkTrackingCode.length + "\n"
-							+ checkTrackingCode);
-				} else {
-					$("#sendTrackingCodeSandbox").prop('disabled', true);
-					$("#sendTrackingCode").prop('disabled', true);
-					alert("須輸入22碼數字 \n ex.9405510298370033498220 \n當前輸入:" + checkTrackingCode);
+// 				} else {
+// 					$("#sendTrackingCodeSandbox").prop('disabled', true);
+// 					$("#sendTrackingCode").prop('disabled', true);
+// 					alert("須輸入22碼數字 \n ex.9405510298370033498220 \n當前輸入:" + checkTrackingCode);
 					
-				}
+// 				}
 
-				break;
+// 				break;
 				
 			case "Fedex":
 

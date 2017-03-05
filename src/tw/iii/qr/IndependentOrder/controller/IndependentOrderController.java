@@ -164,21 +164,4 @@ public class IndependentOrderController {
 		return "redirect:/HomePage.jsp";
 
 	}
-
-	@RequestMapping(value = "/testFactory")
-	public String test(HttpServletRequest request) {
-
-		// iOrderFactory.getIDPorderAllInfo(request.getParameter("qrId"));
-		iOrderFactory.getAllIDPorder("處理中");
-
-		iOrderFactory.getIDPorderAllInfo(request.getParameter("qrId"));
-		try {
-			System.out.println(
-					"myTest:" + BeanUtils.describe(storageDAO.selectStorageBySku(request.getParameter("qrId"))));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return "redirect:/HomePage.jsp";
-	}
 }
