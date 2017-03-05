@@ -41,7 +41,7 @@ public class RedirectController {
 	@Resource
 	IOrderFactory iOrderFactory;
 	
-	@RequestMapping(value ="QRIndependentOrder/OrderDetail",method=RequestMethod.GET)
+	@RequestMapping(value ="QRIndependentOrder/OrderDetail")
 	public String redirectOrderDetail(HttpServletRequest request) {
 		
 		try {
@@ -61,7 +61,7 @@ public class RedirectController {
 	/**
 	 * 導頁至查詢訂單頁面<br/>
 	 */
-	@RequestMapping(value ="QRIndependentOrder/SearchOrder",method=RequestMethod.POST)
+	@RequestMapping(value ="QRIndependentOrder/SearchOrder")
 	public String redirectSearchOrder(HttpServletRequest request) {
 		//System.out.println("RedirectController.redirectProcessing():start");
 		try {
@@ -83,7 +83,7 @@ public class RedirectController {
 	/**
 	 * 導頁至處理中頁面<br/>
 	 */
-	@RequestMapping(value ="QRIndependentOrder/Processing",method=RequestMethod.POST)
+	@RequestMapping(value ="QRIndependentOrder/Processing")
 	public String redirectProcessing(HttpServletRequest request) {
 		//System.out.println("RedirectController.redirectProcessing():start");
 		try {
@@ -106,7 +106,7 @@ public class RedirectController {
 	 * ajax該商品的倉別跟櫃位資料並回傳<br/>
 	 * 
 	 */
-	@RequestMapping(value ="QRIndependentOrder/Pickup",method=RequestMethod.POST)
+	@RequestMapping(value ="QRIndependentOrder/Pickup")
 	public String redirectPickup(HttpServletRequest request) {
 
 		try {
@@ -125,7 +125,7 @@ public class RedirectController {
 	}
 
 	
-	@RequestMapping(value ="QRIndependentOrder/UploadTrackingCode",method=RequestMethod.POST)
+	@RequestMapping(value ="QRIndependentOrder/UploadTrackingCode")
 	public String redirectUploadTrackingCode(HttpServletRequest request) {
 
 		try {
@@ -143,7 +143,10 @@ public class RedirectController {
 		return "redirect:/QRIndependentOrder/UploadTrackingCode.jsp?begin=0&end=10";
 
 	}
-	@RequestMapping(value ="QRIndependentOrder/Finished",method=RequestMethod.POST)
+	
+
+	
+	@RequestMapping(value ="QRIndependentOrder/Finished")
 	public String redirectFinished(HttpServletRequest request) {
 
 		try {
@@ -162,7 +165,7 @@ public class RedirectController {
 
 	}
 	
-	@RequestMapping(value ="QRIndependentOrder/ShipmentRecord",method=RequestMethod.POST)
+	@RequestMapping(value ="QRIndependentOrder/ShipmentRecord")
 	public String redirectShipmentRecord(HttpServletRequest request) {
 
 		try {

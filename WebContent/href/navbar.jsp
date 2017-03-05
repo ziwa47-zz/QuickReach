@@ -246,10 +246,10 @@ function chkEmail(mail) {
 <%
 
 //  if(!"0".equals(request.getParameter("p"))){
-//  	if (session.getAttribute("account")==null){
-//  		response.sendRedirect("/Login.jsp?p=0");
-//  	}
-//  }
+//   	if (session.getAttribute("account")==null){
+//   		response.sendRedirect("/Login.jsp?p=0");
+//   	}
+//   }
  
 
 %>

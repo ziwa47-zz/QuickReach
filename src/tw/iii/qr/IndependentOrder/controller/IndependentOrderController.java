@@ -163,7 +163,7 @@ public class IndependentOrderController {
 			e.printStackTrace();
 		}
 
-		return "redirect:/HomePage.jsp";
+		return "redirect:/QRIndependentOrder/Processing";
 
 	}
 

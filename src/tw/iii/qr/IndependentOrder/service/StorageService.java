@@ -64,7 +64,7 @@ public class StorageService extends AbstractService<Storage> {
 		try {
 			  Storage sto = storageDAO.selectStorageByIorderDetail(iod);
 			  sto.setQty(sto.getQty()-iod.getQty());
-			  persist(sto);
+			  update(sto);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,7 +79,34 @@ public class StorageService extends AbstractService<Storage> {
 			  int totalcount = iod.getQty() * b.getQty();
 			  Storage sto = storageDAO.selectStorageByIorderDetail(iod);
 			  sto.setQty(sto.getQty()- totalcount);
-			  persist(sto);
+			  update(sto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	/* 單sku回庫存用  */ 
+	public void addStock(IordersDetail iod){
+		
+		try {
+			  Storage sto = storageDAO.selectStorageByIorderDetail(iod);
+			  sto.setQty(sto.getQty()+iod.getQty());
+			  update(sto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	/* 組合包回庫存用  */ 
+	public void addStock(IordersDetail iod,Bundles b){
+		
+		try {
+			  int totalcount = iod.getQty() * b.getQty();
+			  Storage sto = storageDAO.selectStorageByIorderDetail(iod);
+			  sto.setQty(sto.getQty()+ totalcount);
+			  update(sto);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

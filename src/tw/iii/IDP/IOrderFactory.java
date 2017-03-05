@@ -19,6 +19,8 @@ import tw.iii.qr.IndependentOrder.model.entity.IcombineOrder;
 import tw.iii.qr.IndependentOrder.model.entity.IdpShippingLog;
 import tw.iii.qr.IndependentOrder.model.entity.IordersDetail;
 import tw.iii.qr.IndependentOrder.model.entity.IordersMaster;
+import tw.iii.qr.IndependentOrder.model.entity.PurchaseLogDetail;
+import tw.iii.qr.IndependentOrder.model.entity.PurchaseLogMaster;
 import tw.iii.qr.IndependentOrder.model.entity.Storage;
 import tw.iii.qr.IndependentOrder.model.repository.BundlesDAO;
 import tw.iii.qr.IndependentOrder.model.repository.GuestDAO;
@@ -31,28 +33,37 @@ import tw.iii.qr.IndependentOrder.model.repository.PurchaseLogMasterDAO;
 import tw.iii.qr.IndependentOrder.model.repository.StorageDAO;
 import tw.iii.qr.IndependentOrder.service.IordersMasterService;
 import tw.iii.qr.IndependentOrder.service.StorageService;
-
+import tw.iii.qr.order.DTO.COrderDetail;
+import tw.iii.qr.order.DTO.COrderMaster;
 
 @Service
 @Transactional
 public class IOrderFactory {
 
-
-	@Autowired	GuestDAO guestDAO;
-	@Autowired	IordersDetailDAO iordersDetailDAO;
-	@Autowired	IordersMasterDAO iordersMasterDAO;
-	@Autowired	IcomebineOrderDAO icomebineOrderDAO;
-	@Autowired	PurchaseLogDetailDAO purchaseLogDetailDAO;
-	@Autowired	PurchaseLogMasterDAO purchaseLogMasterDAO;
-	@Autowired	BundlesDAO bundlesDAO;
-	@Autowired	IdpShippingLogDAO idpShippingLogDAO;
-	@Autowired	StorageDAO storageDAO;
-	@Autowired	StorageService storageService;
+	@Autowired
+	GuestDAO guestDAO;
+	@Autowired
+	IordersDetailDAO iordersDetailDAO;
+	@Autowired
+	IordersMasterDAO iordersMasterDAO;
+	@Autowired
+	IcomebineOrderDAO icomebineOrderDAO;
+	@Autowired
+	PurchaseLogDetailDAO purchaseLogDetailDAO;
+	@Autowired
+	PurchaseLogMasterDAO purchaseLogMasterDAO;
+	@Autowired
+	BundlesDAO bundlesDAO;
+	@Autowired
+	IdpShippingLogDAO idpShippingLogDAO;
+	@Autowired
+	StorageDAO storageDAO;
+	@Autowired
+	StorageService storageService;
 
 	public IOrderFactory() {
 
 	}
-	
 
 	public LinkedList<IDPorderAll> getAllIDPorder(HttpServletRequest request, String Orderstatus) {
 		// 整理查詢參數
@@ -210,6 +221,18 @@ public class IOrderFactory {
 		}
 
 	}
+	private void plusBundleaddStock(IordersDetail iod) {
+		StorageService ss = new StorageService();
+		List<Bundles> bundlesku = bundlesDAO.getAllskuByIod(iod);
+		for (Bundles b : bundlesku) {
+			ss.addStock(iod, b);
+		}
+
+	}
+	private void addStock(IordersDetail iod) {
+		StorageService ss = new StorageService();
+		ss.addStock(iod);
+	}
 
 	private static boolean isNullorEmpty(String s) {
 
@@ -264,35 +287,69 @@ public class IOrderFactory {
 		}
 	}
 
-	// public void insertIntoPurchaseLogFromOrders(IordersMaster iorder) throws
-	// Exception {
-	//
-	// Purchaselog_master purchaselog_master = new Purchaselog_master();
-	// purchaselog_master.setpurchaseId(iorder.getQrId());
-	// purchaselog_master.setdate(iorder.getShippingDate());
-	// purchaselog_master.setcompanyId(iorder.getGuestId());
-	// purchaselog_master.setStaffName(iorder.getStaffName());
-	// purchaselog_master.setStockStatus("2");
-	// // TODO String strSql2 = "insert into purchaselog_detail (purchaseId,
-	// // SKU, warehouse, qty, price, stockStatus)"
-	// // + " values( ?, ?, ?, ?, ?, ?)";
-	// Purchaselog_detail purchaselog_detail = new Purchaselog_detail();
-	// List<IordersDetail> iod =
-	// iordersDetailDAO.selectIordersDetailByQRId(iorder.getQrId());
-	// for (IordersDetail od : iod) {
-	//
-	// if (od.getSku().startsWith("B00")) {
-	// List<Bundles> bundlesku = bundlesDAO.getAllskuByIod(od);
-	// for (Bundles sku : bundlesku) {
-	//
-	// }
-	// } else {
-	//
-	// }
-	//
-	// }
-	//
-	// }
+	public void insertIntoPurchaseLogFromOrders(IordersMaster iorder) throws Exception {
+
+		PurchaseLogMaster purchaselog_master = new PurchaseLogMaster();
+		purchaselog_master.setPurchaseId(iorder.getQrId());
+		purchaselog_master.setDate(iorder.getShippingDate());
+		purchaselog_master.setComment(iorder.getGuestId());
+		purchaselog_master.setStaffName(iorder.getStaffName());
+		purchaselog_master.setStockStatus("2");
+		// TODO String strSql2 = "insert into purchaselog_detail (purchaseId,
+		// SKU, warehouse, qty, price, stockStatus)"
+		// + " values( ?, ?, ?, ?, ?, ?)";
+		PurchaseLogDetail purchaselog_detail = new PurchaseLogDetail();
+		List<IordersDetail> iod = iordersDetailDAO.selectIordersDetailByQRId(iorder.getQrId());
+
+		for (IordersDetail od : iod) {
+
+			if (od.getSku().startsWith("B00")) {
+				List<Bundles> bundlesku = bundlesDAO.getAllskuByIod(od);
+				for (Bundles bundles : bundlesku) {
+					Storage storage = storageDAO.selectStorageBySku(od, bundles.getpSku());
+					purchaselog_detail.setPurchaseId(iorder.getQrId());
+					purchaselog_detail.setSku(bundles.getpSku());
+					purchaselog_detail.setWarehouse(storage.getWarehouse());
+					purchaselog_detail.setWarehousePosition1(storage.getWarehousePosition1());
+					purchaselog_detail.setWarehousePosition2(storage.getWarehousePosition2());
+					purchaselog_detail.setQty(bundles.getQty() * od.getQty());
+					purchaselog_detail.setStockStatus("2");
+				}
+			} else {
+				Storage storage = storageDAO.selectStorageBySku(od, od.getSku());
+				purchaselog_detail.setPurchaseId(iorder.getQrId());
+				purchaselog_detail.setSku(od.getSku());
+				purchaselog_detail.setWarehouse(storage.getWarehouse());
+				purchaselog_detail.setWarehousePosition1(storage.getWarehousePosition1());
+				purchaselog_detail.setWarehousePosition2(storage.getWarehousePosition2());
+				purchaselog_detail.setQty(od.getQty());
+				purchaselog_detail.setStockStatus("2");
+			}
+
+		}
+
+	}
+
+	public void isBundleAddBackToStock(IordersMaster iorder) throws Exception {
+
+		try {
+			IordersMaster iorderMaster = iordersMasterDAO.selectIordersMasterByQRId(iorder.getQrId());
+			List<IordersDetail> iorderDetailList = iordersDetailDAO.selectIordersDetailByQRId(iorderMaster.getQrId());
+
+			for (IordersDetail iod : iorderDetailList) {
+
+				if (iod.getSku().startsWith("B00")) {
+					plusBundleaddStock(iod); // 組合包就個別扣
+				} else {
+					addStock(iod);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 
 	public LinkedList<String> getWarehouses(HttpServletRequest request, String SKU) throws Exception {
 

@@ -105,7 +105,7 @@ public class IordersMasterService extends AbstractService<IordersMaster> {
 			try {
 				iom = iordersMasterDAO.selectIordersMasterByQRId(QR_ids.get(i));
 				iom.setOrderStatus("揀貨中");
-				persist(iom);
+				update(iom);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -121,7 +121,7 @@ public class IordersMasterService extends AbstractService<IordersMaster> {
 			try {
 				iom = iordersMasterDAO.selectIordersMasterByQRId(QR_ids.get(i));
 				iom.setOrderStatus("已出貨");
-				persist(iom);
+				update(iom);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -137,9 +137,43 @@ public class IordersMasterService extends AbstractService<IordersMaster> {
 			iom.setTrackingCode(trackingCode);
 			iom.setOrderStatus("已完成");
 			iom.setShippingDate(new Date());
-			persist(iom);
+			update(iom);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+
+	}
+
+	public void revertTo(HttpServletRequest request) {
+		LinkedList<String> QR_ids = new LinkedList<String>(Arrays.asList(request.getParameterValues("QR_id")));
+		for (int i = 0; i < QR_ids.size(); i++) {
+
+			IordersMaster iom;
+			try {
+				iom = iordersMasterDAO.selectIordersMasterByQRId(QR_ids.get(i));
+				iom.setOrderStatus(request.getParameter("status"));
+				update(iom);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		
+	}
+	
+	public void updateToRefund(HttpServletRequest request) {
+		LinkedList<String> QR_ids = new LinkedList<String>(Arrays.asList(request.getParameterValues("QR_id")));
+		for (int i = 0; i < QR_ids.size(); i++) {
+
+			IordersMaster iom;
+			try {
+				iom = iordersMasterDAO.selectIordersMasterByQRId(QR_ids.get(i));
+				iom.setOrderStatus("退貨");
+				update(iom);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 		}
 
 	}

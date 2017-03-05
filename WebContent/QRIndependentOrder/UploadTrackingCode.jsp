@@ -75,6 +75,7 @@
 						</div>
 					</div>
 				</div>
+				<a href="../QRIndependentOrder/UploadTrackingCode"  class="btn btn-lg btn-primary">查詢已出貨訂單</a>
 				<button type="submit" name="send" id="sendTrackingCode"  value="sendTrackingCode" class="btn btn-lg btn-primary" disabled>送出追蹤碼</button>
 				<ul class="pager pagination">
 					<c:choose>
@@ -113,15 +114,11 @@
 					style="margin: 0 0 0 -15px">
 					<tr class="ListTitle">
 						<th>選取</th>
-						<th>編輯</th>
 						<th>訂單編號</th>
 						<th>平台</th>
-						<th>可填入</th>
-						<th>客戶帳號</th>
-						<th>購買日期</th>
-						<th>出貨日期</th>
+						<th>熟客ID</th>
+						<th>付款日期</th>
 						<th>物流</th>
-						<th>可填入</th>
 						<th>訂單狀態</th>
 						<th>總金額</th>
 						<th>使用者</th>
@@ -136,8 +133,7 @@
 										value="${i.getIordersMaster().getQrId()}"
 										onblur="preventDoubleOrder(this)"></td>
 									<td><a
-										href="OrderDetail.jsp?QR_id=${i.getIordersMaster().getQrId()}"><img
-											src="../img/compose-4.png"></a></td>
+										href="OrderDetail.jsp?QR_id=${i.getIordersMaster().getQrId()}">${i.getIordersMaster().getQrId()}</a></td>
 									<td>${i.getIordersMaster().getPlatform()}</td>
 <%-- 									<td><input type="hidden" name="ebayaccount"	value="${i.getIordersMaster().getEbayAccount()}">	</td> --%>
 									<td>${i.getIordersMaster().getGuestId()}</td>
@@ -169,18 +165,13 @@
 								<tr>
 									<td rowspan="3" style="vertical-align: middle">
 									<input 	type="checkbox" name="QR_id"	value="${i.getIordersMaster().getQrId()}"	onchange="preventDoubleOrder(this)"></td>
-									<td><a	href="OrderDetail.jsp?QR_id=${i.getIordersMaster().getQrId()}">
-									<img	src="../img/compose-4.png"></a></td>
+									<td><a
+										href="OrderDetail.jsp?QR_id=${i.getIordersMaster().getQrId()}">${i.getIordersMaster().getQrId()}</a></td>
 									<td>${i.getIordersMaster().getPlatform()}</td>
 									<td>${i.getIordersMaster().getGuestId()}</td>
 									<td>${i.getIordersMaster().getPayDate()}</td>
-									<td>
-<%-- 									<input type="hidden" name="ebayItemNO" 	value="${i.getIordersMaster().getEbayItemNO()}">  --%>
-<%-- 									<input	type="hidden" name="paypalmentId"	value="${i.getIordersMaster().getPaypalmentId()}"> --%>
-									</td>
 									<td>${i.getIordersMaster().getLogistics()}
-<%-- 									<input type="hidden" name="${i.getIordersMaster().getQrId()}" value="${i.getIordersMaster().getLogistics()}"> --%>
-<%-- 									<input 	type="hidden" name="logistics"	value="${i.getIordersMaster().getLogistics()}"> --%>
+									<input 	type="hidden" name="${i.getIordersMaster().getQrId()}"	value="${i.getIordersMaster().getLogistics()}">
 									</td>
 									<td>${i.getIordersMaster().getOrderStatus()}
 									<input	 type="hidden" name="status" value="${i.getIordersMaster().getOrderStatus()}"></td>
@@ -188,7 +179,7 @@
 									<td>${i.getIordersMaster().getStaffName()}</td>
 								</tr>
 								<tr>
-									<td colspan="9"><c:forEach var="j" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
+									<td colspan="6"><c:forEach var="j" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
 											<b><a 	href="../QRProduct/StockDetail.jsp?sku=${j.getSku()}">${j.getSku()}</a></b>${j.getProductName()}<br />
 										</c:forEach></td>
 									<td colspan="3"><c:forEach var="k" 	items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
@@ -205,6 +196,8 @@
 	</div>
 	<%@ include file="../href/footer.jsp"%>
 	<script type="text/javascript">
+
+	
 		var whichLogistics = "";
 		function preventDoubleOrder(ele) {
 			var id = ele.value;
