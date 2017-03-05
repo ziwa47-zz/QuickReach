@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="purchaselog_master")
-public class PurchaseLogMaster  implements Serializable{
+public class PurchaselogMaster implements Serializable{
 	/**
 	 * 
 	 */

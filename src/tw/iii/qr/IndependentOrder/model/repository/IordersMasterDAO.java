@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -33,7 +34,7 @@ public class IordersMasterDAO extends AbstractDAO<IordersMaster> {
 		// System.out.println("IordersMasterDAO.selectIordersMasterByQRId():start");
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("qrId", qrId));
-		IordersMaster iordersMaster = null;
+		IordersMaster iordersMaster = new IordersMaster();
 		// System.out.println("qrId = "+qrId);
 
 		if (criteria.list().size() == 1) {
@@ -45,16 +46,16 @@ public class IordersMasterDAO extends AbstractDAO<IordersMaster> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<IordersMaster> selectIordersMasterByStatus(Map<String, String> selector, String orderStatus)
-			throws Exception {
-		// System.out.println("IordersMasterDAO.selectIordersMasterByStatus():start");
-		// System.out.println("orderStatus:"+orderStatus);
+	public List<IordersMaster> selectIordersMasterByStatus(Map<String, String> selector, String orderStatus) throws Exception {
+		 System.out.println("IordersMasterDAO.selectIordersMasterByStatus():start");
+		 System.out.println("orderStatus:"+orderStatus);
 
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
 		setCriteriaSelector(selector, criteria);
 		if (StringUtils.hasText(orderStatus)) {
 			// 找狀態
 			criteria.add(Restrictions.eq("orderStatus", orderStatus));
+			criteria.addOrder(Order.desc("qrId"));
 		} // 否則找全部
 		if (criteria.list().size() == 0) {
 			System.out.println("找不到資料");

@@ -23,17 +23,18 @@ public class IordersDetailDAO extends AbstractDAO<IordersDetail> {
 
 	@SuppressWarnings("unchecked")
 	public List<IordersDetail> selectIordersDetailByQRId(String qrId) throws Exception {
-		// System.out.println("IordersDetailDAO.selectIordersDetailByQRId():start");
+		 System.out.println("IordersDetailDAO.selectIordersDetailByQRId():start");
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("qrId", qrId));
-		// System.out.println("IordersDetailDAO.selectIordersDetailByQRId():finish");
+		 
 		List<IordersDetail> list = criteria.list();
 		if (list.size() != 0) {
 			for (int i = 0; i < list.size(); i++) {
-				IordersDetail iod = (IordersDetail) list.get(i);
-				iod.setPicPath(GetPic(iod.getQrId()));
+				IordersDetail iod = list.get(i);
+				//iod.setPicPath(GetPic(iod.getQrId()));
 			}
 		}
+		 System.out.println("IordersDetailDAO.selectIordersDetailByQRId():finish");
 		return list;
 	}
 

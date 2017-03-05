@@ -35,12 +35,12 @@
   <div class="container">
     <div class="nav" style="background-color:#189B30;" >
       <ul class="nav nav-tabs">
-        <li><a href="SearchOrder.jsp?begin=0&end=10">查詢訂單</a></li>
+        <li><a href="SearchOrder?begin=0&end=10">查詢訂單</a></li>
         <li><a href="IndependentOrder.jsp?begin=0&end=10">新增訂單</a></li>
-        <li><a href="Processing.jsp?begin=0&end=10">處理中</a></li>
-        <li><a href="Pickup.jsp?begin=0&end=10">揀貨中</a></li>
-        <li><a href="UploadTrackingCode.jsp?begin=0&end=10">上傳追蹤碼</a></li>
-        <li><a href="Finished.jsp?begin=0&end=10">已完成訂單</a></li>
+        <li><a href="Processing?begin=0&end=10">處理中</a></li>
+        <li><a href="Pickup?begin=0&end=10">揀貨中</a></li>
+        <li><a href="UploadTrackingCode?begin=0&end=10">上傳追蹤碼</a></li>
+        <li><a href="Finished?begin=0&end=10">已完成訂單</a></li>
         <li><a href="" style="color:#fff">訂單出貨記錄</a></li>
         <li><a href="refundPage.jsp?begin=0&end=10" >退貨</a></li>
       </ul>
@@ -51,8 +51,8 @@
 <div class="container container-fluid breadcrumbBox">
   <ol class="breadcrumb" >
     <li><a href="/HomePage.jsp" >首頁</a></li>
-    <li class="active" style="display:"><a href="SearchOrder.jsp?begin=0&end=10">訂單管理</a></li>
-    <li><a href="ShipmentRecord.jsp?begin=0&end=10">出貨紀錄</a></li>
+    <li class="active" style="display:"><a href="SearchOrder?begin=0&end=10">訂單管理</a></li>
+    <li><a href="ShipmentRecord?begin=0&end=10">出貨紀錄</a></li>
   </ol>
 </div>
 
@@ -174,7 +174,7 @@
   <hr/>
 
       <div class="container table-responsive bg-warning" style=" border-radius:20px">
-        <form name="searchform" method="post" action="../IDPtoExcelServlet" class="form-inline container"
+        <form name="searchform" method="post" action="/QRIndependentOrder/IDPStatusDo" class="form-inline container"
           style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
           <button class="btn btn-md btn-info" type="submit" name="submit" value="toDailyBalanceSheetExcel" >匯出日出貨報表</button>
           <ul class="pager pagination">
@@ -225,7 +225,7 @@
                   <c:when test="${check.index%2 != 0}">
                     <tr style="background-color:#D4F4D8">
                       <td>${i.getIordersMaster().getShippingDate()}</td>
-                      <td><a href="OrderDetail.jsp?QR_id=${i.getIordersMaster().getQrId()}">${i.getIordersMaster().getQrId()}</a></td>
+                      <td><a href="OrderDetail?QR_id=${i.getIordersMaster().getQrId()}">${i.getIordersMaster().getQrId()}</a></td>
                       <td>${i.getIordersMaster().getGuestId()}</td>
                       <td>${i.getIordersMaster().getTrackingCode()}</td>
                       <td>${i.getIordersDetail().getQty()}</td>
@@ -237,7 +237,7 @@
 					<td colspan="9">
                     <c:forEach var="j" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
 <%--                       <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a> --%>
-                      <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSku()}">${j.getSku()}</a></b>${j.getProductName()}<br/>
+                      <b><a href="../QRProduct/StockDetail?sku=${j.getSku()}">${j.getSku()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
                     <td colspan="3" class="warehouseLocation" id="${i.getIordersMaster().getQrId()}">
@@ -250,7 +250,7 @@
                   <c:otherwise>
                     <tr>
                      <td>${i.getIordersMaster().getShippingDate()}</td>
-                      <td><a href="OrderDetail.jsp?QR_id=${i.getIordersMaster().getQrId()}">${i.getIordersMaster().getQrId()}</a></td>
+                      <td><a href="OrderDetail?QR_id=${i.getIordersMaster().getQrId()}">${i.getIordersMaster().getQrId()}</a></td>
                       <td>${i.getIordersMaster().getGuestId()}</td>
                       <td>${i.getIordersMaster().getTrackingCode()}</td>
                       <td>${i.getIordersDetail().getQty()}</td>

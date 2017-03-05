@@ -116,7 +116,7 @@ public class ProductDo extends HttpServlet {
 		String count = request.getParameter("txtCount");
 		String warehouse = request.getParameter("warehouse");
 		String comment = request.getParameter("txtComment");
-		String staffName= session.getAttribute("staffName").toString();
+		String staffName= (String) session.getAttribute("staffName");
 		
 		int modifyCount = 0;
 		

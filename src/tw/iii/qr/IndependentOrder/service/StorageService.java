@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tw.iii.qr.IndependentOrder.model.entity.Bundles;
 import tw.iii.qr.IndependentOrder.model.entity.IordersDetail;
 import tw.iii.qr.IndependentOrder.model.entity.Storage;
 import tw.iii.qr.IndependentOrder.model.repository.AbstractDAO;
@@ -63,7 +64,7 @@ public class StorageService extends AbstractService<Storage> {
 		try {
 			  Storage sto = storageDAO.selectStorageByIorderDetail(iod);
 			  sto.setQty(sto.getQty()-iod.getQty());
-			  persist(sto);
+			  update(sto);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,12 +73,40 @@ public class StorageService extends AbstractService<Storage> {
 	}
 	
 	/* 組合包扣庫存用  */ 
-	public void deductStock(IordersDetail iod,String sku){
+	public void deductStock(IordersDetail iod,Bundles b){
+		
+		try {
+			  int totalcount = iod.getQty() * b.getQty();
+			  Storage sto = storageDAO.selectStorageByIorderDetail(iod);
+			  sto.setQty(sto.getQty()- totalcount);
+			  update(sto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	/* 單sku回庫存用  */ 
+	public void addStock(IordersDetail iod){
 		
 		try {
 			  Storage sto = storageDAO.selectStorageByIorderDetail(iod);
-			  sto.setQty(sto.getQty()-iod.getQty());
-			  persist(sto);
+			  sto.setQty(sto.getQty()+iod.getQty());
+			  update(sto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	/* 組合包回庫存用  */ 
+	public void addStock(IordersDetail iod,Bundles b){
+		
+		try {
+			  int totalcount = iod.getQty() * b.getQty();
+			  Storage sto = storageDAO.selectStorageByIorderDetail(iod);
+			  sto.setQty(sto.getQty()+ totalcount);
+			  update(sto);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

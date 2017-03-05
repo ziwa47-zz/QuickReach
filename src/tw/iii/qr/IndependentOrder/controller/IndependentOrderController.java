@@ -82,7 +82,7 @@ public class IndependentOrderController {
 		// String date = request.getParameter("orderDate");
 		// System.out.println(date);
 		String staffName 			= request.getParameter("staffName");
-		String orderGuest 			= request.getParameter("guestid");
+		String orderGuest 			= request.getParameter("guestId");
 		String platform 			= request.getParameter("platform");
 		String paypalFees 			= request.getParameter("paypalFees");
 		String paypalPrice 			= request.getParameter("paypalPrice");
@@ -163,7 +163,7 @@ public class IndependentOrderController {
 			e.printStackTrace();
 		}
 
-		return "redirect:/HomePage.jsp";
+		return "redirect:/QRIndependentOrder/Processing";
 
 	}
 

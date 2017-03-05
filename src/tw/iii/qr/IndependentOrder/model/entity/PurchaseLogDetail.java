@@ -1,12 +1,13 @@
 package tw.iii.qr.IndependentOrder.model.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="purchaselog_detail")
-public class PurchaseLogDetail implements Serializable{
+public class PurchaselogDetail implements Serializable {
 	/**
 	 * 
 	 */
@@ -20,7 +21,7 @@ public class PurchaseLogDetail implements Serializable{
 	private String warehousePosition1;
 	private String warehousePosition2;
 	private Integer qty;
-	private Double price;
+	private BigDecimal price;
 	private String comment;
 	private String stockStatus;
 
@@ -66,10 +67,10 @@ public class PurchaseLogDetail implements Serializable{
 		return this.qty;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
-	public Double getPrice() {
+	public BigDecimal getPrice() {
 		return this.price;
 	}
 

@@ -2,15 +2,14 @@ package tw.iii.qr.IndependentOrder.model.repository;
 
 import org.springframework.stereotype.Repository;
 
-import tw.iii.qr.IndependentOrder.model.entity.PurchaseLogDetail;
+import tw.iii.qr.IndependentOrder.model.entity.PurchaselogDetail;
 
 @Repository
-public class PurchaseLogDetailDAO extends AbstractDAO<PurchaseLogDetail> {
-
+public class PurchaselogDetailDAO extends AbstractDAO<PurchaselogDetail> {
 	@Override
-	protected Class<PurchaseLogDetail> getEntityClass() {
-		return PurchaseLogDetail.class;
+	protected Class<PurchaselogDetail> getEntityClass() {
+		return PurchaselogDetail.class;
 	}
-	
-	
+
+
 }
