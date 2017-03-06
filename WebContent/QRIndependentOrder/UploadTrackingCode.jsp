@@ -8,17 +8,17 @@
 <title>Upload Tracking Code</title>
 </head>
 <body>
-	<%@ include file="/href/navbar.jsp"%>
-	<c:if test="${PageCompetence.getOrdersManage() == 0 }">
-		<%
-			response.sendRedirect("/HomePage.jsp");
-		%>
-	</c:if>
-	<%
-	
-		request.setAttribute("begin", request.getParameter("begin"));
-		request.setAttribute("end", request.getParameter("end"));
-	%>
+<%@ include file="/href/navbar.jsp"%>
+<c:if test="${PageCompetence.getOrdersManage() == 0 }">
+<%
+	response.sendRedirect("/HomePage.jsp");
+%>
+</c:if>
+<%
+
+	request.setAttribute("begin", request.getParameter("begin"));
+	request.setAttribute("end", request.getParameter("end"));
+%>
 
 	<div class="nav">
 		<div class="container">
@@ -128,7 +128,7 @@
 						<c:choose>
 							<c:when test="${check.index%2 != 0}">
 								<tr style="background-color: #D4F4D8">
-									<td rowspan="3" style="vertical-align: middle"><input
+									<td rowspan="2" style="vertical-align: middle"><input
 										type="checkbox" name="QR_id"
 										value="${i.getIordersMaster().getQrId()}"
 										onblur="preventDoubleOrder(this)"></td>
@@ -152,10 +152,10 @@
 									<td>${i.getIordersMaster().getStaffName()}</td>
 								</tr>
 								<tr style="background-color: #D4F4D8">
-									<td colspan="9"><c:forEach var="j"	items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
+									<td colspan="6"><c:forEach var="j"	items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
 											<b><a	href="../QRProduct/StockDetail.jsp?sku=${j.getSku()}">${j.getSku()}</a></b>${j.getProductName()}<br />
 										</c:forEach></td>
-									<td colspan="3"><c:forEach var="k"	items="${i.getIordersDetails()}" begin="0" step="1"	varStatus="check">
+									<td colspan="2"><c:forEach var="k"	items="${i.getIordersDetails()}" begin="0" step="1"	varStatus="check">
 											<b>${k.getWarehouse()}</b>(倉別)<br />
 										</c:forEach></td>
 								</tr>
@@ -163,7 +163,7 @@
 							</c:when>
 							<c:otherwise>
 								<tr>
-									<td rowspan="3" style="vertical-align: middle">
+									<td rowspan="2" style="vertical-align: middle">
 									<input 	type="checkbox" name="QR_id"	value="${i.getIordersMaster().getQrId()}"	onchange="preventDoubleOrder(this)"></td>
 
 									<td><a	href="OrderDetail?QR_id=${i.getIordersMaster().getQrId()}">
@@ -186,7 +186,7 @@
 									<td colspan="6"><c:forEach var="j" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
 											<b><a 	href="../QRProduct/StockDetail.jsp?sku=${j.getSku()}">${j.getSku()}</a></b>${j.getProductName()}<br />
 										</c:forEach></td>
-									<td colspan="3"><c:forEach var="k" 	items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
+									<td colspan="2"><c:forEach var="k" 	items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
 											<b>${k.getWarehouse()}</b>(倉別)<br />
 										</c:forEach></td>
 								</tr>

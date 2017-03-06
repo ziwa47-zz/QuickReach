@@ -237,7 +237,7 @@
                   <tr style="background-color:#D4F4D8">
 					<td colspan="9">
                     <c:forEach var="j" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
-<%--                       <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a> --%>
+					  <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
                       <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSku()}">${j.getSku()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
@@ -266,10 +266,10 @@
                     <td>${i.getIordersMaster().getTotalPrice()}${i.getIordersMaster().getCurrency()}</td>
                     <td>${i.getIordersMaster().getStaffName()}</td>
                   </tr>
-                  <tr style="background-color:#D4F4D8">
+                  <tr>
 					<td colspan="9">
                     <c:forEach var="j" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
-<%--                       <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a> --%>
+                      <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
                       <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSku()}">${j.getSku()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
