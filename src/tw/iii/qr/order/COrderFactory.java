@@ -247,8 +247,7 @@ public class COrderFactory extends COrders {
 		}
 	}
 
-	public COrders getOrderAllInfo(String QR_id) throws Exception {
-		Connection conn = new DataBaseConn().getConn();
+	public COrders getOrderAllInfo(String QR_id, Connection conn) throws Exception {
 		String strsql = "SELECT distinct g.guestFirstName, g.guestLastName, g.guestAccount, g.email, g.tel1, g.tel2"
 				+ ", g.mobile, g.birthday, g.company, g.address, g.country, g.postcode, g.gender"
 				+ ", r.recieverFirstName, r.recieverLastName, r.tel1, r.tel2, r.address, r.country, r.postcode"
@@ -327,13 +326,11 @@ public class COrderFactory extends COrders {
 			orderInfo.COrderMaster.setSize(rs.getString(53));
 			orderInfo.COrderMaster.setComment(rs.getString(54));
 		}
-		conn.close();
 		return orderInfo;
 
 	}
 
-	public LinkedList<COrderDetail> getOrderDetails(String QR_id) throws Exception {
-		Connection conn = new DataBaseConn().getConn();
+	public LinkedList<COrderDetail> getOrderDetails(String QR_id,Connection conn) throws Exception {
 		String strsql = "SELECT distinct"
 				+ " d.sku, d.productName, d.invoiceName, d.price, d.invoicePrice, d.qty, d.warehouse, d.comment, d.Item, d.QR_id"
 				+ " from  orders_master as m inner join  orders_detail as d on m.QR_id = d.QR_id"
@@ -361,7 +358,6 @@ public class COrderFactory extends COrders {
 			detail.setQR_id(rs.getString(10));
 			detailList.add(detail);
 		}
-		conn.close();
 		return detailList;
 
 	}
@@ -709,8 +705,8 @@ public class COrderFactory extends COrders {
 		conn.close();
 	}
 
-	public LinkedList<COrderMaster> checkOrderIdOrderStatus(COrderMaster origincdm) throws Exception {
-		Connection conn = new DataBaseConn().getConn();
+	public LinkedList<COrderMaster> checkOrderIdOrderStatus(COrderMaster origincdm, Connection conn) throws Exception {
+	
 		// 準備參數 檢查前用
 		boolean isCombine = false;
 		LinkedList<COrderMaster> orderList = new LinkedList<COrderMaster>();
@@ -741,7 +737,7 @@ public class COrderFactory extends COrders {
 			ps2.setString(1, order.getQR_id());
 			ResultSet rs2 = ps2.executeQuery();
 			while (rs2.next()) {
-				getDqrid(origincdm.getTrackingCode(), CombineOrders,rs2);
+				getDqrid(origincdm.getTrackingCode(), CombineOrders,rs2,conn);
 			}
 		} else {
 			corder = new COrderMaster();
@@ -752,13 +748,11 @@ public class COrderFactory extends COrders {
 			corder.setStaffName(origincdm.getStaffName());
 			CombineOrders.add(corder);
 		}
-		conn.close();
 		return CombineOrders;
 
 	}
 
-	private void getDqrid(String trackingCode, LinkedList<COrderMaster> CombineOrders,ResultSet rs) throws Exception {
-		Connection conn = new DataBaseConn().getConn();
+	private void getDqrid(String trackingCode, LinkedList<COrderMaster> CombineOrders,ResultSet rs, Connection conn) throws Exception {
 		COrderMaster corder;
 		String strSqlQRId = "select om.QR_id,om.ebayaccount,om.Order_id,om.logistics,om.staffName "
 				+ "from orders_master om inner join comebineorder co on om.QR_id=co.d_qrid " + "where co.d_qrid = ?";
@@ -775,7 +769,6 @@ public class COrderFactory extends COrders {
 			corder.setTrackingCode(trackingCode);
 			CombineOrders.add(corder);
 		}
-		conn.close();
 	}
 
 	public void insertIntoShippingLog(COrderMaster corder, Connection conn) throws Exception {
@@ -791,9 +784,9 @@ public class COrderFactory extends COrders {
 		ps.executeUpdate();
 	}
 
-	public void isBundleAddBackToStock(COrderMaster corder) throws Exception {
+	public void isBundleAddBackToStock(COrderMaster corder,Connection conn) throws Exception {
 		
-		LinkedList<COrderDetail> condition = getCondition(corder);
+		LinkedList<COrderDetail> condition = getCondition(corder, conn);
 
 		for (int i = 0; i < condition.size(); i++) {
 
@@ -802,19 +795,18 @@ public class COrderFactory extends COrders {
 			if ("B00".equals(condition.get(i).getSKU().substring(0, 3))) {
 
 				System.out.println("bundle");
-				plusBundleAddBackToStock(condition.get(i));
+				plusBundleAddBackToStock(condition.get(i),conn);
 
 			} else if (!"B00".equals(condition.get(i).getSKU().substring(0, 3))) {
 
 				System.out.println("single");
-				addBackToStock(condition.get(i));
+				addBackToStock(condition.get(i),conn);
 			}
 		}
 		
 	}
 
-	public void plusBundleAddBackToStock(COrderDetail condition) throws Exception {
-		Connection conn = new DataBaseConn().getConn();
+	public void plusBundleAddBackToStock(COrderDetail condition,Connection conn) throws Exception {
 		LinkedList<String> skulist = new LinkedList<String>();
 		LinkedList<Integer> qty = new LinkedList<Integer>();
 		String strsql = " select p_sku,qty from bundles where '1' = '1' and m_sku = ? ";
@@ -848,11 +840,9 @@ public class COrderFactory extends COrders {
 		}
 
 		ps.close();
-		conn.close();
 	}
 
-	public void addBackToStock(COrderDetail condition) throws Exception {
-		Connection conn = new DataBaseConn().getConn();
+	public void addBackToStock(COrderDetail condition,Connection conn) throws Exception {
 		String strSql = "update  storage set qty =(select qty from storage  where sku = ? and warehouse = ? ) +  ? "
 				+ " where sku = ? and warehouse = ?";
 		PreparedStatement ps = conn.prepareStatement(strSql);
@@ -864,26 +854,24 @@ public class COrderFactory extends COrders {
 		ps.setString(5, condition.getWarehouse());
 
 		ps.executeUpdate();
-		conn.close();
 	}
 
 	public void isBundledeductStock(COrderMaster corder, Connection conn) throws Exception {
-		LinkedList<COrderDetail> condition = getCondition(corder);
+		LinkedList<COrderDetail> condition = getCondition(corder,conn);
 		for (int i = 0; i < condition.size(); i++) {
 			// System.out.println(condition.get(i).getSKU());
 			if ("B00".equals(condition.get(i).getSKU().substring(0, 3))) {
 				// System.out.println("bundle");
-				plusBundledeductStock(condition.get(i));
+				plusBundledeductStock(condition.get(i), conn);
 			} else {
 				// System.out.println("single");
-				deductStock(condition.get(i));
+				deductStock(condition.get(i), conn);
 			}
 		}
 
 	}
 
-	public void plusBundledeductStock(COrderDetail condition) throws Exception {
-		Connection conn = new DataBaseConn().getConn();
+	public void plusBundledeductStock(COrderDetail condition,Connection conn) throws Exception {
 		LinkedList<String> skulist = new LinkedList<String>();
 		LinkedList<Integer> qty = new LinkedList<Integer>();
 		String strsql = " select p_sku,qty from bundles where '1' = '1' and m_sku = ? ";
@@ -917,11 +905,9 @@ public class COrderFactory extends COrders {
 		}
 
 		ps.close();
-		conn.close();
 	}
 
-	public void deductStock(COrderDetail condition) throws Exception {
-		Connection conn = new DataBaseConn().getConn();
+	public void deductStock(COrderDetail condition,Connection conn) throws Exception {
 		String strSql = "update  storage set qty =(select qty from storage  where sku = ? and warehouse = ? ) -  ? "
 				+ " where sku = ? and warehouse = ?";
 		PreparedStatement ps = conn.prepareStatement(strSql);
@@ -933,12 +919,10 @@ public class COrderFactory extends COrders {
 		ps.setString(5, condition.getWarehouse());
 
 		ps.executeUpdate();
-		conn.close();
 
 	}
 
-	public LinkedList<COrderDetail> getCondition(COrderMaster corder) throws Exception {
-		Connection conn = new DataBaseConn().getConn();
+	public LinkedList<COrderDetail> getCondition(COrderMaster corder, Connection conn) throws Exception {
 		LinkedList<COrderDetail> result = new LinkedList<COrderDetail>();
 
 		String strSql = "select d.SKU,d.qty, d.warehouse, d.item, p.productType "
@@ -962,15 +946,14 @@ public class COrderFactory extends COrders {
 				result.add(detail);
 			}
 		}
-		conn.close();
 		return result;
 	}
 
 	public void insertIntoPurchaseLogFromOrders(tw.iii.qr.order.DTO.COrderMaster corder, Connection conn)
 			throws Exception {
-		LinkedList<COrderDetail> condition = getCondition(corder);
-		COrders orderInfo = getOrderAllInfo(corder.getQR_id());
-		LinkedList<COrderDetail> orderDetailInfo = getOrderDetails(corder.getQR_id());
+		LinkedList<COrderDetail> condition = getCondition(corder, conn);
+		COrders orderInfo = getOrderAllInfo(corder.getQR_id(),conn);
+		LinkedList<COrderDetail> orderDetailInfo = getOrderDetails(corder.getQR_id(), conn);
 		System.out.println(orderInfo.getCOrderMaster().getQR_id());
 		System.out.println(orderInfo.getCOrderDetailSingle().getSKU());
 
@@ -1039,7 +1022,6 @@ public class COrderFactory extends COrders {
 		
 		ps.close();
 		ps2.close();
-		conn.close();
 	}
 
 	public LinkedList<String> getWarehouse(HttpServletRequest request) {

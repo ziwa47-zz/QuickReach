@@ -22,9 +22,9 @@ request.setCharacterEncoding("UTF-8");
 if(request.getParameter("QR_id") != null || request.getParameter("QR_id") != ""){
 Connection conn = new DataBaseConn().getConn();
 QR_id = request.getParameter("QR_id");
-COrders searchResult = COrderFactory.getOrderAllInfo(QR_id);
+COrders searchResult = COrderFactory.getOrderAllInfo(QR_id,conn);
 session.setAttribute("result", searchResult);
-LinkedList<COrderDetail> resultDetail = COrderFactory.getOrderDetails(QR_id);
+LinkedList<COrderDetail> resultDetail = COrderFactory.getOrderDetails(QR_id,conn);
 session.setAttribute("resultDetail", resultDetail);
 conn.close();
 }else {

@@ -242,7 +242,7 @@
 		  </select>
 		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printsent"> 列印出貨單</button>
 		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printpick"> 列印揀貨單</button>
-		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printcoll"> 列印集貨單</button>
+<!-- 		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printcoll"> 列印集貨單</button> -->
 		  <button type="submit" class="btn btn-md btn-info" name ="send"  value="printlogistic"> 列印物流匯出報表</button>
           <ul class="pager pagination">
             <c:choose>

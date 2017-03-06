@@ -73,6 +73,7 @@
     </c:if>
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;" disabled><legend>訂單明細</legend>
       <div class="panel-group" id="accordion">
+      
         <div class="panel panel-default" style="background-color:#E7D29F">
           <div class="panel-heading">
             <h4 class="panel-title">
@@ -185,7 +186,6 @@
 			        </div>
 <!-- 			        <div class="row"> -->
 <!-- 			          <div class="col-md-3 text-right well-sm label-tag"><h4>ebay成交費</h4></div> -->
-			        </div>
 			        <div class="row">
 			          <div class="col-md-3 text-right well-sm label-tag"><h4>計算保價</h4></div>
 			          <div class="col-md-5 well-sm"><input class="form-control" type="text" name="InsuranceTotal" value="${IDPOrderDetail.getIordersMaster().getInsuranceTotal()}"></div>
@@ -244,10 +244,9 @@
 			 	  <tr class="ListTitle2">
 			        <th>商品SKU</th>
 			        <th>商品名稱</th>
-			        <th>售價</th>
-			        <th>數量</th>
-			        <th>重量(公克)</th>
-			        <th>重量(盎司)</th>
+			        <th>售價與數量</th>
+			        <th>倉別</th>
+			        <th>重量</th>
 			        <th>備註</th>
 		          </tr>
 	            </thead>
@@ -262,14 +261,14 @@
 		            <td>${i.getProductName()}
 		            </td>
 		           	<c:if test="${PageCompetence.getTotalAmountEdit() == 1}">
-			            <td><input class=""  type="text" name="price" value="${i.getPrice()}" ></td>
+			            <td>售價:<br/><input class=""  type="text" name="price" value="${i.getPrice()}" >
+			            <br/>數量:<br/><input class="" type="text" name="qty" value="${i.getQty()}"></td>
 			        </c:if>
 		            <c:if test="${PageCompetence.getTotalAmountEdit() == 0}">
-			            <td><input class="" type="text" name="price" value="${i.getPrice()}" readonly></td>
+			            <td>售價:<br/><input class="" type="text" name="price" value="${i.getPrice()}" readonly>
+			            <br/> 數量:<br/><input class="" type="text" name="qty" value="${i.getQty()}"></td>
 		           	</c:if>
 		            <td>
-		              <input class="" type="text" name="qty" value="${i.getQty()}">
-		             	 倉別:
 		              <select name="warehouse">
                         <c:set var="SKU" scope="session" value="${i.getSku()}"/>
                         <%
@@ -293,8 +292,8 @@
                           </c:forEach>
                       </select>
 		            </td>
-		            <td>重量(公克):<input class="form-control" type="text" name="weight_g" value="${i.getWeight_g()}"></td>
-		            <td>重量(盎司):<input class="form-control" type="text" name="weight_oz" value="${i.getWeight_oz()}"></td>
+		            <td>重量(公克):<br/><input class="form-control" type="text" name="weight_g" value="${i.getWeight_g()}"><br/>
+		            重量(盎司):<br/><input class="form-control" type="text" name="weight_oz" value="${i.getWeight_oz()}"></td>
 		            <td><input class="form-control" type="text" name="comment" value="${i.getComment()}">
 		            <input type="hidden" name="item" value="${i.getItem()}">
 		            </td>
@@ -303,9 +302,8 @@
 		        </c:forEach>
 		      </table>
 	          <button type="submit" name="submit" value="toGetProducts" class="btn btn-sm btn-success">新增商品</button>
-            </div>
-          </div>
-        </div>
+        	</div>
+      	</div>
       </div>
     </fieldset>
     </form>
@@ -322,7 +320,7 @@ $(function () {
 	});
 });
   
- function enableFields(ele){
+function enableFields(ele){
   if (ele.checked) {
 	  $("#myfields").prop("disabled", false);
 	  $("#btnCheck").prop("disabled", false);
@@ -336,18 +334,19 @@ function isSubmited() {
 	//isLessTotalPrice()
 	var sum = 0;
     $('input[name="price"]').each(function(){
-        sum += +$(this).val();
+        sum += +$(this).val()  ;
     });
+   
     var total = $('#TotalPrice').val();
-    if (sum!=total || sum <=0)
-    {
-    	alert("請注意,修改後金額不等於總金額,不可更改");
-        return false;
-    } else if (sum>total || sum <=0)
-    {
-    	alert("請注意,修改後金額小於等於0");
-        return false;
-    }
+//     if (sum<=total || sum <=0)
+//     {
+//     	alert("請注意,修改後金額不等於總金額,不可更改");
+//         return false;
+//     } else if (sum>total || sum <=0)
+//     {
+//     	alert("請注意,修改後金額小於等於0");
+//         return false;
+//     }
     //isWarehousePicked()
     var isWarehousePicked = true;
     $('select[name=warehouse]').each(function(){

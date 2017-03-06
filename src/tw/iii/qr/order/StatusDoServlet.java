@@ -50,6 +50,7 @@ public class StatusDoServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession();
+		Connection conn = new DataBaseConn().getConn();
 		COrderFactory OFactory = new COrderFactory();
 		COrderMaster Origincdm = new COrderMaster();
 		Origincdm.setEbayAccount(request.getParameter("ebayaccount"));
@@ -108,17 +109,17 @@ public class StatusDoServlet extends HttpServlet {
 			// session.removeAttribute("excelpath");
 			break;
 
-		case "printcoll":
-			String[] pathcoll = new CDBtoExcel().collect(request, response);
-			session.setAttribute("pathcoll", pathcoll);
-			response.sendRedirect("/href/toExcel.jsp?excel=6");
-
-			out.write("<script type='text/javascript'>");
-			out.write("alert('列印成功');");
-			out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
-			out.write("</script>");
-			// session.removeAttribute("excelpath");
-			break;
+//		case "printcoll":
+//			String[] pathcoll = new CDBtoExcel().collect(request, response);
+//			session.setAttribute("pathcoll", pathcoll);
+//			response.sendRedirect("/href/toExcel.jsp?excel=6");
+//
+//			out.write("<script type='text/javascript'>");
+//			out.write("alert('列印成功');");
+//			out.write("window.location = 'QROrders/OrderPickupPage.jsp?begin=0&end=10';");
+//			out.write("</script>");
+//			// session.removeAttribute("excelpath");
+//			break;
 		case "printlogistic":
 			String[] pathlogistic = new CDBtoExcel().物流匯出格式();
 			session.setAttribute("pathlogistic", pathlogistic);
@@ -147,7 +148,6 @@ public class StatusDoServlet extends HttpServlet {
 			// session.removeAttribute("excelpath");
 			break;
 		case "processing":
-			LinkedList<String> warehouses = OFactory.getWarehouse(request);
 			OFactory.updateToPickUp(request);
 			response.sendRedirect("QROrders/OrderPickupPage.jsp?begin=0&end=10");
 			break;
@@ -157,16 +157,18 @@ public class StatusDoServlet extends HttpServlet {
 			response.sendRedirect("QROrders/OrderUploadTrackingCode.jsp?begin=0&end=10");
 			break;
 		case "sendTrackingCode":
-			String result = DoSendTrackingCode(Origincdm, response, out) ;
+			System.out.println("sendTrackingCode");
+			String result = DoSendTrackingCode(Origincdm, response, out);
+			System.out.println("done");
 			out.println(result);
 			out.println("1秒後跳轉回上傳追蹤碼頁面");
 			out.println("<br/>");
 			response.setHeader("Refresh", "1; /QROrders/OrderUploadTrackingCode.jsp?begin=0&end=10");
-			
+
 			break;
 		case "finished":
 			OFactory.updateToRefund(request);
-			OFactory.isBundleAddBackToStock(Origincdm);
+			OFactory.isBundleAddBackToStock(Origincdm, conn);
 			response.sendRedirect("QROrders/refundPage.jsp?begin=0&end=10");
 			break;
 		case "revertTo":
@@ -177,32 +179,32 @@ public class StatusDoServlet extends HttpServlet {
 			OFactory.deleteUndoOrder(request);
 			response.sendRedirect("QROrders/NewOrderSearch.jsp?begin=0&end=10");
 			break;
-			
+
 		}
 		out.close();
 
 	}
 
-	private String DoSendTrackingCode(COrderMaster origincdm, HttpServletResponse response, PrintWriter out
-			) throws Exception, ApiException, SdkException, SQLException, IOException {
+	private String DoSendTrackingCode(COrderMaster origincdm, HttpServletResponse response, PrintWriter out)
+			throws Exception {
 
 		Connection conn = new DataBaseConn().getConn();
 		COrderFactory OFactory = new COrderFactory();
-		//找出真正的訂單號 單筆 size =1 合併size >1
-		LinkedList<COrderMaster> TrueOrders = OFactory.checkOrderIdOrderStatus(origincdm);
-		
+		// 找出真正的訂單號 單筆 size =1 合併size >1
+		LinkedList<COrderMaster> TrueOrders = OFactory.checkOrderIdOrderStatus(origincdm, conn);
 		conn.setAutoCommit(false);
 		Savepoint sp1 = conn.setSavepoint();
+		boolean isOK = false;
 		for (COrderMaster corder : TrueOrders) {
-			//如果上傳OK就繼續寫資料庫 中間失敗就回家並rollback 
-			boolean isOK = new CompleteSale().CompleteSale1(corder);
+			// 如果上傳OK就繼續寫資料庫 中間失敗就回家並rollback
+			isOK = new CompleteSale().CompleteSale1(corder);
 			if (isOK) {
 				try {
 					OFactory.updateToFinished(corder, conn);
 					OFactory.isBundledeductStock(corder, conn);
 					OFactory.insertIntoShippingLog(corder, conn);
 					OFactory.insertIntoPurchaseLogFromOrders(corder, conn);
-					//
+
 					System.out.println("sendTrackingCode success");
 				} catch (Exception e) {
 					System.out.println("sendTrackingCode fail");
@@ -219,13 +221,14 @@ public class StatusDoServlet extends HttpServlet {
 				return "Fail";
 			}
 		}
-		//如果訂單超過一筆表示是合併訂單 應該另外處理把合併訂單送到已完成 與 把狀態修改成已完成
-		if(TrueOrders.size()>1)
-		OFactory.updateToFinished(origincdm, conn);
+		// 如果訂單超過一筆表示是合併訂單 應該另外處理把合併訂單送到已完成 與 把狀態修改成已完成
+		if (TrueOrders.size() > 1 && isOK == true) {
+			OFactory.updateToFinished(origincdm, conn);
+			
+		}
 		conn.commit();
-		conn.close();
 		return "Success";
-		
+
 	}
 
 }

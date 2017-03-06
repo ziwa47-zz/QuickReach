@@ -124,14 +124,15 @@
 			} else {
 				out.println(pa + filename + " : 此檔案不存在");
 				out.println("<br/>");
-				out.println("3秒後跳轉回已完成頁面");
+				out.println("1秒後跳轉回已完成頁面");
 				out.println("<br/>");
-				response.setHeader("Refresh","3; /QROrders/OrderFinished.jsp?begin=0&end=10");
+				response.setHeader("Refresh","1; /QROrders/OrderFinished.jsp?begin=0&end=10");
 			}
 		} catch (Exception ex) {
-			out.println("3秒後跳轉回已完成頁面");
+			ex.printStackTrace();
+			out.println("1秒後跳轉回已完成頁面");
 			out.println("<br/>");
-			response.setHeader("Refresh","3; /QROrders/OrderFinished.jsp?begin=0&end=10");
+			response.setHeader("Refresh","1; /QROrders/OrderFinished.jsp?begin=0&end=10");
 		}
 	}
 	if ("4".equals(request.getParameter("excel"))) {
