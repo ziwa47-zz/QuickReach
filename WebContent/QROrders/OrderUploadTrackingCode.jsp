@@ -21,10 +21,10 @@
 		%>
 	</c:if>
 	<%
+	String  Order_Processing = "已出貨";
+	LinkedList<COrders> orderList = COrderFactory.orders(request,Order_Processing);
+	session.setAttribute("list", orderList);
 		COrderFactory.checkUrlToRemoveSession(request, session);
-		Connection conn = new DataBaseConn().getConn();
-		LinkedList<COrders> orderList = COrderFactory.orders(request, conn, "已出貨");
-		session.setAttribute("list", orderList);
 		request.setAttribute("begin", request.getParameter("begin"));
 		request.setAttribute("end", request.getParameter("end"));
 	%>

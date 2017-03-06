@@ -18,32 +18,32 @@ public class GuestDAO extends AbstractDAO<Guest> {
 	}
 
 	public Guest selectGuestByGuestId(String guestId) throws Exception {
-		System.out.println("GuestDAO.selectGuestByGuestId():start");
+		//System.out.println("GuestDAO.selectGuestByGuestId():start");
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("guestId", guestId));
 		Guest guest = null;
-		System.out.println("guestId = "+guestId);
+		//System.out.println("guestId = "+guestId);
 
 		if (criteria.list().size() == 1) {
-			System.out.println("criteria.list().size() == 1");
+			//System.out.println("criteria.list().size() == 1");
 			guest = (Guest) criteria.list().get(0);
-			System.out.println(BeanUtils.describe(guest));
+			//System.out.println(BeanUtils.describe(guest));
 		} 
-		System.out.println("GuestDAO.selectGuestByGuestId():finish");
+		//System.out.println("GuestDAO.selectGuestByGuestId():finish");
 		return guest;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Guest> selectGuestByLike(String guestId) throws Exception {
-		System.out.println("GuestDAO.selectGuestByLike():start");
+		//System.out.println("GuestDAO.selectGuestByLike():start");
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.like("guestId", "%"+guestId+"%"));
-		System.out.println("guestId like %"+guestId+"%");
+		//System.out.println("guestId like %"+guestId+"%");
 
 		if (criteria.list().size() == 0) {
-			System.out.println("criteria.list().size() == 0");
+			//System.out.println("criteria.list().size() == 0");
 		} 
-		System.out.println("GuestDAO.selectGuestByLike():finish");
+		//System.out.println("GuestDAO.selectGuestByLike():finish");
 		return criteria.list();
 	}
 

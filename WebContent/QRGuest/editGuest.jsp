@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>修改客戶帳號</title>
+<title>修改客戶</title>
 <script src="../js/jquery-1.12.4.min.js"></script>
 
 
@@ -102,15 +102,15 @@ display: block;
   <div class="container">
     <div class="navbar-left" style="background-color:#C7AAE4;" >
       <ul class="nav nav-tabs">
-        <li><a href="./GuestManage.jsp" style="color:#fff">客戶帳號管理</a></li>
+        <li><a href="./GuestManage.jsp" style="color:#fff">客戶管理</a></li>
       </ul>
     </div>
   </div>
   <div class="container">
     <div class="nav" style="background-color:#984AC0;" >
       <ul class="nav nav-tabs">
-        <li><a href="./GuestManage.jsp" style="color: #fff">客戶帳號管理</a></li>
-        <li><a href="./Guest.jsp">新增客戶帳號</a></li>
+        <li><a href="./GuestManage.jsp" style="color: #fff">客戶管理</a></li>
+        <li><a href="./Guest.jsp">新增客戶</a></li>
       </ul>
     </div>
   </div>

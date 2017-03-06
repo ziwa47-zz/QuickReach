@@ -68,6 +68,29 @@
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+<!-- 	 //SMTP Server -->
+		<property name="host" value="smtp.gmail.com" />
+<!-- 		//Gmail Port = 587 -->
+		<property name="port" value="587" /> 
+<!-- 		//修改成你的Gmail帳號 -->
+		<property name="username" value="" /> 
+<!-- 		//修改成你的Gmail密碼 -->
+		<property name="password" value="" /> 
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.timeout">10000</prop>
+			</props>
+		</property>
+	</bean>
+ 
+	<bean id="mailSend" class="tw.iii.qr.IndependentOrder.service.QueueEmailService">
+<!-- 	//注入mailSender -->
+		<property name="mailSender" ref="mailSender" /> 
+	</bean>
 
 <!-- 	<import resource="/config.xml"/> -->
 	

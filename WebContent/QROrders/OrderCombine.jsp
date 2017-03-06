@@ -23,7 +23,7 @@
 </c:if>
 <%
 	Connection conn = new DataBaseConn().getConn();
-	LinkedList<COrderCombine> list = CombineOrder.canCombine(request, conn);
+	LinkedList<COrderCombine> list = CombineOrder.canCombine(request);
 	conn.close();
 	session.setAttribute("list", list);
 	

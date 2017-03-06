@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tw.iii.qr.IndependentOrder.model.entity.Bundles;
+import tw.iii.qr.IndependentOrder.model.entity.IordersDetail;
 import tw.iii.qr.IndependentOrder.model.entity.Storage;
 import tw.iii.qr.IndependentOrder.model.repository.AbstractDAO;
 import tw.iii.qr.IndependentOrder.model.repository.StorageDAO;
@@ -38,6 +40,7 @@ public class StorageService extends AbstractService<Storage> {
 				for (Storage storage : list) {
 					Map<String, Object> dataMap = new HashedMap<String, Object>();
 					System.out.println(BeanUtils.describe(storage));
+					dataMap.put("qty",storage.getQty());
 					dataMap.put("warehouse", storage.getWarehouse());
 					dataMap.put("warehousePosition", storage.getWarehousePosition1()+"-"+storage.getWarehousePosition2());
 					dataList.add(dataMap);
@@ -55,5 +58,62 @@ public class StorageService extends AbstractService<Storage> {
 		return map;
 
 	}
+	/* 單sku扣庫存用  */ 
+	public void deductStock(IordersDetail iod){
+		
+		try {
+			  Storage sto = storageDAO.selectStorageByIorderDetail(iod);
+			  sto.setQty(sto.getQty()-iod.getQty());
+			  update(sto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	/* 組合包扣庫存用  */ 
+	public void deductStock(IordersDetail iod,Bundles b){
+		
+		try {
+			  int totalcount = iod.getQty() * b.getQty();
+			  Storage sto = storageDAO.selectStorageByIorderDetail(iod);
+			  sto.setQty(sto.getQty()- totalcount);
+			  update(sto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	/* 單sku回庫存用  */ 
+	public void addStock(IordersDetail iod){
+		
+		try {
+			  Storage sto = storageDAO.selectStorageByIorderDetail(iod);
+			  sto.setQty(sto.getQty()+iod.getQty());
+			  update(sto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	/* 組合包回庫存用  */ 
+	public void addStock(IordersDetail iod,Bundles b){
+		
+		try {
+			  int totalcount = iod.getQty() * b.getQty();
+			  Storage sto = storageDAO.selectStorageByIorderDetail(iod);
+			  sto.setQty(sto.getQty()+ totalcount);
+			  update(sto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 
 }

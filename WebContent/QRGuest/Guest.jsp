@@ -80,7 +80,7 @@ display: block;
       <div class="container-fluid form-horizontal">
         <div class="row">
           <div class="col-md-3 text-right well-sm label-tag"  >
-            <h4>客戶ID</h4>
+            <h4>熟客ID</h4>
           </div>
           <div class="col-md-5 well-sm">
             <input class="form-control required" title="請輸入客戶ID" name="guestId" type="text" >

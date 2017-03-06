@@ -13,23 +13,7 @@
 <script
 	src="http://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
 	
-	<script type="text/javascript">
-	function getStockTransferMasterId() {
-		 
-		 $.ajax({
-		  
-		  type:"GET",                  
-		     url: "/ajax/getStockTransferMasterCount",        
-		     data: $("#listForm").serialize(), 
-		        dataType: "json", 
-
-		        success : function(response){
-		         alert(response.data)
-		         $("#txtstockID").val(response.data);
-		        }        
-		 })
-		}
-	</script>
+	
 <style type="text/css">
 /* Sortable tables */
 table.sortable thead {
@@ -182,6 +166,7 @@ table.sortable thead {
 			</fieldset>
 		</form>
 	</div>
+	<c:if test="${PageCompetence.getInventoryInfoEdit() == 1 }">
 	<div class="container table-responsive bg-warning"
 		style="border-radius: 20px">
 		<form name="searchform" method="post" action="../ProductDo"
@@ -199,7 +184,7 @@ table.sortable thead {
 						</div>
 						<div class="col-md-8">
 						<input class="form-control"  name="txtsku" type="hidden"  value="${product.getSKU()}">
-						<input class="form-control" id="txtstockID" name="txtstockID" type="text"  value="${product.getSKU()}">
+						<input class="form-control" id="txtstockID" name="txtstockID" type="hidden"  >
 							<select name="ddlModifyType" >
 								<option value="increase">增加</option>
 								<option value="decrease">減少</option>
@@ -231,7 +216,7 @@ table.sortable thead {
 							</h5>
 						</div>
 						<div class="col-md-8">
-							<select name="wareHouse" id="wareHouse" onchange="getStockTransferMasterId()">
+							<select name="warehouse" id="warehouse" onchange="getStockTransferMasterId()">
 								<c:forEach var="i" items="${stock}" begin="0" step="1">
 									<option value="${i.getWareHouse()}">${i.getWareHouse()}</option>
 								</c:forEach>
@@ -266,6 +251,7 @@ table.sortable thead {
 
 		</form>
 	</div>
+	</c:if>
 	<div class="container table-responsive bg-warning"
 		style="border-radius: 20px">
 		<form name="searchform" method="post" action="#"
@@ -350,4 +336,27 @@ table.sortable thead {
 		</form>
 	</div>
 </body>
+<script type="text/javascript">
+	
+	$(function() {
+		
+		getStockTransferMasterId();
+		
+	});
+	
+	function getStockTransferMasterId() {
+		 $.ajax({
+		  
+		  type:"GET",                  
+		     url: "/ajax/getStockTransferMasterCount?warehouse="+$("#warehouse").val(),        
+		     data: $("#listForm").serialize(), 
+		        dataType: "json", 
+
+		        success : function(response){
+		         //alert(response.data)
+		         $("#txtstockID").val(response.data);
+		        }        
+		 })
+		}
+	</script>
 </html>

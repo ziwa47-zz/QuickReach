@@ -25,14 +25,14 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import tw.iii.qr.DataBaseConn;
 import tw.iii.qr.stock.DTO.CStock;
-
+@Service
+@Transactional
 public class CDBtoExcel {
-	public static void main(String[] args) {
-
-	}
 
 	public CDBtoExcel() {
 
@@ -45,13 +45,13 @@ public class CDBtoExcel {
 		String strsql = "select distinct m.ebayNO, d.SKU, d.productName,d.qty, m.guestAccount,"
 				+ " r.country, m.currency, m.ebayprice,  m.payDate,"
 				+ "  m.totalPrice, m.paypalFees,m.paypalNet, "
-				+ " p.cost, shippingdate, m.logistics, m.ebayFees, r.tel1, m.trackingCode,"
+				+ " p.cost, m.shippingdate, m.logistics, m.ebayFees, r.tel1, m.trackingCode,"
 				+ " m.shippingFees, m.packageFees,d.comment, p.owner"
 
 				+ " FROM  orders_master as m inner join" + " orders_detail as d on m.QR_id = d.QR_id inner join"
 				+ " order_recieverinfo as r on m.QR_id = r.QR_id inner join"
 				+ " shippinglog as s on m.QR_id = r.QR_id  inner join" + " product as p on d.SKU  = p.SKU "
-				+ " where  shippingdate >=  convert(varchar,GETDATE(),111)";
+				+ " where  m.shippingdate >=  convert(varchar,GETDATE(),111)";
 
 		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = null;
@@ -221,7 +221,7 @@ public class CDBtoExcel {
 					+ " from orders_detail o inner join product p on  o.SKU = p.SKU "
 					+ " inner join orders_master m on m.QR_id = o.QR_id "
 					+ "	 inner join storage s on s.warehouse = o.warehouse and s.SKU = o.SKU"
-					+ " group by o.SKU,productType,brand, subBrand,s.warehouse,s.warehousePosition1,s.warehousePosition2, productName, spec,m.orderStatus"
+					+ " group by m.qr_id,o.SKU,productType,brand, subBrand,s.warehouse,s.warehousePosition1,s.warehousePosition2, productName, spec,m.orderStatus"
 					+ " having m.orderStatus = N'揀貨中' and m.qr_id = ?";
 
 			Connection conn = new DataBaseConn().getConn();

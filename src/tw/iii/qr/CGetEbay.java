@@ -128,7 +128,7 @@ public class CGetEbay {
 					ps.setString(4, "ebay"); // 平台
 					ps.setString(5, ""); // EBAY帳號所屬公司
 					ps.setString(6, order.getSellerUserID()); // EBAY帳號
-					ps.setString(7, order.getMonetaryDetails().getPayments().getPayment()[0].getPayer().getValue()); // 客戶帳號
+					ps.setString(7, order.getBuyerUserID()); // 客戶帳號
 					ps.setTimestamp(8, new java.sql.Timestamp(order.getCreatedTime().getTimeInMillis())); // OederDate
 					ps.setTimestamp(9, (new java.sql.Timestamp(order.getMonetaryDetails().getPayments().getPayment()[0]
 							.getPaymentTime().getTimeInMillis()))); // payDate

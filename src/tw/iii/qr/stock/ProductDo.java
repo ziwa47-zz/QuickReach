@@ -69,6 +69,9 @@ public class ProductDo extends HttpServlet {
 			case "getProcuctNew":
 				processSearchProductToAddOrderDetailNew(request, response);
 				break;
+			case "getProcuctNewIDP":
+				processSearchProductToAddIDPOrderDetailNew(request, response);
+				break;
 			case "submitcounting":
 				processcountingsearch(request,response);
 				break;
@@ -111,11 +114,12 @@ public class ProductDo extends HttpServlet {
 		
 		String sku = request.getParameter("txtsku");
 		String stockID = request.getParameter("txtstockID");
+		
 		String modifyType = request.getParameter("ddlModifyType");
 		String count = request.getParameter("txtCount");
-		String wareHouse = request.getParameter("wareHouse");
+		String warehouse = request.getParameter("warehouse");
 		String comment = request.getParameter("txtComment");
-		String staffName= session.getAttribute("staffName").toString();
+		String staffName= (String) session.getAttribute("staffName");
 		
 		int modifyCount = 0;
 		
@@ -130,15 +134,15 @@ public class ProductDo extends HttpServlet {
 			comment="減少;"+comment;
 		}
 		
-		conn = new DataBaseConn().getConn();
-		
+		//conn = new DataBaseConn().getConn();
+		System.out.println(modifyCount+comment+sku+warehouse);
 		CStockFactory csf = new CStockFactory();
 		
-		csf.modifyStorage(modifyCount, comment, sku, wareHouse);
-		csf.modifyStorageLogMaster(stockID, comment, staffName, wareHouse);
-		csf.modifyStorageLogDetail(stockID, comment, sku, wareHouse, modifyCount);
+		csf.modifyStorage(modifyCount, comment, sku, warehouse);
+		csf.modifyStorageLogMaster(stockID, comment, staffName, warehouse);
+		csf.modifyStorageLogDetail(stockID, comment, sku, warehouse, modifyCount);
 		
-		conn.close();
+		//conn.close();
 		
 		out.write("<script type='text/javascript'>");
 		out.write("alert('修改成功');");
@@ -245,5 +249,17 @@ public class ProductDo extends HttpServlet {
 		
 		response.sendRedirect("/QROrders/selectProductNew.jsp?QR_id=" + request.getParameter("QR_id"));
 	}
-	
+	private void processSearchProductToAddIDPOrderDetailNew(HttpServletRequest request, HttpServletResponse response)
+			throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		HttpSession session = request.getSession(); 
+		conn = new DataBaseConn().getConn();
+		CProductFactory cpf = new CProductFactory();
+		LinkedList<CProduct> cp =cpf.searchProduct(request,conn);
+		session.setAttribute("productall", cp);
+		conn.close();
+		
+		response.sendRedirect("/QRIndependentOrder/selectProductNew.jsp?QR_id=" + request.getParameter("QR_id"));
+	}
 }

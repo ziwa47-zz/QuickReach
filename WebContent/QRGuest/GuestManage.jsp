@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>員工帳號管理</title>
+<title>客戶管理</title>
 </head>
 <body>
 <%@include file="/href/navbar.jsp"%>
@@ -26,15 +26,15 @@ conn1.close();
   <div class="container">
     <div class="navbar-left" style="background-color:#C7AAE4;" >
       <ul class="nav nav-tabs">
-        <li><a href="./GuestManage.jsp" style="color:#fff">員工帳號管理</a></li>
+        <li><a href="./GuestManage.jsp" style="color:#fff">客戶管理</a></li>
       </ul>
     </div>
   </div>
   <div class="container">
     <div class="nav" style="background-color:#984AC0;" >
       <ul class="nav nav-tabs">
-        <li><a href="./GuestManage.jsp" style="color: #fff">員工帳號管理</a></li>
-        <li><a href="./Guest.jsp">新增員工帳號</a></li>
+        <li><a href="./GuestManage.jsp" style="color: #fff">客戶管理</a></li>
+        <li><a href="./Guest.jsp">新增客戶</a></li>
       </ul>
     </div>
   </div>
@@ -43,8 +43,8 @@ conn1.close();
 <div class="container container-fluid breadcrumbBox">
   <ol class="breadcrumb" >
     <li><a href="../HomePage.jsp" >首頁</a></li>
-    <li class="active"><a href="./accountManage.jsp">員工帳號管理</a></li>
-    <li><a href="./account.jsp">新增員工帳號</a></li>
+    <li class="active"><a href="./accountManage.jsp">客戶管理</a></li>
+    <li><a href="./account.jsp">新增客戶</a></li>
   </ol>
 </div>
 
@@ -52,12 +52,12 @@ conn1.close();
   <form name="searchform" method="post" action="../GuestServelet" class="form-inline container required" 
   	style="font-size: 100%; vertical-align: baseline; padding: 15px; ">
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;">
-      <legend>員工帳號管理</legend>
+      <legend>客戶管理</legend>
       <table class="table table-bordered table-hover table-condensed pull-left">
         <thead>
           <tr class="ListTitle2">
             <th>編輯</th>
-            <th>客戶ID</th>
+            <th>熟客ID</th>
             <th>姓名</th>
             <th>公司名稱</th>
             <th>平台帳號</th>
