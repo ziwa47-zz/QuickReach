@@ -94,25 +94,25 @@ public class LoginServlet extends HttpServlet {
 
 		while (rs.next()) {
 
-			ct.setProductManage(rs.getInt(2));
-			ct.setPurchaseManage(rs.getInt(3));
-			ct.setInventoryManage(rs.getInt(4));
-			ct.setInventoryInfoEdit(rs.getInt(5));
-			ct.setClientManage(rs.getInt(6));
-			ct.setEntireOrders(rs.getInt(7));
-			ct.setOrdersInvoiceDownload(rs.getInt(8));
-			ct.setPriceChange(rs.getInt(9));
-			ct.setPendingOrdersEdit(rs.getInt(10));
-			ct.setTotalAmountEdit(rs.getInt(11));
-			ct.setOrdersManage(rs.getInt(12));
-			ct.setChartView(rs.getInt(13));
-			ct.setProductProfitView(rs.getInt(14));
-			ct.setReportView(rs.getInt(15));
-			ct.setProductCostView(rs.getInt(16));
-			ct.setAccountInfoEdit(rs.getInt(17));
-			ct.setEbayPaypalAccountEdit(rs.getInt(18));
-			ct.setParamSettingEdit(rs.getInt(19));
-			ct.setInventoryCostView(rs.getInt(20));
+			ct.setProductManage(rs.getInt(3));
+			ct.setPurchaseManage(rs.getInt(4));
+			ct.setInventoryManage(rs.getInt(5));
+			ct.setInventoryInfoEdit(rs.getInt(6));
+			ct.setClientManage(rs.getInt(7));
+			ct.setEntireOrders(rs.getInt(8));
+			ct.setOrdersInvoiceDownload(rs.getInt(9));
+			ct.setPriceChange(rs.getInt(10));
+			ct.setPendingOrdersEdit(rs.getInt(11));
+			ct.setTotalAmountEdit(rs.getInt(12));
+			ct.setOrdersManage(rs.getInt(13));
+			ct.setChartView(rs.getInt(14));
+			ct.setProductProfitView(rs.getInt(15));
+			ct.setReportView(rs.getInt(16));
+			ct.setProductCostView(rs.getInt(17));
+			ct.setAccountInfoEdit(rs.getInt(18));
+			ct.setEbayPaypalAccountEdit(rs.getInt(19));
+			ct.setParamSettingEdit(rs.getInt(20));
+			ct.setInventoryCostView(rs.getInt(21));
 
 		}
 		session.setAttribute("PageCompetence", ct);

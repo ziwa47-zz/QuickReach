@@ -13,8 +13,6 @@ import tw.iii.qr.DataBaseConn;
 public class CompetenceSql {
 
 	
-	private Statement state;
-	public LinkedList<Competence> lct ;
 	
 	
 	public void insetCompetence(Competence ct) throws IllegalAccessException, ClassNotFoundException, Exception{
@@ -57,39 +55,38 @@ public class CompetenceSql {
 		
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
-		state = conn.createStatement();
 		String sqlstr = "Select * From competencelv";
-		ResultSet rs = state.executeQuery(sqlstr);
-		lct =new LinkedList<Competence>();
+		PreparedStatement ps = conn.prepareStatement(sqlstr);
+		ResultSet rs =ps.executeQuery();
+		LinkedList<Competence> lct = new LinkedList<Competence>();
 		Competence ct ;
 		
 		while(rs.next()){
 			ct = new Competence();
-			ct.setCompetenceLv(rs.getString(1));
-			ct.setProductManage(rs.getInt(2));
-			ct.setPurchaseManage(rs.getInt(3));
-			ct.setInventoryManage(rs.getInt(4));
-			ct.setInventoryInfoEdit(rs.getInt(5));
-			ct.setClientManage(rs.getInt(6));
-			ct.setEntireOrders(rs.getInt(7));
-			ct.setOrdersInvoiceDownload(rs.getInt(8));
-			ct.setPriceChange(rs.getInt(9));
-			ct.setPendingOrdersEdit(rs.getInt(10));
-			ct.setTotalAmountEdit(rs.getInt(11));
-			ct.setOrdersManage(rs.getInt(12));
-			ct.setChartView(rs.getInt(13));
-			ct.setProductProfitView(rs.getInt(14)); 
-			ct.setReportView(rs.getInt(15)); 	
-			ct.setProductCostView(rs.getInt(16)); 
-			ct.setAccountInfoEdit(rs.getInt(17)); 
-			ct.setEbayPaypalAccountEdit(rs.getInt(18)); 	
-			ct.setParamSettingEdit(rs.getInt(19)); 
-			ct.setInventoryCostView(rs.getInt(20)); 			
+			ct.setCompetenceLv(rs.getString(2));
+			ct.setProductManage(rs.getInt(3));
+			ct.setPurchaseManage(rs.getInt(4));
+			ct.setInventoryManage(rs.getInt(5));
+			ct.setInventoryInfoEdit(rs.getInt(6));
+			ct.setClientManage(rs.getInt(7));
+			ct.setEntireOrders(rs.getInt(8));
+			ct.setOrdersInvoiceDownload(rs.getInt(9));
+			ct.setPriceChange(rs.getInt(10));
+			ct.setPendingOrdersEdit(rs.getInt(11));
+			ct.setTotalAmountEdit(rs.getInt(12));
+			ct.setOrdersManage(rs.getInt(13));
+			ct.setChartView(rs.getInt(14));
+			ct.setProductProfitView(rs.getInt(15)); 
+			ct.setReportView(rs.getInt(16)); 	
+			ct.setProductCostView(rs.getInt(17)); 
+			ct.setAccountInfoEdit(rs.getInt(18)); 
+			ct.setEbayPaypalAccountEdit(rs.getInt(19)); 	
+			ct.setParamSettingEdit(rs.getInt(20)); 
+			ct.setInventoryCostView(rs.getInt(21)); 			
 			lct.add(ct);
 		}
 		
 		rs.close();
-		state.close();
 		return lct;
 		
 	}
@@ -97,12 +94,10 @@ public class CompetenceSql {
 	public void competenceDelete(String cv) throws IllegalAccessException, ClassNotFoundException, SQLException, Exception{
 		DataBaseConn dbc = new DataBaseConn();		
 		Connection conn = dbc.getConn() ;
-		state = conn.createStatement();
-		
-		String sqlstr = "DELETE FROM competencelv WHERE competenceLV=N'"+cv+"';";
-		
-		state.executeUpdate(sqlstr);
-		state.close();
+		String sqlstr = "DELETE FROM competencelv WHERE competenceLV= ?;";
+		PreparedStatement ps = conn.prepareStatement(sqlstr);
+		ps.setString(1, cv);
+		ps.executeUpdate();
 		conn.close();
 	}
 	

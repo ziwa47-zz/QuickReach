@@ -1,10 +1,9 @@
 package tw.iii.Competenece;
 
-import java.sql.Statement;
 
 public class Competence {
 
-	public String CompetenceLv="";
+	public String CompetenceLv;
 	public int productManage=0;
 	public int purchaseManage=0;
 	public int inventoryManage=0;

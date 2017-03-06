@@ -70,15 +70,15 @@ public class QRAccountFactory extends QRAccount{
 		QRAccount employee = new QRAccount();
 	
 		while (rs.next()) {
-			employee.setAccount(rs.getString(1)); // account
-			employee.setPassword(rs.getString(2)); // password
-			employee.setLastName(rs.getString(3)); // lastName
-			employee.setFirstName(rs.getString(4)); // firstName
-			employee.setEmail(rs.getString(5)); // E-mail
-			employee.setEnName(rs.getString(6)); // enName
-			employee.setSignatureImage(rs.getString(7)); // signatureImage
-			employee.setCompetenceLV(rs.getString(8)); // competenceLV
-			employee.setStatus(rs.getInt(9)); // status
+			employee.setAccount(rs.getString(2)); // account
+			employee.setPassword(rs.getString(3)); // password
+			employee.setLastName(rs.getString(4)); // lastName
+			employee.setFirstName(rs.getString(5)); // firstName
+			employee.setEmail(rs.getString(6)); // E-mail
+			employee.setEnName(rs.getString(7)); // enName
+			employee.setSignatureImage(rs.getString(8)); // signatureImage
+			employee.setCompetenceLV(rs.getString(9)); // competenceLV
+			employee.setStatus(rs.getInt(10)); // status
 			
 			
 			
@@ -131,15 +131,15 @@ public class QRAccountFactory extends QRAccount{
 		while(rs.next()){
 			qraccount = new QRAccount();
 			
-			qraccount.setAccount(rs.getString(1));// Account
-			qraccount.setPassword(rs.getString(2));// ebayToken
-			qraccount.setLastName(rs.getString(3));// endToken
-			qraccount.setFirstName(rs.getString(4));// paypalAccount
-			qraccount.setEmail(rs.getString(5)); //correspondCompany
-			qraccount.setEnName(rs.getString(6));// startTime
-			qraccount.setSignatureImage(rs.getString(7));// lastFixTime
-			qraccount.setCompetenceLV(rs.getString(8));// status
-			qraccount.setStatus(rs.getInt(9));// comment
+			qraccount.setAccount(rs.getString(2));// Account
+			qraccount.setPassword(rs.getString(3));// ebayToken
+			qraccount.setLastName(rs.getString(4));// endToken
+			qraccount.setFirstName(rs.getString(5));// paypalAccount
+			qraccount.setEmail(rs.getString(6)); //correspondCompany
+			qraccount.setEnName(rs.getString(7));// startTime
+			qraccount.setSignatureImage(rs.getString(8));// lastFixTime
+			qraccount.setCompetenceLV(rs.getString(9));// status
+			qraccount.setStatus(rs.getInt(10));// comment
 			
 			
 			employeeall.add(qraccount);			

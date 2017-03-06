@@ -340,8 +340,7 @@ conn.close();
 			 	  <tr class="ListTitle2">
 			        <th>商品SKU</th>
 			        <th>商品名稱 / invoice名稱</th>
-			        <th>成交價</th>
-			        <th>invoice價格</th>
+			        <th>價錢</th>
 			        <th>數量</th>
 			        <th>備註</th>
 		          </tr>
@@ -352,18 +351,18 @@ conn.close();
 		            <td>
 		              <input class="" type="hidden" name="SKU" value="${i.getSKU()}">
 		              SKU:<br/><a href="../QRProduct/StockDetail.jsp?sku=${i.getSKU()}"><b>${i.getSKU()}</b></a>
-	          		  <button type="submit" name="submit" value="deleteDetail" class="btn btn-sm btn-danger">移除此商品
+	          		  <button type="submit" name="submit" value="deleteDetail" class="btn btn-sm btn-danger">移除此商品</button>
 		            </td>
-		            <td>Product Name:<br/>${i.getProductName()}<br/>
+		            <td>${i.getProductName()}<br/>
 						Invoice Name:<br/><input class="" type="text" name="invoiceName" value="${i.getInvoiceName()}">
 		            </td>
 		           	<c:if test="${PageCompetence.getTotalAmountEdit() == 1}">
-			            <td><input class="" type="text" name="price" value="${i.getPrice()}" ></td>
-			            <td><input class="" type="text" name="invoicePrice" value="${i.getInvoicePrice()}" ></td>
+			            <td>售價:<br/><input class="" type="text" name="price" value="${i.getPrice()}" ><br/>
+			            invoicePrice:<br/><input class="" type="text" name="invoicePrice" value="${i.getInvoicePrice()}" ></td>
 			        </c:if>
 		            <c:if test="${PageCompetence.getTotalAmountEdit() == 0}">
-			            <td><input class="" type="text" name="price" value="${i.getPrice()}" readonly></td>
-			            <td><input class="" type="text" name="invoicePrice" value="${i.getInvoicePrice()}" readonly></td>
+			           <td>售價:<br/><input class="" type="text" name="price" value="${i.getPrice()}" ><br/>
+			            invoicePrice:<br/><input class="" type="text" name="invoicePrice" value="${i.getInvoicePrice()}" readonly></td>
 		           	</c:if>
 		            <td>
 		              <input class="" type="text" name="qty" value="${i.getQty()}">
@@ -372,7 +371,7 @@ conn.close();
                         <c:set var="SKU" scope="session" value="${i.getSKU()}"/>
                         <%
                         if(session.getAttribute("SKU") != null){
-                        LinkedList<String> warehouses = COrderFactory.getWarehouses(request,session.getAttribute("SKU").toString());
+                        LinkedList<String> warehouses = COrderFactory.getWarehousesForI(request,session.getAttribute("SKU").toString());
                         session.setAttribute("warehouses", warehouses);
                         } else {
                         	session.setAttribute("warehouses", "");
