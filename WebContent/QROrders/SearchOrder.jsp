@@ -234,7 +234,7 @@
         </div>
         <br/>
         <div class="row text-center" >
-          <button class="btn btn-lg btn-primary" type="submit" name="submit" value="shipmentRecordSearch">搜尋</button>
+          <button class="btn btn-lg btn-primary" type="submit" name="submit" value="orderSearch">搜尋</button>
           <button class="btn btn-lg btn-primary" type="button" name="" >清空</button>
         </div>
       </fieldset>
@@ -250,10 +250,9 @@
                 <li><a href="SearchOrder.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
               </c:when>
               <c:otherwise>
-                <li class="disabled"><a href="SearchOrder.jsp?begin=${begin-10}&end=${end-10}">上一頁</a></li>
               </c:otherwise>
             </c:choose>
-            <c:forEach begin="0" end="${shipmentRecord.size()/10}" step="1" varStatus="check">
+            <c:forEach begin="0" end="${orderSearch.size()/10}" step="1" varStatus="check">
               <c:choose>
                 <c:when test="${(check.index*10) != begin}">
                   <li><a href="SearchOrder.jsp?begin=${check.index*10}&end=${(check.index+1)*10}">${check.index+1}</a></li>
@@ -264,14 +263,13 @@
               </c:choose>
             </c:forEach>
             <c:choose>
-              <c:when test="${end < shipmentRecord.size()}">
+              <c:when test="${end < orderSearch.size()}">
                 <li><a href="SearchOrder.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:when>
               <c:otherwise>
-                <li class="disabled"><a href="SearchOrder.jsp?begin=${begin+10}&end=${end+10}">下一頁</a></li>
               </c:otherwise>
             </c:choose>
-            <label>共有:${shipmentRecord.size()}筆</label>
+            <label>共有:${orderSearch.size()}筆</label>
           </ul>
           <table class="table table-bordered table-hover table-condensed pull-left" style="margin:0 0 0 -15px">
             <tr class="ListTitle">
@@ -289,7 +287,7 @@
               <th>總金額</th>
               <th nowrap>使用者</th>
             </tr>
-            <c:forEach var="i" items="${shipmentRecord}" begin="${begin}" end="${end}" step="1" varStatus="check">
+            <c:forEach var="i" items="${orderSearch}" begin="${begin}" end="${end}" step="1" varStatus="check">
               <c:choose>
                 <c:when test="${check.index%2 != 0}">
                   <tr style="background-color:#D4F4D8">

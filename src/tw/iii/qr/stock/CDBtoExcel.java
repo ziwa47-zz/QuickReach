@@ -17,8 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.filechooser.FileSystemView;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Color;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -39,9 +44,14 @@ public class CDBtoExcel {
 	}
 
 	public String[] 日結表() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
-
-		XSSFWorkbook wb = new XSSFWorkbook();
-		XSSFSheet sheet = wb.createSheet("日結表");
+		FileSystemView fsv = FileSystemView.getFileSystemView();
+		String samplepath = fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator + "sample"
+				+ File.separator + "日結表.xlsx";
+		CopySheetStyle cs = new CopySheetStyle();
+		XSSFWorkbook wb = new XSSFWorkbook(samplepath);
+		XSSFSheet fromSheet = wb.getSheet("日結表");
+		XSSFSheet toSheet = wb.getSheet("日結表");
+		cs.copySheet(wb, fromSheet, toSheet);
 		String strsql = "select distinct m.ebayNO, d.SKU, d.productName,d.qty, m.guestAccount,"
 				+ " r.country, m.currency, m.ebayprice,  m.payDate,"
 				+ "  m.totalPrice, m.paypalFees,m.paypalNet, "
@@ -50,9 +60,9 @@ public class CDBtoExcel {
 
 				+ " FROM  orders_master as m inner join" + " orders_detail as d on m.QR_id = d.QR_id inner join"
 				+ " order_recieverinfo as r on m.QR_id = r.QR_id inner join"
-				+ " shippinglog as s on m.QR_id = r.QR_id  inner join" + " product as p on d.SKU  = p.SKU "
-				+ " where  m.shippingdate >=  convert(varchar,GETDATE(),111)";
-
+				+ " shippinglog as s on m.QR_id = r.QR_id  inner join" + " product as p on d.SKU  = p.SKU ";
+				//+ " where  m.shippingdate >=  convert(varchar,GETDATE(),111)";
+		System.out.print(strsql);
 		Connection conn = new DataBaseConn().getConn();
 		PreparedStatement ps = null;
 		ps = conn.prepareStatement(strsql);
@@ -61,7 +71,7 @@ public class CDBtoExcel {
 		int index2 = 1;
 
 		// 以下為每筆訂單的標頭
-		XSSFRow myRow = sheet.createRow(index);
+		XSSFRow myRow = toSheet.createRow(index);
 		myRow.createCell(0).setCellValue("項次");
 		myRow.createCell(1).setCellValue("E/B.NO");
 		myRow.createCell(2).setCellValue("SKU");
@@ -89,7 +99,7 @@ public class CDBtoExcel {
 		while (rs.next()) {
 
 			// 以下為每筆訂單取到的值
-			myRow = sheet.createRow(index + 1);
+			myRow = toSheet.createRow(index + 1);
 			myRow.createCell(0).setCellValue(index2);
 			myRow.createCell(1).setCellValue(rs.getString(1));
 			myRow.createCell(2).setCellValue(rs.getString(2));
@@ -109,10 +119,10 @@ public class CDBtoExcel {
 			myRow.createCell(16).setCellValue(rs.getString(16));
 			myRow.createCell(17).setCellValue(rs.getString(17));
 			myRow.createCell(18).setCellValue(rs.getString(18));
-			myRow.createCell(22).setCellValue(" ");
 			myRow.createCell(19).setCellValue(rs.getString(19));
 			myRow.createCell(20).setCellValue(rs.getString(20));
-			myRow.createCell(21).setCellValue(rs.getString(21));
+			myRow.createCell(21).setCellValue(rs.getString(""));
+			myRow.createCell(22).setCellValue(rs.getString(21));
 			myRow.createCell(23).setCellValue(rs.getString(22));
 		
 
@@ -123,7 +133,6 @@ public class CDBtoExcel {
 
 		// FileOutputStream out = new FileOutputStream("C:/Users/Jenan/Desktop/"
 		// + date + "日出貨報表.xlsx");
-		FileSystemView fsv = FileSystemView.getFileSystemView();
 
 		FileOutputStream out = new FileOutputStream(
 				fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator + date + "Daily.xlsx");
@@ -207,68 +216,71 @@ public class CDBtoExcel {
 		return new String[] { fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator,
 				date + "Pickup.xlsx" };
 	}
-
-	public String[] collect(HttpServletRequest request, HttpServletResponse response) {
-		String[] coll = null;
-		String date = getDay();
-		FileSystemView fsv = FileSystemView.getFileSystemView();
-		try {
-			XSSFWorkbook wbcoll = new XSSFWorkbook();
-			String[] qrid = request.getParameterValues("QR_id");
-			XSSFSheet sheet = wbcoll.createSheet("集貨單");
-
-			String strsql = " select o.SKU,productType,brand, subBrand, productName, spec,count(*),s.warehouse,s.warehousePosition1,s.warehousePosition2 "
-					+ " from orders_detail o inner join product p on  o.SKU = p.SKU "
-					+ " inner join orders_master m on m.QR_id = o.QR_id "
-					+ "	 inner join storage s on s.warehouse = o.warehouse and s.SKU = o.SKU"
-					+ " group by m.qr_id,o.SKU,productType,brand, subBrand,s.warehouse,s.warehousePosition1,s.warehousePosition2, productName, spec,m.orderStatus"
-					+ " having m.orderStatus = N'揀貨中' and m.qr_id = ?";
-
-			Connection conn = new DataBaseConn().getConn();
-			int index = 1;
-
-			XSSFRow myRow = sheet.createRow(0);
-			myRow.createCell(0).setCellValue("SKU");
-			myRow.createCell(1).setCellValue("產品類型");
-			myRow.createCell(2).setCellValue("廠牌");
-			myRow.createCell(3).setCellValue("副廠牌");
-			myRow.createCell(4).setCellValue("品名規格");
-			myRow.createCell(5).setCellValue("數量");
-			myRow.createCell(6).setCellValue("倉別/儲位");
-
-			for (int i = 0; i < qrid.length; i++) {
-				PreparedStatement ps = null;
-				ps = conn.prepareStatement(strsql);
-				ps.setString(1, qrid[i]);
-				ResultSet rs = ps.executeQuery();
-				while (rs.next()) {
-					XSSFRow myRow1 = sheet.createRow(index);
-					myRow1.createCell(0).setCellValue(rs.getString(1));
-					myRow1.createCell(1).setCellValue(rs.getString(2));
-					myRow1.createCell(2).setCellValue(rs.getString(3));
-					myRow1.createCell(3).setCellValue(rs.getString(4));
-					myRow1.createCell(4).setCellValue(rs.getString(5) + " // " + rs.getString(6));
-					myRow1.createCell(5).setCellValue(rs.getString(7));
-					myRow1.createCell(6).setCellValue(rs.getString(8) + " " + rs.getString(9) + "-" + rs.getString(10));
-					index++;
-
-				}
-				rs.close();
-				ps.close();
-			}
-			FileOutputStream out = new FileOutputStream(
-					fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator + date + "collect.xlsx");
-			wbcoll.write(out);
-
-			conn.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new String[] { fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator,
-				date + "collect.xlsx" };
-	}
-
+//
+//	public String[] collect(HttpServletRequest request, HttpServletResponse response) {
+//		String[] coll = null;
+//		String date = getDay();
+//		FileSystemView fsv = FileSystemView.getFileSystemView();
+//		try {
+//			XSSFWorkbook wbcoll = new XSSFWorkbook();
+//			String[] qrid = request.getParameterValues("QR_id");
+//			XSSFSheet sheet = wbcoll.createSheet("集貨單");
+//
+//			
+//			
+//			String strsql = " select o.SKU,productType,brand, subBrand, productName, spec,count(*),s.warehouse,s.warehousePosition1,s.warehousePosition2 "
+//					+ " from orders_detail o inner join product p on  o.SKU = p.SKU "
+//					+ " inner join orders_master m on m.QR_id = o.QR_id "
+//					+ "	 inner join storage s on s.warehouse = o.warehouse and s.SKU = o.SKU"
+//					+ " group by m.qr_id,o.SKU,productType,brand, subBrand,s.warehouse,s.warehousePosition1,s.warehousePosition2, productName, spec,m.orderStatus"
+//					+ " having m.orderStatus = N'揀貨中' and m.qr_id = ?";
+//
+//			Connection conn = new DataBaseConn().getConn();
+//			int index = 1;
+//
+//			XSSFRow myRow = sheet.createRow(0);
+//			myRow.createCell(0).setCellValue("SKU");
+//			myRow.createCell(1).setCellValue("產品類型");
+//			myRow.createCell(2).setCellValue("廠牌");
+//			myRow.createCell(3).setCellValue("副廠牌");
+//			myRow.createCell(4).setCellValue("品名規格");
+//			myRow.createCell(5).setCellValue("數量");
+//			myRow.createCell(6).setCellValue("倉別/儲位");
+//
+//			for (int i = 0; i < qrid.length; i++) {
+//				PreparedStatement ps = null;
+//				ps = conn.prepareStatement(strsql);
+//				ps.setString(1, qrid[i]);
+//				ResultSet rs = ps.executeQuery();
+//				while (rs.next()) {
+//					XSSFRow myRow1 = sheet.createRow(index);
+//					myRow1.createCell(0).setCellValue(rs.getString(1));
+//					myRow1.createCell(1).setCellValue(rs.getString(2));
+//					myRow1.createCell(2).setCellValue(rs.getString(3));
+//					myRow1.createCell(3).setCellValue(rs.getString(4));
+//					myRow1.createCell(4).setCellValue(rs.getString(5) + " // " + rs.getString(6));
+//					myRow1.createCell(5).setCellValue(rs.getString(7));
+//					myRow1.createCell(6).setCellValue(rs.getString(8) + " " + rs.getString(9) + "-" + rs.getString(10));
+//					index++;
+//
+//				}
+//				rs.close();
+//				ps.close();
+//			}
+//			FileOutputStream out = new FileOutputStream(
+//					fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator + date + "collect.xlsx");
+//			wbcoll.write(out);
+//
+//			conn.close();
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return new String[] { fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator,
+//				date + "collect.xlsx" };
+//	}
+//
+//	
 	public String[] logisticsselect(HttpServletRequest request, HttpServletResponse response) {
 		String[] pa = null;
 		FileSystemView fsv = FileSystemView.getFileSystemView();
@@ -484,9 +496,17 @@ public class CDBtoExcel {
 	public String[] dailyBalanceSheetExcel()
 			throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
 		String date = getDay();
+		
 		FileSystemView fsv = FileSystemView.getFileSystemView();
-		XSSFWorkbook wb = new XSSFWorkbook();
-		XSSFSheet sheet = wb.createSheet("日出貨報表");
+		String samplepath = fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator + "sample"
+				+ File.separator + "日出貨報表.xlsx";
+		CopySheetStyle cs = new CopySheetStyle();
+		XSSFWorkbook wb = new XSSFWorkbook(samplepath);
+		XSSFSheet fromSheet = wb.getSheet("日出貨報表");
+		XSSFSheet toSheet = wb.getSheet("日出貨報表");
+		cs.copySheet(wb, fromSheet, toSheet);
+		
+		//XSSFSheet sheet = wb.createSheet("日出貨報表");
 		String strsql = "select s.date, s.QR_id, m.eBayAccount, m.ebayNO, d.SKU, d.productName, d.qty,"
 				+ " r.country, d.owner, d.warehouse, m.staffName, s.comment, s.trackingCode"
 				+ " from orders_master as m inner join shippinglog as s on m.QR_id = s.QR_id"
@@ -498,7 +518,7 @@ public class CDBtoExcel {
 		ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
 		int index = 1;
-		XSSFRow myRow = sheet.createRow(0);
+		XSSFRow myRow = fromSheet.createRow(0);
 		myRow.createCell(0).setCellValue("出貨日期");
 		myRow.createCell(1).setCellValue("出貨編號");
 		myRow.createCell(2).setCellValue("type");
@@ -514,7 +534,7 @@ public class CDBtoExcel {
 		myRow.createCell(12).setCellValue("備註");
 		myRow.createCell(13).setCellValue("追蹤碼");
 		while (rs.next()) {
-			myRow = sheet.createRow(index);
+			myRow = fromSheet.createRow(index);
 			myRow.createCell(0).setCellValue(rs.getString(1));
 			myRow.createCell(1).setCellValue(rs.getString(2));
 			myRow.createCell(2).setCellValue("訂單出貨");
@@ -522,6 +542,7 @@ public class CDBtoExcel {
 			myRow.createCell(4).setCellValue(rs.getString(4));
 			myRow.createCell(5).setCellValue(rs.getString(5));
 			myRow.createCell(6).setCellValue(rs.getString(6));
+			
 			myRow.createCell(7).setCellValue(rs.getString(7));
 			myRow.createCell(8).setCellValue(rs.getString(8));
 			myRow.createCell(9).setCellValue(rs.getString(9));
@@ -543,10 +564,15 @@ public class CDBtoExcel {
 	}
 
 	public String[] 物流匯出格式() throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
-
-		XSSFWorkbook wb = new XSSFWorkbook();
-		XSSFSheet sheet = wb.createSheet("物流匯出報表");
-		String strsql = "select s.date, s.type, s.QR_id, d.SKU, d.productName, d.qty, m.eBayAccount," + " m.currency"
+		FileSystemView fsv = FileSystemView.getFileSystemView();
+		String samplepath = fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator + "sample"
+				+ File.separator + "物流匯出格式.xlsx";
+		CopySheetStyle cs = new CopySheetStyle();
+		XSSFWorkbook wb = new XSSFWorkbook(samplepath);
+		XSSFSheet fromSheet = wb.getSheet("物流匯出報表");
+		XSSFSheet toSheet = wb.getSheet("物流匯出報表");
+		cs.copySheet(wb, fromSheet, toSheet);
+		String strsql = "select s.date, m.logistics, m.ebayno, d.SKU, d.productName, d.qty, m.eBayAccount, m.currency "
 				+ " from orders_master as m left join shippinglog as s on m.QR_id = s.QR_id"
 				+ " inner join order_recieverinfo as r on m.QR_id = r.QR_id"
 				+ " inner join orders_detail as d on m.QR_id = d.QR_id" + " where m.orderStatus = N'揀貨中'";
@@ -555,7 +581,9 @@ public class CDBtoExcel {
 		ps = conn.prepareStatement(strsql);
 		ResultSet rs = ps.executeQuery();
 		int index = 1;
-		XSSFRow myRow = sheet.createRow(0);
+		
+		
+		XSSFRow myRow = fromSheet.createRow(0);
 
 		myRow.createCell(0).setCellValue("出貨日期");
 		myRow.createCell(1).setCellValue("寄件類型");
@@ -572,7 +600,7 @@ public class CDBtoExcel {
 		myRow.createCell(12).setCellValue("運費(TWD)");
 		myRow.createCell(13).setCellValue("運費(USD)");
 		while (rs.next()) {
-			myRow = sheet.createRow(index);
+			myRow = fromSheet.createRow(index);
 			myRow.createCell(0).setCellValue(rs.getString(1));
 			myRow.createCell(1).setCellValue(rs.getString(2));
 			myRow.createCell(2).setCellValue(rs.getString(3));
@@ -581,12 +609,11 @@ public class CDBtoExcel {
 			myRow.createCell(5).setCellValue(rs.getString(6));
 			myRow.createCell(6).setCellValue(rs.getString(7));
 			myRow.createCell(7).setCellValue(rs.getString(8));
-
+			fromSheet.autoSizeColumn(index); 
 			index++;
 		}
 
 		String date = getDay();
-		FileSystemView fsv = FileSystemView.getFileSystemView();
 		FileOutputStream out = new FileOutputStream(
 				fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator + date + "Logistic.xlsx");
 		wb.write(out);
@@ -612,60 +639,45 @@ public class CDBtoExcel {
 
 	public String[] counting(HttpServletRequest request, HttpServletResponse response)
 			throws IllegalAccessException, ClassNotFoundException, SQLException, Exception {
-
+		FileSystemView fsv = FileSystemView.getFileSystemView();
+		String samplepath = fsv.getHomeDirectory() + File.separator + "QRexcel" + File.separator + "sample"
+				+ File.separator + "盤點格式.xlsx";
+		CopySheetStyle css = new CopySheetStyle();
+		XSSFWorkbook wb = new XSSFWorkbook(samplepath);
+		XSSFSheet fromSheet = wb.getSheet("盤點表");
+		XSSFSheet toSheet = wb.getSheet("盤點表");
+		css.copySheet(wb, fromSheet, toSheet);
 		
 		
 		
 		String date = getDay();
-		FileSystemView fsv = FileSystemView.getFileSystemView();
-		XSSFWorkbook wb = new XSSFWorkbook();
-		XSSFSheet sheet = wb.createSheet("盤點單");
 		HttpSession session = request.getSession();
 		LinkedList<CStock> cs = (LinkedList<CStock>) session.getAttribute("countingall");
-		int index = 2;
+		int index = 1;
 		
-		
-		
-		
-		XSSFRow myRow = sheet.createRow(0);
-		
-		CellRangeAddress region = new CellRangeAddress(0, 0, 0, 8);
-		sheet.addMergedRegion(region);
-		
-		CellStyle styleRow0 = wb.createCellStyle();
-		styleRow0.setBorderBottom((short) 2);
-		styleRow0.setBorderTop((short) 2);
-		styleRow0.setBorderLeft((short) 2);
-		styleRow0.setBorderRight((short) 2);
-		styleRow0.setAlignment(CellStyle.ALIGN_CENTER);
-		styleRow0.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-		
-		myRow.createCell(0).setCellValue("盤點表");
-		myRow.getCell(0).setCellStyle(styleRow0);
-		myRow.setHeightInPoints(36);		
-		
-		myRow = sheet.createRow(1);
+		XSSFRow myRow = toSheet.createRow(0);
+		myRow.setHeightInPoints(36);
 		myRow.createCell(0).setCellValue("SKU");
 		myRow.createCell(1).setCellValue("儲位");
-		myRow.createCell(2).setCellValue("商品名稱");
-		myRow.createCell(3).setCellValue("規格");
-		myRow.createCell(4).setCellValue("顏色");
-		myRow.createCell(5).setCellValue("庫存數量");
-		myRow.createCell(6).setCellValue("實盤數量");
-		myRow.createCell(7).setCellValue("盤溢/盤損");
-		myRow.createCell(8).setCellValue("備註");
+		//myRow.createCell(2).setCellValue("商品名稱");
+		myRow.createCell(2).setCellValue("規格");
+		myRow.createCell(3).setCellValue("顏色");
+		myRow.createCell(4).setCellValue("庫存數量");
+		myRow.createCell(5).setCellValue("實盤數量");
+		myRow.createCell(6).setCellValue("盤溢/盤損");
+		myRow.createCell(7).setCellValue("備註");
 
 		for(int i =0; i<cs.size();i++){
-			myRow = sheet.createRow(index);
+			myRow = toSheet.createRow(index);
 			myRow.createCell(0).setCellValue(cs.get(i).getSKU());
 			myRow.createCell(1).setCellValue(cs.get(i).getPosition1()+"-"+cs.get(i).getPosition2());
-			myRow.createCell(2).setCellValue(cs.get(i).getP_name());
-			myRow.createCell(3).setCellValue(cs.get(i).getSpec());
-			myRow.createCell(4).setCellValue(cs.get(i).getColor());
-			myRow.createCell(5).setCellValue(cs.get(i).getQty());
+			//myRow.createCell(2).setCellValue(cs.get(i).getP_name());
+			myRow.createCell(2).setCellValue(cs.get(i).getSpec());
+			myRow.createCell(3).setCellValue(cs.get(i).getColor());
+			myRow.createCell(4).setCellValue(cs.get(i).getQty());
+			myRow.createCell(5).setCellValue("");
 			myRow.createCell(6).setCellValue("");
-			myRow.createCell(6).setCellValue("");
-			myRow.createCell(6).setCellValue("");
+			myRow.createCell(7).setCellValue("");
 
 			index++;
 		}

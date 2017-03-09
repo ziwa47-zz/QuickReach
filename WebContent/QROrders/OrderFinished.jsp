@@ -367,15 +367,7 @@ function selectAllOrders(ele) {
     	$("input[name=QR_id]").prop("checked", false);
     }
 };
-function preventDoubleOrder(ele){
-	  var id = ele.value;
-	  if (ele.checked) {
-		  $("input[name=QR_id]").prop("disabled",true);
-		  $(ele).prop("disabled",false);
-	  } else {
-		  $("input[name=QR_id]").prop("disabled",false);
-	  }
- };
+
 </script>
 </body>
 </html>

@@ -45,17 +45,18 @@ public class COrderCombineFactory {
 		// 一個月裡面 同一個人兩周內下了兩次以上的訂單 而且尚未合併 (大放送 之後要註解掉)
 		String sqlstr = " select  m1.guestAccount,m1.QR_id, m1.ebayNO,m1.payDate,m2.QR_id,m2.ebayNO,m2.payDate "
 				+ "from orders_master m1 inner join orders_master m2 on m1.guestAccount=m2.guestAccount "
-				+ "where m1.QR_id<m2.QR_id  " + "and isnull(m1.isCombine,0) !=1 " + "and isnull(m2.isCombine,0) !=1 "
+				+ "where m1.QR_id<m2.QR_id  " + "and m1.isCombine =0 " + "and m2.isCombine=0 "
 				+ "and DATEDIFF(Day,m1.orderDate,m2.orderDate)<14 " + "and DATEDIFF(Day,m1.orderDate,m2.orderDate)>-14 "
-				+ "and DATEDIFF(MONTH,m1.orderDate,GETDATE()) <5  " + "order  by m1.payDate Desc";
+				+ "and DATEDIFF(MONTH,m1.orderDate,GETDATE()) <5  "
+				+ "order  by m1.payDate Desc";
 
 		// // 同一個人1周內下了兩次以上的訂單 而且尚未合併 (正確篩選 但先註解)
 		// String sqlstr = " select m1.guestAccount,m1.QR_id,
 		// m1.ebayNO,m1.payDate,m2.QR_id,m2.ebayNO,m2.payDate "
 		// + "from orders_master m1 inner join orders_master m2 on
 		// m1.guestAccount=m2.guestAccount "
-		// + "where m1.QR_id<m2.QR_id " + "and isnull(m1.isCombine,0) !=1 " +
-		// "and isnull(m2.isCombine,0) !=1 "
+		// + "where m1.QR_id<m2.QR_id " + "and m1.isCombine =0 " +
+		// "and m2.isCombine =0 "
 		// + "and DATEDIFF(Day,m1.orderDate,m2.orderDate)<7 " + "and
 		// DATEDIFF(Day,m1.orderDate,m2.orderDate)>-7 "
 		// + " and m1.orderStatus != '待處理' and m2.orderStatus != '待處理' " +

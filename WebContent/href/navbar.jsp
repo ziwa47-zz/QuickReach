@@ -140,21 +140,21 @@ $(function () {
 	});
 });
 
-function noSelected() {
-	var count = 0;
-	$('input[name=QR_id]:checked').each(function(){
-		count = count + 1;
-		id = $(this).val();
-		tdWarehouseClass = $('#' + id).attr('class');
-		if(tdWarehouseClass.endsWith('danger')) {
-			return false;
-		}
-	});
-	if (count == 0) {
-		alert('請勾選訂單');
-		return false;
-	}
-}
+// function noSelected() {
+// 	var count = 0;
+// 	$('input[name=QR_id]:checked').each(function(){
+// 		count = count + 1;
+// 		id = $(this).val();
+// 		tdWarehouseClass = $('#' + id).attr('class');
+// 		if(tdWarehouseClass.endsWith('danger')) {
+// 			return false;
+// 		}
+// 	});
+// 	if (count == 0) {
+// 		alert('請勾選訂單');
+// 		return false;
+// 	}
+// }
 	
 $( document ).ready(function() {
 	$('body').css({'font-family': 'Noto Sans TC'});
