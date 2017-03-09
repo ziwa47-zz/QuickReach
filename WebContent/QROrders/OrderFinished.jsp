@@ -290,7 +290,7 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td></td>
+                    <td>${i.getCOrderMaster().getShippingDate()}</td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}
@@ -323,7 +323,7 @@
                     <td>${i.getCOrderMaster().getEbayAccount()}</td>
                     <td>${i.getCOrderMaster().getGuestAccount()}</td>
                     <td>${i.getCOrderMaster().getPayDate()}</td>
-                    <td></td>
+                    <td>${i.getCOrderMaster().getShippingDate()}</td>
                     <td>${i.getCOrderMaster().getLogistics()}</td>
                     <td>${i.getCOrderReciever().getCountry()}</td>
                     <td>${i.getCOrderMaster().getOrderStatus()}

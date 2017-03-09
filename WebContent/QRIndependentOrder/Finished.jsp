@@ -228,7 +228,7 @@
                     <td>${i.getIordersMaster().getGuestId()}</td>
                     <td>${i.getGuestInfo().getName()}</td>
                     <td>${i.getIordersMaster().getPayDate()}</td>
-                    <td></td>
+                    <td>${i.getIordersMaster().getShippingDate()}</td>
                     <td>${i.getIordersMaster().getLogistics()}</td>
                     <td>${i.getGuestInfo().getCountry()}</td>
                     <td>${i.getIordersMaster().getOrderStatus()}
@@ -239,7 +239,7 @@
                   <tr style="background-color:#D4F4D8">
 					<td colspan="9">
                     <c:forEach var="j" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
-<%--                       <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a> --%>
+					  <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
                       <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSku()}">${j.getSku()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>
@@ -252,14 +252,14 @@
                 </c:when>
                 <c:otherwise>
                   <tr>
-                     <td rowspan="2" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getIordersMaster().getQrId()}"></td>
+                    <td rowspan="2" style="vertical-align:middle"><input type="checkbox" name="QR_id" value="${i.getIordersMaster().getQrId()}"></td>
                     <td><a href="OrderDetail?QR_id=${i.getIordersMaster().getQrId()}"><img src="../img/compose-4.png" ></a></td>
                     <td>${i.getIordersMaster().getQrId()}</td>
                     <td>${i.getIordersMaster().getPlatform()}</td>
                     <td>${i.getIordersMaster().getGuestId()}</td>
                     <td>${i.getGuestInfo().getName()}</td>
                     <td>${i.getIordersMaster().getPayDate()}</td>
-                    <td></td>
+                    <td>${i.getIordersMaster().getShippingDate()}</td>
                     <td>${i.getIordersMaster().getLogistics()}</td>
                     <td>${i.getGuestInfo().getCountry()}</td>
                     <td>${i.getIordersMaster().getOrderStatus()}
@@ -267,10 +267,10 @@
                     <td>${i.getIordersMaster().getTotalPrice()}${i.getIordersMaster().getCurrency()}</td>
                     <td>${i.getIordersMaster().getStaffName()}</td>
                   </tr>
-                  <tr style="background-color:#D4F4D8">
+                  <tr>
 					<td colspan="9">
                     <c:forEach var="j" items="${i.getIordersDetails()}" begin="0" step="1" varStatus="check">
-<%--                       <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a> --%>
+					  <a href='#' class='pop' ><img src='/pics/${j.getPicPath()}' style='width: 20px; height: 20px;'></a>
                       <b><a href="../QRProduct/StockDetail.jsp?sku=${j.getSku()}">${j.getSku()}</a></b>${j.getProductName()}<br/>
                     </c:forEach>
                     </td>

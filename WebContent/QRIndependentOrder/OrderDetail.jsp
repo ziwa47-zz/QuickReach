@@ -310,7 +310,6 @@
   </div>
 
 <script type="text/javascript">
-
 $(function () {
 	$(".btn-danger").click(function() {
 		bool = confirm("確認是否刪除訂單");
@@ -329,7 +328,6 @@ function enableFields(ele){
 	  $("#btnCheck").prop("disabled", true);
 	  }
   };
-
 function isSubmited() {
 	//isLessTotalPrice()
 	var sum = 0;
