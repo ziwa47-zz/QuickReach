@@ -65,7 +65,7 @@
 	      <div class="col-md-4">
 	        <label class="radio-inline"><input type="checkbox" name="optionsRadios" id="optionsCheck" onchange="enableFields(this)">開關</label>
 	    	<label class="radio-inline">
-	    	<button type="submit" name="submit" value="updateOrder" class="btn btn-lg btn-success" id="btnCheck" disabled>更新商品資料</button>
+	    	<button type="submit" id="updateProduct" name="submit" value="updateOrder" class="btn btn-lg btn-success" disabled>更新商品資料</button>
 	    	<a href="/QRIndependentOrder/Processing" class="btn btn-info" role="button">回到處理中</a>
 	      	</label>
 	      </div>
@@ -73,7 +73,6 @@
     </c:if>
     <fieldset id="myfields" class="font-weight" style="padding:0 30px 0 0;" disabled><legend>訂單明細</legend>
       <div class="panel-group" id="accordion">
-      
         <div class="panel panel-default" style="background-color:#E7D29F">
           <div class="panel-heading">
             <h4 class="panel-title">
@@ -231,7 +230,6 @@
 		      	</c:if>
 		      </div>
             </div>
-          </div>
           <div class="panel-heading">
             <h4 class="panel-title">
               <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">訂購商品清單</a>
@@ -256,19 +254,20 @@
 		            <td>
 		              <input class="" type="hidden" name="SKU" value="${i.getSku()}">
 		              SKU:<br/><a href="../QRProduct/StockDetail.jsp?sku=${i.getSku()}"><b>${i.getSku()}</b></a>
-	          		  <button type="submit" name="submit" value="deleteDetail" class="btn btn-sm btn-danger">移除此商品</button>
+	          		  <button type="submit" name="submit" value="deleteDetail" class="btn btn-sm btn-danger deleteProduct">移除此商品</button>
 		            </td>
 		            <td>${i.getProductName()}
 		            </td>
 		           	<c:if test="${PageCompetence.getTotalAmountEdit() == 1}">
-			            <td>售價:<br/><input class=""  type="text" name="price" value="${i.getPrice()}" >
-			            <br/>數量:<br/><input class="" type="text" name="qty" value="${i.getQty()}"></td>
+			            <td>售價:<br/><input class="form-control" id="price${check.index}" type="text" name="price" value="${i.getPrice()}" >
+			            <br/>數量:<br/><input class="form-control qty1" id="qty${check.index}" type="text" name="qty" value="${i.getQty()}"></td>
 			        </c:if>
 		            <c:if test="${PageCompetence.getTotalAmountEdit() == 0}">
-			            <td>售價:<br/><input class="" type="text" name="price" value="${i.getPrice()}" readonly>
-			            <br/> 數量:<br/><input class="" type="text" name="qty" value="${i.getQty()}"></td>
+			            <td>售價:<br/><input class="form-control" id="price${check.index}" type="text" name="price" value="${i.getPrice()}" readonly>
+			            <br/>數量:<br/><input class="form-control qty1" id="qty${check.index}" type="text" name="qty" value="${i.getQty()}"></td>
 		           	</c:if>
 		            <td>
+		              <input type="hidden" id="total${check.index}" class="total" value="" />
 		              <select name="warehouse">
                         <c:set var="SKU" scope="session" value="${i.getSku()}"/>
                         <%
@@ -301,9 +300,10 @@
 		        </tbody>
 		        </c:forEach>
 		      </table>
-	          <button type="submit" name="submit" value="toGetProducts" class="btn btn-sm btn-success">新增商品</button>
+	          <button type="submit" id="newProduct" name="submit" value="toGetProducts" class="btn btn-sm btn-success">新增商品</button>
         	</div>
       	</div>
+      </div>
       </div>
     </fieldset>
     </form>
@@ -322,39 +322,50 @@ $(function () {
 function enableFields(ele){
   if (ele.checked) {
 	  $("#myfields").prop("disabled", false);
-	  $("#btnCheck").prop("disabled", false);
+	  $("#updateProduct").prop("disabled", false);
   } else {
 	  $("#myfields").prop("disabled", true);
-	  $("#btnCheck").prop("disabled", true);
+	  $("#updateProduct").prop("disabled", true);
 	  }
   };
+  
+  function sumPrice() {
+	var sum = 0;
+	var qtyLegnth = 0;
+	$(".qty1").each(function(){
+	  qtyLegnth = qtyLegnth +1;
+	});
+	for (i = 0; i < qtyLegnth; i++) { 
+	    $("#total"+i).val($("#qty"+i).val() * $("#price"+i).val());
+	}
+	$(".total").each(function(){
+	  sum += +$(this).val();
+	});
+	
+	return sum;
+  }
+  
 function isSubmited() {
 	//isLessTotalPrice()
-	var sum = 0;
-    $('input[name="price"]').each(function(){
-        sum += +$(this).val()  ;
-    });
-   
-    var total = $('#TotalPrice').val();
-//     if (sum<=total || sum <=0)
-//     {
-//     	alert("請注意,修改後金額不等於總金額,不可更改");
-//         return false;
-//     } else if (sum>total || sum <=0)
-//     {
-//     	alert("請注意,修改後金額小於等於0");
-//         return false;
-//     }
-    //isWarehousePicked()
-    var isWarehousePicked = true;
-    $('select[name=warehouse]').each(function(){
-    	if($(this).val() == undefined || $(this).val().trim() == ""){
-    		alert("請選擇倉別");
-    		isWarehousePicked = false;
-    		return false;
-		}
-    });
-    return isWarehousePicked;
+		var sum = sumPrice();
+	    var total = $('#TotalPrice').val();
+	    if (sum!=total || sum <=0) {
+	    	alert("請注意,修改後金額不等於總金額,不可更改");
+	        return false;
+	    } else if (sum>total || sum <=0) {
+	    	alert("請注意,修改後金額小於等於0");
+	        return false;
+	    }
+	    var isWarehousePicked = true;
+	     $('select[name=warehouse]').each(function(){
+	    	if($(this).val() == undefined || $(this).val().trim() == ""){
+	    		alert("請選擇倉別");
+	    		isWarehousePicked = false;
+	    		return false;
+			}
+	     });
+	     return isWarehousePicked;
+	//}
 }
 </script>  
 </body>
